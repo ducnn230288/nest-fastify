@@ -5,7 +5,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2019",
+    "target": "ES2021",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "./dist",
@@ -19,5 +19,28 @@
     "noFallthroughCasesInSwitch": false,
     /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "esModuleInterop": true,
+    "paths": {
+      "@config": [
+        "src/config"
+      ],
+      "@shared": [
+        "src/shared"
+      ],
+      "@controllers": [
+        "src/controllers"
+      ],
+      "@dtos": [
+        "src/dtos"
+      ],
+      "@entities": [
+        "src/entities"
+      ],
+      "@repositories": [
+        "src/repositories"
+      ],
+      "@services": [
+        "src/services"
+      ],
+    }
   }
 }

@@ -38,3 +38,6 @@ lerna-debug.log*
 !.env.template
 .history
 db-data
+package-lock.json
+/public/assets
+/public/locales

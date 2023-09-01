@@ -4,13 +4,14 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import secureSession from '@fastify/secure-session';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
+import { join, resolve } from 'path';
+import hbs from 'hbs';
+import hbsUtils from 'hbs-utils';
+
+import { appConfig, loggerOptions, setupSwagger } from '@config';
+import { HttpExceptionFilter } from '@shared';
 import { AppModule } from './app.module';
-import { appConfig } from './config/config';
-import { loggerOptions } from './config/logger.config';
-import { HttpExceptionFilter } from './shared/filter/http-exception-filter';
-import { join } from 'path';
 
 async function bootstrap(): Promise<void> {
   const logger = new Logger('bootstrap');
@@ -32,42 +33,25 @@ async function bootstrap(): Promise<void> {
     },
   };
   await app.register(multipart, options);
-
   app.enableCors({
-    origin: appConfig.CORS_ALLOWED_ORIGNS,
+    origin: appConfig.DOMAIN_FE,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
     credentials: true, // use cookies
   });
-  app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
-
-  // Starts listening for shutdown hooks
   app.enableShutdownHooks();
 
+  if (appConfig.NODE_ENV !== 'prod') setupSwagger(app);
+
   await app.register(secureSession, { secret: appConfig.SESSION_SECRET, salt: appConfig.SESSION_SALT });
-
-  // http://localhost:9002/swagger
-  if (appConfig.NODE_ENV !== 'prod') {
-    const options = new DocumentBuilder()
-      .addBearerAuth()
-      .setTitle('NestJS starter')
-      .setDescription('NestJS starter API description')
-      .setVersion('1.0')
-      .build();
-    const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('swagger', app, document);
-  }
-
-  app.useStaticAssets({
-    root: join(__dirname, '..', 'public'),
-    prefix: '/public/',
-  });
+  app.useStaticAssets({ root: join(__dirname, '..', 'public') });
+  hbs.registerPartials(resolve('./views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', '/views/layouts'));
   app.setViewEngine({
-    engine: {
-      handlebars: require('handlebars'),
-    },
+    engine: { handlebars: hbs },
+    includeViewExtension: true,
     templates: join(__dirname, '..', 'views'),
   });
 
