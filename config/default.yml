@@ -1,0 +1,25 @@
+token:
+  access:
+    expiresInAsSeconds: 3600
+  refresh:
+    expiresInAsSeconds: 86400
+  id:
+    expiresInAsSeconds: 86400
+
+bcrypt:
+  saltRounds: 12
+
+resetPasswordToken:
+  expiresInHours: 24
+
+log:
+  level:
+    console: error
+    file: verbose
+    query: error
+
+mail:
+  sender: '"MyApp" <manumuradev@gmail.com>'
+
+link:
+  reset-password: http://localhost:3000/reset-password?token=
