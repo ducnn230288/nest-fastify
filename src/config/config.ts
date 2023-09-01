@@ -6,9 +6,9 @@ const SESSION_SECRET = config.get<string>('token.secret');
 const SESSION_SALT = config.get<string>('token.salt');
 const LOG_LEVEL_CONSOLE = config.get<string>('log.level.console');
 const LOG_LEVEL_FILE = config.get<string>('log.level.file');
-
 const DOMAIN_FE = process.env.DOMAIN_FE;
 const SERVER_PORT = process.env.SERVER_PORT;
+
 const DATABASE_HOST = process.env.DATABASE_HOST;
 const DATABASE_PORT = +(process.env.DATABASE_PORT || '0');
 const DATABASE_USER = process.env.DATABASE_USER;
@@ -16,7 +16,7 @@ const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
 const DATABASE_NAME = process.env.DATABASE_NAME;
 
 const SMTP_HOST = process.env.SMTP_HOST;
-const SMTP_PORT = process.env.SMTP_PORT;
+const SMTP_PORT = +(process.env.SMTP_PORT || '0');
 const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
 const MAIL_SENDER = process.env.MAIL_SENDER;
@@ -39,8 +39,17 @@ export const appConfig = {
   NODE_ENV,
   SESSION_SECRET,
   SESSION_SALT,
+  LOG_LEVEL_CONSOLE,
+  LOG_LEVEL_FILE,
   DOMAIN_FE,
   SERVER_PORT,
+
+  DATABASE_HOST,
+  DATABASE_PORT,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_NAME,
+
   SMTP_HOST,
   SMTP_PORT,
   SMTP_USER,
@@ -49,8 +58,7 @@ export const appConfig = {
   CLOUDINARY_NAME,
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
-  LOG_LEVEL_CONSOLE,
-  LOG_LEVEL_FILE,
+
   RESET_PASSWORD_LINK,
   MAIL_SENDER,
 };

@@ -1,62 +1,58 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, Logger } from '@nestjs/common';
-import { appConstants } from '../app.constants';
-import { appConfig } from '../config/config';
+import { appConfig } from '@config';
 
 @Injectable()
 export class EmailService {
-  private logger = new Logger('EmailService');
-
-  constructor(private readonly mailerService: MailerService) {}
-
-  async sendResetPasswordEmail(email: string, langCode: string, token: string): Promise<any> {
-    this.logger.verbose(`Send reset password email to: ${email}`);
-    if (!email || !token) {
-      throw new Error('Email or token undefined');
-    }
-
-    try {
-      const url = appConfig.RESET_PASSWORD_LINK + token;
-      const templateData = {
-        resetPasswordLink: url,
-      };
-
-      const info = await this.mailerService.sendMail({
-        to: email,
-        subject: appConstants.RESET_PASSWORD_EMAIL_SUBJECT[langCode],
-        template: `${appConstants.RESET_PASSWORD_EMAIL_TEMPLATE}-${langCode}`,
-        context: templateData,
-      });
-      this.logger.verbose(`Response Send email: ${JSON.stringify(info)}`);
-      return info;
-    } catch (error) {
-      this.logger.error(`Failed to send reset password email to ${email}`, error.stack);
-      // throw new Error(`Failed to send reset password email to ${email}`);
-    }
-  }
-
-  async sendTemporaryPasswordEmail(email: string, langCode: string, password: string): Promise<any> {
-    this.logger.verbose(`Send temporary password email to: ${email}`);
-    if (!email || !password) {
-      throw new Error('Email or password undefined');
-    }
-
-    try {
-      const templateData = {
-        password,
-      };
-
-      const info = await this.mailerService.sendMail({
-        to: email,
-        subject: appConstants.TEMPORARY_PASSWORD_EMAIL_SUBJECT[langCode],
-        template: `${appConstants.TEMPORARY_PASSWORD_EMAIL_TEMPLATE}-${langCode}`,
-        context: templateData,
-      });
-      this.logger.verbose(`Response Send email: ${JSON.stringify(info)}`);
-      return info;
-    } catch (error) {
-      this.logger.error(`Failed to send temporary password email to ${email}`, error.stack);
-      // throw new Error(`Failed to send temporary password email to ${email}`);
-    }
-  }
+  // private logger = new Logger('EmailService');
+  //
+  // constructor(private readonly mailerService: MailerService) {}
+  //
+  // /**
+  //  *
+  //  * @param user
+  //  * @param token
+  //  * @returns void
+  //  *
+  //  */
+  // async sendUserConfirmation(user: User, token: string): Promise<void> {
+  //   try {
+  //     const info = await this.mailerService.sendMail({
+  //       to: user.email,
+  //       from: '"ARI TECHNOLOGY" <' + appConfig.MAIL_SENDER + '>',
+  //       subject: 'Welcome to Ari! We got a request to Reset Password',
+  //       template: './confirmation',
+  //       context: {
+  //         name: user.name,
+  //         url: process.env.DOMAIN_FE + 'auth/reset-password?token=' + token,
+  //       },
+  //     });
+  //     this.logger.verbose(`Response Send email: ${JSON.stringify(info)}`);
+  //     return info;
+  //   } catch (error) {
+  //     this.logger.error(`Failed to send reset password email to ${user.email}`, error.stack);
+  //   }
+  // }
+  //
+  // /**
+  //  *
+  //  * @param context
+  //  * @returns void
+  //  *
+  //  */
+  // async sendUserContact(context: ContactRequestDto): Promise<void> {
+  //   try {
+  //     const info = await this.mailerService.sendMail({
+  //       to: appConfig.MAIL_SENDER,
+  //       from: '"ARI TECHNOLOGY" <' + appConfig.MAIL_SENDER + '>',
+  //       subject: 'We got a request to Contact',
+  //       template: './contact',
+  //       context,
+  //     });
+  //     this.logger.verbose(`Response Send email: ${JSON.stringify(info)}`);
+  //     return info;
+  //   } catch (error) {
+  //     this.logger.error(`Failed to send temporary password email to ${appConfig.MAIL_SENDER}`, error.stack);
+  //   }
+  // }
 }

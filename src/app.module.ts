@@ -8,6 +8,8 @@ import { StorageModule } from './storage/storage.module';
 import { AppController } from './app.controller';
 import { resolve } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { appConfig } from '@config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [AppController],
@@ -19,34 +21,23 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
       fallbackLanguage: 'en',
       loaderOptions: {
         path: resolve('./translations'),
-        watch: process.env.NODE_ENV !== 'production',
+        watch: appConfig.NODE_ENV !== 'production',
       },
       resolvers: [{ use: QueryResolver, options: ['Accept-Language'] }, AcceptLanguageResolver],
       viewEngine: 'hbs',
     }),
-    // ServeStaticModule.forRoot(
-    //   (() => {
-    //     const publicDir = resolve('./uploads/');
-    //     const servePath = '/files';
-    //     return {
-    //       rootPath: publicDir,
-    //       serveRoot: servePath,
-    //       exclude: ['/api*'],
-    //     };
-    //   })(),
-    // ),
-    // TypeOrmModule.forRootAsync({
-    //   useFactory: () => ({
-    //     type: 'postgres',
-    //     host: process.env.DATABASE_HOST,
-    //     port: +process.env.DATABASE_PORT,
-    //     username: process.env.DATABASE_USER,
-    //     password: process.env.DATABASE_PASSWORD,
-    //     database: process.env.DATABASE_NAME,
-    //     autoLoadEntities: true,
-    //     synchronize: process.env.NODE_ENV !== 'prod',
-    //   }),
-    // }),
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: appConfig.DATABASE_HOST,
+        port: appConfig.DATABASE_PORT,
+        username: appConfig.DATABASE_USER,
+        password: appConfig.DATABASE_PASSWORD,
+        database: appConfig.DATABASE_NAME,
+        autoLoadEntities: true,
+        synchronize: appConfig.NODE_ENV !== 'prod',
+      }),
+    }),
   ],
 })
 export class AppModule {
