@@ -7,7 +7,7 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@controller';
 import { appConfig, loggerOptions } from '@config';
-import { NotificationModule, StorageModule, CoreModule, UserModule } from '@module';
+import { NotificationModule, StorageModule, CoreModule, UserModule, MemberModule } from '@module';
 
 @Module({
   controllers: [AppController],
@@ -38,6 +38,7 @@ import { NotificationModule, StorageModule, CoreModule, UserModule } from '@modu
         synchronize: appConfig.NODE_ENV !== 'prod',
       }),
     }),
+    MemberModule,
   ],
 })
 export class AppModule {
