@@ -7,17 +7,21 @@ import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
 import { appConfig } from '@config';
 import {
+  BookingRoom,
   Code,
   CodeType,
   Data,
   DataTranslation,
   DataType,
+  DayOff,
   Parameter,
   Post,
   PostTranslation,
   PostType,
+  Room,
   User,
   UserRole,
+  UserTeam,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -39,6 +43,10 @@ const options: DataSourceOptions & SeederOptions = {
     Post,
     PostTranslation,
     PostType,
+    UserTeam,
+    DayOff,
+    BookingRoom,
+    Room,
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

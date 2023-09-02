@@ -37,5 +37,6 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserService,
     UserRoleService,
   ],
+  exports: [UserService, UserRepository],
 })
 export class UserModule {}
