@@ -45,7 +45,7 @@ async function bootstrap(): Promise<void> {
 
   if (appConfig.NODE_ENV !== 'prod') setupSwagger(app);
 
-  await app.register(secureSession, { secret: appConfig.SESSION_SECRET, salt: appConfig.SESSION_SALT });
+  await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
   app.useStaticAssets({ root: join(__dirname, '..', 'public') });
   hbs.registerPartials(resolve('./views/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', '/views/layouts'));

@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import cloudinary from 'cloudinary';
+// import cloudinary from 'cloudinary';
 import { WinstonModule } from 'nest-winston';
-import { cloudinaryConfig } from './config/cloudinary.config';
-import { loggerOptions } from './config/logger.config';
-import { NotificationModule } from './notification/notification.module';
-import { StorageModule } from './storage/storage.module';
-import { AppController } from './app.controller';
 import { resolve } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
-import { appConfig } from '@config';
+// import { cloudinaryConfig } from './config/cloudinary.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from '@controller';
+import { appConfig, loggerOptions } from '@config';
+import { NotificationModule, StorageModule, CoreModule, UserModule } from '@module';
 
 @Module({
   controllers: [AppController],
@@ -17,6 +15,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     StorageModule,
+    UserModule,
+    CoreModule,
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
@@ -41,7 +41,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
 })
 export class AppModule {
-  constructor() {
-    cloudinary.v2.config(cloudinaryConfig);
-  }
+  // constructor() {
+  //   cloudinary.v2.config(cloudinaryConfig);
+  // }
 }

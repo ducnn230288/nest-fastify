@@ -1,5 +1,7 @@
 token:
-  secret: '4c88b19d-473c-4d4b-96c4-d6bfc9d9703b'
+  secret:
+    access: '4c88b19d-473c-4d4b-96c4-d6bfc9d9703b'
+    refresh: '61f49d1e-c9c0-4bbc-b984-a8eb05f71c08'
   salt: '3V3wq5!SM1a^k%R&'
   access:
     expiresInAsSeconds: 3600

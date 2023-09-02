@@ -26,20 +26,23 @@
       "@shared": [
         "src/shared"
       ],
-      "@controllers": [
-        "src/controllers"
+      "@controller": [
+        "src/controller"
       ],
-      "@dtos": [
-        "src/dtos"
+      "@dto": [
+        "src/dto"
       ],
-      "@entities": [
-        "src/entities"
+      "@model": [
+        "src/model"
       ],
-      "@repositories": [
-        "src/repositories"
+      "@module": [
+        "src/module"
       ],
-      "@services": [
-        "src/services"
+      "@repository": [
+        "src/repository"
+      ],
+      "@service": [
+        "src/service"
       ],
     }
   }

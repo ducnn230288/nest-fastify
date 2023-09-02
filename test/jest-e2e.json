@@ -5,5 +5,16 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "moduleNameMapper": {
+    "@config": "<rootDir>../src/config",
+    "@shared": "<rootDir>../src/shared",
+    "@controller": "<rootDir>../src/controller",
+    "@dto": "<rootDir>../src/dto",
+    "@model": "<rootDir>../src/model",
+    "@module": "<rootDir>../src/module",
+    "@repository": "<rootDir>../src/repository",
+    "@service": "<rootDir>../src/service"
+  },
+  "testRunner": "jest-jasmine2"
 }
