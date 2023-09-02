@@ -1,12 +1,10 @@
 import { MultipartFile } from '@fastify/multipart';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-// import cloudinary, { UploadApiOptions, UploadApiResponse, UploadResponseCallback } from 'cloudinary';
 import fs, { promises as fsAsync } from 'fs';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { extname } from 'path';
 import { Transform, pipeline } from 'stream';
 import util from 'util';
-import { UploadResponseModel } from '../shared/model/upload.response.model';
 
 @Injectable()
 export class StorageService {
@@ -14,7 +12,7 @@ export class StorageService {
   private pump = util.promisify(pipeline);
 
   // async uploadProfileImage(filepath: string, userId: number): Promise<UploadApiResponse> {
-  //   const nowAsString = moment().utc().format('YYYYMMDDHHmmss');
+  //   const nowAsString = dayjs().format('YYYYMMDDHHmmss');
   //   const options: UploadApiOptions = {
   //     folder: 'profiles/' + userId,
   //     resource_type: 'image',
@@ -29,7 +27,7 @@ export class StorageService {
   // // https://support.cloudinary.com/hc/en-us/articles/208263735-Guidelines-for-implementing-chunked-upload-to-Cloudinary
   // // https://medium.com/@maksim_smagin/software-architecture-101-how-to-upload-file-s3-nodejs-fastify-68fceb5c5133
   // async uploadVideo(filepath: string, userId: number, callback: UploadResponseCallback): Promise<UploadApiResponse> {
-  //   const nowAsString = moment().utc().format('YYYYMMDDHHmmss');
+  //   const nowAsString = dayjs().format('YYYYMMDDHHmmss');
   //   const options: UploadApiOptions = {
   //     // filename: editCloudinaryFileName,
   //     folder: 'videos/' + userId,
@@ -54,11 +52,17 @@ export class StorageService {
   //   return res;
   // }
 
-  async saveVideoToLocalPath(multipartFile: MultipartFile): Promise<UploadResponseModel | null> {
+  async saveVideoToLocalPath(multipartFile: MultipartFile): Promise<{
+    filename: string;
+    filepath: string;
+  } | null> {
     return this.saveToLocalPath(multipartFile);
   }
 
-  async saveImageToLocalPath(multipartFile: MultipartFile): Promise<UploadResponseModel | null> {
+  async saveImageToLocalPath(multipartFile: MultipartFile): Promise<{
+    filename: string;
+    filepath: string;
+  } | null> {
     return this.saveToLocalPath(multipartFile, /(jpg|jpeg|png|gif)$/, 'File is not an image');
   }
 
@@ -66,7 +70,10 @@ export class StorageService {
     multipartFile: MultipartFile,
     mimeTypesRegex?: any,
     validationErrorMessage?: string,
-  ): Promise<UploadResponseModel | null> {
+  ): Promise<{
+    filename: string;
+    filepath: string;
+  } | null> {
     // https://backend.cafe/fastify-multipart-upload
     this.logger.verbose(`File received: ${multipartFile.filename} (${multipartFile.mimetype})`);
     if (mimeTypesRegex && !multipartFile.mimetype.match(mimeTypesRegex)) {
@@ -103,7 +110,7 @@ export class StorageService {
   private renameFile(filename: string) {
     const name = filename.split('.')[0];
     const fileExtName = extname(filename);
-    const nowAsString = moment().utc().format('YYYYMMDDHHmmss');
+    const nowAsString = dayjs().format('YYYYMMDDHHmmss');
     return `${name}-${nowAsString}${fileExtName}`;
   }
 }

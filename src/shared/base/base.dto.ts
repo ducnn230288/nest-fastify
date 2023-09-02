@@ -4,8 +4,8 @@ import { IsOptional, IsPositive } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 export class DefaultResponsesDto {
-  @ApiProperty({ example: 200, description: '' })
-  statusCode?: number;
+  // @ApiProperty({ example: 200, description: '' })
+  // statusCode?: number;
   @ApiProperty({ example: faker.lorem.sentence(), description: '' })
   message: string;
 }

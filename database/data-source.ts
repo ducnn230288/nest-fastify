@@ -5,7 +5,7 @@ import { SeederOptions } from 'typeorm-extension';
 
 import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
-import { appConfig } from '@config';
+import { appConfig, DbCustomLogger } from '@config';
 import {
   BookingRoom,
   Code,
@@ -50,5 +50,7 @@ const options: DataSourceOptions & SeederOptions = {
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],
+  logging: 'all',
+  logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
 };
 export const AppDataSource = new DataSource(options);
