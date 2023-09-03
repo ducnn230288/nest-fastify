@@ -3,6 +3,7 @@ export * from './module/core/service/code.service';
 export * from './module/core/service/code-type.service';
 export * from './module/core/service/data.service';
 export * from './module/core/service/data-type.service';
+export * from './module/core/service/file.service';
 export * from './module/core/service/parameter.service';
 export * from './module/core/service/post.service';
 export * from './module/core/service/post-type.service';
