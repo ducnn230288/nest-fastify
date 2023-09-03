@@ -3,6 +3,7 @@ import { WinstonModule } from 'nest-winston';
 import { resolve } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
 import { NotificationModule, StorageModule, CoreModule, UserModule, MemberModule } from '@module';
@@ -34,7 +35,7 @@ import { NotificationModule, StorageModule, CoreModule, UserModule, MemberModule
         database: appConfig.DATABASE_NAME,
         autoLoadEntities: true,
         synchronize: appConfig.NODE_ENV !== 'prod',
-        logging: 'all',
+        logging: ['error'],
         logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
       }),
     }),
