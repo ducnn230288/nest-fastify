@@ -44,13 +44,13 @@ async function bootstrap(): Promise<void> {
   app.enableShutdownHooks();
 
   await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
-  app.useStaticAssets({ root: join(process.cwd(), './', 'public') });
-  hbs.registerPartials(join(process.cwd(), './', '/views/layouts'));
-  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './', '/views/layouts'));
+  app.useStaticAssets({ root: join(process.cwd(), './other', 'public') });
+  hbs.registerPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   app.setViewEngine({
     engine: { handlebars: hbs },
     includeViewExtension: true,
-    templates: join(process.cwd(), './', 'views'),
+    templates: join(process.cwd(), './other', 'views'),
   });
 
   const port = appConfig.SERVER_PORT;

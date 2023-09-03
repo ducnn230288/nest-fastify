@@ -85,7 +85,6 @@ export class FileController {
   ): Promise<any> {
     try {
       const filePath = join(process.cwd(), appConfig.UPLOAD_LOCATION, `${userId}/${name}`);
-      console.log(filePath);
       if (!existsSync(filePath)) throw new BadRequestException();
       const { size } = statSync(filePath);
       const contentType = mime.contentType(filePath.split('.').pop());

@@ -39,5 +39,6 @@ lerna-debug.log*
 .history
 db-data
 package-lock.json
-/public/assets
-/public/locales
+other/public/assets
+other/public/locales
+other/upload

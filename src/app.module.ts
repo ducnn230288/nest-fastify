@@ -18,7 +18,7 @@ import { NotificationModule, CoreModule, UserModule } from '@module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: resolve('./translations'),
+        path: resolve('./other/translations'),
         watch: appConfig.NODE_ENV !== 'production',
       },
       resolvers: [{ use: QueryResolver, options: ['Accept-Language'] }, AcceptLanguageResolver],

@@ -11,4 +11,4 @@ log:
     query: error
 
 upload:
-  location: './upload/'
+  location: './other/upload/'
