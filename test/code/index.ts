@@ -42,7 +42,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     code: faker.finance.bic(),
   };
   it('Create [POST /api/code-type/add]', async () => {
-    await new Promise((res) => setTimeout(res, 1));
     const { body } = await request(BaseTest.server)
       .post('/api/code-type/add')
       .set('Authorization', 'Bearer ' + BaseTest.token)

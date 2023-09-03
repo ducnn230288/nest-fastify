@@ -1,11 +1,9 @@
-import 'dotenv/config';
-import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 
+import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
-import { appConfig } from '@config';
 import {
   Code,
   CodeType,
@@ -42,5 +40,7 @@ const options: DataSourceOptions & SeederOptions = {
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],
+  logging: ['error'],
+  logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
 };
 export const AppDataSource = new DataSource(options);

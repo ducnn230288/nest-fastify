@@ -69,7 +69,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
   };
 
   it('Create [POST /api/post-type/add]', async () => {
-    await new Promise((res) => setTimeout(res, 1));
     const { body } = await request(BaseTest.server)
       .post('/api/post-type/add')
       .set('Authorization', 'Bearer ' + BaseTest.token)

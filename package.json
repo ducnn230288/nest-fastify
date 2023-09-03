@@ -46,7 +46,6 @@
     "dotenv": "^16.3.1",
     "hbs": "^4.2.0",
     "hbs-utils": "^0.0.4",
-    "moment": "^2.29.4",
     "nest-winston": "^1.9.4",
     "nestjs-i18n": "^10.3.1",
     "nodemailer": "^6.9.4",
