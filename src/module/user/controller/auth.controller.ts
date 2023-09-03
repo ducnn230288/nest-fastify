@@ -46,8 +46,8 @@ export class AuthController {
     return {
       message: i18n.t('common.Success'),
       data: {
-        user: user,
         ...tokens,
+        user: user,
       },
     };
   }

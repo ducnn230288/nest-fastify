@@ -6,20 +6,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, StorageModule, CoreModule, UserModule, MemberModule } from '@module';
+import { NotificationModule, CoreModule, UserModule, MemberModule } from '@module';
 
 @Module({
   controllers: [AppController],
   imports: [
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
-    StorageModule,
     UserModule,
     CoreModule,
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: resolve('./translations'),
+        path: resolve('./other/translations'),
         watch: appConfig.NODE_ENV !== 'production',
       },
       resolvers: [{ use: QueryResolver, options: ['Accept-Language'] }, AcceptLanguageResolver],

@@ -14,6 +14,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest();
     const status = exception.getStatus ? exception.getStatus() : 503;
     logger.error(`Uncaught exception ${status} ${request.url}`, exception.stack);
-    response.status(status).send(status !== 500 ? exception.getResponse() : exception.stack);
+    response
+      .status(status)
+      .send(status !== 500 ? (exception.getResponse ? exception.getResponse() : exception) : exception.stack);
   }
 }

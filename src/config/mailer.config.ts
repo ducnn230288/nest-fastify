@@ -23,7 +23,7 @@ export const mailerOptions: MailerOptions = {
     from: appConfig.MAIL_SENDER,
   },
   template: {
-    dir: './templates',
+    dir: './other/templates',
     adapter: new HandlebarsAdapter(), // or new PugAdapter()
     options: {
       strict: true,

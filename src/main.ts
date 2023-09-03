@@ -5,7 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import secureSession from '@fastify/secure-session';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
-import { join, resolve } from 'path';
+import { join } from 'path';
 import hbs from 'hbs';
 import hbsUtils from 'hbs-utils';
 
@@ -43,16 +43,14 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableShutdownHooks();
 
-  if (appConfig.NODE_ENV !== 'prod') setupSwagger(app);
-
   await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
-  app.useStaticAssets({ root: join(__dirname, '..', 'public') });
-  hbs.registerPartials(resolve('./views/layouts'));
-  hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', '/views/layouts'));
+  app.useStaticAssets({ root: join(process.cwd(), './other', 'public') });
+  hbs.registerPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   app.setViewEngine({
     engine: { handlebars: hbs },
     includeViewExtension: true,
-    templates: join(__dirname, '..', 'views'),
+    templates: join(process.cwd(), './other', 'views'),
   });
 
   const port = appConfig.SERVER_PORT;
@@ -60,6 +58,7 @@ async function bootstrap(): Promise<void> {
     logger.error('Server Port is undefined');
     return;
   }
+  if (appConfig.NODE_ENV !== 'prod') setupSwagger(app);
 
   await app.listen(port, '0.0.0.0');
   logger.verbose(`Application running on port ${port}, NODE_ENV: ${appConfig.NODE_ENV}`);

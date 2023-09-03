@@ -3,18 +3,6 @@ token:
     access: '4c88b19d-473c-4d4b-96c4-d6bfc9d9703b'
     refresh: '61f49d1e-c9c0-4bbc-b984-a8eb05f71c08'
   salt: '3V3wq5!SM1a^k%R&'
-  access:
-    expiresInAsSeconds: 3600
-  refresh:
-    expiresInAsSeconds: 86400
-  id:
-    expiresInAsSeconds: 86400
-
-bcrypt:
-  saltRounds: 12
-
-resetPasswordToken:
-  expiresInHours: 24
 
 log:
   level:
@@ -22,8 +10,5 @@ log:
     file: verbose
     query: error
 
-mail:
-  sender: '"MyApp" <manumuradev@gmail.com>'
-
-link:
-  reset-password: http://localhost:3000/reset-password?token=
+upload:
+  location: './other/upload/'

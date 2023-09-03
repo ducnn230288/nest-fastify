@@ -25,7 +25,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, BookingRoom, UserTeam } from '@model';
+import { UserRole, Code, File, BookingRoom, UserTeam } from '@model';
 import { Example, MaxGroup, OnlyUpdateGroup, Base } from '@shared';
 
 @Entity()
@@ -130,6 +130,10 @@ export class User extends Base {
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()
   readonly dateOff: number;
+
+  @OneToMany(() => File, (data) => data.userId, { eager: true })
+  @Exclude()
+  public files?: File[];
 
   @OneToMany(() => BookingRoom, (booking) => booking.user)
   @Type(() => BookingRoom)

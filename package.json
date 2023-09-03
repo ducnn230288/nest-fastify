@@ -52,6 +52,7 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
     "rimraf": "^5.0.1",
+    "sharp": "^0.32.5",
     "typeorm": "^0.3.17",
     "typeorm-extension": "^3.0.1",
     "winston": "^3.10.0",
