@@ -6,6 +6,7 @@ const LOG_LEVEL_CONSOLE = config.get<string>('log.level.console');
 const LOG_LEVEL_FILE = config.get<string>('log.level.file');
 const DOMAIN_FE = process.env.DOMAIN_FE;
 const DOMAIN = process.env.DOMAIN;
+const URL_FILE = `${process.env.DOMAIN}/api/file/`;
 const SERVER_PORT = process.env.SERVER_PORT;
 const UPLOAD_LOCATION = config.get<string>('upload.location');
 
@@ -40,6 +41,7 @@ export const appConfig = {
   LOG_LEVEL_FILE,
   DOMAIN_FE,
   DOMAIN,
+  URL_FILE,
   SERVER_PORT,
   UPLOAD_LOCATION,
 

@@ -8,20 +8,20 @@ import {
   Req,
   ValidationPipe,
   Res,
-  NotFoundException,
   StreamableFile,
   Delete,
 } from '@nestjs/common';
-import { I18n, I18nContext } from 'nestjs-i18n';
-import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync } from 'fs';
-import { Auth, Headers, AuthUser, PaginationQueryDto, Public } from '@shared';
-import { FileResponseDto, ListFileResponseDto } from '@dto';
-import { FileService, P_FILE_LISTED, P_FILE_DETAIL, P_FILE_CREATE, P_FILE_UPDATE, P_FILE_DELETE } from '@service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { User } from '@model';
-import { appConfig } from '@config';
 import { join } from 'path';
 import mime from 'mime-types';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync } from 'fs';
+
+import { appConfig } from '@config';
+import { FileResponseDto, ListFileResponseDto } from '@dto';
+import { User } from '@model';
+import { FileService, P_FILE_LISTED, P_FILE_DETAIL, P_FILE_CREATE, P_FILE_UPDATE, P_FILE_DELETE } from '@service';
+import { Auth, Headers, AuthUser, PaginationQueryDto, Public } from '@shared';
 
 @Headers('file')
 export class FileController {
@@ -139,16 +139,11 @@ export class FileController {
     summary: 'Delete data',
     permission: P_FILE_DELETE,
   })
-  @Delete(':id')
-  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<FileResponseDto> {
-    const data = await this.service.removeHard(id, i18n);
-    if (data?.type === 0)
-      this.service.deleteFromLocalPath(
-        join(process.cwd(), appConfig.UPLOAD_LOCATION, data?.url.replace(appConfig.DOMAIN + '/api/file/', '')),
-      );
+  @Delete(':url')
+  async remove(@I18n() i18n: I18nContext, @Param('url') url: string): Promise<FileResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data,
+      data: await this.service.removeHard(url, i18n),
     };
   }
 }

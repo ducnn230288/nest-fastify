@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -25,6 +26,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
+import { appConfig } from '@config';
 import { UserRole, Code, File, BookingRoom, UserTeam } from '@model';
 import { Example, MaxGroup, OnlyUpdateGroup, Base } from '@shared';
 
@@ -40,6 +42,16 @@ export class User extends Base {
   @IsString()
   @IsOptional()
   avatar?: string;
+  @BeforeInsert()
+  @BeforeUpdate()
+  beforeAvatar?(): void {
+    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0)
+      this.avatar = this.avatar.replace(appConfig.URL_FILE, '');
+  }
+  @AfterLoad()
+  afterAvatar?(): void {
+    if (this.avatar && this.avatar.indexOf('http') === -1) this.avatar = appConfig.URL_FILE + this.avatar;
+  }
 
   @Column()
   @Expose({ groups: [OnlyUpdateGroup] })
@@ -50,7 +62,7 @@ export class User extends Base {
   password?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword?() {
+  async beforePassword?(): Promise<void> {
     if (this.password && this.password.length < 60) {
       this.password = this.password && (await argon2.hash(this.password));
     }
@@ -60,7 +72,7 @@ export class User extends Base {
   @Exclude()
   refreshToken?: string;
   @BeforeUpdate()
-  async hashRefreshToken?() {
+  async beforeRefreshToken?(): Promise<void> {
     this.refreshToken = this.refreshToken && (await argon2.hash(this.refreshToken));
   }
 
@@ -130,10 +142,6 @@ export class User extends Base {
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()
   readonly dateOff: number;
-
-  @OneToMany(() => File, (data) => data.userId, { eager: true })
-  @Exclude()
-  public files?: File[];
 
   @OneToMany(() => BookingRoom, (booking) => booking.user)
   @Type(() => BookingRoom)

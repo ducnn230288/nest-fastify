@@ -6,8 +6,8 @@ import { PassportModule } from '@nestjs/passport';
 import { appConfig } from '@config';
 import { AuthController, UserController, UserRoleController } from '@controller';
 import { User, UserRole } from '@model';
-import { AuthService, EmailService, UserRoleService, UserService } from '@service';
-import { UserRepository } from '@repository';
+import { AuthService, EmailService, FileService, UserRoleService, UserService } from '@service';
+import { FileRepository, UserRepository } from '@repository';
 
 import { AccessTokenStrategy } from './strategy/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
@@ -36,6 +36,8 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserRepository,
     UserService,
     UserRoleService,
+    FileRepository,
+    FileService,
   ],
   exports: [UserService, UserRepository],
 })

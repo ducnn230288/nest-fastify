@@ -2,7 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { appConfig } from '@config';
 import {
   DataResponseDto,
   ListDataResponseDto,
@@ -10,11 +10,15 @@ import {
   UpdateDataRequestDto,
   ArrayDataTypeResponseDto,
 } from '@dto';
-import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE } from '@service';
+import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE, FileService } from '@service';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
 
 @Headers('data')
 export class DataController {
-  constructor(private readonly service: DataService) {}
+  constructor(
+    private readonly service: DataService,
+    public fileService: FileService,
+  ) {}
 
   @Auth({
     summary: 'Get List data',
@@ -70,9 +74,22 @@ export class DataController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateDataRequestDto,
   ): Promise<DataResponseDto> {
+    const data = await this.service.create(body, i18n);
+    const listImage: string[] = [];
+    if (data?.image) listImage.push(data.image.replace(appConfig.URL_FILE, ''));
+    if (data?.translations) {
+      data?.translations.forEach((translation) => {
+        if (translation.content?.blocks)
+          translation.content?.blocks.forEach((item) => {
+            if (item.type === 'image') listImage.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
+            return item;
+          });
+      });
+    }
+    await this.fileService.activeFiles(listImage, i18n);
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body, i18n),
+      data,
     };
   }
 
@@ -86,9 +103,19 @@ export class DataController {
     @Param('id') id: string,
     @Body(new SerializerBody([MaxGroup])) body: UpdateDataRequestDto,
   ): Promise<DataResponseDto> {
+    const oldData = await this.service.findOne(id, [], i18n);
+    const data = await this.service.update(id, body, i18n);
+    if (oldData?.image !== data?.image) {
+      if (!oldData?.image && !!data?.image) await this.fileService.activeFiles([data.image], i18n);
+      else if (!!oldData?.image && !data?.image) await this.fileService.removeFiles([oldData.image], i18n);
+      else if (oldData?.image && data?.image) {
+        await this.fileService.removeFiles([oldData.image], i18n);
+        await this.fileService.activeFiles([data.image], i18n);
+      }
+    }
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, body, i18n),
+      data,
     };
   }
 
@@ -114,9 +141,23 @@ export class DataController {
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<DataResponseDto> {
+    const data = await this.service.removeHard(id, i18n);
+    const listImage: string[] = [];
+    if (data?.image) listImage.push(data.image.replace(appConfig.URL_FILE, ''));
+    if (data?.translations) {
+      data?.translations.forEach((translation) => {
+        if (translation.content?.blocks)
+          translation.content?.blocks.forEach((item) => {
+            if (item.type === 'image') listImage.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
+            return item;
+          });
+      });
+    }
+    await this.fileService.removeFiles(listImage, i18n);
+
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(id, i18n),
+      data,
     };
   }
 }

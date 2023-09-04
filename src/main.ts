@@ -17,10 +17,11 @@ async function bootstrap(): Promise<void> {
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
     logger: WinstonModule.createLogger(loggerOptions),
+    cors: true,
   });
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-  await app.register(helmet);
+  await app.register(helmet, { crossOriginResourcePolicy: false });
   // Fastify file upload
   const options = {
     limits: {
@@ -33,13 +34,13 @@ async function bootstrap(): Promise<void> {
     },
   };
   await app.register(multipart, options);
-  app.enableCors({
-    origin: appConfig.DOMAIN_FE,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    credentials: true, // use cookies
-  });
+  // app.enableCors({
+  //   origin: appConfig.DOMAIN_FE,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   preflightContinue: false,
+  //   optionsSuccessStatus: 204,
+  //   credentials: true, // use cookies
+  // });
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableShutdownHooks();
 

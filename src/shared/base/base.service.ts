@@ -173,7 +173,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
   async findOne(id: string, listJoin: string[] = [], i18n: I18nContext): Promise<T | null> {
     if (!id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
-    const request = this.repo.createQueryBuilder('base').withDeleted().andWhere('base.isDeleted Is Null');
+    const request = this.repo.createQueryBuilder('base');
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');

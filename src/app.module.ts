@@ -6,13 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, CoreModule, UserModule, MemberModule } from '@module';
+import { NotificationModule, SchedulerModule, CoreModule, UserModule, MemberModule } from '@module';
 
 @Module({
   controllers: [AppController],
   imports: [
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
+    SchedulerModule,
     UserModule,
     CoreModule,
     I18nModule.forRoot({
