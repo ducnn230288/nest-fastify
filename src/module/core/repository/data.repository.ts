@@ -28,6 +28,7 @@ export class DataRepository extends BaseRepository<Data> {
     await this.dataSource.transaction(async (entityManager) => {
       result = await entityManager.save(entityManager.create(Data, { ...body }));
       if (translations) {
+        result.translations = [];
         for (const item of translations) {
           delete item.id;
           const existingName = await entityManager
@@ -39,7 +40,8 @@ export class DataRepository extends BaseRepository<Data> {
           if (existingName) {
             throw new BadRequestException(i18n.t('common.Data.Name is already taken'));
           }
-          await entityManager.save(entityManager.create(DataTranslation, { dataId: result.id, ...item }));
+          const data = await entityManager.save(entityManager.create(DataTranslation, { dataId: result.id, ...item }));
+          result.translations.push(data);
         }
       }
     });

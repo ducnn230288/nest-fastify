@@ -14,9 +14,9 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
+import { appConfig } from '@config';
 import { UserRole, Code } from '@model';
 import { Example, OnlyUpdateGroup, Base } from '@shared';
-import { appConfig } from '@config';
 
 @Entity()
 export class User extends Base {
@@ -32,13 +32,12 @@ export class User extends Base {
   avatar?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  changeAvatar?(): void {
-    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0) {
+  beforeAvatar?(): void {
+    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0)
       this.avatar = this.avatar.replace(appConfig.URL_FILE, '');
-    }
   }
   @AfterLoad()
-  changeUrl?(): void {
+  afterAvatar?(): void {
     if (this.avatar && this.avatar.indexOf('http') === -1) this.avatar = appConfig.URL_FILE + this.avatar;
   }
 
@@ -51,7 +50,7 @@ export class User extends Base {
   password?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword?() {
+  async beforePassword?(): Promise<void> {
     if (this.password && this.password.length < 60) {
       this.password = this.password && (await argon2.hash(this.password));
     }
@@ -61,7 +60,7 @@ export class User extends Base {
   @Exclude()
   refreshToken?: string;
   @BeforeUpdate()
-  async hashRefreshToken?() {
+  async beforeRefreshToken?(): Promise<void> {
     this.refreshToken = this.refreshToken && (await argon2.hash(this.refreshToken));
   }
 

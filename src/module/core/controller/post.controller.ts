@@ -2,7 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { appConfig } from '@config';
 import {
   PostResponseDto,
   ListPostResponseDto,
@@ -10,11 +10,15 @@ import {
   UpdatePostRequestDto,
   ArrayDataTypeResponseDto,
 } from '@dto';
-import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE } from '@service';
+import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE, FileService } from '@service';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
 
 @Headers('post')
 export class PostController {
-  constructor(private readonly service: PostService) {}
+  constructor(
+    private readonly service: PostService,
+    public fileService: FileService,
+  ) {}
 
   @Auth({
     summary: 'Get List data',
@@ -126,9 +130,23 @@ export class PostController {
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {
+    const data = await this.service.removeHard(id, i18n);
+    const listImage: string[] = [];
+    if (data?.thumbnailUrl) listImage.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
+    if (data?.translations) {
+      data?.translations.forEach((translation) => {
+        if (translation.content?.blocks)
+          translation.content?.blocks.forEach((item) => {
+            if (item.type === 'image') listImage.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
+            return item;
+          });
+      });
+    }
+    await this.fileService.removeFiles(listImage, i18n);
+
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(id, i18n),
+      data,
     };
   }
 }

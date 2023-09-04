@@ -38,12 +38,22 @@ export class UserService extends BaseService<User> {
     const existingUser = await this.repo.getDataByEmail(body.email);
 
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
-    return super.create(body, i18n);
+    const data = await super.create(body, i18n);
+    if (data?.avatar) await this.fileService.activeFiles([data?.avatar], i18n);
+    return data;
   }
 
   async update(id: string, body: any, i18n: I18nContext, callBack?: (data: User) => User): Promise<User | null> {
+    const oldData = await this.findOne(id, [], i18n);
     const data = await super.update(id, body, i18n, callBack);
-    if (data?.avatar) await this.fileService.activeFiles([data?.avatar], i18n);
+    if (oldData?.avatar !== data?.avatar) {
+      if (!oldData?.avatar && !!data?.avatar) await this.fileService.activeFiles([data.avatar], i18n);
+      else if (!!oldData?.avatar && !data?.avatar) await this.fileService.removeFiles([oldData.avatar], i18n);
+      else if (oldData?.avatar && data?.avatar) {
+        await this.fileService.removeFiles([oldData.avatar], i18n);
+        await this.fileService.activeFiles([data.avatar], i18n);
+      }
+    }
     return data;
   }
 

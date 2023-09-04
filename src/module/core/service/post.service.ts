@@ -4,6 +4,7 @@ import { I18nContext } from 'nestjs-i18n';
 import { CreatePostRequestDto, UpdatePostRequestDto } from '@dto';
 import { Data, Post } from '@model';
 import { PostRepository, PostTranslationRepository } from '@repository';
+import { FileService } from '@service';
 import { BaseService } from '@shared';
 
 export const P_POST_LISTED = '7c34dc92-cbbe-4419-8dbc-745818d76098';
@@ -16,6 +17,7 @@ export class PostService extends BaseService<Post> {
   constructor(
     public repo: PostRepository,
     public repoTranslation: PostTranslationRepository,
+    public fileService: FileService,
   ) {
     super(repo);
     this.listJoin = ['translations'];
@@ -56,7 +58,9 @@ export class PostService extends BaseService<Post> {
    *
    */
   async create(body: CreatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    return await this.repo.createWithTranslation(body, i18n);
+    const data = await this.repo.createWithTranslation(body, i18n);
+    if (data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+    return data;
   }
 
   /**
@@ -68,6 +72,17 @@ export class PostService extends BaseService<Post> {
    *
    */
   async update(id: string, body: UpdatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    return await this.repo.updateWithTranslation(id, body, i18n);
+    const oldData = await this.findOne(id, [], i18n);
+    const data = await this.repo.updateWithTranslation(id, body, i18n);
+    if (oldData?.thumbnailUrl !== data?.thumbnailUrl) {
+      if (!oldData?.thumbnailUrl && !!data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+      else if (!!oldData?.thumbnailUrl && !data?.thumbnailUrl)
+        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
+      else if (oldData?.thumbnailUrl && data?.thumbnailUrl) {
+        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
+        await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+      }
+    }
+    return data;
   }
 }

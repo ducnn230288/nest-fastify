@@ -1,11 +1,12 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { MaxGroup, Base } from '@shared';
+import { appConfig } from '@config';
 import { Post } from '@model';
+import { MaxGroup, Base } from '@shared';
 
 @Entity()
 export class PostTranslation extends Base {
@@ -40,6 +41,25 @@ export class PostTranslation extends Base {
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
   readonly content?: Record<string, any>;
+  @BeforeInsert()
+  @BeforeUpdate()
+  beforeContent?(): void {
+    if (this.content?.blocks) {
+      this.content.blocks = this.content?.blocks.map((item) => {
+        if (item.type === 'image') item.data.file.url = item.data.file.url.replace(appConfig.URL_FILE, '');
+        return item;
+      });
+    }
+  }
+  @AfterLoad()
+  afterContent?(): void {
+    if (this.content?.blocks) {
+      this.content.blocks = this.content?.blocks.map((item) => {
+        if (item.type === 'image') item.data.file.url = appConfig.URL_FILE + item.data.file.url;
+        return item;
+      });
+    }
+  }
 
   @Column()
   @Expose({ groups: [MaxGroup] })
