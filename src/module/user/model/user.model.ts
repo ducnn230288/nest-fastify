@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
@@ -14,8 +14,9 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, File } from '@model';
+import { UserRole, Code } from '@model';
 import { Example, OnlyUpdateGroup, Base } from '@shared';
+import { appConfig } from '@config';
 
 @Entity()
 export class User extends Base {
@@ -29,6 +30,17 @@ export class User extends Base {
   @IsString()
   @IsOptional()
   avatar?: string;
+  @BeforeInsert()
+  @BeforeUpdate()
+  changeAvatar?(): void {
+    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0) {
+      this.avatar = this.avatar.replace(appConfig.URL_FILE, '');
+    }
+  }
+  @AfterLoad()
+  changeUrl?(): void {
+    if (this.avatar && this.avatar.indexOf('http') === -1) this.avatar = appConfig.URL_FILE + this.avatar;
+  }
 
   @Column()
   @Expose({ groups: [OnlyUpdateGroup] })
@@ -119,8 +131,4 @@ export class User extends Base {
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()
   readonly dateOff: number;
-
-  @OneToMany(() => File, (data) => data.userId, { eager: true })
-  @Exclude()
-  public files?: File[];
 }

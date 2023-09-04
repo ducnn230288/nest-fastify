@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { BaseService } from '@shared';
-import { File } from '@model';
+import { Cron } from '@nestjs/schedule';
 import { MultipartFile } from '@fastify/multipart';
+
+import { I18nContext } from 'nestjs-i18n';
 import fs, { promises as fsAsync } from 'fs';
-import { pipeline } from 'stream';
-import { extname } from 'path';
+import { pipeline, Readable } from 'stream';
 import dayjs from 'dayjs';
 import util from 'util';
-import { appConfig } from '@config';
-import path from 'path';
 import sharp from 'sharp';
-import { Readable } from 'stream';
+import { join } from 'path';
+
+import { appConfig } from '@config';
+import { File } from '@model';
+import { BaseService } from '@shared';
+import { FileRepository } from '@repository';
 
 export const P_FILE_LISTED = '5d808d76-bf99-4a51-b4b6-d5aa37bdb398';
 export const P_FILE_DETAIL = 'eb510a79-4f75-4b14-a118-f036c1daa430';
@@ -25,10 +25,7 @@ export const P_FILE_DELETE = 'e21ac25b-1651-443e-9834-e593789807c9';
 export class FileService extends BaseService<File> {
   private logger = new Logger('StorageService');
   private pump = util.promisify(pipeline);
-  constructor(
-    @InjectRepository(File)
-    public repo: Repository<File>,
-  ) {
+  constructor(public repo: FileRepository) {
     super(repo);
   }
 
@@ -36,7 +33,7 @@ export class FileService extends BaseService<File> {
     const data = await this.saveToLocalPath(file, /\/(jpg|jpeg|png|gif)$/, '', userId);
     if (!data) throw new BadRequestException(`file is not null`);
     const createData = await this.create({ userId, url: data.filename, type: 0 });
-    createData!.url = appConfig.DOMAIN + '/api/file/' + createData?.url;
+    createData!.url = appConfig.URL_FILE + createData?.url;
     return createData;
   }
 
@@ -153,5 +150,43 @@ export class FileService extends BaseService<File> {
     // const fileExtName = extname(filename);
     const nowAsString = dayjs().format('YYYYMMDDHHmmss');
     return `${name}-${nowAsString}.webp`;
+  }
+
+  async activeFiles(urls: string[], i18n: I18nContext): Promise<void> {
+    for (const url of urls) {
+      const data = await this.repo.getDataByUrl(url);
+      if (data?.id) await this.update(data.id, { status: 1 }, i18n);
+    }
+  }
+
+  async removeFiles(urls: string[], i18n: I18nContext): Promise<void> {
+    for (const url of urls) {
+      await this.removeHard(url, i18n);
+    }
+  }
+
+  @Cron('0 0 0 * * *')
+  async clearFiles(): Promise<void> {
+    const list = await super.findAll({ filter: { status: 0 } });
+    for (const item of list) {
+      await this.removeHard(item.url);
+    }
+  }
+
+  async removeHard(url: string, i18n?: I18nContext): Promise<File | null> {
+    const data = await this.repo.getDataByUrl(url);
+    if (data?.id) {
+      const res = await this.repo.delete(data.id);
+      if (!res.affected && i18n) {
+        throw new BadRequestException(i18n.t('common.Data id not found', { args: { url } }));
+      }
+      switch (data.type) {
+        case 0:
+          this.deleteFromLocalPath(
+            join(process.cwd(), appConfig.UPLOAD_LOCATION, data?.url.replace(appConfig.URL_FILE, '')),
+          );
+      }
+    }
+    return data;
   }
 }

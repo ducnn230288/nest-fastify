@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { WinstonModule } from 'nest-winston';
 import { resolve } from 'path';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
@@ -38,6 +39,7 @@ import { NotificationModule, CoreModule, UserModule } from '@module';
         logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
       }),
     }),
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}

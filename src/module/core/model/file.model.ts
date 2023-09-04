@@ -1,14 +1,13 @@
-import { Column, Entity, ManyToOne, AfterLoad } from 'typeorm';
+import { Column, Entity, ManyToOne, AfterLoad, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
-import { User } from '@model';
 import { Base } from '@shared';
-import { appConfig } from '@config';
 
 @Entity()
+@Unique(['url'])
 export class File extends Base {
   @Column()
   @ApiProperty({ example: 0, description: '' })
@@ -19,10 +18,6 @@ export class File extends Base {
   @ApiProperty({ example: faker.person.jobType(), description: '' })
   @IsString()
   url: string;
-  @AfterLoad()
-  changeUrl(): void {
-    if (this.type === 0) this.url = appConfig.DOMAIN + '/api/file/' + this.url;
-  }
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
@@ -35,11 +30,16 @@ export class File extends Base {
   @Exclude()
   data?: string;
 
+  @Column({ default: 0 })
+  @ApiProperty({ example: 0, description: '' })
+  @Exclude()
+  status: number;
+
   @Column()
   @Exclude()
   userId?: string;
 
-  @ManyToOne(() => User, (data) => data.files, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @Exclude()
-  public user?: User;
+  // @ManyToOne(() => User, (data) => data.files, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  // @Exclude()
+  // public user?: User;
 }

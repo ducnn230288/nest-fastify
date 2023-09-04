@@ -34,13 +34,13 @@ async function bootstrap(): Promise<void> {
     },
   };
   await app.register(multipart, options);
-  app.enableCors({
-    origin: appConfig.DOMAIN_FE,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    credentials: true, // use cookies
-  });
+  // app.enableCors({
+  //   origin: appConfig.DOMAIN_FE,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   preflightContinue: false,
+  //   optionsSuccessStatus: 204,
+  //   credentials: true, // use cookies
+  // });
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableShutdownHooks();
 

@@ -139,16 +139,11 @@ export class FileController {
     summary: 'Delete data',
     permission: P_FILE_DELETE,
   })
-  @Delete(':id')
-  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<FileResponseDto> {
-    const data = await this.service.removeHard(id, i18n);
-    if (data?.type === 0)
-      this.service.deleteFromLocalPath(
-        join(process.cwd(), appConfig.UPLOAD_LOCATION, data?.url.replace(appConfig.DOMAIN + '/api/file/', '')),
-      );
+  @Delete(':url')
+  async remove(@I18n() i18n: I18nContext, @Param('url') url: string): Promise<FileResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data,
+      data: await this.service.removeHard(url, i18n),
     };
   }
 }

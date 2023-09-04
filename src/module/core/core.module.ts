@@ -36,6 +36,7 @@ import {
 import {
   CodeTypeRepository,
   DataRepository,
+  FileRepository,
   ParameterRepository,
   PostRepository,
   PostTranslationRepository,
@@ -73,6 +74,7 @@ import {
     DataRepository,
     DataService,
     DataTypeService,
+    FileRepository,
     FileService,
     ParameterRepository,
     ParameterService,
@@ -81,5 +83,6 @@ import {
     PostTypeService,
     PostTranslationRepository,
   ],
+  exports: [FileService],
 })
 export class CoreModule {}
