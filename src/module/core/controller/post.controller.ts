@@ -86,9 +86,11 @@ export class PostController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreatePostRequestDto,
   ): Promise<PostResponseDto> {
+    const data = await this.service.create(body, i18n);
+    if (data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body, i18n),
+      data: data,
     };
   }
 
@@ -102,9 +104,20 @@ export class PostController {
     @Param('id') id: string,
     @Body(new SerializerBody([MaxGroup])) body: UpdatePostRequestDto,
   ): Promise<PostResponseDto> {
+    const oldData = await this.service.findOne(id, [], i18n);
+    const data = await this.service.update(id, body, i18n);
+    if (oldData?.thumbnailUrl !== data?.thumbnailUrl) {
+      if (!oldData?.thumbnailUrl && !!data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+      else if (!!oldData?.thumbnailUrl && !data?.thumbnailUrl)
+        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
+      else if (oldData?.thumbnailUrl && data?.thumbnailUrl) {
+        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
+        await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+      }
+    }
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, body, i18n),
+      data,
     };
   }
 
