@@ -167,18 +167,24 @@ export class FileService extends BaseService<File> {
 
   @Cron('0 0 0 * * *')
   async clearFiles(): Promise<void> {
-    const list = await super.findAll({ filter: { status: 0 } });
-    for (const item of list) {
-      await this.removeHard(item.url);
+    this.logger.verbose(`Clear Files successfully`);
+    const [list] = await super.findAll({ filter: { status: 0 } });
+    for (const data of list) {
+      if (data) await this.removeFile(data);
     }
   }
 
   async removeHard(url: string, i18n?: I18nContext): Promise<File | null> {
     const data = await this.repo.getDataByUrl(url);
+    if (data) await this.removeFile(data, i18n);
+    return data;
+  }
+
+  async removeFile(data: File, i18n?: I18nContext): Promise<void> {
     if (data?.id) {
       const res = await this.repo.delete(data.id);
       if (!res.affected && i18n) {
-        throw new BadRequestException(i18n.t('common.Data id not found', { args: { url } }));
+        throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: data.id } }));
       }
       switch (data.type) {
         case 0:
@@ -187,6 +193,5 @@ export class FileService extends BaseService<File> {
           );
       }
     }
-    return data;
   }
 }
