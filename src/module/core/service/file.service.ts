@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { MultipartFile } from '@fastify/multipart';
 
 import { I18nContext } from 'nestjs-i18n';
@@ -23,7 +22,7 @@ export const P_FILE_DELETE = 'e21ac25b-1651-443e-9834-e593789807c9';
 
 @Injectable()
 export class FileService extends BaseService<File> {
-  private logger = new Logger('StorageService');
+  private logger = new Logger('FileService');
   private pump = util.promisify(pipeline);
   constructor(public repo: FileRepository) {
     super(repo);
@@ -162,15 +161,6 @@ export class FileService extends BaseService<File> {
   async removeFiles(urls: string[], i18n: I18nContext): Promise<void> {
     for (const url of urls) {
       await this.removeHard(url, i18n);
-    }
-  }
-
-  @Cron('0 0 0 * * *')
-  async clearFiles(): Promise<void> {
-    this.logger.verbose(`Clear Files successfully`);
-    const [list] = await super.findAll({ filter: { status: 0 } });
-    for (const data of list) {
-      if (data) await this.removeFile(data);
     }
   }
 
