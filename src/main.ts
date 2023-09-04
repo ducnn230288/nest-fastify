@@ -17,6 +17,7 @@ async function bootstrap(): Promise<void> {
   const logger = new Logger('bootstrap');
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
     logger: WinstonModule.createLogger(loggerOptions),
+    cors: true,
   });
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
