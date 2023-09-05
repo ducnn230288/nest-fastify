@@ -12,7 +12,7 @@ export * from './module/core/model/post.model';
 export * from './module/core/model/post-translation.model';
 export * from './module/core/model/post-type.model';
 
-export * from './module/member/model/booking-room.entity';
-export * from './module/member/model/dayoff.entity';
-export * from './module/member/model/room.entity';
-export * from './module/member/model/user-team.entity';
+export * from './module/member/model/booking-room.model';
+export * from './module/member/model/dayoff.model';
+export * from './module/member/model/room.model';
+export * from './module/member/model/user-team.model';
