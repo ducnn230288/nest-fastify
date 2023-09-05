@@ -38,7 +38,7 @@ export class AuthService extends BaseService<User> {
    *
    */
   async updateRefreshToken(userId: string, refreshToken: string, i18n: I18nContext): Promise<void> {
-    await this.update(userId, { refreshToken: await argon2.hash(refreshToken) }, i18n);
+    await this.update(userId, { refreshToken }, i18n);
   }
 
   /**

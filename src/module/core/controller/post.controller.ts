@@ -106,15 +106,43 @@ export class PostController {
   ): Promise<PostResponseDto> {
     const oldData = await this.service.findOne(id, [], i18n);
     const data = await this.service.update(id, body, i18n);
+    const listFilesActive: string[] = [];
+    const listFilesRemove: string[] = [];
+
     if (oldData?.thumbnailUrl !== data?.thumbnailUrl) {
-      if (!oldData?.thumbnailUrl && !!data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+      if (!oldData?.thumbnailUrl && !!data?.thumbnailUrl)
+        listFilesActive.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
       else if (!!oldData?.thumbnailUrl && !data?.thumbnailUrl)
-        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
+        listFilesRemove.push(oldData.thumbnailUrl.replace(appConfig.URL_FILE, ''));
       else if (oldData?.thumbnailUrl && data?.thumbnailUrl) {
-        await this.fileService.removeFiles([oldData.thumbnailUrl], i18n);
-        await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+        listFilesActive.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
+        listFilesRemove.push(oldData.thumbnailUrl.replace(appConfig.URL_FILE, ''));
       }
     }
+    if (oldData?.translations) {
+      oldData?.translations.forEach((translation) => {
+        if (translation.content?.blocks)
+          translation.content?.blocks.forEach((item) => {
+            if (item.type === 'image') listFilesRemove.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
+          });
+      });
+    }
+    if (data?.translations) {
+      data?.translations.forEach((translation) => {
+        if (translation.content?.blocks)
+          translation.content?.blocks.forEach((item) => {
+            if (item.type === 'image') listFilesActive.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
+          });
+      });
+    }
+    await this.fileService.activeFiles(
+      listFilesActive.filter((item) => listFilesRemove.indexOf(item) < 0),
+      i18n,
+    );
+    await this.fileService.removeFiles(
+      listFilesRemove.filter((item) => listFilesActive.indexOf(item) < 0),
+      i18n,
+    );
     return {
       message: i18n.t('common.Update Success'),
       data,

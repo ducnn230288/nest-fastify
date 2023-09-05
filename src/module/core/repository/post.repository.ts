@@ -37,6 +37,7 @@ export class PostRepository extends BaseRepository<Post> {
     await this.dataSource.transaction(async (entityManager) => {
       result = await entityManager.save(entityManager.create(Post, { ...body }));
       if (translations) {
+        result.translations = [];
         for (const item of translations) {
           delete item.id;
           const existingName = await entityManager
@@ -47,7 +48,8 @@ export class PostRepository extends BaseRepository<Post> {
             .getCount();
           if (existingName) throw new BadRequestException(i18n.t('common.Post.name is already taken'));
 
-          await entityManager.save(entityManager.create(PostTranslation, { postId: result.id, ...item }));
+          const data = await entityManager.save(entityManager.create(PostTranslation, { postId: result.id, ...item }));
+          if (data) result.translations.push(data);
         }
       }
     });
@@ -78,6 +80,7 @@ export class PostRepository extends BaseRepository<Post> {
       }
       result = await this.save(data);
       if (translations) {
+        result.translations = [];
         for (const item of translations) {
           const existingName = await entityManager
             .createQueryBuilder(PostTranslation, 'base')
@@ -88,7 +91,10 @@ export class PostRepository extends BaseRepository<Post> {
             .getCount();
           if (existingName) throw new BadRequestException(i18n.t('common.Post.name is already taken'));
 
-          await entityManager.save(await entityManager.preload(PostTranslation, { postId: result.id, ...item }));
+          const data = await entityManager.save(
+            await entityManager.preload(PostTranslation, { postId: result.id, ...item }),
+          );
+          if (data) result.translations.push(data);
         }
       }
     });
