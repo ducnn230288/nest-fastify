@@ -2,5 +2,11 @@
     {{#*inline  "content"}}
         <h3>{{title}}</h3>
         <p class="text-3xl font-bold underline">{{ t 'common.Success' }}</p>
+        <form action="/" method="post">
+            <label for="fname">First name:</label><br>
+            <input type="text" id="fname" name="fname" value="John"><br>
+            <input type="submit" value="Submit">
+        </form>
+
     {{/inline}}
 {{/client}}

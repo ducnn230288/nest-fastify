@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Request } from 'express';
+import { FastifyRequest } from 'fastify';
 import * as argon2 from 'argon2';
 
 import { appConfig } from '@config';
@@ -19,14 +19,13 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
     });
   }
 
-  async validate(req: Request, payload: any): Promise<User> {
+  async validate(req: FastifyRequest, payload: any): Promise<User> {
     const user = await this.repo.getDataByIdAndEmail(payload.userId, payload.email);
-    const authorization = req.get ? req.get('Authorization') : '';
+    const authorization = req.headers?.authorization ? req.headers.authorization : '';
     if (!user || !user.refreshToken || !authorization) throw new UnauthorizedException();
 
     const refreshTokenMatches = await argon2.verify(user.refreshToken, authorization.replace('Bearer', '').trim());
     if (!refreshTokenMatches) throw new UnauthorizedException();
-
     return user;
   }
 }

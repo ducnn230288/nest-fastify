@@ -41,7 +41,7 @@ export class DataRepository extends BaseRepository<Data> {
             throw new BadRequestException(i18n.t('common.Data.Name is already taken'));
           }
           const data = await entityManager.save(entityManager.create(DataTranslation, { dataId: result.id, ...item }));
-          result.translations.push(data);
+          if (data) result.translations.push(data);
         }
       }
     });
@@ -73,6 +73,7 @@ export class DataRepository extends BaseRepository<Data> {
       }
       result = await this.save(data);
       if (translations) {
+        result.translations = [];
         for (const item of translations) {
           const existingName = await entityManager
             .createQueryBuilder(DataTranslation, 'base')
@@ -84,7 +85,10 @@ export class DataRepository extends BaseRepository<Data> {
           if (existingName) {
             throw new BadRequestException(i18n.t('common.Data.Name is already taken'));
           }
-          await entityManager.save(await entityManager.preload(DataTranslation, { dataId: result.id, ...item }));
+          const data = await entityManager.save(
+            await entityManager.preload(DataTranslation, { dataId: result.id, ...item }),
+          );
+          if (data) result.translations.push(data);
         }
       }
     });
