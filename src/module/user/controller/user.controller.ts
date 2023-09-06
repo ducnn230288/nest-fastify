@@ -3,7 +3,7 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
 import { CreateUserRequestDto, ListUserResponseDto, UpdateUserRequestDto, UserResponseDto } from '@dto';
-import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto, getImages } from '@shared';
 import {
   FileService,
   P_USER_CREATE,
@@ -13,6 +13,7 @@ import {
   P_USER_UPDATE,
   UserService,
 } from '@service';
+import { User } from '@model';
 
 @Headers('user')
 export class UserController {
@@ -60,6 +61,8 @@ export class UserController {
   ): Promise<UserResponseDto> {
     const data = await this.service.create(createData, i18n);
     if (data?.avatar) await this.fileService.activeFiles([data?.avatar], i18n);
+    await this.fileService.activeFiles(getImages<User>(['avatar'], data)[0], i18n);
+
     return {
       message: i18n.t('common.Create Success'),
       data,
@@ -82,14 +85,9 @@ export class UserController {
       delete data.password;
       return data;
     });
-    if (oldData?.avatar !== data?.avatar) {
-      if (!oldData?.avatar && !!data?.avatar) await this.fileService.activeFiles([data.avatar], i18n);
-      else if (!!oldData?.avatar && !data?.avatar) await this.fileService.removeFiles([oldData.avatar], i18n);
-      else if (oldData?.avatar && data?.avatar) {
-        await this.fileService.removeFiles([oldData.avatar], i18n);
-        await this.fileService.activeFiles([data.avatar], i18n);
-      }
-    }
+    const [listFilesActive, listFilesRemove] = getImages<User>(['thumbnailUrl'], data, [], oldData);
+    await this.fileService.activeFiles(listFilesActive, i18n);
+    await this.fileService.removeFiles(listFilesRemove, i18n);
     return {
       message: i18n.t('common.Update Success'),
       data,
@@ -121,6 +119,7 @@ export class UserController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<UserResponseDto> {
     const data = await this.service.remove(id, i18n);
     if (data?.avatar) await this.fileService.removeFiles([data?.avatar], i18n);
+    await this.fileService.removeFiles(getImages<User>(['thumbnailUrl'], data)[0], i18n);
 
     return {
       message: i18n.t('common.Delete Success'),

@@ -2,7 +2,6 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
-import { appConfig } from '@config';
 import {
   PostResponseDto,
   ListPostResponseDto,
@@ -11,7 +10,7 @@ import {
   ArrayDataTypeResponseDto,
 } from '@dto';
 import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE, FileService } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, getImages } from '@shared';
 
 @Headers('post')
 export class PostController {
@@ -87,7 +86,7 @@ export class PostController {
     @Body(new SerializerBody([MaxGroup])) body: CreatePostRequestDto,
   ): Promise<PostResponseDto> {
     const data = await this.service.create(body, i18n);
-    if (data?.thumbnailUrl) await this.fileService.activeFiles([data.thumbnailUrl], i18n);
+    await this.fileService.activeFiles(getImages<any>(['thumbnailUrl'], data, ['translations'])[0], i18n);
     return {
       message: i18n.t('common.Create Success'),
       data: data,
@@ -106,43 +105,10 @@ export class PostController {
   ): Promise<PostResponseDto> {
     const oldData = await this.service.findOne(id, [], i18n);
     const data = await this.service.update(id, body, i18n);
-    const listFilesActive: string[] = [];
-    const listFilesRemove: string[] = [];
+    const [listFilesActive, listFilesRemove] = getImages<any>(['thumbnailUrl'], data, ['translations'], oldData);
+    await this.fileService.activeFiles(listFilesActive, i18n);
+    await this.fileService.removeFiles(listFilesRemove, i18n);
 
-    if (oldData?.thumbnailUrl !== data?.thumbnailUrl) {
-      if (!oldData?.thumbnailUrl && !!data?.thumbnailUrl)
-        listFilesActive.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
-      else if (!!oldData?.thumbnailUrl && !data?.thumbnailUrl)
-        listFilesRemove.push(oldData.thumbnailUrl.replace(appConfig.URL_FILE, ''));
-      else if (oldData?.thumbnailUrl && data?.thumbnailUrl) {
-        listFilesActive.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
-        listFilesRemove.push(oldData.thumbnailUrl.replace(appConfig.URL_FILE, ''));
-      }
-    }
-    if (oldData?.translations) {
-      oldData?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFilesRemove.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    if (data?.translations) {
-      data?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFilesActive.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    await this.fileService.activeFiles(
-      listFilesActive.filter((item) => listFilesRemove.indexOf(item) < 0),
-      i18n,
-    );
-    await this.fileService.removeFiles(
-      listFilesRemove.filter((item) => listFilesActive.indexOf(item) < 0),
-      i18n,
-    );
     return {
       message: i18n.t('common.Update Success'),
       data,
@@ -172,18 +138,7 @@ export class PostController {
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {
     const data = await this.service.removeHard(id, i18n);
-    const listImage: string[] = [];
-    if (data?.thumbnailUrl) listImage.push(data.thumbnailUrl.replace(appConfig.URL_FILE, ''));
-    if (data?.translations) {
-      data?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listImage.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-            return item;
-          });
-      });
-    }
-    await this.fileService.removeFiles(listImage, i18n);
+    await this.fileService.removeFiles(getImages<any>(['thumbnailUrl'], data, ['translations'])[0], i18n);
 
     return {
       message: i18n.t('common.Delete Success'),

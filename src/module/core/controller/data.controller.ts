@@ -2,7 +2,6 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
-import { appConfig } from '@config';
 import {
   DataResponseDto,
   ListDataResponseDto,
@@ -11,7 +10,8 @@ import {
   ArrayDataTypeResponseDto,
 } from '@dto';
 import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE, FileService } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, getImages } from '@shared';
+import { Data } from '@model';
 
 @Headers('data')
 export class DataController {
@@ -75,17 +75,7 @@ export class DataController {
     @Body(new SerializerBody([MaxGroup])) body: CreateDataRequestDto,
   ): Promise<DataResponseDto> {
     const data = await this.service.create(body, i18n);
-    const listFiles: string[] = [];
-    if (data?.image) listFiles.push(data.image.replace(appConfig.URL_FILE, ''));
-    if (data?.translations) {
-      data?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFiles.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    await this.fileService.activeFiles(listFiles, i18n);
+    await this.fileService.activeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
     return {
       message: i18n.t('common.Create Success'),
       data,
@@ -104,41 +94,9 @@ export class DataController {
   ): Promise<DataResponseDto> {
     const oldData = await this.service.findOne(id, [], i18n);
     const data = await this.service.update(id, body, i18n);
-    const listFilesActive: string[] = [];
-    const listFilesRemove: string[] = [];
-
-    if (oldData?.image !== data?.image) {
-      if (!oldData?.image && !!data?.image) listFilesActive.push(data.image.replace(appConfig.URL_FILE, ''));
-      else if (!!oldData?.image && !data?.image) listFilesRemove.push(oldData.image.replace(appConfig.URL_FILE, ''));
-      else if (oldData?.image && data?.image) {
-        listFilesActive.push(data.image.replace(appConfig.URL_FILE, ''));
-        listFilesRemove.push(oldData.image.replace(appConfig.URL_FILE, ''));
-      }
-    }
-    if (oldData?.translations) {
-      oldData?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFilesRemove.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    if (data?.translations) {
-      data?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFilesActive.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    await this.fileService.activeFiles(
-      listFilesActive.filter((item) => listFilesRemove.indexOf(item) < 0),
-      i18n,
-    );
-    await this.fileService.removeFiles(
-      listFilesRemove.filter((item) => listFilesActive.indexOf(item) < 0),
-      i18n,
-    );
+    const [listFilesActive, listFilesRemove] = getImages<Data>(['image'], data, ['translations'], oldData);
+    await this.fileService.activeFiles(listFilesActive, i18n);
+    await this.fileService.removeFiles(listFilesRemove, i18n);
     return {
       message: i18n.t('common.Update Success'),
       data,
@@ -168,17 +126,7 @@ export class DataController {
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<DataResponseDto> {
     const data = await this.service.removeHard(id, i18n);
-    const listFiles: string[] = [];
-    if (data?.image) listFiles.push(data.image.replace(appConfig.URL_FILE, ''));
-    if (data?.translations) {
-      data?.translations.forEach((translation) => {
-        if (translation.content?.blocks)
-          translation.content?.blocks.forEach((item) => {
-            if (item.type === 'image') listFiles.push(item.data.file.url.replace(appConfig.URL_FILE, ''));
-          });
-      });
-    }
-    await this.fileService.removeFiles(listFiles, i18n);
+    await this.fileService.removeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
 
     return {
       message: i18n.t('common.Delete Success'),
