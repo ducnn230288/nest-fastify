@@ -9,16 +9,12 @@ import {
   UpdateDataRequestDto,
   ArrayDataTypeResponseDto,
 } from '@dto';
-import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE, FileService } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, getImages } from '@shared';
-import { Data } from '@model';
+import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE } from '@service';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
 
 @Headers('data')
 export class DataController {
-  constructor(
-    private readonly service: DataService,
-    public fileService: FileService,
-  ) {}
+  constructor(private readonly service: DataService) {}
 
   @Auth({
     summary: 'Get List data',
@@ -74,11 +70,9 @@ export class DataController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateDataRequestDto,
   ): Promise<DataResponseDto> {
-    const data = await this.service.create(body, i18n);
-    await this.fileService.activeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
     return {
       message: i18n.t('common.Create Success'),
-      data,
+      data: await this.service.create(body, i18n),
     };
   }
 
@@ -92,14 +86,9 @@ export class DataController {
     @Param('id') id: string,
     @Body(new SerializerBody([MaxGroup])) body: UpdateDataRequestDto,
   ): Promise<DataResponseDto> {
-    const oldData = await this.service.findOne(id, [], i18n);
-    const data = await this.service.update(id, body, i18n);
-    const [listFilesActive, listFilesRemove] = getImages<Data>(['image'], data, ['translations'], oldData);
-    await this.fileService.activeFiles(listFilesActive, i18n);
-    await this.fileService.removeFiles(listFilesRemove, i18n);
     return {
       message: i18n.t('common.Update Success'),
-      data,
+      data: await this.service.update(id, body, i18n),
     };
   }
 
@@ -125,12 +114,9 @@ export class DataController {
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<DataResponseDto> {
-    const data = await this.service.removeHard(id, i18n);
-    await this.fileService.removeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
-
     return {
       message: i18n.t('common.Delete Success'),
-      data,
+      data: await this.service.removeHard(id, i18n),
     };
   }
 }
