@@ -14,9 +14,8 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { appConfig } from '@config';
 import { UserRole, Code } from '@model';
-import { Example, OnlyUpdateGroup, Base } from '@shared';
+import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
 export class User extends Base {
@@ -32,14 +31,9 @@ export class User extends Base {
   avatar?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeAvatar?(): void {
-    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0)
-      this.avatar = this.avatar.replace(appConfig.URL_FILE, '');
-  }
+  beforeAvatar?: () => void = () => (this.avatar = setImage(this.avatar));
   @AfterLoad()
-  afterAvatar?(): void {
-    if (this.avatar && this.avatar.indexOf('http') === -1) this.avatar = appConfig.URL_FILE + this.avatar;
-  }
+  afterAvatar?: () => void = () => (this.avatar = setImage(this.avatar, false));
 
   @Column()
   @Expose({ groups: [OnlyUpdateGroup] })

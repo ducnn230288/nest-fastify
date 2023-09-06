@@ -1,5 +1,27 @@
 import { appConfig } from '@config';
 
+export function setImage(value?: string, before = true): string | undefined {
+  if (value) {
+    if (before && value.indexOf(appConfig.URL_FILE) === 0) return value.replace(appConfig.URL_FILE, '');
+    else if (!before && value.indexOf('http') === -1) return appConfig.URL_FILE + value;
+  }
+  return value;
+}
+export function setImageContent(value?: Record<string, any>, before = true): Record<string, any> | undefined {
+  if (value?.blocks) {
+    value.blocks = value?.blocks.map((item) => {
+      if (item.type === 'image') {
+        if (before && item.data.file.url.indexOf(appConfig.URL_FILE) === 0)
+          item.data.file.url = item.data.file.url.replace(appConfig.URL_FILE, '');
+        else if (!before && item.data.file.url.indexOf('http') === -1)
+          item.data.file.url = appConfig.URL_FILE + item.data.file.url;
+      }
+
+      return item;
+    });
+  }
+  return value;
+}
 export function getImages<T>(
   images: string[] = [],
   data: T | null,

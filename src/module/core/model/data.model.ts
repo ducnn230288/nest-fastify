@@ -4,9 +4,8 @@ import { faker } from '@faker-js/faker';
 import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { appConfig } from '@config';
 import { DataType, DataTranslation } from '@model';
-import { MaxGroup, Base } from '@shared';
+import { MaxGroup, Base, setImage } from '@shared';
 
 @Entity()
 export class Data extends Base {
@@ -28,14 +27,9 @@ export class Data extends Base {
   image?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeImage?(): void {
-    if (this.image && this.image.indexOf(appConfig.URL_FILE) === 0)
-      this.image = this.image.replace(appConfig.URL_FILE, '');
-  }
+  beforeImage?: () => void = () => (this.image = setImage(this.image));
   @AfterLoad()
-  afterImage?(): void {
-    if (this.image && this.image.indexOf('http') === -1) this.image = appConfig.URL_FILE + this.image;
-  }
+  afterImage?: () => void = () => (this.image = setImage(this.image, false));
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.number.int({ min: 0 }), description: '' })
