@@ -3,20 +3,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BookingRoomController, DayoffController, UserTeamController } from '@controller';
 import { BookingRoom, DayOff, Room, UserTeam } from '@model';
-import { BookingRoomService, DayoffService, UserService, UserTeamService } from '@service';
-import { DayoffRepository, UserRepository, UserTeamRepository } from '@repository';
+import { BookingRoomService, DayoffService, FileService, UserService, UserTeamService } from '@service';
+import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BookingRoom, DayOff, Room, UserTeam])],
-  controllers: [BookingRoomController, DayoffController, UserTeamController],
+  imports: [TypeOrmModule.forFeature([BookingRoom, Room, UserTeam, DayOff])],
+  controllers: [BookingRoomController, UserTeamController, DayoffController],
   providers: [
     BookingRoomService,
+    UserTeamRepository,
+    UserTeamService,
     DayoffRepository,
     DayoffService,
-    UserTeamRepository,
-    UserRepository,
+    FileRepository,
+    FileService,
     UserService,
-    UserTeamService,
+    UserRepository,
   ],
 })
 export class MemberModule {}
