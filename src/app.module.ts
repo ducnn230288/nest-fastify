@@ -14,8 +14,8 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule, MemberModu
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     SchedulerModule,
-    UserModule,
     CoreModule,
+    UserModule,
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
