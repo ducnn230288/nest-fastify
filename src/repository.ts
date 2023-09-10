@@ -4,4 +4,5 @@ export * from './module/core/repository/file.repository';
 export * from './module/core/repository/parameter.repository';
 export * from './module/core/repository/post.repository';
 export * from './module/core/repository/post-translation.repository';
+
 export * from './module/user/repository/user.repository';
