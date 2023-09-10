@@ -21,9 +21,13 @@ export class Post extends Base {
   thumbnailUrl?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeThumbnailUrl?: () => void = () => (this.thumbnailUrl = setImage(this.thumbnailUrl));
+  beforeThumbnailUrl?(): void {
+    this.thumbnailUrl = setImage(this.thumbnailUrl);
+  }
   @AfterLoad()
-  afterThumbnailUrl?: () => void = () => (this.thumbnailUrl = setImage(this.thumbnailUrl, false));
+  afterThumbnailUrl?(): void {
+    this.thumbnailUrl = setImage(this.thumbnailUrl, false);
+  }
 
   @ManyToOne(() => PostType, (dataType) => dataType.items, { eager: false })
   @JoinColumn({ name: 'type', referencedColumnName: 'code' })

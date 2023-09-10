@@ -43,9 +43,15 @@ export class ProfileAuthRequestDto extends PickType(User, [
   @IsString()
   @IsOptional()
   retypedPassword: string;
+
+  @ApiProperty({ example: Example.password, description: '' })
+  @IsString()
+  @IsOptional()
+  passwordOld: string;
 }
 export class ForgottenPasswordAuthRequestDto extends PickType(User, ['email'] as const) {}
-export class RestPasswordAuthRequestDto extends PickType(User, ['password'] as const) {
+export class OTPConfirmationAuthRequestDto extends PickType(User, ['email', 'otp'] as const) {}
+export class RestPasswordAuthRequestDto extends PickType(User, ['email', 'otp', 'password'] as const) {
   @MinLength(6)
   @ApiProperty({ example: Example.password, description: '' })
   readonly retypedPassword: string;

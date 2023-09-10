@@ -27,9 +27,13 @@ export class Data extends Base {
   image?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeImage?: () => void = () => (this.image = setImage(this.image));
+  beforeImage?(): void {
+    this.image = setImage(this.image);
+  }
   @AfterLoad()
-  afterImage?: () => void = () => (this.image = setImage(this.image, false));
+  afterImage?(): void {
+    this.image = setImage(this.image, false);
+  }
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.number.int({ min: 0 }), description: '' })

@@ -53,7 +53,12 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async update(id: string, body: any, i18n: I18nContext, callBack?: (data: User) => User): Promise<User | null> {
+  async update(
+    id: string,
+    body: any,
+    i18n: I18nContext,
+    callBack?: (data: User) => Promise<User>,
+  ): Promise<User | null> {
     const oldData = await this.findOne(id, [], i18n);
     const data = await super.update(id, body, i18n, callBack);
     const [listFilesActive, listFilesRemove] = getImages<User>(['thumbnailUrl'], data, [], oldData);

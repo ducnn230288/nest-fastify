@@ -41,17 +41,15 @@ export class UserRepository extends BaseRepository<User> {
 
   /**
    *
-   * @param id
    * @param email
-   * @param token
+   * @param otp
    * @returns User
    *
    */
-  async getDataByResetPassword(id: string, email: string, token: string): Promise<User | null> {
+  async getDataByEmailAndOTP(email: string, otp: string): Promise<User | null> {
     return await this.createQueryBuilder('base')
-      .andWhere('base.id=:id', { id })
       .andWhere('base.email=:email', { email })
-      .andWhere('base.resetPasswordToken=:token', { token })
+      .andWhere('base.otp=:otp', { otp })
       .getOne();
   }
 

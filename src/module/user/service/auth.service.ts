@@ -1,13 +1,16 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 // import { S3 } from 'aws-sdk';
 import { I18nContext } from 'nestjs-i18n';
 
+import { customAlphabet } from 'nanoid/non-secure';
+
 import {
   ContactRequestDto,
   ForgottenPasswordAuthRequestDto,
   LoginAuthRequestDto,
+  OTPConfirmationAuthRequestDto,
   RegisterAuthRequestDto,
   RestPasswordAuthRequestDto,
 } from '@dto';
@@ -16,15 +19,19 @@ import { User } from '@model';
 import { EmailService } from '@service';
 import { UserRepository } from '@repository';
 import { appConfig } from '@config';
+import { CronJob } from 'cron';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 export const P_AUTH_DELETE_IMAGE_TEMP = '11cc566b-b109-49f8-983f-84ff08f9849e';
 
 @Injectable()
 export class AuthService extends BaseService<User> {
+  private logger = new Logger('AuthService');
   constructor(
     public readonly repo: UserRepository,
     private readonly jwtService: JwtService,
     private emailService: EmailService,
+    private schedulerRegistry: SchedulerRegistry,
   ) {
     super(repo);
   }
@@ -94,16 +101,35 @@ export class AuthService extends BaseService<User> {
    */
   async forgottenPassword(body: ForgottenPasswordAuthRequestDto, i18n: I18nContext): Promise<boolean> {
     const user = await this.repo.getDataByEmail(body.email);
-    if (!user) throw new UnauthorizedException(i18n.t('common.Auth.Invalid email'));
+    if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
 
-    user.resetPasswordToken = await this.jwtService.signAsync(
-      { userId: user.id, email: user.email },
-      { secret: process.env.JWT_RESET_PASSWORD_SECRET, expiresIn: process.env.JWT_EXPIRATION_TIME },
-    );
+    user.otp = customAlphabet('0123456789', 10)(6);
     await this.update(user.id!, user, i18n);
-    await this.emailService.sendUserConfirmation(user, user.resetPasswordToken);
+    await this.emailService.sendUserConfirmation(user, user.otp);
+
+    const name = user.id + 'forgottenPassword';
+    if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);
+    const job = new CronJob(`0 */5 * * * *`, () => {
+      this.update(user.id!, { otp: null }, i18n);
+      this.schedulerRegistry.deleteCronJob(name);
+    });
+    this.schedulerRegistry.addCronJob(name, job);
+    job.start();
 
     return true;
+  }
+
+  /**
+   *
+   * @param body
+   * @param i18n
+   * @returns boolean
+   *
+   */
+  async OTPConfirmation(body: OTPConfirmationAuthRequestDto, i18n: I18nContext): Promise<User> {
+    const user = await this.repo.getDataByEmailAndOTP(body.email, body.otp!);
+    if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
+    return user;
   }
 
   /**
@@ -120,16 +146,18 @@ export class AuthService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param user
    * @param i18n
    * @returns boolean
    *
    */
-  async resetPassword(body: RestPasswordAuthRequestDto, user: User, i18n: I18nContext): Promise<boolean> {
+  async resetPassword({ email, otp, ...body }: RestPasswordAuthRequestDto, i18n: I18nContext): Promise<boolean> {
+    const user = await this.OTPConfirmation({ email, otp }, i18n);
     if (body.password === body.retypedPassword)
-      await this.update(user.id!, { password: body.password, resetPasswordToken: null }, i18n);
+      await this.update(user.id!, { password: body.password, otp: null }, i18n);
     else throw new UnauthorizedException(i18n.t('common.Auth.Password do not match'));
 
+    const name = user.id + 'forgottenPassword';
+    if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);
     return true;
   }
 

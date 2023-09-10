@@ -198,7 +198,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     return this.repo.save(data);
   }
 
-  async update(id: string, body: any, i18n: I18nContext, callBack?: (data: T) => T): Promise<T | null> {
+  async update(id: string, body: any, i18n: I18nContext, callBack?: (data: T) => Promise<T>): Promise<T | null> {
     let data = await this.repo.preload({
       id,
       ...body,
@@ -206,7 +206,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (!data) {
       throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
     }
-    if (callBack) data = callBack(data);
+    if (callBack) data = await callBack(data);
     return this.repo.save(data);
   }
 

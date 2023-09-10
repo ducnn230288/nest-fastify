@@ -66,7 +66,7 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, updateData, i18n, (data) => {
+      data: await this.service.update(id, updateData, i18n, async (data) => {
         delete data.password;
         return data;
       }),

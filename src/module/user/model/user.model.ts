@@ -31,9 +31,13 @@ export class User extends Base {
   avatar?: string;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeAvatar?: () => void = () => (this.avatar = setImage(this.avatar));
+  beforeAvatar?(): void {
+    this.avatar = setImage(this.avatar);
+  }
   @AfterLoad()
-  afterAvatar?: () => void = () => (this.avatar = setImage(this.avatar, false));
+  afterAvatar?(): void {
+    this.avatar = setImage(this.avatar, false);
+  }
 
   @Column()
   @Expose({ groups: [OnlyUpdateGroup] })
@@ -59,8 +63,8 @@ export class User extends Base {
   }
 
   @Column({ nullable: true })
-  @Exclude()
-  resetPasswordToken?: string;
+  @IsString()
+  otp?: string;
 
   @Column()
   @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })

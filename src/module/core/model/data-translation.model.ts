@@ -42,9 +42,13 @@ export class DataTranslation extends Base {
   content?: Record<string, any>;
   @BeforeInsert()
   @BeforeUpdate()
-  beforeContent?: () => void = () => (this.content = setImageContent(this.content));
+  beforeContent?(): void {
+    this.content = setImageContent(this.content);
+  }
   @AfterLoad()
-  afterContent?: () => void = () => (this.content = setImageContent(this.content, false));
+  afterContent?(): void {
+    this.content = setImageContent(this.content, false);
+  }
 
   @Column()
   @Expose({ groups: [MaxGroup] })
