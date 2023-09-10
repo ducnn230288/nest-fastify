@@ -4,7 +4,8 @@ import { I18nContext } from 'nestjs-i18n';
 import { CreatePostRequestDto, UpdatePostRequestDto } from '@dto';
 import { Data, Post } from '@model';
 import { PostRepository, PostTranslationRepository } from '@repository';
-import { BaseService } from '@shared';
+import { BaseService, getImages } from '@shared';
+import { FileService } from './file.service';
 
 export const P_POST_LISTED = '7c34dc92-cbbe-4419-8dbc-745818d76098';
 export const P_POST_CREATE = '0ca9634c-3496-4059-bf86-5bec23c96b55';
@@ -16,6 +17,7 @@ export class PostService extends BaseService<Post> {
   constructor(
     public repo: PostRepository,
     public repoTranslation: PostTranslationRepository,
+    public fileService: FileService,
   ) {
     super(repo);
     this.listJoin = ['translations'];
@@ -56,7 +58,9 @@ export class PostService extends BaseService<Post> {
    *
    */
   async create(body: CreatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    return await this.repo.createWithTranslation(body, i18n);
+    const data = await this.repo.createWithTranslation(body, i18n);
+    await this.fileService.activeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0], i18n);
+    return data;
   }
 
   /**
@@ -68,6 +72,25 @@ export class PostService extends BaseService<Post> {
    *
    */
   async update(id: string, body: UpdatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    return await this.repo.updateWithTranslation(id, body, i18n);
+    const oldData = await this.findOne(id, [], i18n);
+    const data = await this.repo.updateWithTranslation(id, body, i18n);
+    const [listFilesActive, listFilesRemove] = getImages<Post>(['thumbnailUrl'], data, ['translations'], oldData);
+    await this.fileService.activeFiles(listFilesActive, i18n);
+    await this.fileService.removeFiles(listFilesRemove, i18n);
+
+    return data;
+  }
+
+  /**
+   *
+   * @param id
+   * @param i18n
+   * @returns Post
+   *
+   */
+  async removeHard(id: string, i18n: I18nContext): Promise<Post | null> {
+    const data = await super.removeHard(id, i18n);
+    await this.fileService.removeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0], i18n);
+    return data;
   }
 }

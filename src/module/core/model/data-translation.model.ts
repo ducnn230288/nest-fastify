@@ -4,9 +4,8 @@ import { faker } from '@faker-js/faker';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { appConfig } from '@config';
 import { Data } from '@model';
-import { MaxGroup, Base } from '@shared';
+import { MaxGroup, Base, setImageContent } from '@shared';
 
 @Entity()
 export class DataTranslation extends Base {
@@ -40,25 +39,15 @@ export class DataTranslation extends Base {
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
-  readonly content?: Record<string, any>;
+  content?: Record<string, any>;
   @BeforeInsert()
   @BeforeUpdate()
   beforeContent?(): void {
-    if (this.content?.blocks) {
-      this.content.blocks = this.content?.blocks.map((item) => {
-        if (item.type === 'image') item.data.file.url = item.data.file.url.replace(appConfig.URL_FILE, '');
-        return item;
-      });
-    }
+    this.content = setImageContent(this.content);
   }
   @AfterLoad()
   afterContent?(): void {
-    if (this.content?.blocks) {
-      this.content.blocks = this.content?.blocks.map((item) => {
-        if (item.type === 'image') item.data.file.url = appConfig.URL_FILE + item.data.file.url;
-        return item;
-      });
-    }
+    this.content = setImageContent(this.content, false);
   }
 
   @Column()

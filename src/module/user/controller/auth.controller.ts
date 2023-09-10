@@ -1,4 +1,4 @@
-import { Body, Get, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Get, Post, Put } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import {
@@ -9,7 +9,6 @@ import {
   OnlyUpdateGroup,
   Public,
   RefreshTokenGuard,
-  ResetPasswordTokenGuard,
   SerializerBody,
   DefaultResponsesDto,
 } from '@shared';
@@ -24,9 +23,11 @@ import {
   UserResponseDto,
   AuthDto,
   ContactRequestDto,
+  OTPConfirmationAuthRequestDto,
 } from '@dto';
 import { User } from '@model';
 import { AuthService, P_AUTH_DELETE_IMAGE_TEMP } from '@service';
+import * as argon2 from 'argon2';
 
 @Headers('auth')
 export class AuthController {
@@ -67,6 +68,20 @@ export class AuthController {
   }
 
   @Public({
+    summary: 'OTP confirmation',
+  })
+  @Post('otp-confirmation')
+  async OTPConfirmation(
+    @I18n() i18n: I18nContext,
+    @Body(new SerializerBody()) body: OTPConfirmationAuthRequestDto,
+  ): Promise<DefaultResponsesDto> {
+    await this.authService.OTPConfirmation(body, i18n);
+    return {
+      message: i18n.t('common.Success'),
+    };
+  }
+
+  @Public({
     summary: 'Send email Contact',
   })
   @Post('send-email-contact')
@@ -80,18 +95,16 @@ export class AuthController {
     };
   }
 
-  @Auth({
+  @Public({
     summary: 'Reset password',
     serializeOptions: { groups: [OnlyUpdateGroup] },
-    tokenGuard: ResetPasswordTokenGuard,
   })
   @Post('reset-password')
   async resetPassword(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([OnlyUpdateGroup])) body: RestPasswordAuthRequestDto,
-    @AuthUser() user: User,
   ): Promise<DefaultResponsesDto> {
-    await this.authService.resetPassword(body, user, i18n);
+    await this.authService.resetPassword(body, i18n);
     return {
       message: i18n.t('common.Success'),
     };
@@ -134,12 +147,17 @@ export class AuthController {
     @AuthUser() user: User,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) updateData: ProfileAuthRequestDto,
   ): Promise<UserResponseDto> {
-    if (!updateData.password) {
-      delete updateData.password;
-    }
+    const { password, ...body } = updateData;
     return {
       message: i18n.t('common.Success'),
-      data: await this.authService.update(user.id!, updateData, i18n),
+      data: await this.authService.update(user.id!, body, i18n, async (data) => {
+        if (
+          updateData.passwordOld &&
+          (!(await argon2.verify(data.password!, updateData.passwordOld!)) || password !== updateData.retypedPassword)
+        )
+          throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
+        return data;
+      }),
     };
   }
 

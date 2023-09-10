@@ -27,7 +27,7 @@ export class EmailService {
         template: './confirmation',
         context: {
           name: user.name,
-          url: process.env.DOMAIN_FE + 'auth/reset-password?token=' + token,
+          token: token,
         },
       });
       this.logger.verbose(`Response Send email: ${JSON.stringify(info)}`);

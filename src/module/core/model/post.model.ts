@@ -4,9 +4,8 @@ import { faker } from '@faker-js/faker';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { appConfig } from '@config';
 import { PostType, PostTranslation } from '@model';
-import { MaxGroup, Base } from '@shared';
+import { MaxGroup, Base, setImage } from '@shared';
 
 @Entity()
 export class Post extends Base {
@@ -23,13 +22,11 @@ export class Post extends Base {
   @BeforeInsert()
   @BeforeUpdate()
   beforeThumbnailUrl?(): void {
-    if (this.thumbnailUrl && this.thumbnailUrl.indexOf(appConfig.URL_FILE) === 0)
-      this.thumbnailUrl = this.thumbnailUrl.replace(appConfig.URL_FILE, '');
+    this.thumbnailUrl = setImage(this.thumbnailUrl);
   }
   @AfterLoad()
   afterThumbnailUrl?(): void {
-    if (this.thumbnailUrl && this.thumbnailUrl.indexOf('http') === -1)
-      this.thumbnailUrl = appConfig.URL_FILE + this.thumbnailUrl;
+    this.thumbnailUrl = setImage(this.thumbnailUrl, false);
   }
 
   @ManyToOne(() => PostType, (dataType) => dataType.items, { eager: false })

@@ -7,7 +7,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 export const mailerTransportOptions: SMTPConnection.Options = {
   host: appConfig.SMTP_HOST,
   port: appConfig.SMTP_PORT,
-  secure: true, // true for 465, false for other ports
+  secure: false, // true for 465, false for other ports
   auth: {
     user: appConfig.SMTP_USER,
     pass: appConfig.SMTP_PASSWORD,

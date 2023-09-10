@@ -26,9 +26,8 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { appConfig } from '@config';
-import { UserRole, Code, File, BookingRoom, UserTeam } from '@model';
-import { Example, MaxGroup, OnlyUpdateGroup, Base } from '@shared';
+import { UserRole, Code, BookingRoom, UserTeam } from '@model';
+import { Example, MaxGroup, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
 export class User extends Base {
@@ -45,12 +44,11 @@ export class User extends Base {
   @BeforeInsert()
   @BeforeUpdate()
   beforeAvatar?(): void {
-    if (this.avatar && this.avatar.indexOf(appConfig.URL_FILE) === 0)
-      this.avatar = this.avatar.replace(appConfig.URL_FILE, '');
+    this.avatar = setImage(this.avatar);
   }
   @AfterLoad()
   afterAvatar?(): void {
-    if (this.avatar && this.avatar.indexOf('http') === -1) this.avatar = appConfig.URL_FILE + this.avatar;
+    this.avatar = setImage(this.avatar, false);
   }
 
   @Column()
@@ -77,8 +75,8 @@ export class User extends Base {
   }
 
   @Column({ nullable: true })
-  @Exclude()
-  resetPasswordToken?: string;
+  @IsString()
+  otp?: string;
 
   @Column()
   @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })

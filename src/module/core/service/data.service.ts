@@ -4,7 +4,8 @@ import { I18nContext } from 'nestjs-i18n';
 import { CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
 import { Data } from '@model';
 import { DataRepository } from '@repository';
-import { BaseService } from '@shared';
+import { BaseService, getImages } from '@shared';
+import { FileService } from './file.service';
 
 export const P_DATA_LISTED = '1db70aa0-7541-4433-b2f6-fbd7bf8bf7bb';
 export const P_DATA_CREATE = 'c3ab9e11-7ba3-4afd-b5cb-c560362a3144';
@@ -13,7 +14,10 @@ export const P_DATA_DELETE = '2e8c8772-2505-4683-b6fa-13fa2570eee7';
 
 @Injectable()
 export class DataService extends BaseService<Data> {
-  constructor(public repo: DataRepository) {
+  constructor(
+    public repo: DataRepository,
+    public fileService: FileService,
+  ) {
     super(repo);
     this.listJoin = ['translations'];
   }
@@ -40,7 +44,9 @@ export class DataService extends BaseService<Data> {
    *
    */
   async create(body: CreateDataRequestDto, i18n: I18nContext): Promise<Data | null> {
-    return this.repo.createWithTranslation(body, i18n);
+    const data = await this.repo.createWithTranslation(body, i18n);
+    await this.fileService.activeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
+    return data;
   }
 
   /**
@@ -52,6 +58,24 @@ export class DataService extends BaseService<Data> {
    *
    */
   async update(id: string, body: UpdateDataRequestDto, i18n: I18nContext): Promise<Data | null> {
-    return this.repo.updateWithTranslation(id, body, i18n);
+    const oldData = await this.findOne(id, [], i18n);
+    const data = await this.repo.updateWithTranslation(id, body, i18n);
+    const [listFilesActive, listFilesRemove] = getImages<Data>(['image'], data, ['translations'], oldData);
+    await this.fileService.activeFiles(listFilesActive, i18n);
+    await this.fileService.removeFiles(listFilesRemove, i18n);
+    return data;
+  }
+
+  /**
+   *
+   * @param id
+   * @param i18n
+   * @returns Data
+   *
+   */
+  async removeHard(id: string, i18n: I18nContext): Promise<Data | null> {
+    const data = await super.removeHard(id, i18n);
+    await this.fileService.removeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
+    return data;
   }
 }

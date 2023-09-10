@@ -4,22 +4,11 @@ import dayjs from 'dayjs';
 
 import { CreateUserRequestDto, ListUserResponseDto, UpdateUserRequestDto, UserResponseDto } from '@dto';
 import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto } from '@shared';
-import {
-  FileService,
-  P_USER_CREATE,
-  P_USER_DELETE,
-  P_USER_DETAIL,
-  P_USER_LISTED,
-  P_USER_UPDATE,
-  UserService,
-} from '@service';
+import { P_USER_CREATE, P_USER_DELETE, P_USER_DETAIL, P_USER_LISTED, P_USER_UPDATE, UserService } from '@service';
 
 @Headers('user')
 export class UserController {
-  constructor(
-    private readonly service: UserService,
-    public readonly fileService: FileService,
-  ) {}
+  constructor(private readonly service: UserService) {}
 
   @Auth({
     summary: 'Get List User',
@@ -58,11 +47,9 @@ export class UserController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) createData: CreateUserRequestDto,
   ): Promise<UserResponseDto> {
-    const data = await this.service.create(createData, i18n);
-    if (data?.avatar) await this.fileService.activeFiles([data?.avatar], i18n);
     return {
       message: i18n.t('common.Create Success'),
-      data,
+      data: await this.service.create(createData, i18n),
     };
   }
 
@@ -77,22 +64,12 @@ export class UserController {
     @Param('id') id: string,
     @Body(new SerializerBody([MaxGroup])) updateData: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
-    const oldData = await this.service.findOne(id, [], i18n);
-    const data = await this.service.update(id, updateData, i18n, (data) => {
-      delete data.password;
-      return data;
-    });
-    if (oldData?.avatar !== data?.avatar) {
-      if (!oldData?.avatar && !!data?.avatar) await this.fileService.activeFiles([data.avatar], i18n);
-      else if (!!oldData?.avatar && !data?.avatar) await this.fileService.removeFiles([oldData.avatar], i18n);
-      else if (oldData?.avatar && data?.avatar) {
-        await this.fileService.removeFiles([oldData.avatar], i18n);
-        await this.fileService.activeFiles([data.avatar], i18n);
-      }
-    }
     return {
       message: i18n.t('common.Update Success'),
-      data,
+      data: await this.service.update(id, updateData, i18n, async (data) => {
+        delete data.password;
+        return data;
+      }),
     };
   }
 
@@ -119,12 +96,9 @@ export class UserController {
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<UserResponseDto> {
-    const data = await this.service.remove(id, i18n);
-    if (data?.avatar) await this.fileService.removeFiles([data?.avatar], i18n);
-
     return {
       message: i18n.t('common.Delete Success'),
-      data,
+      data: await this.service.remove(id, i18n),
     };
   }
 }
