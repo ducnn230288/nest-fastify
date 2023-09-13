@@ -29,7 +29,7 @@ export class FileService extends BaseService<File> {
   }
 
   async uploadFile(userId: string, file: MultipartFile): Promise<File | null> {
-    const data = await this.saveToLocalPath(file, /\/(jpg|jpeg|png|gif)$/, '', userId);
+    const data = await this.saveToLocalPath(file, /\/(jpg|jpeg|png|gif|webp|svg)$/, '', userId);
     if (!data) throw new BadRequestException(`file is not null`);
     const createData = await this.create({ userId, url: data.filename, type: 0 });
     createData!.url = appConfig.URL_FILE + createData?.url;
@@ -107,11 +107,13 @@ export class FileService extends BaseService<File> {
 
       multipartFile.filename = `${userId}/${this.renameFile(multipartFile.filename)}`;
       const tmpFilename = appConfig.UPLOAD_LOCATION + multipartFile.filename;
-      // const localFile = fs.createWriteStream(tmpFilename);
+
       await sharp(await multipartFile.toBuffer())
         .webp({ effort: 3 })
         .toFile(tmpFilename);
+      // const localFile = fs.createWriteStream(tmpFilename);
       // await this.pump(multipartFile.file, localFile);
+
       this.logger.verbose(`File saved localy: ${tmpFilename} (${multipartFile.mimetype})`);
 
       return {
