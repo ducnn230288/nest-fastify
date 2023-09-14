@@ -1,17 +1,47 @@
 import { Get, Controller, Render, Req, Post, Res } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { DataService } from '@service';
+import { DataDto } from '@dto';
 
 @Controller()
 export class AppController {
-  constructor() {}
+  constructor(private readonly service: DataService) {}
 
   @Get('/')
   @Render('index')
-  root(@Req() req: FastifyRequest) {
-    const data = req.session.get('data');
-    console.log(data);
-    req.session.delete();
-    return { title: 'True Foundry GitHub Authorizerss' };
+  async root(): Promise<{
+    title: string;
+    partner: DataDto[];
+    mission: DataDto[];
+    services: DataDto[];
+    value: DataDto[];
+    member: DataDto[];
+  }> {
+    // const data = req.session.get('data'); @Req() req: FastifyRequest
+    // console.log(data);
+    // req.session.delete();
+    const language = 'vn';
+    const dataArray = await this.service.findArrayCode(['partner', 'mission', 'services', 'value', 'member']);
+    return {
+      title: 'ARI TECHNOLOGY',
+      partner: dataArray['partner'],
+      mission: dataArray['mission'].map((item) => ({
+        ...item,
+        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
+      })),
+      services: dataArray['services'].map((item) => ({
+        ...item,
+        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
+      })),
+      value: dataArray['value'].map((item) => ({
+        ...item,
+        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
+      })),
+      member: dataArray['member'].map((item) => ({
+        ...item,
+        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
+      })),
+    };
   }
 
   @Post('/')

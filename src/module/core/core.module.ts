@@ -83,6 +83,6 @@ import {
     PostTypeService,
     PostTranslationRepository,
   ],
-  exports: [FileService],
+  exports: [FileService, DataService],
 })
 export class CoreModule {}
