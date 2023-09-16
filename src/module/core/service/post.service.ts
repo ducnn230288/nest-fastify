@@ -40,26 +40,24 @@ export class PostService extends BaseService<Post> {
   /**
    *
    * @param slug
-   * @param i18n
    * @returns Post
    *
    */
-  async findSlug(slug: string, i18n: I18nContext): Promise<Post | null> {
+  async findSlug(slug: string): Promise<Post | null> {
     const postTranslation = await this.repoTranslation.getDataBySlug(slug);
-    if (postTranslation?.postId) return this.findOne(postTranslation.postId, [], i18n);
+    if (postTranslation?.postId) return this.findOne(postTranslation.postId, []);
     return null;
   }
 
   /**
    *
    * @param body
-   * @param i18n
    * @returns Post
    *
    */
-  async create(body: CreatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    const data = await this.repo.createWithTranslation(body, i18n);
-    await this.fileService.activeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0], i18n);
+  async create(body: CreatePostRequestDto): Promise<Post | null> {
+    const data = await this.repo.createWithTranslation(body);
+    await this.fileService.activeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0]);
     return data;
   }
 
@@ -67,16 +65,15 @@ export class PostService extends BaseService<Post> {
    *
    * @param id
    * @param body
-   * @param i18n
    * @returns Post
    *
    */
-  async update(id: string, body: UpdatePostRequestDto, i18n: I18nContext): Promise<Post | null> {
-    const oldData = await this.findOne(id, [], i18n);
-    const data = await this.repo.updateWithTranslation(id, body, i18n);
+  async update(id: string, body: UpdatePostRequestDto): Promise<Post | null> {
+    const oldData = await this.findOne(id, []);
+    const data = await this.repo.updateWithTranslation(id, body);
     const [listFilesActive, listFilesRemove] = getImages<Post>(['thumbnailUrl'], data, ['translations'], oldData);
-    await this.fileService.activeFiles(listFilesActive, i18n);
-    await this.fileService.removeFiles(listFilesRemove, i18n);
+    await this.fileService.activeFiles(listFilesActive);
+    await this.fileService.removeFiles(listFilesRemove);
 
     return data;
   }
@@ -84,13 +81,12 @@ export class PostService extends BaseService<Post> {
   /**
    *
    * @param id
-   * @param i18n
    * @returns Post
    *
    */
-  async removeHard(id: string, i18n: I18nContext): Promise<Post | null> {
-    const data = await super.removeHard(id, i18n);
-    await this.fileService.removeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0], i18n);
+  async removeHard(id: string): Promise<Post | null> {
+    const data = await super.removeHard(id);
+    await this.fileService.removeFiles(getImages<Post>(['thumbnailUrl'], data, ['translations'])[0]);
     return data;
   }
 }

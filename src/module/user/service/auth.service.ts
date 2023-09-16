@@ -44,22 +44,20 @@ export class AuthService extends BaseService<User> {
    * @returns void
    *
    */
-  async updateRefreshToken(userId: string, refreshToken: string, i18n: I18nContext): Promise<void> {
-    await this.update(userId, { refreshToken }, i18n);
+  async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    await this.update(userId, { refreshToken });
   }
 
   /**
    *
    * @param user
    * @param returnRefresh
-   * @param i18n
    * @returns { accessToken, refreshToken }
    *
    */
   async getTokens(
     user: User,
     returnRefresh = true,
-    i18n: I18nContext,
   ): Promise<{
     accessToken: string;
     refreshToken: string;
@@ -77,40 +75,39 @@ export class AuthService extends BaseService<User> {
         : '',
     ]);
 
-    if (returnRefresh) await this.updateRefreshToken(user.id!, refreshToken!, i18n);
+    if (returnRefresh) await this.updateRefreshToken(user.id!, refreshToken!);
     return { accessToken, refreshToken };
   }
 
   /**
    *
    * @param user
-   * @param i18n
    * @returns User
    *
    */
-  async logout(user: User, i18n: I18nContext): Promise<User | null> {
-    return await this.update(user.id!, { refreshToken: null }, i18n);
+  async logout(user: User): Promise<User | null> {
+    return await this.update(user.id!, { refreshToken: null });
   }
 
   /**
    *
    * @param body
-   * @param i18n
    * @returns boolean
    *
    */
-  async forgottenPassword(body: ForgottenPasswordAuthRequestDto, i18n: I18nContext): Promise<boolean> {
+  async forgottenPassword(body: ForgottenPasswordAuthRequestDto): Promise<boolean> {
+    const i18n = I18nContext.current()!;
     const user = await this.repo.getDataByEmail(body.email);
     if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
 
     user.otp = customAlphabet('0123456789', 10)(6);
-    await this.update(user.id!, user, i18n);
+    await this.update(user.id!, user);
     await this.emailService.sendUserConfirmation(user, user.otp);
 
     const name = user.id + 'forgottenPassword';
     if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);
     const job = new CronJob(`0 */5 * * * *`, () => {
-      this.update(user.id!, { otp: null }, i18n);
+      this.update(user.id!, { otp: null });
       this.schedulerRegistry.deleteCronJob(name);
     });
     this.schedulerRegistry.addCronJob(name, job);
@@ -122,11 +119,11 @@ export class AuthService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns boolean
    *
    */
-  async OTPConfirmation(body: OTPConfirmationAuthRequestDto, i18n: I18nContext): Promise<User> {
+  async OTPConfirmation(body: OTPConfirmationAuthRequestDto): Promise<User> {
+    const i18n = I18nContext.current()!;
     const user = await this.repo.getDataByEmailAndOTP(body.email, body.otp!);
     if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
     return user;
@@ -146,14 +143,13 @@ export class AuthService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns boolean
    *
    */
-  async resetPassword({ email, otp, ...body }: RestPasswordAuthRequestDto, i18n: I18nContext): Promise<boolean> {
-    const user = await this.OTPConfirmation({ email, otp }, i18n);
-    if (body.password === body.retypedPassword)
-      await this.update(user.id!, { password: body.password, otp: null }, i18n);
+  async resetPassword({ email, otp, ...body }: RestPasswordAuthRequestDto): Promise<boolean> {
+    const i18n = I18nContext.current()!;
+    const user = await this.OTPConfirmation({ email, otp });
+    if (body.password === body.retypedPassword) await this.update(user.id!, { password: body.password, otp: null });
     else throw new UnauthorizedException(i18n.t('common.Auth.Password do not match'));
 
     const name = user.id + 'forgottenPassword';
@@ -164,11 +160,11 @@ export class AuthService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns User
    *
    */
-  async login(body: LoginAuthRequestDto, i18n: I18nContext): Promise<User> {
+  async login(body: LoginAuthRequestDto): Promise<User> {
+    const i18n = I18nContext.current()!;
     const user = await this.repo.getDataByEmailJoin(body.email);
     if (!user) throw new UnauthorizedException(i18n.t('common.Auth.User not found', { args: { email: body.email } }));
 
@@ -183,11 +179,11 @@ export class AuthService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns User
    *
    */
-  async register(body: RegisterAuthRequestDto, i18n: I18nContext): Promise<User> {
+  async register(body: RegisterAuthRequestDto): Promise<User> {
+    const i18n = I18nContext.current()!;
     if (body.password !== body.retypedPassword)
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 

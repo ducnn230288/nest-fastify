@@ -33,7 +33,7 @@ export class UserController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, [], i18n),
+      data: await this.service.findOne(id, []),
     };
   }
 
@@ -49,7 +49,7 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(createData, i18n),
+      data: await this.service.create(createData),
     };
   }
 
@@ -66,7 +66,7 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, updateData, i18n, async (data) => {
+      data: await this.service.update(id, updateData, async (data) => {
         delete data.password;
         return data;
       }),
@@ -85,7 +85,7 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }, i18n),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
     };
   }
 
@@ -98,7 +98,7 @@ export class UserController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.remove(id, i18n),
+      data: await this.service.remove(id),
     };
   }
 }

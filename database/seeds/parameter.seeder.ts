@@ -22,6 +22,16 @@ export class ParameterSeeder implements Seeder {
         vn: '(+84)363672405',
         en: '(+84)363672405',
       },
+      {
+        code: 'facebook',
+        vn: 'https://www.facebook.com/ARI-Technology-103059672364812',
+        en: 'https://www.facebook.com/ARI-Technology-103059672364812',
+      },
+      {
+        code: 'linkedin',
+        vn: 'https://www.linkedin.com/company/aritechnology',
+        en: 'https://www.linkedin.com/company/aritechnology',
+      },
     ];
 
     for (const data of listData) {

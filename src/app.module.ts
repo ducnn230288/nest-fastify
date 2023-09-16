@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { resolve } from 'path';
-import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { AcceptLanguageResolver, CookieResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from '@controller';
@@ -17,12 +17,21 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule, MemberModu
     CoreModule,
     UserModule,
     I18nModule.forRoot({
-      fallbackLanguage: 'en',
+      fallbackLanguage: 'vn',
+      fallbacks: {
+        'vi-*': 'vn',
+        'en-*': 'en',
+      },
       loaderOptions: {
         path: resolve('./other/translations'),
-        watch: appConfig.NODE_ENV !== 'production',
+        watch: appConfig.NODE_ENV !== 'prod',
       },
-      resolvers: [{ use: QueryResolver, options: ['Accept-Language'] }, AcceptLanguageResolver],
+      resolvers: [
+        { use: QueryResolver, options: ['Accept-Language'] },
+        new HeaderResolver(),
+        AcceptLanguageResolver,
+        new CookieResolver(),
+      ],
       viewEngine: 'hbs',
     }),
     TypeOrmModule.forRootAsync({
@@ -36,7 +45,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule, MemberModu
         autoLoadEntities: true,
         synchronize: appConfig.NODE_ENV !== 'prod',
         logging: ['error'],
-        logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
+        logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
       }),
     }),
     MemberModule,

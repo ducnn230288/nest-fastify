@@ -21,7 +21,7 @@ async function bootstrap(): Promise<void> {
   });
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-  await app.register(helmet, { crossOriginResourcePolicy: false });
+  await app.register(helmet, { crossOriginResourcePolicy: false, contentSecurityPolicy: false });
   // Fastify file upload
   const options = {
     limits: {

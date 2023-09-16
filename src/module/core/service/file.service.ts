@@ -153,22 +153,22 @@ export class FileService extends BaseService<File> {
     return `${name}-${nowAsString}.webp`;
   }
 
-  async activeFiles(urls: string[], i18n: I18nContext): Promise<void> {
+  async activeFiles(urls: string[]): Promise<void> {
     for (const url of urls) {
       const data = await this.repo.getDataByUrl(url);
-      if (data?.id) await this.update(data.id, { status: 1 }, i18n);
+      if (data?.id) await this.update(data.id, { status: 1 });
     }
   }
 
-  async removeFiles(urls: string[], i18n: I18nContext): Promise<void> {
+  async removeFiles(urls: string[]): Promise<void> {
     for (const url of urls) {
-      await this.removeHard(url, i18n);
+      await this.removeHard(url);
     }
   }
 
-  async removeHard(url: string, i18n?: I18nContext): Promise<File | null> {
+  async removeHard(url: string): Promise<File | null> {
     const data = await this.repo.getDataByUrl(url);
-    if (data) await this.removeFile(data, i18n);
+    if (data) await this.removeFile(data);
     return data;
   }
 

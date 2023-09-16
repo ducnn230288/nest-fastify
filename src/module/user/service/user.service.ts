@@ -31,16 +31,17 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async create(body: CreateUserRequestDto, i18n: I18nContext): Promise<User | null> {
+  async create(body: CreateUserRequestDto): Promise<User | null> {
+    const i18n = I18nContext.current()!;
     if (body.password !== body.retypedPassword)
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
     const existingUser = await this.repo.getDataByEmail(body.email);
 
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
-    const data = await super.create(body, i18n);
-    if (data?.avatar) await this.fileService.activeFiles([data?.avatar], i18n);
-    await this.fileService.activeFiles(getImages<User>(['avatar'], data)[0], i18n);
+    const data = await super.create(body);
+    if (data?.avatar) await this.fileService.activeFiles([data?.avatar]);
+    await this.fileService.activeFiles(getImages<User>(['avatar'], data)[0]);
     return data;
   }
 
@@ -53,17 +54,12 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async update(
-    id: string,
-    body: any,
-    i18n: I18nContext,
-    callBack?: (data: User) => Promise<User>,
-  ): Promise<User | null> {
-    const oldData = await this.findOne(id, [], i18n);
-    const data = await super.update(id, body, i18n, callBack);
+  async update(id: string, body: any, callBack?: (data: User) => Promise<User>): Promise<User | null> {
+    const oldData = await this.findOne(id, []);
+    const data = await super.update(id, body, callBack);
     const [listFilesActive, listFilesRemove] = getImages<User>(['thumbnailUrl'], data, [], oldData);
-    await this.fileService.activeFiles(listFilesActive, i18n);
-    await this.fileService.removeFiles(listFilesRemove, i18n);
+    await this.fileService.activeFiles(listFilesActive);
+    await this.fileService.removeFiles(listFilesRemove);
     return data;
   }
 
@@ -74,10 +70,10 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async remove(id: string, i18n: I18nContext): Promise<User | null> {
-    const data = await super.remove(id, i18n);
-    if (data?.avatar) await this.fileService.removeFiles([data?.avatar], i18n);
-    await this.fileService.removeFiles(getImages<User>(['thumbnailUrl'], data)[0], i18n);
+  async remove(id: string): Promise<User | null> {
+    const data = await super.remove(id);
+    if (data?.avatar) await this.fileService.removeFiles([data?.avatar]);
+    await this.fileService.removeFiles(getImages<User>(['thumbnailUrl'], data)[0]);
     return data;
   }
 }
