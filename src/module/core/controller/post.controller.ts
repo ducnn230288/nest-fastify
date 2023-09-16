@@ -57,7 +57,7 @@ export class PostController {
   async findSlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findSlug(slug, i18n),
+      data: await this.service.findSlug(slug),
     };
   }
 
@@ -69,7 +69,7 @@ export class PostController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, [], i18n),
+      data: await this.service.findOne(id, []),
     };
   }
 
@@ -84,7 +84,7 @@ export class PostController {
   ): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body, i18n),
+      data: await this.service.create(body),
     };
   }
 
@@ -100,7 +100,7 @@ export class PostController {
   ): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, body, i18n),
+      data: await this.service.update(id, body),
     };
   }
 
@@ -116,7 +116,7 @@ export class PostController {
   ): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : undefined }, i18n),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : undefined }),
     };
   }
 
@@ -128,7 +128,7 @@ export class PostController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(id, i18n),
+      data: await this.service.removeHard(id),
     };
   }
 }

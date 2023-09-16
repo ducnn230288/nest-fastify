@@ -143,7 +143,7 @@ export class FileController {
   async remove(@I18n() i18n: I18nContext, @Param('url') url: string): Promise<FileResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(url, i18n),
+      data: await this.service.removeHard(url),
     };
   }
 }

@@ -43,9 +43,9 @@ export class DataService extends BaseService<Data> {
    * @returns Data
    *
    */
-  async create(body: CreateDataRequestDto, i18n: I18nContext): Promise<Data | null> {
-    const data = await this.repo.createWithTranslation(body, i18n);
-    await this.fileService.activeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
+  async create(body: CreateDataRequestDto): Promise<Data | null> {
+    const data = await this.repo.createWithTranslation(body);
+    await this.fileService.activeFiles(getImages<Data>(['image'], data, ['translations'])[0]);
     return data;
   }
 
@@ -57,25 +57,24 @@ export class DataService extends BaseService<Data> {
    * @returns Data
    *
    */
-  async update(id: string, body: UpdateDataRequestDto, i18n: I18nContext): Promise<Data | null> {
-    const oldData = await this.findOne(id, [], i18n);
-    const data = await this.repo.updateWithTranslation(id, body, i18n);
+  async update(id: string, body: UpdateDataRequestDto): Promise<Data | null> {
+    const oldData = await this.findOne(id, []);
+    const data = await this.repo.updateWithTranslation(id, body);
     const [listFilesActive, listFilesRemove] = getImages<Data>(['image'], data, ['translations'], oldData);
-    await this.fileService.activeFiles(listFilesActive, i18n);
-    await this.fileService.removeFiles(listFilesRemove, i18n);
+    await this.fileService.activeFiles(listFilesActive);
+    await this.fileService.removeFiles(listFilesRemove);
     return data;
   }
 
   /**
    *
    * @param id
-   * @param i18n
    * @returns Data
    *
    */
-  async removeHard(id: string, i18n: I18nContext): Promise<Data | null> {
-    const data = await super.removeHard(id, i18n);
-    await this.fileService.removeFiles(getImages<Data>(['image'], data, ['translations'])[0], i18n);
+  async removeHard(id: string): Promise<Data | null> {
+    const data = await super.removeHard(id);
+    await this.fileService.removeFiles(getImages<Data>(['image'], data, ['translations'])[0]);
     return data;
   }
 }

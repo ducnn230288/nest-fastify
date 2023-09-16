@@ -25,16 +25,13 @@ export class PostRepository extends BaseRepository<Post> {
   /**
    *
    * @param code
-   * @param i18n
    * @returns Post
    *
    */
-  async createWithTranslation(
-    { translations, ...body }: CreatePostRequestDto,
-    i18n: I18nContext,
-  ): Promise<Post | null> {
+  async createWithTranslation({ translations, ...body }: CreatePostRequestDto): Promise<Post | null> {
     let result: Post | null = null;
     await this.dataSource.transaction(async (entityManager) => {
+      const i18n = I18nContext.current()!;
       result = await entityManager.save(entityManager.create(Post, { ...body }));
       if (translations) {
         result.translations = [];
@@ -60,15 +57,11 @@ export class PostRepository extends BaseRepository<Post> {
    *
    * @param code
    * @param id
-   * @param i18n
    * @returns Post
    *
    */
-  async updateWithTranslation(
-    id: string,
-    { translations, ...body }: UpdatePostRequestDto,
-    i18n: I18nContext,
-  ): Promise<Post | null> {
+  async updateWithTranslation(id: string, { translations, ...body }: UpdatePostRequestDto): Promise<Post | null> {
+    const i18n = I18nContext.current()!;
     let result: Post | null = null;
     await this.dataSource.transaction(async (entityManager) => {
       const data = await entityManager.preload(Post, {

@@ -61,7 +61,7 @@ export class ParameterController {
   ): Promise<ParameterResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body, i18n),
+      data: await this.service.create(body),
     };
   }
 
@@ -77,7 +77,7 @@ export class ParameterController {
   ): Promise<ParameterResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, body, i18n),
+      data: await this.service.update(id, body),
     };
   }
 
@@ -93,7 +93,7 @@ export class ParameterController {
   ): Promise<ParameterResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }, i18n),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
     };
   }
 
@@ -105,7 +105,7 @@ export class ParameterController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ParameterResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(id, i18n),
+      data: await this.service.removeHard(id),
     };
   }
 }

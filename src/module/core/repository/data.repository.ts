@@ -16,14 +16,11 @@ export class DataRepository extends BaseRepository<Data> {
    *
    * @param translations
    * @param body
-   * @param i18n
    * @returns Data
    *
    */
-  async createWithTranslation(
-    { translations, ...body }: CreateDataRequestDto,
-    i18n: I18nContext,
-  ): Promise<Data | null> {
+  async createWithTranslation({ translations, ...body }: CreateDataRequestDto): Promise<Data | null> {
+    const i18n = I18nContext.current()!;
     let result: Data | null = null;
     await this.dataSource.transaction(async (entityManager) => {
       result = await entityManager.save(entityManager.create(Data, { ...body }));
@@ -53,15 +50,11 @@ export class DataRepository extends BaseRepository<Data> {
    * @param id
    * @param translations
    * @param body
-   * @param i18n
    * @returns Data
    *
    */
-  async updateWithTranslation(
-    id: string,
-    { translations, ...body }: UpdateDataRequestDto,
-    i18n: I18nContext,
-  ): Promise<Data | null> {
+  async updateWithTranslation(id: string, { translations, ...body }: UpdateDataRequestDto): Promise<Data | null> {
+    const i18n = I18nContext.current()!;
     let result: Data | null = null;
     await this.dataSource.transaction(async (entityManager) => {
       const data = await entityManager.preload(Data, {

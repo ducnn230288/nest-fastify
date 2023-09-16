@@ -42,8 +42,8 @@ export class AuthController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) loginAuthDto: LoginAuthRequestDto,
   ): Promise<DefaultAuthResponseDto> {
-    const user = await this.authService.login(loginAuthDto, i18n);
-    const tokens = await this.authService.getTokens(user, true, i18n);
+    const user = await this.authService.login(loginAuthDto);
+    const tokens = await this.authService.getTokens(user, true);
     return {
       message: i18n.t('common.Success'),
       data: {
@@ -61,7 +61,7 @@ export class AuthController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: ForgottenPasswordAuthRequestDto,
   ): Promise<DefaultResponsesDto> {
-    await this.authService.forgottenPassword(body, i18n);
+    await this.authService.forgottenPassword(body);
     return {
       message: i18n.t('common.Success'),
     };
@@ -75,7 +75,7 @@ export class AuthController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: OTPConfirmationAuthRequestDto,
   ): Promise<DefaultResponsesDto> {
-    await this.authService.OTPConfirmation(body, i18n);
+    await this.authService.OTPConfirmation(body);
     return {
       message: i18n.t('common.Success'),
     };
@@ -104,7 +104,7 @@ export class AuthController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([OnlyUpdateGroup])) body: RestPasswordAuthRequestDto,
   ): Promise<DefaultResponsesDto> {
-    await this.authService.resetPassword(body, i18n);
+    await this.authService.resetPassword(body);
     return {
       message: i18n.t('common.Success'),
     };
@@ -121,7 +121,7 @@ export class AuthController {
   ): Promise<ProfileAuthResponseDto> {
     return {
       message: i18n.t('common.Success'),
-      data: await this.authService.register(createUserDto, i18n),
+      data: await this.authService.register(createUserDto),
     };
   }
 
@@ -150,7 +150,7 @@ export class AuthController {
     const { password, ...body } = updateData;
     return {
       message: i18n.t('common.Success'),
-      data: await this.authService.update(user.id!, body, i18n, async (data) => {
+      data: await this.authService.update(user.id!, body, async (data) => {
         if (
           updateData.passwordOld &&
           (!(await argon2.verify(data.password!, updateData.passwordOld!)) || password !== updateData.retypedPassword)
@@ -169,7 +169,7 @@ export class AuthController {
   async refreshTokens(@I18n() i18n: I18nContext, @AuthUser() user: User): Promise<DefaultAuthResponseDto> {
     return {
       message: i18n.t('common.Success'),
-      data: (await this.authService.getTokens(user, false, i18n)) as AuthDto,
+      data: (await this.authService.getTokens(user, false)) as AuthDto,
     };
   }
 
@@ -178,7 +178,7 @@ export class AuthController {
     summary: 'Logout',
   })
   async logout(@I18n() i18n: I18nContext, @AuthUser() user: User): Promise<UserResponseDto> {
-    await this.authService.logout(user, i18n);
+    await this.authService.logout(user);
     return {
       message: i18n.t('common.Success'),
       data: null,

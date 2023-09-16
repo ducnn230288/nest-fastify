@@ -171,7 +171,8 @@ export abstract class BaseService<T extends ObjectLiteral> {
     return [res[0], res[1]];
   }
 
-  async findOne(id: string, listJoin: string[] = [], i18n: I18nContext): Promise<T | null> {
+  async findOne(id: string, listJoin: string[] = []): Promise<T | null> {
+    const i18n = I18nContext.current()!;
     if (!id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
     const request = this.repo.createQueryBuilder('base');
     if (this.listJoin.length) {
@@ -193,12 +194,13 @@ export abstract class BaseService<T extends ObjectLiteral> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async create(body: DeepPartial<T>, i18n?: I18nContext): Promise<T | null> {
+  async create(body: DeepPartial<T>): Promise<T | null> {
     const data = this.repo.create({ ...body });
     return this.repo.save(data);
   }
 
-  async update(id: string, body: any, i18n: I18nContext, callBack?: (data: T) => Promise<T>): Promise<T | null> {
+  async update(id: string, body: any, callBack?: (data: T) => Promise<T>): Promise<T | null> {
+    const i18n = I18nContext.current()!;
     let data = await this.repo.preload({
       id,
       ...body,
@@ -210,18 +212,20 @@ export abstract class BaseService<T extends ObjectLiteral> {
     return this.repo.save(data);
   }
 
-  async remove(id: string, i18n: I18nContext): Promise<T | null> {
+  async remove(id: string): Promise<T | null> {
+    const i18n = I18nContext.current()!;
     const res = await this.repo.softDelete(id);
     if (!res.affected) {
       throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
     }
-    return await this.findOne(id, [], i18n);
+    return await this.findOne(id, []);
   }
 
-  async removeHard(id: string, i18n: I18nContext): Promise<T | null> {
-    const data = await this.findOne(id, [], i18n);
+  async removeHard(id: string): Promise<T | null> {
+    const data = await this.findOne(id, []);
     const res = await this.repo.delete(id);
     if (!res.affected) {
+      const i18n = I18nContext.current()!;
       throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
     }
     return data;

@@ -40,7 +40,7 @@ export class PostTypeController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, [], i18n),
+      data: await this.service.findOne(id, []),
     };
   }
 
@@ -55,7 +55,7 @@ export class PostTypeController {
   ): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body, i18n),
+      data: await this.service.create(body),
     };
   }
 
@@ -71,7 +71,7 @@ export class PostTypeController {
   ): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, body, i18n),
+      data: await this.service.update(id, body),
     };
   }
 
@@ -87,7 +87,7 @@ export class PostTypeController {
   ): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }, i18n),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
     };
   }
 
@@ -99,7 +99,7 @@ export class PostTypeController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeCheck(id, i18n),
+      data: await this.service.removeCheck(id),
     };
   }
 }

@@ -25,18 +25,18 @@ export class PostTypeService extends BaseService<PostType> {
   /**
    *
    * @param id
-   * @param i18n
    * @returns PostType
    *
    */
-  async removeCheck(id: string, i18n: I18nContext): Promise<PostType | null> {
-    const data = await this.findOne(id, [], i18n);
+  async removeCheck(id: string): Promise<PostType | null> {
+    const i18n = I18nContext.current()!;
+    const data = await this.findOne(id, []);
     if (data?.code) {
       const count = await this.repoPost.getCountByCode(data.code);
       if (count > 0)
         throw new BadRequestException(i18n.t("common.User.Can't be deleted because there's still link data"));
 
-      return await this.removeHard(id, i18n);
+      return await this.removeHard(id);
     }
     return null;
   }
