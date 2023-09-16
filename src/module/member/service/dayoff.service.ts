@@ -28,26 +28,26 @@ export class DayoffService extends BaseService<DayOff> {
   /**
    *
    * @param user
-   * @param i18n
    * @returns User
    *
    */
-  async updateStaff(user: User, i18n: I18nContext): Promise<User | null> {
+  async updateStaff(user: User): Promise<User | null> {
+    const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
     const data = await this.repo.getManyDayOffThisYearByStaffId(user.id);
     const dateOff = data.reduce((sum: number, item) => sum + item.timeNumber, 0);
-    return await this.userService.update(user.id, { dateOff, startDate: user.startDate }, i18n);
+    return await this.userService.update(user.id, { dateOff, startDate: user.startDate });
   }
 
   /**
    *
    * @param user
    * @param body
-   * @param i18n
    * @returns void
    *
    */
-  async checkHaveDate(user: User, body: CreateDayoffRequestDto, i18n: I18nContext): Promise<void> {
+  async checkHaveDate(user: User, body: CreateDayoffRequestDto): Promise<void> {
+    const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
     const data = await this.repo.getCountWaitByDateLeaveAndStaffId(user.id, body.dateLeaveStart, body.dateLeaveEnd);
 
@@ -69,13 +69,13 @@ export class DayoffService extends BaseService<DayOff> {
    *
    * @param user
    * @param body
-   * @param i18n
    * @returns DayOff
    *
    */
-  async createDayOff(body: CreateDayoffRequestDto, user: User, i18n: I18nContext): Promise<DayOff | null> {
+  async createDayOff(body: CreateDayoffRequestDto, user: User): Promise<DayOff | null> {
+    const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
-    await this.checkHaveDate(user, body, i18n);
+    await this.checkHaveDate(user, body);
     body.staffId = user.id;
     body.managerId = user.managerId;
     let number = 1;
@@ -89,8 +89,8 @@ export class DayoffService extends BaseService<DayOff> {
     const count = await this.repo.getCountToday();
     body.code = (parseInt(dayjs().format('YYMMDD')) * 1000000 + (count + 1)).toString();
 
-    const data = await super.create(body, i18n);
-    await this.updateStaff(user, i18n);
+    const data = await super.create(body);
+    await this.updateStaff(user);
     return data;
   }
 
@@ -99,15 +99,14 @@ export class DayoffService extends BaseService<DayOff> {
    * @param id
    * @param user
    * @param body
-   * @param i18n
    * @returns DayOff
    *
    */
-  async updateStatus(id: string, body: StatusDayoffRequestDto, user: User, i18n: I18nContext): Promise<DayOff | null> {
-    const data = await this.findOne(id, [], i18n);
+  async updateStatus(id: string, body: StatusDayoffRequestDto, user: User): Promise<DayOff | null> {
+    const data = await this.findOne(id, []);
     if (!data || data.managerId !== user.id) throw ForbiddenException;
-    await this.update(id, { ...body, approvedById: user.id, approvedAt: new Date() }, i18n);
-    if (body.status === -1) await this.updateStaff(data.staff, i18n);
-    return await this.findOne(id, [], i18n);
+    await this.update(id, { ...body, approvedById: user.id, approvedAt: new Date() });
+    if (body.status === -1) await this.updateStaff(data.staff);
+    return await this.findOne(id, []);
   }
 }

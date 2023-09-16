@@ -55,7 +55,7 @@ export class DayoffController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<DayoffResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, [], i18n),
+      data: await this.service.findOne(id, []),
     };
   }
 
@@ -71,7 +71,7 @@ export class DayoffController {
   ): Promise<any> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.createDayOff(body, user, i18n),
+      data: await this.service.createDayOff(body, user),
     };
   }
 
@@ -86,11 +86,11 @@ export class DayoffController {
     @Body(new SerializerBody()) body: UpdateDayoffRequestDto,
     @AuthUser() user: User,
   ): Promise<DayoffResponseDto> {
-    const dayOff = await this.service.findOne(id, [], i18n);
+    const dayOff = await this.service.findOne(id, []);
     if (!!dayOff && dayOff.staffId !== user.id) throw ForbiddenException;
 
-    const data = await this.service.update(id, body, i18n);
-    await this.service.updateStaff(user, i18n);
+    const data = await this.service.update(id, body);
+    await this.service.updateStaff(user);
     return { message: i18n.t('common.Update Success'), data };
   }
 
@@ -108,7 +108,7 @@ export class DayoffController {
   ): Promise<DayoffResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.updateStatus(id, body, user, i18n),
+      data: await this.service.updateStatus(id, body, user),
     };
   }
 
@@ -118,11 +118,11 @@ export class DayoffController {
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string, @AuthUser() user: User): Promise<DayoffResponseDto> {
-    const dayOff = await this.service.findOne(id, [], i18n);
+    const dayOff = await this.service.findOne(id, []);
     if (!!dayOff && dayOff.staffId !== user.id) throw ForbiddenException;
 
-    const data = await this.service.remove(id, i18n);
-    await this.service.updateStaff(user, i18n);
+    const data = await this.service.remove(id);
+    await this.service.updateStaff(user);
     return { message: i18n.t('common.Delete Success'), data };
   }
 }

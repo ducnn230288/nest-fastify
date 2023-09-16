@@ -38,7 +38,7 @@ export class UserTeamController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TeamResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, [], i18n),
+      data: await this.service.findOne(id, []),
     };
   }
 
@@ -51,7 +51,7 @@ export class UserTeamController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) createTeamDto: CreateTeamRequestDto,
   ): Promise<TeamResponseDto> {
-    const data = await this.service.create(createTeamDto, i18n);
+    const data = await this.service.create(createTeamDto);
     // await this.service.history(data, 'CREATED');
     return {
       message: i18n.t('common.Create Success'),
@@ -69,7 +69,7 @@ export class UserTeamController {
     @Param('id') id: string,
     @Body(new SerializerBody()) updateTeamDto: UpdateTeamRequestDto, //
   ): Promise<TeamResponseDto> {
-    const data = await this.service.update(id, updateTeamDto, i18n);
+    const data = await this.service.update(id, updateTeamDto);
     // await this.service.history(data);
 
     return {
@@ -86,7 +86,7 @@ export class UserTeamController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TeamResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.remove(id, i18n),
+      data: await this.service.remove(id),
     };
   }
 }

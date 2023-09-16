@@ -18,7 +18,7 @@ export class BookingRoomController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) dataRequest: CreateBookingRoomRequestDto,
   ): Promise<any> {
-    const data = await this.service.create(dataRequest, i18n);
+    const data = await this.service.create(dataRequest);
     return {
       message: i18n.t('common.Create Success'),
       data: data,
