@@ -27,7 +27,6 @@ export class UserService extends BaseService<User> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns User
    *
    */
@@ -49,7 +48,6 @@ export class UserService extends BaseService<User> {
    *
    * @param id
    * @param body
-   * @param i18n
    * @param callBack
    * @returns User
    *
@@ -66,7 +64,6 @@ export class UserService extends BaseService<User> {
   /**
    *
    * @param id
-   * @param i18n
    * @returns User
    *
    */

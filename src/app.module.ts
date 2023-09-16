@@ -16,23 +16,21 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
     SchedulerModule,
     CoreModule,
     UserModule,
-    I18nModule.forRoot({
-      fallbackLanguage: 'vn',
-      fallbacks: {
-        'vi-*': 'vn',
-        'en-*': 'en',
-      },
-      loaderOptions: {
-        path: resolve('./other/translations'),
-        watch: appConfig.NODE_ENV !== 'prod',
-      },
+    I18nModule.forRootAsync({
+      useFactory: () => ({
+        fallbackLanguage: 'vn',
+        loaderOptions: {
+          path: resolve('./other/translations'),
+          watch: appConfig.NODE_ENV !== 'prod',
+        },
+        viewEngine: 'hbs',
+      }),
       resolvers: [
         { use: QueryResolver, options: ['Accept-Language'] },
         new HeaderResolver(),
         AcceptLanguageResolver,
         new CookieResolver(),
       ],
-      viewEngine: 'hbs',
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
