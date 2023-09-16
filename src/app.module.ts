@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { resolve } from 'path';
-import { AcceptLanguageResolver, CookieResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from '@controller';
@@ -25,12 +25,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
         },
         viewEngine: 'hbs',
       }),
-      resolvers: [
-        { use: QueryResolver, options: ['Accept-Language'] },
-        new HeaderResolver(),
-        AcceptLanguageResolver,
-        new CookieResolver(),
-      ],
+      resolvers: [AcceptLanguageResolver],
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({

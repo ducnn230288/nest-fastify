@@ -39,7 +39,7 @@
     <!-- End Twitter Card -->
 
     <base href="/">
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <script id="jsonLD" type='application/ld+json'></script>
     <meta name="google-signin-client_id" content="458714151950-fv7bp4u656lk3bel41agq6jh2j4b27pb.apps.googleusercontent.com" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -55,9 +55,9 @@
 
         gtag('config', 'G-L3TLVBTM19');
     </script>
-    <link rel="apple-touch-icon" href="assets/icons/logo192.png" />
-    <link rel="apple-touch-icon" href="assets/icons/logo512.png" />
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/images/logo192.png" />
+    <link rel="apple-touch-icon" href="/images/logo512.png" />
+    <link rel="manifest" href="/images/manifest.webmanifest" />
     <meta name="theme-color" content="#2563eb" />
   <!-- swiper -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
@@ -90,7 +90,7 @@
           d="M 22 3 C 18.699 3 16 5.699 16 9 C 16 9.992 16.383 11.004 16.875 12.125 C 17.367 13.246 17.988 14.43425 18.625 15.53125 C 19.898 17.72625 21.1875 19.5625 21.1875 19.5625 L 22 20.75 L 22.8125 19.5625 C 22.8125 19.5625 24.101 17.72625 25.375 15.53125 C 26.012 14.43325 26.633 13.246 27.125 12.125 C 27.617 11.004 28 9.992 28 9 C 28 5.699 25.301 3 22 3 z M 11.96875 4.9375 L 4 8.34375 L 4 27.53125 L 12.03125 24.0625 L 20.03125 27.0625 L 28 23.65625 L 28 14.9375 C 27.363 16.1605 26.656 17.332 26 18.375 L 26 22.34375 L 21 24.46875 L 21 22.84375 L 19.53125 20.71875 C 19.37525 20.49175 19.191 20.2225 19 19.9375 L 19 24.5625 L 13 22.3125 L 13 7.4375 L 14.09375 7.84375 C 14.19175 7.16775 14.367 6.51625 14.625 5.90625 L 11.96875 4.9375 z M 22 5 C 24.219 5 26 6.781 26 9 C 26 9.387 25.7585 10.3005 25.3125 11.3125 C 24.8675 12.3245 24.238 13.47225 23.625 14.53125 C 22.809 15.93725 22.457 16.438953 22 17.126953 C 21.543 16.438953 21.191 15.93725 20.375 14.53125 C 19.762 13.47225 19.1335 12.3245 18.6875 11.3125 C 18.2425 10.3005 18 9.387 18 9 C 18 6.781 19.781 5 22 5 z M 11 7.5 L 11 22.34375 L 6 24.46875 L 6 9.65625 L 11 7.5 z" />
       </svg>
       <div class="leading-5">
-        <strong>{{ t 'client.layout.header.Location' }}</strong>
+        <strong>{{ language.layout.header.Location }}</strong>
         <br />
         <span class="text-gray-600 text-sm">{{parameter.address}}</span>
       </div>
@@ -103,7 +103,7 @@
       </svg>
 
       <div class="leading-5">
-        <strong>{{ t 'client.layout.header.Mail us' }}</strong>
+        <strong>{{ language.layout.header.Mail }}</strong>
         <br />
         <a class="text-gray-600 text-sm" href="mailto:{{parameter.email}}">{{parameter.email}}</a>
       </div>
@@ -116,7 +116,7 @@
       </svg>
 
       <div class="leading-5">
-        <strong>{{ t 'client.layout.header.Call us' }}</strong>
+        <strong>{{ language.layout.header.Call }}</strong>
         <br />
         <a class="text-gray-600 text-sm" href="tel:{{parameter.phone}}">{{parameter.phone}}</a>
       </div>
@@ -128,24 +128,24 @@
     <div class="text-center hidden lg:block">
       <div class="flex gap-10 font-bold items-center">
           <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
-            {{ t 'client.layout.header.Home' }}
+            {{ language.layout.header.Home }}
           </a>
         <div class="text-white font-bold hover:text-white cursor-pointer relative group">
-            {{ t 'client.layout.header.About' }}
+            {{ language.layout.header.About }}
             <ul
               class="bg-blue-400 p-2 text-left text-sm absolute w-44 top-7 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-              <li class="font-normal p-1 mb-2">{{ t 'client.layout.header.About Tech' }}</li>
-              <li class="font-normal p-1 mb-1">{{ t 'client.layout.header.Our Core Team' }}</li>
+              <li class="font-normal p-1 mb-2">{{ language.layout.header.AboutTech }}</li>
+              <li class="font-normal p-1 mb-1">{{ language.layout.header.OurCoreTeam }}</li>
             </ul>
           </div>
         <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
-          {{ t 'client.layout.header.News' }}
+          {{ language.layout.header.News }}
           </a>
         <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
-          {{ t 'client.layout.header.Projects' }}
+          {{ language.layout.header.Projects }}
           </a>
         <button class="text-white font-bold hover:text-white cursor-pointer">
-          {{ t 'client.layout.header.Contact Us' }}
+          {{ language.layout.header.ContactUs }}
           </button>
       </div>
     </div>
@@ -157,7 +157,8 @@
         <img src='/images/{{lang}}.svg' alt="" class="h-6" />
         <ul
           class="bg-blue-400 text-white p-2 text-left text-sm absolute w-24 top-6 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-          <a href="#" class="font-normal p-1">{{ t 'client.layout.header.language' }}</a>
+            <a href="/{{#if isEnglish}}vn{{else}}en{{/if}}" class="font-normal p-1">{{#if isEnglish}}{{ language.layout.header.Vietnamese }}{{else}}{{ language.layout.header.English }}{{/if}}</a>
+
         </ul>
       </div>
       <div class="hidden lg:flex items-center gap-2">
@@ -193,45 +194,45 @@
   <div id="list-menu" class='transition-all duration-1000 ease-in-out relative top-10 opacity-0'>
     <div class="font-medium flex flex-col text-white mt-10">
       <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ t 'client.layout.header.Home' }}
+        {{ language.layout.header.Home }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
       <a href="#" class="text-white border-white py-3 flex justify-between">
-        {{ t 'client.layout.header.About' }}
+        {{ language.layout.header.About }}
       </a>
       <a href="#" class="text-white border-white py-3 flex justify-between pl-5 ">
-        {{ t 'client.layout.header.About Tech' }}
+        {{ language.layout.header.AboutTech }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
       <a href="#" class="text-white border-white py-3 flex justify-between pl-5 ">
-        {{ t 'client.layout.header.Our Core Team' }}
+        {{ language.layout.header.OurCoreTeam }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
       <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ t 'client.layout.header.News' }}
+        {{ language.layout.header.News }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
       <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ t 'client.layout.header.Projects' }}
+        {{ language.layout.header.Projects }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
       <button class="text-white border-white py-3 flex justify-between">
-        {{ t 'client.layout.header.Contact Us' }}
+        {{ language.layout.header.ContactUs }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
@@ -264,7 +265,7 @@
           </svg>
         </span>
       <div class="leading-5">
-        <strong>Trụ sở</strong>
+        <strong>{{ language.layout.header.Location }}</strong>
         <br />
         <span class="text-sm">{{parameter.address}}</span>
       </div>
@@ -275,7 +276,7 @@
           d="M 3 8 L 3 26 L 29 26 L 29 8 Z M 7.3125 10 L 24.6875 10 L 16 15.78125 Z M 5 10.875 L 15.4375 17.84375 L 16 18.1875 L 16.5625 17.84375 L 27 10.875 L 27 24 L 5 24 Z" />
       </svg>
       <div class="leading-5">
-        <strong>Hộp thư</strong>
+        <strong>{{ language.layout.header.Mail }}</strong>
         <br />
         <a class="text-sm text-white" href="mailto:{{parameter.email}}">{{parameter.email}}</a>
       </div>
@@ -286,7 +287,7 @@
           d="M 8.65625 3 C 8.132813 3 7.617188 3.1875 7.1875 3.53125 L 7.125 3.5625 L 7.09375 3.59375 L 3.96875 6.8125 L 4 6.84375 C 3.035156 7.734375 2.738281 9.066406 3.15625 10.21875 C 3.160156 10.226563 3.152344 10.242188 3.15625 10.25 C 4.003906 12.675781 6.171875 17.359375 10.40625 21.59375 C 14.65625 25.84375 19.402344 27.925781 21.75 28.84375 L 21.78125 28.84375 C 22.996094 29.25 24.3125 28.960938 25.25 28.15625 L 28.40625 25 C 29.234375 24.171875 29.234375 22.734375 28.40625 21.90625 L 24.34375 17.84375 L 24.3125 17.78125 C 23.484375 16.953125 22.015625 16.953125 21.1875 17.78125 L 19.1875 19.78125 C 18.464844 19.433594 16.742188 18.542969 15.09375 16.96875 C 13.457031 15.40625 12.621094 13.609375 12.3125 12.90625 L 14.3125 10.90625 C 15.152344 10.066406 15.167969 8.667969 14.28125 7.84375 L 14.3125 7.8125 L 14.21875 7.71875 L 10.21875 3.59375 L 10.1875 3.5625 L 10.125 3.53125 C 9.695313 3.1875 9.179688 3 8.65625 3 Z M 8.65625 5 C 8.730469 5 8.804688 5.035156 8.875 5.09375 L 12.875 9.1875 L 12.96875 9.28125 C 12.960938 9.273438 13.027344 9.378906 12.90625 9.5 L 10.40625 12 L 9.9375 12.4375 L 10.15625 13.0625 C 10.15625 13.0625 11.304688 16.136719 13.71875 18.4375 L 13.9375 18.625 C 16.261719 20.746094 19 21.90625 19 21.90625 L 19.625 22.1875 L 22.59375 19.21875 C 22.765625 19.046875 22.734375 19.046875 22.90625 19.21875 L 27 23.3125 C 27.171875 23.484375 27.171875 23.421875 27 23.59375 L 23.9375 26.65625 C 23.476563 27.050781 22.988281 27.132813 22.40625 26.9375 C 20.140625 26.046875 15.738281 24.113281 11.8125 20.1875 C 7.855469 16.230469 5.789063 11.742188 5.03125 9.5625 C 4.878906 9.15625 4.988281 8.554688 5.34375 8.25 L 5.40625 8.1875 L 8.4375 5.09375 C 8.507813 5.035156 8.582031 5 8.65625 5 Z" />
       </svg>
       <div class="leading-5">
-        <strong>Liên hệ</strong>
+        <strong>{{ language.layout.header.Call }}</strong>
         <br />
         <a class="text-sm text-white" href="tel:{{parameter.phone}}">{{parameter.phone}}</a>
       </div>
@@ -302,8 +303,8 @@
 <!-- contact  -->
 <section class="bg-[url('assets/images/partner.jpg')] w-full bg-cover bg-center">
   <div class="container px-6 mx-auto sm:py-24 py-10">
-    <p class="text-blue-500 uppercase font-bold text-center mb-4">{{ t 'client.page.footer.Partners and Customers' }}</p>
-    <h2 class="text-3xl text-blue-900 text-center font-bold">{{ t 'client.page.footer.Our Support Partner' }}</h2>
+    <p class="text-blue-500 uppercase font-bold text-center mb-4">{{ language.layout.footer.PartnersAndCustomers }}</p>
+    <h2 class="text-3xl text-blue-900 text-center font-bold">{{ language.layout.footer.OurSupportPartner }}</h2>
     <div class="swiper swiperSectionContact mt-14 pb-10">
       <div class="swiper-wrapper pb-10">
         {{#each partner}}
@@ -317,8 +318,8 @@
     </div>
     <div id="form-contact-us" class="bg-gray-100 bg-opacity-80 rounded-3xl px-10 pt-10 pb-7 mt-14 xl:flex">
       <div class="xl:w-1/3 xl:pr-14">
-        <h2 class="text-4xl text-blue-500 font-bold mb-4">{{ t 'client.page.footer.Contact' }}</h2>
-        <p class="mb-4">{{ t 'client.page.footer.Questions or concerns' }}</p>
+        <h2 class="text-4xl text-blue-500 font-bold mb-4">{{ language.layout.footer.Contact }}</h2>
+        <p class="mb-4">{{ language.layout.footer.QuestionsOrConcerns }}</p>
       </div>
       <div class="xl:w-2/3">
         <form class="grid grid-cols-12 gap-x-5">
@@ -327,42 +328,42 @@
               <label class="font-medium text-zinc-600">Tên</label>
             </div> -->
             <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ t 'client.page.footer.First Name' }}" />
+                   placeholder="{{ language.layout.footer.FirstName }}" />
           </div>
           <div class="col-span-12 sm:col-span-6 mb-4">
             <!-- <div class="pb-2 text-start">
               <label class="font-medium text-zinc-600">Họ</label>
             </div> -->
             <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ t 'client.page.footer.Last Name' }}" />
+                   placeholder="{{ language.layout.footer.LastName }}" />
           </div>
           <div class="col-span-12 sm:col-span-6 mb-4">
             <!-- <div class="pb-2 text-start">
               <label class="font-medium text-zinc-600">Số điện thoại</label>
             </div> -->
             <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ t 'client.page.footer.Phone Number' }}" />
+                   placeholder="{{ language.layout.footer.PhoneNumber }}" />
           </div>
           <div class="col-span-12 sm:col-span-6 mb-4">
             <!-- <div class="pb-2 text-start">
               <label class="font-medium text-zinc-600">Email</label>
             </div> -->
             <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ t 'client.page.footer.Email' }}" />
+                   placeholder="{{ language.layout.footer.Email }}" />
           </div>
           <div class="col-span-12 mb-4">
             <!-- <div class="pb-2 text-start">
               <label class="font-medium text-zinc-600">Nội dung</label>
             </div> -->
             <textarea class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
-                      placeholder="{{ t 'client.page.footer.Message' }}" rows="4"></textarea>
+                      placeholder="{{ language.layout.footer.Message }}" rows="4"></textarea>
           </div>
         </form>
         <div class="flex w-full justify-center">
           <div class="flex gap-2">
-            <button type="submit" title="{{ t 'client.page.footer.Submit now' }}"
+            <button type="submit" title="{{ language.layout.footer.SubmitNow }}"
                     class="inline-flex items-center rounded-3xl border border-transparent bg-blue-500 text-white px-10 py-3 font-medium w-full justify-center"
-                    id="idSubmit">{{ t 'client.page.footer.Submit now' }}</button>
+                    id="idSubmit">{{ language.layout.footer.SubmitNow }}</button>
           </div>
         </div>
       </div>
@@ -402,49 +403,49 @@
       </div>
       <div class='mb-4 xl:mb-0'>
         <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
-          {{ t 'client.page.footer.Our Services' }}
+          {{ language.layout.footer.OurServices }}
           <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
         </h3>
         <div class='leading-10'>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.page.footer.Digital transformation' }}
+            {{ language.layout.footer.DigitalTransformation }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.page.footer.R&D services' }}
+            {{ language.layout.footer.RDServices }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.page.footer.Outsourcing services' }}
+            {{ language.layout.footer.OutsourcingServices }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.page.footer.Product development' }}
+            {{ language.layout.footer.ProductDevelopment }}
           </a>
         </div>
       </div>
 
       <div class='mb-4 xl:mb-0'>
         <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
-          {{ t 'client.page.footer.Useful Links' }}
+          {{ language.layout.footer.UsefulLinks }}
           <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
         </h3>
         <div class='leading-10'>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.layout.header.Home' }}
+            {{ language.layout.header.Home }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.layout.header.About' }}
+            {{ language.layout.header.About }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.layout.header.News' }}
+            {{ language.layout.header.News }}
           </a>
           <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ t 'client.layout.header.Projects' }}
+            {{ language.layout.header.Projects }}
           </a>
         </div>
       </div>
       <div class='mb-4 xl:mb-0'>
         <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
           <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
-          {{ t 'client.layout.header.Contact Us' }}
+          {{ language.layout.header.ContactUs }}
         </h3>
 
         <div class='flex flex-col gap-6'>
@@ -487,7 +488,7 @@
   <div class="py-8 text-center border-t border-sky-800">
     <div class="max-w-screen-xl px-6 mx-auto py-5">
       <div class="lg:flex items-center justify-center">
-        <p class="text-white leading-7 m-0">{{ t 'client.layout.footer.copyright' language }}</p>
+        <p class="text-white leading-7 m-0">{{ language.layout.footer.Copyright }}</p>
       </div>
     </div>
   </div>
