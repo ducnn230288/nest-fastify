@@ -69,7 +69,6 @@ export class AppController {
             OutsourcingServices: i18n.t('client.layout.footer.OutsourcingServices', { lang: language }),
             ProductDevelopment: i18n.t('client.layout.footer.ProductDevelopment', { lang: language }),
             UsefulLinks: i18n.t('client.layout.footer.UsefulLinks', { lang: language }),
-            GetInTouch: i18n.t('client.layout.footer.GetInTouch', { lang: language }),
             Copyright: i18n.t('client.layout.footer.Copyright', {
               lang: language,
               args: { year: new Date().getFullYear() },
@@ -99,7 +98,6 @@ export class AppController {
             CoreValue: i18n.t('client.page.home.CoreValue', { lang: language }),
             ExecutiveBoard: i18n.t('client.page.home.ExecutiveBoard', { lang: language }),
             WeLove: i18n.t('client.page.home.WeLove', { lang: language }),
-            SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
           },
         },
       },
@@ -119,6 +117,7 @@ export class AppController {
       })),
       member: dataArray['member'].map((item) => ({
         ...item,
+        SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
         translation: item.translations?.filter((subItem) => subItem.language === language)[0],
       })),
     };
