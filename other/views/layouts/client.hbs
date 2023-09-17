@@ -138,10 +138,10 @@
               <li class="font-normal p-1 mb-1">{{ language.layout.header.OurCoreTeam }}</li>
             </ul>
           </div>
-        <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
+        <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
           {{ language.layout.header.News }}
           </a>
-        <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
+        <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
           {{ language.layout.header.Projects }}
           </a>
         <button class="text-white font-bold hover:text-white cursor-pointer">
@@ -157,7 +157,7 @@
         <img src='/images/{{lang}}.svg' alt="" class="h-6" />
         <ul
           class="bg-blue-400 text-white p-2 text-left text-sm absolute w-24 top-6 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-            <a href="/{{#if isEnglish}}vn{{else}}en{{/if}}" class="font-normal p-1">{{#if isEnglish}}{{ language.layout.header.Vietnamese }}{{else}}{{ language.layout.header.English }}{{/if}}</a>
+            <a href="{{urlLang}}" class="font-normal p-1">{{#if isEnglish}}{{ language.layout.header.Vietnamese }}{{else}}{{ language.layout.header.English }}{{/if}}</a>
 
         </ul>
       </div>
@@ -217,14 +217,14 @@
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
-      <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
+      <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white border-white py-3 flex justify-between border-b ">
         {{ language.layout.header.News }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
-      <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
+      <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white border-white py-3 flex justify-between border-b ">
         {{ language.layout.header.Projects }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
@@ -434,10 +434,10 @@
           <a class="text-white font-bold hover:text-white cursor-pointer block">
             {{ language.layout.header.About }}
           </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
+          <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
             {{ language.layout.header.News }}
           </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
+          <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
             {{ language.layout.header.Projects }}
           </a>
         </div>

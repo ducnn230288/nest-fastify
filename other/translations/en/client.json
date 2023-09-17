@@ -72,14 +72,14 @@
     "news": {
       "Title": "News",
       "Description": "We Update News Everyday.",
-      "Other Related News": "Other Related News",
-      "More Up To Date News": "More Up To Date News"
+      "OtherRelated": "Other Related News",
+      "MoreUpToDate": "More Up To Date News"
     },
     "projects": {
       "Title": "Successful Projects",
       "Description": "Our Projects With Partners",
-      "Other Related Projects": "Other Related Projects",
-      "More Projects With Partners": "More Projects With Partners"
+      "OtherRelated": "Other Related Projects",
+      "MoreUpToDate": "More Projects With Partners"
     }
   }
 }

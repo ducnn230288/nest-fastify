@@ -72,14 +72,14 @@
     "news": {
       "Title": "Tin tức",
       "Description": "Tin tức được cập nhật liên tục",
-      "Other Related News": "BÀI VIẾT LIÊN QUAN",
-      "More Up To Date News": "Thêm tin tức cập nhật"
+      "OtherRelated": "BÀI VIẾT LIÊN QUAN",
+      "MoreUpToDate": "Thêm tin tức cập nhật"
     },
     "projects": {
       "Title": "Dự án thành công",
       "Description": "Các dự án của chúng tôi với các đối tác",
-      "Other Related Projects": "DỰ ÁN LIÊN QUAN",
-      "More Projects With Partners": "Nhiều dự án với các đối tác"
+      "OtherRelated": "DỰ ÁN LIÊN QUAN",
+      "MoreUpToDate": "Nhiều dự án với các đối tác"
     }
   }
 }
