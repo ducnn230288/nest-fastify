@@ -1,10 +1,11 @@
 import { Get, Controller, Render, Req, Post, Res, Param } from '@nestjs/common';
+import { I18nContext } from 'nestjs-i18n';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { DataService, ParameterService, PostService } from '@service';
-import { DataDto, PostDto } from '@dto';
-import { I18n, I18nContext } from 'nestjs-i18n';
-import { Data } from '@model';
 import dayjs from 'dayjs';
+
+import { DataService, ParameterService, PostService } from '@service';
+import { Data } from '@model';
+import { DataDto, PostDto } from '@dto';
 
 @Controller()
 export class AppController {
@@ -16,7 +17,8 @@ export class AppController {
 
   @Get('')
   @Render('index')
-  async root(@I18n() i18n: I18nContext, language: string = 'vn', urlLang = '/en/'): Promise<IHome> {
+  async root(language: string = 'vn', urlLang = '/en'): Promise<IHome> {
+    const i18n = I18nContext.current()!;
     const { data, dataArray } = await this.common(language, ['mission', 'services', 'value', 'member']);
     return {
       urlLang,
@@ -24,29 +26,27 @@ export class AppController {
       language: {
         ...data.language,
         page: {
-          home: {
-            EnhanceVietnam: i18n.t('client.page.home.EnhanceVietnam', { lang: language }),
-            ChooseService: i18n.t('client.page.home.ChooseService', { lang: language }),
-            DigitalTransformation: i18n.t('client.page.home.DigitalTransformation', { lang: language }),
-            RDServices: i18n.t('client.page.home.RDServices', { lang: language }),
-            OutsourcingServices: i18n.t('client.page.home.OutsourcingServices', { lang: language }),
-            ProductDevelopment: i18n.t('client.page.home.ProductDevelopment', { lang: language }),
-            GetStarted: i18n.t('client.page.home.GetStarted', { lang: language }),
-            ABOUT: i18n.t('client.page.home.ABOUT', { lang: language }),
-            ARIIs: i18n.t('client.page.home.ARIIs', { lang: language }),
-            BestTechnicalAgency: i18n.t('client.page.home.BestTechnicalAgency', { lang: language }),
-            About1: i18n.t('client.page.home.About1', { lang: language }),
-            About2: i18n.t('client.page.home.About2', { lang: language }),
-            About3: i18n.t('client.page.home.About3', { lang: language }),
-            OurMission: i18n.t('client.page.home.OurMission', { lang: language }),
-            WeProvide: i18n.t('client.page.home.WeProvide', { lang: language }),
-            Services: i18n.t('client.page.home.Services', { lang: language }),
-            ARightChoice: i18n.t('client.page.home.ARightChoice', { lang: language }),
-            ARINotStrives: i18n.t('client.page.home.ARINotStrives', { lang: language }),
-            CoreValue: i18n.t('client.page.home.CoreValue', { lang: language }),
-            ExecutiveBoard: i18n.t('client.page.home.ExecutiveBoard', { lang: language }),
-            WeLove: i18n.t('client.page.home.WeLove', { lang: language }),
-          },
+          EnhanceVietnam: i18n.t('client.page.home.EnhanceVietnam', { lang: language }),
+          ChooseService: i18n.t('client.page.home.ChooseService', { lang: language }),
+          DigitalTransformation: i18n.t('client.page.home.DigitalTransformation', { lang: language }),
+          RDServices: i18n.t('client.page.home.RDServices', { lang: language }),
+          OutsourcingServices: i18n.t('client.page.home.OutsourcingServices', { lang: language }),
+          ProductDevelopment: i18n.t('client.page.home.ProductDevelopment', { lang: language }),
+          GetStarted: i18n.t('client.page.home.GetStarted', { lang: language }),
+          ABOUT: i18n.t('client.page.home.ABOUT', { lang: language }),
+          ARIIs: i18n.t('client.page.home.ARIIs', { lang: language }),
+          BestTechnicalAgency: i18n.t('client.page.home.BestTechnicalAgency', { lang: language }),
+          About1: i18n.t('client.page.home.About1', { lang: language }),
+          About2: i18n.t('client.page.home.About2', { lang: language }),
+          About3: i18n.t('client.page.home.About3', { lang: language }),
+          OurMission: i18n.t('client.page.home.OurMission', { lang: language }),
+          WeProvide: i18n.t('client.page.home.WeProvide', { lang: language }),
+          Services: i18n.t('client.page.home.Services', { lang: language }),
+          ARightChoice: i18n.t('client.page.home.ARightChoice', { lang: language }),
+          ARINotStrives: i18n.t('client.page.home.ARINotStrives', { lang: language }),
+          CoreValue: i18n.t('client.page.home.CoreValue', { lang: language }),
+          ExecutiveBoard: i18n.t('client.page.home.ExecutiveBoard', { lang: language }),
+          WeLove: i18n.t('client.page.home.WeLove', { lang: language }),
         },
       },
       mission: dataArray['mission'].map((item) => ({
@@ -69,21 +69,21 @@ export class AppController {
     };
   }
 
-  @Get('en')
+  @Get('/en')
   @Render('index')
-  async rootLang(@I18n() i18n: I18nContext): Promise<IHome> {
-    return await this.root(i18n, 'en', '/');
+  async rootLang(): Promise<IHome> {
+    return await this.root('en', '/');
   }
 
-  @Get('/tin-tuc/')
+  @Get('/tin-tuc')
   @Render('post/list')
   async news(
-    @I18n() i18n: I18nContext,
     language: string = 'vn',
     type = 'news',
     url: string = '/tin-tuc/',
-    urlLang = '/en/news/',
+    urlLang = '/en/news',
   ): Promise<IListPost> {
+    const i18n = I18nContext.current()!;
     const { data } = await this.common(language);
     const postArray = await this.postService.findArrayCode([type]);
     return {
@@ -92,12 +92,8 @@ export class AppController {
       language: {
         ...data.language,
         page: {
-          news: {
-            Title: i18n.t(`client.page.${type}.Title`, { lang: language }),
-            Description: i18n.t(`client.page.${type}.Description`, { lang: language }),
-            OtherRelated: i18n.t(`client.page.${type}.OtherRelated`, { lang: language }),
-            MoreUpToDate: i18n.t(`client.page.${type}.MoreUpToDate`, { lang: language }),
-          },
+          Title: i18n.t(`client.page.${type}.Title`, { lang: language }),
+          Description: i18n.t(`client.page.${type}.Description`, { lang: language }),
         },
       },
       post: postArray[type].map((item) => {
@@ -113,28 +109,27 @@ export class AppController {
       }),
     };
   }
-  @Get('/en/news/')
+  @Get('/en/news')
   @Render('post/list')
-  async newsEn(@I18n() i18n: I18nContext): Promise<IListPost> {
-    return await this.news(i18n, 'en', 'news', '/en/news/', '/tin-tuc/');
+  async newsEn(): Promise<IListPost> {
+    return await this.news('en', 'news', '/en/news/', '/tin-tuc');
   }
 
-  @Get('/du-an/')
+  @Get('/du-an')
   @Render('post/list')
-  async projects(@I18n() i18n: I18nContext): Promise<IListPost> {
-    return await this.news(i18n, 'vn', 'projects', '/du-an/', '/en/projects/');
+  async projects(): Promise<IListPost> {
+    return await this.news('vn', 'projects', '/du-an/', '/en/projects');
   }
 
-  @Get('/en/projects/')
+  @Get('/en/projects')
   @Render('post/list')
-  async projectsEn(@I18n() i18n: I18nContext): Promise<IListPost> {
-    return await this.news(i18n, 'en', 'projects', '/en/projects/', '/du-an/');
+  async projectsEn(): Promise<IListPost> {
+    return await this.news('en', 'projects', '/en/projects/', '/du-an');
   }
 
-  @Get('/tin-tuc/:slug/')
+  @Get('/tin-tuc/:slug')
   @Render('post/detail')
   async newsDetail(
-    @I18n() i18n: I18nContext,
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
     language: string = 'vn',
@@ -142,6 +137,7 @@ export class AppController {
     url: string = '/tin-tuc/',
     urlLang = '/en/news/',
   ): Promise<IPost | void> {
+    const i18n = I18nContext.current()!;
     const { data } = await this.common(language);
     const post = await this.postService.findSlug(slug);
     if (!post) res.redirect(404, '/404');
@@ -154,12 +150,9 @@ export class AppController {
         language: {
           ...data.language,
           page: {
-            news: {
-              Title: i18n.t(`client.page.${type}.Title`, { lang: language }),
-              Description: i18n.t(`client.page.${type}.Description`, { lang: language }),
-              OtherRelated: i18n.t(`client.page.${type}.OtherRelated`, { lang: language }),
-              MoreUpToDate: i18n.t(`client.page.${type}.MoreUpToDate`, { lang: language }),
-            },
+            Title: i18n.t(`client.page.${type}.Title`, { lang: language }),
+            Description: i18n.t(`client.page.${type}.Description`, { lang: language }),
+            OtherRelated: i18n.t(`client.page.${type}.OtherRelated`, { lang: language }),
           },
         },
         post: postArray[type].map((item) => {
@@ -178,7 +171,6 @@ export class AppController {
           ...post,
           translation: {
             ...translation,
-
             slug: url + translation!.slug,
             content: this.renderEditor(translation!.content!.blocks),
           },
@@ -186,34 +178,88 @@ export class AppController {
       };
     }
   }
-  @Get('/en/news/:slug/')
+  @Get('/en/news/:slug')
   @Render('post/detail')
   async newsDetailEn(
-    @I18n() i18n: I18nContext,
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<IPost | void> {
-    return await this.newsDetail(i18n, slug, res, 'en', 'news', '/en/news/', '/tin-tuc/');
+    return await this.newsDetail(slug, res, 'en', 'news', '/en/news/', '/tin-tuc/');
   }
 
-  @Get('/du-an/:slug/')
+  @Get('/du-an/:slug')
   @Render('post/detail')
   async projectsDetail(
-    @I18n() i18n: I18nContext,
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<IPost | void> {
-    return await this.newsDetail(i18n, slug, res, 'vn', 'projects', '/du-an/', '/en/projects/');
+    return await this.newsDetail(slug, res, 'vn', 'projects', '/du-an/', '/en/projects/');
   }
-  @Get('/en/projects/:slug/')
+  @Get('/en/projects/:slug')
   @Render('post/detail')
   async projectsDetailEn(
-    @I18n() i18n: I18nContext,
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<IPost | void> {
-    return await this.newsDetail(i18n, slug, res, 'en', 'projects', '/en/projects/', '/du-an/');
+    return await this.newsDetail(slug, res, 'en', 'projects', '/en/projects/', '/du-an/');
   }
+
+  @Get('/ve-cong-nghe')
+  @Render('about/tech')
+  async aboutTech(language: string = 'vn', urlLang = '/en/about-tech'): Promise<IAbout> {
+    const i18n = I18nContext.current()!;
+    const { data, dataArray } = await this.common(language, ['tech']);
+    return {
+      urlLang,
+      ...data,
+      language: {
+        ...data.language,
+        page: {
+          Title: i18n.t(`client.page.about.tech.Title`, { lang: language }),
+          Description: i18n.t(`client.page.about.tech.Description`, { lang: language }),
+        },
+      },
+      detail: dataArray['tech'],
+    };
+  }
+
+  @Get('/en/about-tech')
+  @Render('about/tech')
+  async aboutTechEn(): Promise<IAbout> {
+    return await this.aboutTech('en', '/ve-cong-nghe');
+  }
+
+  @Get('/doi-ngu-phat-trien-chinh')
+  @Render('about/member')
+  async aboutCoreMember(language: string = 'vn', urlLang = '/en/about-core-member'): Promise<IAbout> {
+    const i18n = I18nContext.current()!;
+    const { data, dataArray } = await this.common(language, ['member']);
+    return {
+      urlLang,
+      ...data,
+      language: {
+        ...data.language,
+        page: {
+          Title: i18n.t(`client.page.about.member.Title`, { lang: language }),
+          Description: i18n.t(`client.page.about.member.Description`, { lang: language }),
+        },
+      },
+      detail: dataArray['member']
+        .filter((item) => item.order === null || item.order! > 5)
+        .map((item) => ({
+          ...item,
+          SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
+          translation: item.translations?.filter((subItem) => subItem.language === language)[0],
+        })),
+    };
+  }
+
+  @Get('/en/about-core-member')
+  @Render('about/member')
+  async aboutCoreMemberEn(): Promise<IAbout> {
+    return await this.aboutCoreMember('en', '/doi-ngu-phat-trien-chinh');
+  }
+
   @Post('/')
   login(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
     req.session.set('data', 'req.body');
@@ -345,4 +391,8 @@ interface IEditor {
     withBackground?: boolean;
   };
   type: string;
+}
+interface IAbout extends ICommon {
+  urlLang: string;
+  detail: DataDto[];
 }

@@ -3,8 +3,8 @@
     <section id='title' class="relative xl:-mt-7 overflow-hidden">
       <div class="container h-[350px] px-6 mx-auto flex items-center text-right justify-end">
         <div>
-          <h1 class="text-4xl text-blue-500 leading-none mt-8 font-black gsap right">{{ language.page.news.Title }}</h1>
-          <p class="text-gray-200 text-xl max-w-[600px] mt-2 gsap right">{{ language.page.news.Description }}</p>
+          <h1 class="text-4xl text-blue-500 leading-none mt-8 font-black gsap right">{{ language.page.Title }}</h1>
+          <p class="text-gray-200 text-xl max-w-[600px] mt-2 gsap right">{{ language.page.Description }}</p>
         </div>
       </div>
       <img alt="{{title}}" class='lazy gsap zoom w-full h-[350px] object-cover absolute top-0 left-0 -z-10'
@@ -24,7 +24,7 @@
             </div>
             <div class="sm:w-3/5 p-8">
               <a
-                href="/tin-tuc/{{translation.slug}}"
+                href="{{translation.slug}}"
                 class="font-bold text-xl text-sky-800 hover:text-sky-900 mb-2 line-clamp-2 h-14 text-left">
                 {{translation.name}}
               </a>

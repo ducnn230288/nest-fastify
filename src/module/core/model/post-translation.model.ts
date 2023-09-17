@@ -1,7 +1,7 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 import { Post } from '@model';
@@ -29,6 +29,7 @@ export class PostTranslation extends Base {
   @ApiProperty({ example: faker.lorem.slug(), description: '' })
   @IsString()
   @IsOptional()
+  @MaxLength(100)
   slug: string;
 
   @Column({

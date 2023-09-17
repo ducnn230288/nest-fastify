@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsString, MaxLength } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 import { Code } from '@model';
@@ -18,6 +18,7 @@ export class CodeType extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
   @IsString()
+  @MaxLength(100)
   code: string;
 
   @Column({ default: false })
