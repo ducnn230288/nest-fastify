@@ -80,9 +80,9 @@
 <body>
 <!-- header -->
 <div class="max-w-screen-2xl px-6 mx-auto py-5 items-center justify-between hidden lg:flex">
-  <div class="flex items-center">
+  <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="flex items-center">
     <img src="/images/logo.svg" class="h-12 lg:h-14" alt="logo" />
-  </div>
+  </a>
   <div class="flex items-center">
     <div class="flex items-center pr-5 mr-5 border-r">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
@@ -127,15 +127,15 @@
   <div class="max-w-screen-2xl mx-auto py-4 pl-5 pr-4 flex items-center justify-between bg-blue-500">
     <div class="text-center hidden lg:block">
       <div class="flex gap-10 font-bold items-center">
-          <a href="#" class="text-white font-bold hover:text-white cursor-pointer">
+          <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
             {{ language.layout.header.Home }}
           </a>
         <div class="text-white font-bold hover:text-white cursor-pointer relative group">
             {{ language.layout.header.About }}
             <ul
               class="bg-blue-400 p-2 text-left text-sm absolute w-44 top-7 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-              <li class="font-normal p-1 mb-2">{{ language.layout.header.AboutTech }}</li>
-              <li class="font-normal p-1 mb-1">{{ language.layout.header.OurCoreTeam }}</li>
+              <a href="{{#if isEnglish}}/en/about-tech{{else}}/ve-cong-nghe{{/if}}" class="font-normal p-1 mb-2 block">{{ language.layout.header.AboutTech }}</a>
+              <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="font-normal p-1 mb-1 block">{{ language.layout.header.OurCoreTeam }}</a>
             </ul>
           </div>
         <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
@@ -149,9 +149,9 @@
           </button>
       </div>
     </div>
-    <div class="flex items-center lg:hidden">
+    <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="flex items-center lg:hidden">
       <img src="/images/logo.svg" class="h-12" alt="logo" />
-    </div>
+    </a>
     <div class="flex items-center mr-12 lg:mr-0 pr-3 lg:pr-0 border-r lg:border-none border-white">
       <div class="lg:mr-4 lg:border-r lg:pr-4 relative group">
         <img src='/images/{{lang}}.svg' alt="" class="h-6" />
@@ -200,17 +200,17 @@
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
-      <a href="#" class="text-white border-white py-3 flex justify-between">
+      <a class="text-white border-white py-3 flex justify-between">
         {{ language.layout.header.About }}
       </a>
-      <a href="#" class="text-white border-white py-3 flex justify-between pl-5 ">
+      <a href="{{#if isEnglish}}/en/about-tech{{else}}/ve-cong-nghe{{/if}}" class="text-white border-white py-3 flex justify-between pl-5 ">
         {{ language.layout.header.AboutTech }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
             d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
         </svg>
       </a>
-      <a href="#" class="text-white border-white py-3 flex justify-between pl-5 ">
+      <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="text-white border-white py-3 flex justify-between pl-5 ">
         {{ language.layout.header.OurCoreTeam }}
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
           <path
@@ -309,8 +309,8 @@
       <div class="swiper-wrapper pb-10">
         {{#each partner}}
           <div class="swiper-slide border border-gray-200 rounded-lg bg-white">
-            <img alt="{{this.name}}" class="lazy p-2 h-20 w-full"
-                 data-src="{{this.image}}">
+            <img alt="{{name}}" class="lazy p-2 h-20 w-full"
+                 data-src="{{image}}">
           </div>
         {{/each}}
       </div>
@@ -428,11 +428,11 @@
           <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
         </h3>
         <div class='leading-10'>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
+          <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
             {{ language.layout.header.Home }}
           </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.header.About }}
+          <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
+            {{ language.layout.header.OurCoreTeam }}
           </a>
           <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
             {{ language.layout.header.News }}

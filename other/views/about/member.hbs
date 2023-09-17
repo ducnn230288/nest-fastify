@@ -1,0 +1,31 @@
+{{#> client}}
+  {{#*inline "content"}}
+    <section id='title' class="relative xl:-mt-7 overflow-hidden">
+      <div class="container h-[350px] px-6 mx-auto flex items-center text-right justify-end">
+        <div>
+          <h1 class="text-4xl text-blue-500 leading-none mt-8 font-black gsap right">{{ language.page.Title }}</h1>
+          <p class="text-gray-200 text-xl max-w-[600px] mt-2 gsap right">{{ language.page.Description }}</p>
+        </div>
+      </div>
+      <img alt="{{title}}" class='lazy gsap zoom w-full h-[350px] object-cover absolute top-0 left-0 -z-10'
+           data-src='/images/header.jpg'/>
+
+    </section>
+    <section class="bg-white w-full">
+      <div class="container px-6 mx-auto sm:py-24 py-10">
+        <div class="mb-10 grid gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
+          {{#each detail}}
+              <div class="drop-shadow bg-white rounded-xl p-5 hover:scale-110 duration-500 transition-all ease-in-out text-center lg:text-left cursor-pointer">
+                  <img alt="{{name}}" class="lazy h-20 mb-5 mx-auto" data-src="{{image}}" />
+                  <h3 class="text-xl sm:text-2xl text-blue-500 gsap top font-medium text-center">{{translation.name}}</h3>
+                  <p class="text-blue-900 text-lg mb-2 uppercase text-center">{{translation.position}}</p>
+                  <p class="text-sm">{{translation.description}}</p>
+              </div>
+          {{/each}}
+        </div>
+      </div>
+
+    </section>
+
+  {{/inline}}
+{{/client}}

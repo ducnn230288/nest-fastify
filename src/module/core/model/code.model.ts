@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { CodeType, User } from '@model';
@@ -18,6 +18,7 @@ export class Code extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
   @IsString()
+  @MaxLength(100)
   type: string;
 
   @Column()
