@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
 
 import { CreatePostRequestDto, UpdatePostRequestDto } from '@dto';
-import { Data, Post } from '@model';
+import { Post } from '@model';
 import { PostRepository, PostTranslationRepository } from '@repository';
 import { BaseService, getImages } from '@shared';
 import { FileService } from './file.service';
@@ -26,11 +25,11 @@ export class PostService extends BaseService<Post> {
   /**
    *
    * @param types
-   * @returns { [p]: Data[] }
+   * @returns { [p]: Post[] }
    *
    */
-  async findArrayCode(types: string[]): Promise<{ [p: string]: Data[] }> {
-    const tempData: { [key: string]: Data[] } = {};
+  async findArrayCode(types: string[]): Promise<{ [p: string]: Post[] }> {
+    const tempData: { [key: string]: Post[] } = {};
     for (const type of types) {
       tempData[type] = (await this.findAll({ filter: { type, isDisabled: 'NULL' }, sorts: { createdAt: 'DESC' } }))[0];
     }
