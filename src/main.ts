@@ -47,6 +47,12 @@ async function bootstrap(): Promise<void> {
   await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
   app.useStaticAssets({ root: join(process.cwd(), './other', 'public') });
   hbs.registerPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbs.registerHelper('json', function (context) {
+    return JSON.stringify(context);
+  });
+  hbs.registerHelper('raw-helper', function (options) {
+    return options.fn();
+  });
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   app.setViewEngine({
     engine: { handlebars: hbs },
