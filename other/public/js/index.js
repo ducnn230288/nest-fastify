@@ -27,7 +27,7 @@
     fetch(n.href, o);
   }
 })();
-const g = {
+const y = {
     success: ({
       text: e = '',
       title: r = 'Success',
@@ -128,8 +128,8 @@ const g = {
       }),
     html: (e) => Swal.fire({ html: e, showConfirmButton: !1, padding: 0 }),
   },
-  y = 'm8nvn*&hKwcgb^D-D#Hz^5CXfKySpY',
-  S = 'b7a2bdf4-ac40-4012-9635-ff4b7e55eae0',
+  S = 'm8nvn*&hKwcgb^D-D#Hz^5CXfKySpY',
+  E = 'b7a2bdf4-ac40-4012-9635-ff4b7e55eae0',
   b = 'http://dev1.geneat.vn:7100/api/v1',
   d = {
     init: () => ({
@@ -138,7 +138,7 @@ const g = {
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
-        authorization: 'Bearer ' + (localStorage.getItem(S) || ''),
+        authorization: 'Bearer ' + (localStorage.getItem(E) || ''),
         'Accept-Language': localStorage.getItem('i18nextLng') || '',
       },
       redirect: 'follow',
@@ -151,14 +151,14 @@ const g = {
           .join('&'),
         o = await fetch(b + e + (n && '?' + n), t),
         s = await o.json();
-      return o.ok ? s : (o.status === 401 && (localStorage.removeItem(y), location.reload()), {});
+      return o.ok ? s : (o.status === 401 && (localStorage.removeItem(S), location.reload()), {});
     },
     get: (e, r = {}, t) => d.responsible(e, r, { ...d.init(), method: 'GET' }, t),
     post: (e, r = {}, t = {}, i) => d.responsible(e, t, { ...d.init(), method: 'POST', body: JSON.stringify(r) }, i),
     put: (e, r = {}, t = {}, i) => d.responsible(e, t, { ...d.init(), method: 'PUT', body: JSON.stringify(r) }, i),
     delete: (e, r = {}, t) => d.responsible(e, r, { ...d.init(), method: 'DELETE' }, t),
   },
-  E = () => {
+  g = () => {
     (window._FORM_ = {}),
       (window._FORMSTATUS_ = {}),
       (window._SELECT_ = {}),
@@ -167,7 +167,7 @@ const g = {
           (window._FORMSTATUS_[e.name] = !1),
           (window._SELECT_[e.name] = {}),
           e.addEventListener('submit', (r) => {
-            r.preventDefault(), L(e);
+            r.preventDefault(), _(e);
           }),
           Array.from(['input', 'textarea']).forEach((r) =>
             Array.from(e.querySelectorAll(r)).forEach((t) => {
@@ -183,7 +183,7 @@ const g = {
           );
       });
   },
-  L = (e) => (
+  _ = (e) => (
     Array.from(['input', 'textarea']).forEach((r) =>
       e.querySelectorAll('.group > ' + r).forEach((t) => {
         m(t, r, 'blur', e.name);
@@ -210,7 +210,7 @@ const g = {
               e.name.indexOf('[]') === -1
                 ? e.value
                 : [].filter.call(document.getElementsByName(e.name), (a) => a.checked).map((a) => a.value)));
-      const s = O(e, i, n),
+      const s = L(e, i, n),
         c = gsap.timeline({ defaults: { duration: 0.3, ease: 'power1.inOut' } }),
         u = o.querySelector('p');
       if (s)
@@ -243,22 +243,22 @@ const g = {
       }
     }
   },
-  O = ({ value: e, required: r, type: t, name: i, dataset: n }, o, s) => (
+  L = ({ value: e, required: r, type: t, name: i, dataset: n }, o, s) => (
     (s || (t === 'checkbox' && i.indexOf('[]') > -1)) && (e = window._FORM_[o][i.replace('[]', '')]),
     !e && r && i.indexOf('[]') === -1
-      ? 'Xin vui lòng nhập nội dung'
-      : e && t === 'email' && !_.test(e.trim())
-      ? 'Xin vui lòng nhập địa chỉ email hợp lệ!'
+      ? window._MESSAGE_.required
+      : e && t === 'email' && !A.test(e.trim())
+      ? window._MESSAGE_.email
       : t === 'checkbox' &&
         i.indexOf('[]') > -1 &&
         n.hasOwnProperty('mincheck') &&
         (!e || e.length < parseInt(n.mincheck))
-      ? 'Xin vui lòng chọn ít nhất ' + n.mincheck
+      ? window._MESSAGE_.mincheck + n.mincheck
       : ''
   ),
-  _ =
+  A =
     /^(([^<>()[\]\\.,;:$%^&*\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  A = (e) => {
+  O = (e) => {
     Array.from(e).forEach((r) =>
       r.addEventListener('click', () => {
         w(document.getElementById('hamburger'), ['body-menu-opened']),
@@ -311,10 +311,11 @@ const g = {
         breakpoints: { 1024: { slidesPerView: 3 }, 640: { slidesPerView: 2 } },
       });
   };
-new LazyLoad({ callback_error: (e) => (e.src = 'https://via.placeholder.com/440x560/?text=Error') });
+new LazyLoad({ callback_error: (e) => (e.src = 'https://via.placeholder.com/1x1/?text=') });
 GLightbox({});
+g();
 window.API = d;
-window.Message = g;
-E();
-A(document.getElementsByClassName('handle-menu'));
+window.Message = y;
+window.SetupFormValid = g;
+O(document.getElementsByClassName('handle-menu'));
 T();

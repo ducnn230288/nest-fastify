@@ -346,6 +346,11 @@ export class AppController {
                 args: { year: new Date().getFullYear() },
               }),
             },
+            validation: {
+              required: i18n.t('client.layout.validation.required', { lang: language }),
+              email: i18n.t('client.layout.validation.email', { lang: language }),
+              mincheck: i18n.t('client.layout.validation.mincheck', { lang: language }),
+            },
           },
         },
         parameter: returnParameter,

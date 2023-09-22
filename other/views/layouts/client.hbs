@@ -315,7 +315,7 @@
       <div class="swiper-wrapper pb-10">
         {{#each partner}}
           <div class="swiper-slide border border-gray-200 rounded-lg bg-white">
-            <img alt="{{name}}" class="lazy p-2 h-20 w-full"
+            <img alt="{{name}}" class="lazy p-2 h-20 w-full" src="/images/lazyload.png"
                  data-src="{{image}}">
           </div>
         {{/each}}
@@ -331,19 +331,25 @@
         <form
           class="grid grid-cols-2 gap-x-5"
           novalidate
-          name="register"
-          onsubmit="setTimeout(() => console.log(window._FORM_['register'], window._FORMSTATUS_['register']))"
+          name="send-email-contact"
+          onsubmit="setTimeout(() => {
+            if(window._FORMSTATUS_['send-email-contact']){
+              API.post('api/auth/send-email-contact', window._FORM_['send-email-contact']).then(e => {
+                Message.success({text: e.message}).then((e) => location.reload());
+              })
+            }
+          })"
         >
           <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="first-name" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+            <input name="firstName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
                    placeholder="{{ language.layout.footer.FirstName }}" required />
           </div>
           <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="last-name" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+            <input name="lastName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
                    placeholder="{{ language.layout.footer.LastName }}" required />
           </div>
           <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="phone-number" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+            <input name="phoneNumber" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
                    placeholder="{{ language.layout.footer.PhoneNumber }}" required />
           </div>
           <div class="group col-span-2 sm:col-span-1 mb-4">
@@ -351,7 +357,7 @@
                    placeholder="{{ language.layout.footer.Email }}" required />
           </div>
           <div class="group col-span-2 mb-4">
-            <textarea name="message" class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
+            <textarea name="description" class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
                       placeholder="{{ language.layout.footer.Message }}" rows="4" required></textarea>
           </div>
           <div class="col-span-2 flex w-full justify-center">
@@ -491,5 +497,12 @@
   </div>
 </footer>
 <script src="js/index.js"></script>
+<script type="application/javascript">
+  window._MESSAGE_ = {
+    required: '{{ language.layout.validation.required }}',
+    email: '{{ language.layout.validation.email }}',
+    mincheck: '{{ language.layout.validation.mincheck }}',
+  };
+</script>
 </body>
 </html>

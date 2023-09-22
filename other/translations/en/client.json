@@ -32,6 +32,11 @@
       "ProductDevelopment": "Product development",
       "UsefulLinks": "Useful Links",
       "Copyright": "Copyright ©{year} ARI Technology Co ., JSC. All rights reserved."
+    },
+    "validation": {
+      "required": "Please enter your content!",
+      "email": "Please enter a valid email address!",
+      "mincheck": "Please choose the least "
     }
   },
   "page": {
