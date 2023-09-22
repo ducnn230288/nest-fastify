@@ -8,13 +8,13 @@
         </div>
       </div>
       <img alt="{{title}}" class='lazy gsap zoom w-full h-[350px] object-cover absolute top-0 left-0 -z-10'
-           data-src='/images/header.jpg'/>
+           src='/images/header.jpg'/>
 
     </section>
     <section class="bg-white w-full">
       <div class="container px-6 mx-auto sm:py-24 py-10">
         <div class="mb-10 grid gap-5 sm:gap-20 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2">
-          {{#each detail}}
+          {{#each JSON.detail}}
               <div class="flex items-center justify-center sm:py-5">
                   <img alt="{{name}}" class="lazy object-contain w-full" data-src="{{image}}" />
               </div>

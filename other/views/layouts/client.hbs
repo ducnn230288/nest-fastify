@@ -75,6 +75,12 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
+  <!--  pretty checkbox 3 -->
+  <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3/dist/pretty-checkbox.min.css" rel="stylesheet">
+
+  <!--  choices.js 10 -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js@10/public/assets/scripts/choices.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/choices.js@10/public/assets/styles/choices.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -301,7 +307,7 @@
 </main>
 
 <!-- contact  -->
-<section class="bg-[url('assets/images/partner.jpg')] w-full bg-cover bg-center">
+<section class="bg-[url('/images/partner.jpg')] w-full bg-cover bg-center">
   <div class="container px-6 mx-auto sm:py-24 py-10">
     <p class="text-blue-500 uppercase font-bold text-center mb-4">{{ language.layout.footer.PartnersAndCustomers }}</p>
     <h2 class="text-3xl text-blue-900 text-center font-bold">{{ language.layout.footer.OurSupportPartner }}</h2>
@@ -309,7 +315,7 @@
       <div class="swiper-wrapper pb-10">
         {{#each partner}}
           <div class="swiper-slide border border-gray-200 rounded-lg bg-white">
-            <img alt="{{name}}" class="lazy p-2 h-20 w-full"
+            <img alt="{{name}}" class="lazy p-2 h-20 w-full" src="/images/lazyload.png"
                  data-src="{{image}}">
           </div>
         {{/each}}
@@ -322,50 +328,47 @@
         <p class="mb-4">{{ language.layout.footer.QuestionsOrConcerns }}</p>
       </div>
       <div class="xl:w-2/3">
-        <form class="grid grid-cols-12 gap-x-5">
-          <div class="col-span-12 sm:col-span-6 mb-4">
-            <!-- <div class="pb-2 text-start">
-              <label class="font-medium text-zinc-600">Tên</label>
-            </div> -->
-            <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.FirstName }}" />
+        <form
+          class="grid grid-cols-2 gap-x-5"
+          novalidate
+          name="send-email-contact"
+          onsubmit="setTimeout(() => {
+            if(window._FORMSTATUS_['send-email-contact']){
+              API.post('api/auth/send-email-contact', window._FORM_['send-email-contact']).then(e => {
+                Message.success({text: e.message}).then((e) => location.reload());
+              })
+            }
+          })"
+        >
+          <div class="group col-span-2 sm:col-span-1 mb-4">
+            <input name="firstName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+                   placeholder="{{ language.layout.footer.FirstName }}" required />
           </div>
-          <div class="col-span-12 sm:col-span-6 mb-4">
-            <!-- <div class="pb-2 text-start">
-              <label class="font-medium text-zinc-600">Họ</label>
-            </div> -->
-            <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.LastName }}" />
+          <div class="group col-span-2 sm:col-span-1 mb-4">
+            <input name="lastName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+                   placeholder="{{ language.layout.footer.LastName }}" required />
           </div>
-          <div class="col-span-12 sm:col-span-6 mb-4">
-            <!-- <div class="pb-2 text-start">
-              <label class="font-medium text-zinc-600">Số điện thoại</label>
-            </div> -->
-            <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.PhoneNumber }}" />
+          <div class="group col-span-2 sm:col-span-1 mb-4">
+            <input name="phoneNumber" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+                   placeholder="{{ language.layout.footer.PhoneNumber }}" required />
           </div>
-          <div class="col-span-12 sm:col-span-6 mb-4">
-            <!-- <div class="pb-2 text-start">
-              <label class="font-medium text-zinc-600">Email</label>
-            </div> -->
-            <input class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.Email }}" />
+          <div class="group col-span-2 sm:col-span-1 mb-4">
+            <input name="email" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
+                   placeholder="{{ language.layout.footer.Email }}" required />
           </div>
-          <div class="col-span-12 mb-4">
-            <!-- <div class="pb-2 text-start">
-              <label class="font-medium text-zinc-600">Nội dung</label>
-            </div> -->
-            <textarea class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
-                      placeholder="{{ language.layout.footer.Message }}" rows="4"></textarea>
+          <div class="group col-span-2 mb-4">
+            <textarea name="description" class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
+                      placeholder="{{ language.layout.footer.Message }}" rows="4" required></textarea>
+          </div>
+          <div class="col-span-2 flex w-full justify-center">
+            <div class="flex gap-2">
+              <button type="submit" title="{{ language.layout.footer.SubmitNow }}"
+                      class="inline-flex items-center rounded-3xl border border-transparent bg-blue-500 text-white px-10 py-3 font-medium w-full justify-center"
+                      id="idSubmit">{{ language.layout.footer.SubmitNow }}</button>
+            </div>
           </div>
         </form>
-        <div class="flex w-full justify-center">
-          <div class="flex gap-2">
-            <button type="submit" title="{{ language.layout.footer.SubmitNow }}"
-                    class="inline-flex items-center rounded-3xl border border-transparent bg-blue-500 text-white px-10 py-3 font-medium w-full justify-center"
-                    id="idSubmit">{{ language.layout.footer.SubmitNow }}</button>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -373,7 +376,7 @@
 
 <!-- footer  -->
 <footer
-  class="text-white font-medium bg-gray-900 bg-[url('assets/images/footer-shape.png')] bg-cover bg-[center_top_9rem] bg-no-repeat">
+  class="text-white font-medium bg-gray-900 bg-[url('/images/footer-shape.png')] bg-cover bg-[center_top_9rem] bg-no-repeat">
   <div class="container mx-auto px-6 py-28 leading-8">
     <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-8">
       <div class='mb-4 xl:mb-0'>
@@ -494,5 +497,12 @@
   </div>
 </footer>
 <script src="js/index.js"></script>
+<script type="application/javascript">
+  window._MESSAGE_ = {
+    required: '{{ language.layout.validation.required }}',
+    email: '{{ language.layout.validation.email }}',
+    mincheck: '{{ language.layout.validation.mincheck }}',
+  };
+</script>
 </body>
 </html>

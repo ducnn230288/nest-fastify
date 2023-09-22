@@ -29,6 +29,7 @@
 ## Installation
 
 ```bash
+$ npm install -g less tailwindcss
 $ npm install
 $ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 # Don't add passphrase

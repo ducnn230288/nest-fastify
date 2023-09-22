@@ -61,11 +61,19 @@ export class AppController {
         ...item,
         translation: item.translations?.filter((subItem) => subItem.language === language)[0],
       })),
-      member: dataArray['member'].map((item) => ({
-        ...item,
-        SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
+      JSON: {
+        member: dataArray['member'].map((item) => {
+          const translation = item.translations?.filter((subItem) => subItem.language === language)[0];
+          return {
+            ...item,
+            SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
+            translation: {
+              ...translation,
+              content: this.renderEditor(translation!.content!.blocks),
+            },
+          };
+        }),
+      },
     };
   }
 
@@ -219,7 +227,9 @@ export class AppController {
           Description: i18n.t(`client.page.about.tech.Description`, { lang: language }),
         },
       },
-      detail: dataArray['tech'],
+      JSON: {
+        detail: dataArray['tech'],
+      },
     };
   }
 
@@ -244,13 +254,22 @@ export class AppController {
           Description: i18n.t(`client.page.about.member.Description`, { lang: language }),
         },
       },
-      detail: dataArray['member']
-        .filter((item) => item.order === null || item.order! > 5)
-        .map((item) => ({
-          ...item,
-          SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
-          translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-        })),
+      JSON: {
+        detail: dataArray['member']
+          .filter((item) => item.order === null || item.order! > 5)
+          .map((item) => {
+            const translation = item.translations?.filter((subItem) => subItem.language === language)[0];
+
+            return {
+              ...item,
+              SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
+              translation: {
+                ...translation,
+                content: this.renderEditor(translation!.content!.blocks),
+              },
+            };
+          }),
+      },
     };
   }
 
@@ -327,6 +346,11 @@ export class AppController {
                 args: { year: new Date().getFullYear() },
               }),
             },
+            validation: {
+              required: i18n.t('client.layout.validation.required', { lang: language }),
+              email: i18n.t('client.layout.validation.email', { lang: language }),
+              mincheck: i18n.t('client.layout.validation.mincheck', { lang: language }),
+            },
           },
         },
         parameter: returnParameter,
@@ -336,21 +360,23 @@ export class AppController {
     };
   }
 
-  renderEditor(content: IEditor[]) {
-    return content.map(({ type, data }) => {
-      switch (type) {
-        case 'header':
-          return `<h${data.level}>${data.text}</h${data.level}>`;
-        case 'image':
-          return ` <a class="image glightbox" href=${data.file?.url} data-description=${
-            data.caption
-          }><img class="lazy" alt="${data.caption}" data-src="${data.file?.url}"/>${
-            data.caption ? '<span class="caption">' + data.caption + '</span>' : ''
-          }</a>`;
-        default:
-          return `<p>${data.text}</p>`;
-      }
-    });
+  renderEditor(content: IEditor[]): string {
+    return content
+      .map(({ type, data }) => {
+        switch (type) {
+          case 'header':
+            return `<h${data.level}>${data.text}</h${data.level}>`;
+          case 'image':
+            return ` <a class="image glightbox" href=${data.file?.url} data-description=${
+              data.caption
+            }><img class="lazy" alt="${data.caption}" data-src="${data.file?.url}"/>${
+              data.caption ? '<span class="caption">' + data.caption + '</span>' : ''
+            }</a>`;
+          default:
+            return `<p>${data.text}</p>`;
+        }
+      })
+      .join('');
   }
 }
 interface ICommon {
@@ -366,7 +392,9 @@ interface IHome extends ICommon {
   mission: DataDto[];
   services: DataDto[];
   value: DataDto[];
-  member: DataDto[];
+  JSON: {
+    member: DataDto[];
+  };
 }
 interface IListPost extends ICommon {
   urlLang: string;
@@ -394,5 +422,7 @@ interface IEditor {
 }
 interface IAbout extends ICommon {
   urlLang: string;
-  detail: DataDto[];
+  JSON: {
+    detail: DataDto[];
+  };
 }

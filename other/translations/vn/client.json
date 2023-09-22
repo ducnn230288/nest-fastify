@@ -32,6 +32,11 @@
       "ProductDevelopment": "Phát triển sản phẩm",
       "UsefulLinks": "Liên kết hữu ích",
       "Copyright": "Bản quyền ©{year} ARI Technology Co., JSC. Bảo lưu mọi quyền."
+    },
+    "validation": {
+      "required": "Xin vui lòng nhập nội dung!",
+      "email": "Xin vui lòng nhập địa chỉ email hợp lệ!",
+      "mincheck": "Xin vui lòng chọn ít nhất "
     }
   },
   "page": {

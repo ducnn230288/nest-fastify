@@ -8,22 +8,20 @@
         </div>
       </div>
       <img alt="{{title}}" class='lazy gsap zoom w-full h-[350px] object-cover absolute top-0 left-0 -z-10'
-           data-src='/images/header.jpg'/>
+           src='/images/header.jpg'/>
 
     </section>
     <section class="bg-white w-full">
       <div class="container px-6 mx-auto py-10">
         <h1 class="text-blue-800 text-4xl font-medium mb-7">{{detail.name}}</h1>
         <div class="html-render">
-          {{#each detail.translation.content}}
-            {{{this}}}
-          {{/each}}
+          {{{detail.translation.content}}}
         </div>
       </div>
 
     </section>
 
-    <section class="bg-[url('assets/images/home/team-bg3.jpg')]">
+    <section class="bg-[url('/images/home/team-bg3.jpg')]">
       <div class="max-w-screen-xl px-6 mx-auto pt-10 pb-24">
         <h2 class="text-4xl text-blue-900 font-bold text-center mb-4">{{language.page.OtherRelated}}</h2>
         <div class="swiper relatedSwiper">
@@ -49,7 +47,7 @@
                       {{createdAt}}
                     </p>
                     <p class="flex items-center">
-                      <a class="hover:text-sky-800 cursor-pointer" href="/tin-tuc/{{translation.slug}}">
+                      <a class="hover:text-sky-800 cursor-pointer" href="{{translation.slug}}">
                           {{SeeMore}}
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                          x="0px" y="0px" width="384px"
