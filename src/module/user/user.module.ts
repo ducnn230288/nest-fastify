@@ -7,7 +7,7 @@ import { appConfig } from '@config';
 import { AuthController, UserController, UserRoleController } from '@controller';
 import { User, UserRole } from '@model';
 import { AuthService, EmailService, FileService, UserRoleService, UserService } from '@service';
-import { FileRepository, UserRepository } from '@repository';
+import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
 
 import { AccessTokenStrategy } from './strategy/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
@@ -38,6 +38,8 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserRoleService,
     FileRepository,
     FileService,
+    UserTeamRepository,
+    DayoffRepository,
   ],
   exports: [UserService, UserRepository],
 })

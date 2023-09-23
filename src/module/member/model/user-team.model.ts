@@ -27,7 +27,7 @@ export class UserTeam extends Base {
   @Column({ nullable: true })
   @IsUUID()
   @IsOptional()
-  managerId: string;
+  managerId?: string;
 
   @ManyToMany(() => User, (user) => user.teams)
   @Type(() => User)

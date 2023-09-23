@@ -30,7 +30,6 @@ import {
   P_DAYOFF_UPDATE,
   P_DAYOFF_DELETE,
   P_DAYOFF_UPDATE_STATUS,
-  P_DAYOFF_EXPORT_EXCEL,
 } from '@service';
 
 @Headers('dayoff')
@@ -137,19 +136,5 @@ export class DayoffController {
     const data = await this.service.remove(id);
     await this.service.updateStaff(user);
     return { message: i18n.t('common.Delete Success'), data };
-  }
-
-  @Auth({
-    summary: 'Export data dayoff of user',
-    permission: P_DAYOFF_EXPORT_EXCEL,
-    serializeOptions: { groups: [MaxGroup] },
-  })
-  @Get('export-excel')
-  @Header('Content-Type', 'application/json')
-  @Header('Content-Disposition', 'attachment; filename="package.csv"')
-  async exportExcel(
-    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
-  ): Promise<StreamableFile> {
-    return await this.service.exportExcel(paginationQuery);
   }
 }

@@ -20,5 +20,6 @@ import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } 
     UserService,
     UserRepository,
   ],
+  exports: [UserTeamRepository, DayoffRepository],
 })
 export class MemberModule {}

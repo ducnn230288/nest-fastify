@@ -1,10 +1,18 @@
-import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Delete, Get, Header, Param, Post, Put, Query, StreamableFile, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
 import { CreateUserRequestDto, ListUserResponseDto, UpdateUserRequestDto, UserResponseDto } from '@dto';
-import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto } from '@shared';
-import { P_USER_CREATE, P_USER_DELETE, P_USER_DETAIL, P_USER_LISTED, P_USER_UPDATE, UserService } from '@service';
+import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto, Public } from '@shared';
+import {
+  P_DAYOFF_EXPORT_EXCEL,
+  P_USER_CREATE,
+  P_USER_DELETE,
+  P_USER_DETAIL,
+  P_USER_LISTED,
+  P_USER_UPDATE,
+  UserService,
+} from '@service';
 
 @Headers('user')
 export class UserController {
@@ -22,6 +30,18 @@ export class UserController {
       count: total,
       data: result,
     };
+  }
+
+  @Auth({
+    summary: 'Export data dayoff of user',
+    permission: P_DAYOFF_EXPORT_EXCEL,
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Get('export-excel')
+  @Header('Content-Type', 'data:text/csv;charset=utf-8')
+  @Header('Content-Disposition', 'attachment; filename="package.csv"')
+  async exportExcel(): Promise<StreamableFile> {
+    return await this.service.exportExcel();
   }
 
   @Auth({
@@ -50,6 +70,18 @@ export class UserController {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.create(createData),
+    };
+  }
+
+  @Auth({
+    summary: 'Update date leave',
+    permission: P_USER_UPDATE,
+  })
+  @Put('dateLeave/:dateLeave')
+  async updateDateOff(@I18n() i18n: I18nContext, @Param('dateLeave') dateLeave: string): Promise<UserResponseDto> {
+    return {
+      message: i18n.t('common.Update Success'),
+      data: await this.service.updateAllDaysOff(dateLeave),
     };
   }
 
