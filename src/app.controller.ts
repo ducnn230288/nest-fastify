@@ -1,6 +1,6 @@
-import { Get, Controller, Render, Req, Post, Res, Param } from '@nestjs/common';
+import { Get, Controller, Render, Res, Param } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply } from 'fastify';
 import dayjs from 'dayjs';
 
 import { DataService, ParameterService, PostService } from '@service';
@@ -279,16 +279,16 @@ export class AppController {
     return await this.aboutCoreMember('en', '/doi-ngu-phat-trien-chinh');
   }
 
-  @Post('/')
-  login(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
-    req.session.set('data', 'req.body');
-    res.redirect(302, '/');
-    return { title: 'True Foundry GitHub Authorizerss' };
-  }
+  // @Post('/')
+  // login(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
+  //   req.session.set('data', 'req.body');
+  //   res.redirect(302, '/');
+  //   return { title: 'True Foundry GitHub Authorizerss' };
+  // }
 
   @Get('/administrator')
   @Render('administrator')
-  administrator() {}
+  administrator(): void {}
 
   async common(
     language: string,

@@ -33,7 +33,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
    *
    * @param paginationQuery string or object describing the error condition.
    */
-  async findAll(paginationQuery: PaginationQueryDto) {
+  async findAll(paginationQuery: PaginationQueryDto): Promise<any[]> {
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 

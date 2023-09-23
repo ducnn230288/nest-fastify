@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
 
 import { CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
 import { Data } from '@model';
