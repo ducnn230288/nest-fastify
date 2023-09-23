@@ -3,7 +3,7 @@ import { AccessTokenGuard } from '@shared';
 
 export const PermissionGuard = (permission?: string): Type<CanActivate> => {
   class PermissionGuardMixin extends AccessTokenGuard {
-    async canActivate(context: ExecutionContext) {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
       await super.canActivate(context);
       if (permission) {
         const request = context.switchToHttp().getRequest();

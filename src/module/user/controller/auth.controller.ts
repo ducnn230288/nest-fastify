@@ -26,7 +26,7 @@ import {
   OTPConfirmationAuthRequestDto,
 } from '@dto';
 import { User } from '@model';
-import { AuthService, P_AUTH_DELETE_IMAGE_TEMP } from '@service';
+import { AuthService } from '@service';
 import * as argon2 from 'argon2';
 
 @Headers('auth')

@@ -35,7 +35,7 @@ export class DbCustomLogger implements Logger {
    * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries.
    */
   logQuery(query: string, parameters?: unknown[], queryRunner?: QueryRunner): void {
-    // this.logger.log("logQuery->>>:", [query, parameters])
+    this.logger.log('logQuery->>>:', [query, parameters]);
   }
 
   /**

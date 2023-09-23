@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, AfterLoad, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString } from 'class-validator';

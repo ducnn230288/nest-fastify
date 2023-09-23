@@ -44,38 +44,38 @@ export class FileService extends BaseService<File> {
    * @param {string} [tags] - tags ? tags : `avatars`,
    * @returns The file entity
    */
-  async uploadImageToCloudinary(file: MultipartFile, userId: number, tags?: string): Promise<File | null> {
-    // try {
-    //   if (!file) {
-    //     throw new NotFoundError(ErrorMessageCode.NOT_FOUND);
-    //   }
-    //   const path = process.cwd() + `/${UPLOAD_LOCATION}/${file.filename}`;
-    //   const uniqueFileName = Date.now() + '-' + file.filename;
-    //   const imagePublicId = `file/${uniqueFileName}`;
-    //
-    //   const image = await cloudinary.uploader.upload(path, {
-    //     public_id: imagePublicId,
-    //     tags: tags ? tags : `avatars`,
-    //     quality: 60,
-    //   });
-    //
-    //   const createFile = new FileEntity({});
-    //   createFile.originUrl = image.url;
-    //   createFile.width = image.width;
-    //   createFile.height = image.height;
-    //   createFile.size = image.bytes;
-    //   createFile.publicId = image.public_id;
-    //   createFile.userId = userId || null;
-    //   createFile.data = JSON.stringify(image);
-    //   await this._store(createFile);
-    //   fs.unlinkSync(path);
-    //   return createFile;
-    // } catch (e) {
-    //   console.log(e);
-    //   throw e;
-    // }
-    return null;
-  }
+  // async uploadImageToCloudinary(file: MultipartFile, userId: number, tags?: string): Promise<File | null> {
+  // try {
+  //   if (!file) {
+  //     throw new NotFoundError(ErrorMessageCode.NOT_FOUND);
+  //   }
+  //   const path = process.cwd() + `/${UPLOAD_LOCATION}/${file.filename}`;
+  //   const uniqueFileName = Date.now() + '-' + file.filename;
+  //   const imagePublicId = `file/${uniqueFileName}`;
+  //
+  //   const image = await cloudinary.uploader.upload(path, {
+  //     public_id: imagePublicId,
+  //     tags: tags ? tags : `avatars`,
+  //     quality: 60,
+  //   });
+  //
+  //   const createFile = new FileEntity({});
+  //   createFile.originUrl = image.url;
+  //   createFile.width = image.width;
+  //   createFile.height = image.height;
+  //   createFile.size = image.bytes;
+  //   createFile.publicId = image.public_id;
+  //   createFile.userId = userId || null;
+  //   createFile.data = JSON.stringify(image);
+  //   await this._store(createFile);
+  //   fs.unlinkSync(path);
+  //   return createFile;
+  // } catch (e) {
+  //   console.log(e);
+  //   throw e;
+  // }
+  // return null;
+  // }
 
   /**
    * It takes a request, checks if the request has a file, if it does, it checks if the file is an
