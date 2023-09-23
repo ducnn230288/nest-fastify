@@ -1,9 +1,9 @@
-import { Body, Delete, Get, Header, Param, Post, Put, Query, StreamableFile, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Header, Param, Post, Put, Query, StreamableFile } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
 import { CreateUserRequestDto, ListUserResponseDto, UpdateUserRequestDto, UserResponseDto } from '@dto';
-import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto, Public } from '@shared';
+import { Auth, Headers, MaxGroup, OnlyUpdateGroup, SerializerBody, PaginationQueryDto } from '@shared';
 import {
   P_DAYOFF_EXPORT_EXCEL,
   P_USER_CREATE,

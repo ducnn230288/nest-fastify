@@ -1,7 +1,6 @@
 import { PickType, PartialType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { DayOff } from '@model';
-import { StreamableFile } from '@nestjs/common';
 export class CreateDayoffRequestDto extends PickType(DayOff, [
   'code',
   'time',

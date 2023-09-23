@@ -3,7 +3,6 @@ import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 import { parse } from 'json2csv';
 import { Readable } from 'stream';
-import utf8 from 'utf8';
 
 import { CreateUserRequestDto } from '@dto';
 import { User } from '@model';
