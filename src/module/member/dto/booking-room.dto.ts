@@ -8,5 +8,5 @@ export class CreateBookingRoomRequestDto extends PickType(BookingRoom, [
   'description',
   'meetingName',
   'userId',
-  'roomId',
+  'roomCode',
 ] as const) {}

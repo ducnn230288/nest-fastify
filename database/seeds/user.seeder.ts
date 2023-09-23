@@ -57,6 +57,7 @@ import {
   P_DAYOFF_DETAIL,
   P_DAYOFF_UPDATE,
   P_DAYOFF_UPDATE_STATUS,
+  P_DAYOFF_EXPORT_EXCEL,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -126,6 +127,7 @@ export class UserSeeder implements Seeder {
         P_DAYOFF_DETAIL,
         P_DAYOFF_UPDATE,
         P_DAYOFF_UPDATE_STATUS,
+        P_DAYOFF_EXPORT_EXCEL,
       ],
       isSystemAdmin: false,
     };

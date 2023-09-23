@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, StreamableFile } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
@@ -6,7 +6,9 @@ import { CreateDayoffRequestDto, StatusDayoffRequestDto } from '@dto';
 import { DayOff, User } from '@model';
 import { UserService } from '@service';
 import { DayoffRepository } from '@repository';
-import { BaseService } from '@shared';
+import { BaseService, PaginationQueryDto } from '@shared';
+import { Readable } from 'stream';
+import { parse } from 'json2csv';
 
 export const P_DAYOFF_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f61';
 export const P_DAYOFF_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac577f3';
@@ -14,6 +16,11 @@ export const P_DAYOFF_CREATE = 'becacb61-46c5-445e-bce4-0f3a2cfed519';
 export const P_DAYOFF_UPDATE = '972e4159-e3ce-416e-a526-ffd83039e09a';
 export const P_DAYOFF_DELETE = 'cdece61b-f159-4dec-8b27-b7de50c9b849';
 export const P_DAYOFF_UPDATE_STATUS = '3431f438-20fd-4482-b2e1-ad7f89c67eed';
+export const P_DAYOFF_EXPORT_EXCEL = 'a4f0f84c-2f4d-46ed-99c9-e928b53d9d54';
+
+export const T_DAYOFF_WITH_BALANCE = 1;
+export const T_DAYOFF_WITHOUT_BALANCE = 2;
+export const T_DAYOFF_REMOTE = 3;
 
 @Injectable()
 export class DayoffService extends BaseService<DayOff> {
@@ -108,5 +115,39 @@ export class DayoffService extends BaseService<DayOff> {
     await this.update(id, { ...body, approvedById: user.id, approvedAt: new Date() });
     if (body.status === -1) await this.updateStaff(data.staff);
     return await this.findOne(id, []);
+  }
+
+  /**
+   *
+   * @returns DayOff
+   *
+   * @param paginationQuery
+   */
+  async exportExcel(paginationQuery: PaginationQueryDto): Promise<StreamableFile> {
+    const dayoff = await this.findAll(paginationQuery);
+    const dataCSV = await Promise.all(
+      dayoff[0].map(async (item) => {
+        return {
+          full_name: item?.staff?.name,
+          staff_id: item?.staff?.id,
+          team: item?.staff?.team?.name || null,
+          dayoff_remain: item?.staff.dateOff,
+          annual_leave: await this.repo.getCountWaitByStaffId(item?.staff?.id),
+          total_remote_days: await this.repo.getCountWaitByStaffIdWithType(item?.staff?.id, T_DAYOFF_REMOTE),
+          remote_remain_in_month: (await this.repo.getManyDayOffThisMonthByStaffId(item?.staff?.id, T_DAYOFF_REMOTE))
+            ?.length,
+          remote_day_in_year: (await this.repo.getManyDayOffThisYearByStaffId(item?.staff?.id, T_DAYOFF_REMOTE))
+            ?.length,
+          leave_without_pay: await this.repo.getCountWaitByStaffIdWithType(item?.staff?.id, T_DAYOFF_WITHOUT_BALANCE),
+        };
+      }),
+    );
+
+    const csvString = await parse(dataCSV);
+    const fileStream = new Readable();
+    fileStream.push(csvString);
+    fileStream.push(null);
+
+    return new StreamableFile(fileStream);
   }
 }

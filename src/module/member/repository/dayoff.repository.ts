@@ -26,6 +26,21 @@ export class DayoffRepository extends BaseRepository<DayOff> {
 
   /**
    *
+   * @param staffId
+   * @param type
+   * @returns number
+   *
+   */
+  async getCountWaitByStaffIdWithType(staffId: string, type: number = 1): Promise<number> {
+    return await this.createQueryBuilder('base')
+      .where(`base.status = :status`, { status: 0 })
+      .andWhere(`base.staffId = :staffId`, { staffId })
+      .andWhere(`base.type = :type`, { type })
+      .getCount();
+  }
+
+  /**
+   *
    * @param managerId
    * @returns number
    *
@@ -43,11 +58,11 @@ export class DayoffRepository extends BaseRepository<DayOff> {
    * @returns DayOff[]
    *
    */
-  async getManyDayOffThisYearByStaffId(staffId: string): Promise<DayOff[]> {
+  async getManyDayOffThisYearByStaffId(staffId: string, type: number = 1): Promise<DayOff[]> {
     const now = dayjs();
     return await this.createQueryBuilder('base')
       .andWhere(`base.staffId=:staffId`, { staffId })
-      .andWhere(`base.type=:type`, { type: 1 })
+      .andWhere(`base.type=:type`, { type })
       .andWhere(`base.status != :status`, { status: -1 })
       .andWhere(`"dateLeaveStart" BETWEEN :startDate AND :endDate`, {
         startDate: now.startOf('year').toDate(),
@@ -56,6 +71,30 @@ export class DayoffRepository extends BaseRepository<DayOff> {
       .andWhere(`"dateLeaveEnd" BETWEEN :startDate AND :endDate`, {
         startDate: now.startOf('year').toDate(),
         endDate: now.endOf('year').toDate(),
+      })
+      .getMany();
+  }
+
+  /**
+   *
+   * @param staffId
+   * @param type
+   * @returns DayOff[]
+   *
+   */
+  async getManyDayOffThisMonthByStaffId(staffId: string, type: number = 1): Promise<DayOff[]> {
+    const now = dayjs();
+    return await this.createQueryBuilder('base')
+      .andWhere(`base.staffId=:staffId`, { staffId })
+      .andWhere(`base.type=:type`, { type })
+      .andWhere(`base.status != :status`, { status: -1 })
+      .andWhere(`"dateLeaveStart" BETWEEN :startDate AND :endDate`, {
+        startDate: now.startOf('month').toDate(),
+        endDate: now.endOf('month').toDate(),
+      })
+      .andWhere(`"dateLeaveEnd" BETWEEN :startDate AND :endDate`, {
+        startDate: now.startOf('month').toDate(),
+        endDate: now.endOf('month').toDate(),
       })
       .getMany();
   }
@@ -73,7 +112,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
       .orWhere(
         new Brackets((qb) => {
           qb.andWhere('base.staffId = :staffId', { staffId })
-            .andWhere('base.type = :type', { type: 1 })
+            // .andWhere('base.type = :type', { type: 1 })
             .andWhere('base.status = :status', { status: 0 })
             .andWhere(`"dateLeaveStart" BETWEEN :startDate AND :endDate`, {
               startDate: dayjs(dateLeaveStart).startOf('days').toDate(),
@@ -84,7 +123,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
       .orWhere(
         new Brackets((qb) => {
           qb.andWhere('base.staffId = :staffId', { staffId })
-            .andWhere('base.type = :type', { type: 1 })
+            // .andWhere('base.type = :type', { type: 1 })
             .andWhere('base.status = :status', { status: 0 })
             .andWhere(`"dateLeaveEnd" BETWEEN :startDate AND :endDate`, {
               startDate: dayjs(dateLeaveStart).startOf('days').toDate(),

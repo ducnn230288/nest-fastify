@@ -22,6 +22,7 @@ export class CodeSeeder implements Seeder {
       { name: 'Engineer', code: 'ENG', type: 'position' },
       { name: 'Business Analyst', code: 'BA', type: 'position' },
       { name: 'Tester', code: 'TEST', type: 'position' },
+      { name: 'Room', code: 'ROOM', type: 'room' },
     ];
 
     for (const data of listData) {

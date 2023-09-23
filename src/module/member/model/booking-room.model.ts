@@ -1,11 +1,11 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { Base } from '@shared';
-import { Room, User } from '@model';
+import { User, Code } from '@model';
 
 @Entity()
 export class BookingRoom extends Base {
@@ -41,16 +41,18 @@ export class BookingRoom extends Base {
   @IsString()
   userId: string;
 
-  @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsString()
-  roomId: string;
-
   @ManyToOne(() => User, (user) => user.bookingRoom, { eager: true })
   @Type(() => User)
   readonly user: User;
 
-  @ManyToOne(() => Room, (room) => room.bookingRoom, { eager: true })
-  @Type(() => Room)
-  readonly room: Room;
+  @Column({ nullable: true })
+  @Expose()
+  @ApiProperty({ example: 'ROOM', description: '' })
+  @IsString()
+  @IsOptional()
+  readonly roomCode?: string;
+
+  @ManyToOne(() => Code)
+  @JoinColumn({ name: 'roomCode', referencedColumnName: 'code' })
+  readonly room?: Code;
 }
