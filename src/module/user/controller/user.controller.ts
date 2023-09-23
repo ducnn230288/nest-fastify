@@ -37,10 +37,10 @@ export class UserController {
     permission: P_DAYOFF_EXPORT_EXCEL,
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Get('export-excel')
+  @Get('export-dayoff')
   @Header('Content-Type', 'data:text/csv;charset=utf-8')
-  @Header('Content-Disposition', 'attachment; filename="package.csv"')
-  async exportExcel(): Promise<StreamableFile> {
+  @Header('Content-Disposition', 'attachment; filename="export-dayoff.csv"')
+  async exportDayoff(): Promise<StreamableFile> {
     return await this.service.exportExcel();
   }
 
@@ -77,7 +77,7 @@ export class UserController {
     summary: 'Update date leave',
     permission: P_USER_UPDATE,
   })
-  @Put('dateLeave/:dateLeave')
+  @Put('date-leave/:dateLeave')
   async updateDateOff(@I18n() i18n: I18nContext, @Param('dateLeave') dateLeave: string): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
