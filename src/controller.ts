@@ -13,6 +13,6 @@ export * from './module/user/controller/auth.controller';
 export * from './module/user/controller/user.controller';
 export * from './module/user/controller/user-role.controller';
 
-export * from './module/member/controller/booking-room.controller';
+export * from './module/member/controller/booking.controller';
 export * from './module/member/controller/dayoff.controller';
 export * from './module/member/controller/user-team.controller';

@@ -26,7 +26,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, BookingRoom, UserTeam } from '@model';
+import { UserRole, Code, Booking, UserTeam } from '@model';
 import { Example, MaxGroup, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -141,9 +141,9 @@ export class User extends Base {
   @IsDecimal()
   readonly dateOff: number;
 
-  @OneToMany(() => BookingRoom, (booking) => booking.user)
-  @Type(() => BookingRoom)
-  readonly bookingRoom?: BookingRoom[];
+  @OneToMany(() => Booking, (booking) => booking.user)
+  @Type(() => Booking)
+  readonly bookingRoom?: Booking[];
 
   @OneToMany(() => UserTeam, (team) => team.manager)
   @Type(() => UserTeam)

@@ -5,14 +5,19 @@ import { IsOptional, IsString } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 import { Base } from '@shared';
-import { User, Code } from '@model';
+import { User, Code, CodeType } from '@model';
 
 @Entity()
-export class BookingRoom extends Base {
+export class Booking extends Base {
   @Column()
-  @ApiProperty({ example: faker.date.soon(), description: '' })
+  @ApiProperty({ example: faker.lorem.text(), description: '' })
   @IsString()
-  bookDate: Date;
+  name: string;
+
+  @Column()
+  @ApiProperty({ example: faker.lorem.text(), description: '' })
+  @IsString()
+  description: string;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.date.soon(), description: '' })
@@ -27,16 +32,6 @@ export class BookingRoom extends Base {
   endTime: Date;
 
   @Column()
-  @ApiProperty({ example: faker.lorem.text(), description: '' })
-  @IsString()
-  description: string;
-
-  @Column()
-  @ApiProperty({ example: faker.lorem.text(), description: '' })
-  @IsString()
-  meetingName: string;
-
-  @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsString()
   userId: string;
@@ -47,12 +42,23 @@ export class BookingRoom extends Base {
 
   @Column({ nullable: true })
   @Expose()
+  @ApiProperty({ example: 'room', description: '' })
+  @IsString()
+  @IsOptional()
+  readonly typeCode?: string;
+
+  @ManyToOne(() => CodeType)
+  @JoinColumn({ name: 'type', referencedColumnName: 'code' })
+  readonly type?: CodeType;
+
+  @Column({ nullable: true })
+  @Expose()
   @ApiProperty({ example: 'ROOM', description: '' })
   @IsString()
   @IsOptional()
-  readonly roomCode?: string;
+  readonly itemCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'roomCode', referencedColumnName: 'code' })
-  readonly room?: Code;
+  @JoinColumn({ name: 'itemCode', referencedColumnName: 'code' })
+  readonly item?: Code;
 }

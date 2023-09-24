@@ -2,16 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { BookingRoom } from '@model';
+import { Booking } from '@model';
 import { BaseService } from '@shared';
 
-export const P_BOOKING_ROOM = '872f4ae3-d62a-46a8-89e4-cf947a713d6f';
+export const P_BOOKING_LISTED = '941f5380-cfde-4bdf-9400-c6b3964c82ce';
+export const P_BOOKING_DETAIL = '50267915-c98b-46a8-a310-ffa9f0aa00d3';
+export const P_BOOKING_CREATE = '5416d154-4c0a-498f-8f0f-d941543db082';
+export const P_BOOKING_UPDATE = '8f2ff690-32a1-4d9a-a4a0-91e5f934c71b';
+export const P_BOOKING_DELETE = '8c93d8f8-7db8-4a4c-a5e6-1cb0f53cc684';
 
 @Injectable()
-export class BookingRoomService extends BaseService<BookingRoom> {
+export class BookingService extends BaseService<Booking> {
   constructor(
-    @InjectRepository(BookingRoom)
-    public repo: Repository<BookingRoom>,
+    @InjectRepository(Booking)
+    public repo: Repository<Booking>,
   ) {
     super(repo);
   }

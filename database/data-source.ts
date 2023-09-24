@@ -5,7 +5,7 @@ import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
 import {
-  BookingRoom,
+  Booking,
   Code,
   CodeType,
   Data,
@@ -42,7 +42,7 @@ const options: DataSourceOptions & SeederOptions = {
     PostType,
     UserTeam,
     DayOff,
-    BookingRoom,
+    Booking,
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],
