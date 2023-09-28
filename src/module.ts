@@ -3,4 +3,4 @@ export * from './scheduler/scheduler.module';
 export * from './module/core/core.module';
 export * from './module/user/user.module';
 export * from './module/order/order.module';
- 
+export * from './module/store/store.module';

@@ -13,3 +13,4 @@ export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
 
 export * from './module/order/model/order.model';
+export * from './module/store/model/store.model';
