@@ -14,6 +14,7 @@ import {
   AddressModule,
   ProductModule,
   CategoryModule,
+  StoreModule,
 } from '@module';
 
 @Module({
@@ -27,6 +28,7 @@ import {
     AddressModule,
     ProductModule,
     CategoryModule,
+    StoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',

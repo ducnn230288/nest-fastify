@@ -2,7 +2,7 @@ import { Entity, ManyToOne } from 'typeorm';
 import { IsString, IsNumber } from 'class-validator';
 
 import { Base } from '@shared';
-import { Category } from '@model';
+import { Category, Store } from '@model';
 import { Type } from 'class-transformer';
 
 @Entity()
@@ -34,7 +34,9 @@ export class Product extends Base {
   @IsNumber()
   disCount: number;
 
-  store: string;
+  @ManyToOne(() => Store, (store) => store.products)
+  @Type(() => Store)
+  store: Store;
 
   @ManyToOne(() => Category, (category) => category.products)
   @Type(() => Category)
