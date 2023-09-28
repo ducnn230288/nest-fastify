@@ -6,7 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@module';
+import {
+  NotificationModule,
+  SchedulerModule,
+  CoreModule,
+  UserModule,
+  AddressModule,
+  ProductModule,
+  CategoryModule,
+} from '@module';
 
 @Module({
   controllers: [AppController],
@@ -16,6 +24,9 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
     SchedulerModule,
     CoreModule,
     UserModule,
+    AddressModule,
+    ProductModule,
+    CategoryModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',
