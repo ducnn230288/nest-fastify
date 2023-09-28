@@ -11,3 +11,5 @@ export * from './module/core/model/post-type.model';
 
 export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
+
+export * from './module/order/model/order.model';
