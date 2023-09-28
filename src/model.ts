@@ -13,4 +13,10 @@ export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
 
 export * from './module/order/model/order.model';
+
+export * from './module/address/model/address.model';
+export * from './module/address/model/province.model';
+export * from './module/address/model/district.model';
+export * from './module/address/model/ward.model';
+
 export * from './module/store/model/store.model';
