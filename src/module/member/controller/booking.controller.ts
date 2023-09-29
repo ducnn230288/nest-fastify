@@ -1,7 +1,7 @@
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import { Auth, Headers, MaxGroup, OnlyUpdateGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { Auth, AuthUser, Headers, MaxGroup, OnlyUpdateGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import {
   BookingService,
   P_BOOKING_CREATE,
@@ -11,6 +11,7 @@ import {
   P_BOOKING_UPDATE,
 } from '@service';
 import { CreateBookingRequestDto, ListBookingResponseDto, BookingResponseDto, UpdateBookingRequestDto } from '@dto';
+import { User } from '@model';
 
 @Headers('booking')
 export class BookingController {
@@ -50,12 +51,13 @@ export class BookingController {
     summary: 'Create new booking',
     permission: P_BOOKING_CREATE,
   })
-  @Post()
+  @Post('/add')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) dataRequest: CreateBookingRequestDto,
+    @AuthUser() user: User,
   ): Promise<any> {
-    const data = await this.service.create(dataRequest);
+    const data = await this.service.create({ ...dataRequest, userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
       data: data,

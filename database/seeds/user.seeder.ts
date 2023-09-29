@@ -58,6 +58,11 @@ import {
   P_DAYOFF_UPDATE,
   P_DAYOFF_UPDATE_STATUS,
   P_DAYOFF_EXPORT_EXCEL,
+  P_BOOKING_CREATE,
+  P_BOOKING_DELETE,
+  P_BOOKING_DETAIL,
+  P_BOOKING_LISTED,
+  P_BOOKING_UPDATE,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -128,6 +133,12 @@ export class UserSeeder implements Seeder {
         P_DAYOFF_UPDATE,
         P_DAYOFF_UPDATE_STATUS,
         P_DAYOFF_EXPORT_EXCEL,
+
+        P_BOOKING_CREATE,
+        P_BOOKING_DELETE,
+        P_BOOKING_DETAIL,
+        P_BOOKING_LISTED,
+        P_BOOKING_UPDATE,
       ],
       isSystemAdmin: false,
     };
