@@ -12,3 +12,5 @@ export * from './module/core/service/post-type.service';
 export * from './module/user/service/auth.service';
 export * from './module/user/service/user.service';
 export * from './module/user/service/user-role.service';
+
+export * from './module/order/service/order.service';
