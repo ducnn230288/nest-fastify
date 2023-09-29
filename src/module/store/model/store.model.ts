@@ -15,8 +15,8 @@ export class Store extends Base {
   status: string;
 
   @Column()
-  @IsNumber()
-  phone: number;
+  @IsString()
+  phone: string;
 
   @Column()
   @IsString()

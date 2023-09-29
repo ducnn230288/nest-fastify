@@ -9,3 +9,5 @@ export * from './module/core/dto/post-type.dto';
 
 export * from './module/user/dto/user.dto';
 export * from './module/user/dto/user-role.dto';
+
+export * from './module/store/dto/store.dto';
