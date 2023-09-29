@@ -20,6 +20,7 @@ export class Store extends Base {
 
   @Column()
   @IsString()
+  @IsOptional()
   description: string;
 
   @Column()

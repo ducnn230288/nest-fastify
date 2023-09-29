@@ -11,5 +11,6 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, ParameterSeeder);
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
+    // await runSeeder(dataSource, StoreSeeder);
   }
 }
