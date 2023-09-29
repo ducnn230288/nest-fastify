@@ -16,6 +16,13 @@ import {
   PostType,
   User,
   UserRole,
+  Address,
+  Store,
+  Province,
+  District,
+  Ward,
+  Product,
+  Category
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -37,6 +44,13 @@ const options: DataSourceOptions & SeederOptions = {
     Post,
     PostTranslation,
     PostType,
+    Address,
+    Store,
+    Province,
+    District,
+    Ward,
+    Product,
+    Category
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

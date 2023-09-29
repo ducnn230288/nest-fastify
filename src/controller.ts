@@ -12,3 +12,8 @@ export * from './module/core/controller/post-type.controller';
 export * from './module/user/controller/auth.controller';
 export * from './module/user/controller/user.controller';
 export * from './module/user/controller/user-role.controller';
+
+export * from './module/address/controller/address.controller';
+export * from './module/address/controller/province.controller';
+export * from './module/address/controller/district.controller';
+export * from './module/address/controller/ward.controller';

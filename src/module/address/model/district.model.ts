@@ -21,6 +21,6 @@ export class District extends Base {
     @IsString()
     code: string;
 
-    @OneToOne(() => Address)
-    address: Address; 
+    @OneToOne(() => Address, address => address.district)
+    address?: Address[]; 
 }

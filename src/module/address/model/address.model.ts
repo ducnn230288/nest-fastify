@@ -20,16 +20,17 @@ export class Address extends Base {
 
     @OneToOne(() => Province)
     @JoinColumn()
-    province: Province;
+    readonly province?: Province;
 
-    @Column()
+    @Column({ nullable: true })
     @ApiProperty({ example: faker.string.uuid(), description: '' })
+    @Expose()
     @IsString()
     districtId: string;
 
-    @OneToOne(() => District)
+    @OneToOne(() => District, district => district.address, { eager: true })
     @JoinColumn()
-    district: District;
+    readonly district?: District;
 
     @Column()
     @ApiProperty({ example: faker.string.uuid(), description: '' })
@@ -38,7 +39,7 @@ export class Address extends Base {
 
     @OneToOne(() => Ward)
     @JoinColumn()
-    ward: Ward;
+    readonly ward?: Ward;
 
     @Column()
     @Expose()

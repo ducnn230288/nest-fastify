@@ -12,3 +12,8 @@ export * from './module/core/service/post-type.service';
 export * from './module/user/service/auth.service';
 export * from './module/user/service/user.service';
 export * from './module/user/service/user-role.service';
+
+export * from './module/address/service/address.service';
+export * from './module/address/service/province.service';
+export * from './module/address/service/district.service';
+export * from './module/address/service/ward.service';

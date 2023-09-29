@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import {} from '@controller';
+import { AddressController, ProvinceController, DistrictController, WardController } from '@controller';
 import { Address, Province, District, Ward } from '@model';
-import {} from '@service';
+import { AddressService, DistrictService, ProvinceService, WardService } from '@service';
 import {} from '@repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Address, Province, District, Ward])],
-  controllers: [],
+  controllers: [AddressController, ProvinceController, DistrictController, WardController],
 
   providers: [
-    //cai nay lam xong
+    AddressService,
+    ProvinceService,
+    DistrictService,
+    WardService
   ],
 })
 export class AddressModule {}
