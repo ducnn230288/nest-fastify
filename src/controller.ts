@@ -15,3 +15,4 @@ export * from './module/user/controller/user-role.controller';
 
 export * from './module/category/controller/category.controller';
 export * from './module/product/controller/product.controller';
+export * from './module/store/controller/store.controller';
