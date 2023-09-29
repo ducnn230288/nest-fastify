@@ -10,7 +10,7 @@ import { IsOptional, IsUUID } from 'class-validator';
 export class Order extends Base {
   @Column()
   @IsUUID()
-  @ApiProperty({ example: faker.datatype.uuid(), description: '' })
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
   userId?: string;
 
   @ManyToOne(() => User, (user) => user.id)

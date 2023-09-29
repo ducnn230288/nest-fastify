@@ -17,3 +17,7 @@ export * from './module/address/controller/address.controller';
 export * from './module/address/controller/province.controller';
 export * from './module/address/controller/district.controller';
 export * from './module/address/controller/ward.controller';
+
+export * from './module/category/controller/category.controller';
+export * from './module/product/controller/product.controller';
+export * from './module/store/controller/store.controller';

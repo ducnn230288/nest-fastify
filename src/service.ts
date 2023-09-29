@@ -17,3 +17,7 @@ export * from './module/address/service/address.service';
 export * from './module/address/service/province.service';
 export * from './module/address/service/district.service';
 export * from './module/address/service/ward.service';
+
+export * from './module/product/service/product.service';
+export * from './module/store/service/store.service';
+export * from './module/category/service/category.service';
