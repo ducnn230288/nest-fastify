@@ -5,17 +5,25 @@ import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
 import {
+  Address,
+  Category,
   Code,
   CodeType,
   Data,
   DataTranslation,
   DataType,
+  District,
+  Order,
   Parameter,
   Post,
   PostTranslation,
   PostType,
+  Product,
+  Province,
+  Store,
   User,
   UserRole,
+  Ward,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -37,6 +45,14 @@ const options: DataSourceOptions & SeederOptions = {
     Post,
     PostTranslation,
     PostType,
+    Address,
+    Store,
+    Order,
+    Product,
+    Province,
+    District,
+    Ward,
+    Category,
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

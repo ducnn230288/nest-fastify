@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { IsString, IsNumber, IsUUID, IsOptional, IsPositive } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
@@ -53,11 +53,11 @@ export class Product extends Base {
   slug: string;
 
   @Column()
-  @ApiProperty({ example: faker.number.float() })
-  @IsString()
+  @ApiProperty({ example: faker.number.int({ min: 0, max: 100 }) })
+  @IsNumber()
   @IsPositive()
   @Expose()
-  mass: string;
+  mass: number;
 
   @Column()
   @IsNumber()
@@ -70,9 +70,15 @@ export class Product extends Base {
   @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
-  categoryId?: string;
+  categoryId: string;
 
-  @Column()
+  @ManyToOne(() => Category, (category) => category.products, {
+    eager: false,
+  })
+  @Expose({ groups: [MaxGroup] })
+  public category?: Category;
+
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()
@@ -80,11 +86,6 @@ export class Product extends Base {
 
   @ManyToOne(() => Store, (store) => store.products)
   @Expose({ groups: [MaxGroup] })
-  public store: Store;
-
-  @ManyToOne(() => Category, (category) => category.products, {
-    eager: false,
-  })
-  @Expose({ groups: [MaxGroup] })
-  public category: Category;
+  @IsOptional()
+  public store?: Store;
 }

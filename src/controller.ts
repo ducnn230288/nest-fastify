@@ -12,3 +12,6 @@ export * from './module/core/controller/post-type.controller';
 export * from './module/user/controller/auth.controller';
 export * from './module/user/controller/user.controller';
 export * from './module/user/controller/user-role.controller';
+
+export * from './module/category/controller/category.controller';
+export * from './module/product/controller/product.controller';
