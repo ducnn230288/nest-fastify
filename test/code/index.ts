@@ -41,6 +41,8 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     type: resultType.code,
     code: faker.finance.bic(),
   };
+
+  //code-type
   it('Create [POST /api/code-type/add]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/code-type/add')
@@ -64,7 +66,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get one [GET /api/code-type/:id]', async () => {
+  it('Get one [GET /api/code-type/:code]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/code-type/' + resultType.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -83,6 +85,19 @@ export const testCase = (type?: string, permissions: string[] = []) => {
 
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
+    }
+  });
+
+  it('Update one [PUT /api/code-type/:id/disable/:bolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/code-type/' + resultType.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send()
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultType.isDisabled }),
+      );
     }
   });
 
@@ -130,6 +145,16 @@ export const testCase = (type?: string, permissions: string[] = []) => {
 
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+    }
+  });
+
+  it('Update one [PUT /api/code/:id/disable/:bolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/code-type/' + resultType.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
     }
   });
 

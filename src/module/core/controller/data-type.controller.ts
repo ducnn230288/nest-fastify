@@ -78,6 +78,7 @@ export class DataTypeController {
 
   @Auth({
     summary: 'Update disable',
+    permission: P_DATA_TYPE_UPDATE,
   })
   @Put(':id/disable/:boolean')
   async updateDisable(

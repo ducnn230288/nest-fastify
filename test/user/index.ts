@@ -70,6 +70,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     dateLeave: faker.number.int({ min: 0.5, max: 12 }),
     dateOff: faker.number.int({ min: 0.5, max: 12 }),
   };
+  // User-role: 7 api test
   it('Create [POST /api/user-role/add]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/user-role/add')
@@ -121,6 +122,21 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateRole));
     }
   });
+
+  it('Update one [PUT /api/user-role/:id/disable/:boolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/user-role/' + resultRole.id + '/disable' + '/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send()
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultRole.isDisabled }),
+      );
+    }
+  });
+
+  // User: 6 api test
 
   it('Create [POST /api/user/add]', async () => {
     data.roleCode = resultRole.code;
@@ -185,6 +201,17 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       body.data.dob = new Date(body.data.dob);
       body.data.startDate = new Date(body.data.startDate);
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+    }
+  });
+
+  it('Update one [PUT /api/user/:id/disable/:boolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/user/' + result.id + '/disable' + '/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send()
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
     }
   });
 
