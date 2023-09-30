@@ -181,15 +181,22 @@ export const testCase = (type?: string, permissions: string[] = []) => {
   });
 
   it('Get one [GET /api/post/:id]', async () => {
-    if (!type) {
-      result = await BaseTest.moduleFixture.get(PostService).create(data);
-    }
     const { body } = await request(BaseTest.server)
       .get('/api/post/' + result.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     const { translations, ...test } = data;
     if (type) {
+      body.data.translations.forEach((item: any) => {
+        let index;
+        data.translations.forEach((subItem: any, i: number) => {
+          if (subItem.language === item.language) {
+            index = i;
+          }
+        });
+        expect(item).toEqual(jasmine.objectContaining(data.translations[index]));
+        if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
+      });
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
