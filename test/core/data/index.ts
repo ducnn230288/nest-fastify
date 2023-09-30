@@ -6,7 +6,7 @@ import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDt
 import { Data, DataType } from '@model';
 import { DataService, DataTypeService } from '@service';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []) => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));

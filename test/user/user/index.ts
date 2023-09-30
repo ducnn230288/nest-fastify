@@ -7,7 +7,7 @@ import { CreateUserRoleRequestDto, UpdateUserRoleRequestDto, CreateUserRequestDt
 import { User, UserRole } from '@model';
 import { P_USER_CREATE, P_USER_UPDATE } from '@service';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []) => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -77,7 +77,8 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRole)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-
+    // expect(res.body).to.have.property("category_id");
+    // expect(res.body.category_id).to.equal(2);
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataRole));
       resultRole = body.data;

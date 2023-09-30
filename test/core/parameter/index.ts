@@ -2,11 +2,11 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { Parameter } from '@model';
-
-import { BaseTest } from '../base';
 import { CreateParameterRequestDto, UpdateParameterRequestDto } from '@dto';
+import { Parameter } from '@model';
 import { ParameterService } from '@service';
+
+import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []) => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
