@@ -4,7 +4,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { UpdatePostTypeRequestDto, UpdatePostRequestDto, CreatePostRequestDto, CreatePostTypeRequestDto } from '@dto';
 import { Post, PostType } from '@model';
-import { DataService, PostTypeService } from '@service';
+import { DataService, PostTypeService, PostService } from '@service';
 
 import { BaseTest } from '../base';
 
@@ -62,12 +62,13 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     ],
   };
 
-  const result: Post = {
+  let result: Post = {
     id: faker.string.uuid(),
     type: resultType.code,
     thumbnailUrl: faker.image.url(),
   };
 
+  //Post-type
   it('Create [POST /api/post-type/add]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/post-type/add')
@@ -113,6 +114,91 @@ export const testCase = (type?: string, permissions: string[] = []) => {
 
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
+    }
+  });
+
+  it('Update one [PUT /api/post-type/:id/disable/:bolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/post-type/' + resultType.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataType)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+    }
+  });
+
+  //Post
+  it('Create [POST /api/post/add]', async () => {
+    const { body } = await request(BaseTest.server)
+      .post('/api/post/add')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(data as CreatePostRequestDto)
+      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+    const { translations, ...test } = data;
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+      result = body.data;
+    }
+  });
+
+  it('Get all [GET /api/post/list]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/post/list')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    const { translations, ...test } = data;
+    if (type) {
+      expect(body.data[0]).toEqual(jasmine.objectContaining(test));
+    }
+  });
+
+  it('Get one [GET /api/post/:id]', async () => {
+    if (!type) {
+      result = await BaseTest.moduleFixture.get(PostService).create(data);
+    }
+    const { body } = await request(BaseTest.server)
+      .get('/api/post/' + result.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    const { translations, ...test } = data;
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+    }
+  });
+
+  it('Get detail [GET /api/post/slug/:slug]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/post/slug/' + data.translations[0].slug)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    if (type) {
+      const { translations, ...test } = data;
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+    }
+  });
+
+  it('Update one [PUT /api/post/:id/disable/:boolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/post/' + result.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(data)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    const { translations, ...test } = data;
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+    }
+  });
+
+  it('Delete one [DELETE /api/post/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/post/' + result.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    const { translations, ...test } = data;
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
