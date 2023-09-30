@@ -35,7 +35,7 @@ export class DataController {
   }
 
   @Public({
-    summary: 'Get Detail data',
+    summary: 'Get Array data',
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get('/array')

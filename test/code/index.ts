@@ -66,7 +66,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get one [GET /api/code-type/:id]', async () => {
+  it('Get one [GET /api/code-type/:code]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/code-type/' + resultType.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)

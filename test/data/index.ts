@@ -32,12 +32,12 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     translations: [
       {
         language: 'vn',
-        name: faker.person.jobType(),
+        name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
       },
       {
         language: 'en',
-        name: faker.person.jobType(),
+        name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
       },
     ],
@@ -50,12 +50,12 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     translations: [
       {
         language: 'vn',
-        name: faker.person.jobType(),
+        name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
       },
       {
         language: 'en',
-        name: faker.person.jobType(),
+        name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
       },
     ],
@@ -156,10 +156,22 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get one [GET /api/data/:id]', async () => {
+  it('Get all [GET /api/data/array]', async () => {
     if (!type) {
       result = await BaseTest.moduleFixture.get(DataService).create(data);
     }
+    const { body } = await request(BaseTest.server)
+      .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+
+    body.data[dataType.code][0].translations = data.translations;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { translations, ...test } = data;
+    expect(body.data[dataType.code][0]).toEqual(jasmine.objectContaining(test));
+  });
+
+  it('Get one [GET /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/data/' + result.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
