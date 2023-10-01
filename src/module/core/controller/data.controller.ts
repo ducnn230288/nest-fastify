@@ -21,7 +21,7 @@ export class DataController {
     permission: P_DATA_LISTED,
     serializeOptions: { groups: [] },
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -65,7 +65,7 @@ export class DataController {
     summary: 'Create data',
     permission: P_DATA_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateDataRequestDto,

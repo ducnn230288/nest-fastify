@@ -32,7 +32,7 @@ export class UserRole extends Base {
   })
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
-  readonly permissions?: Record<string, any>;
+  readonly permissions?: string[];
 
   @OneToMany(() => User, (user) => user.role)
   users?: User[];

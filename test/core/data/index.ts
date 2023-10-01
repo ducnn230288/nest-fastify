@@ -2,78 +2,75 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { UpdatePostRequestDto, CreatePostRequestDto, CreatePostTypeRequestDto } from '@dto';
-import { Post, PostType } from '@model';
-import { PostTypeService, PostService } from '@service';
+import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
+import { Data, DataType } from '@model';
+import { DataService, DataTypeService } from '@service';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
-  const dataType: CreatePostTypeRequestDto = {
+  const dataType: CreateDataTypeRequestDto = {
     name: faker.person.jobType(),
     code: faker.finance.bic(),
   };
-
-  let resultType: PostType = {
+  const dataUpdateType: UpdateDataTypeRequestDto = {
+    name: faker.person.jobType(),
+  };
+  let resultType: DataType | null = {
     id: faker.string.uuid(),
     name: faker.person.jobType(),
     code: faker.finance.bic(),
     isPrimary: false,
   };
 
-  const data: CreatePostRequestDto = {
+  const data: CreateDataRequestDto = {
     type: dataType.code,
-    thumbnailUrl: faker.image.url(),
+    image: faker.image.url(),
     translations: [
       {
         language: 'vn',
         name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
       },
       {
         language: 'en',
         name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
       },
     ],
+    order: 1,
   };
 
-  const dataUpdate: UpdatePostRequestDto = {
+  const dataUpdate: UpdateDataRequestDto = {
     type: dataType.code,
-    thumbnailUrl: faker.image.url(),
+    image: faker.image.url(),
     translations: [
       {
         language: 'vn',
         name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
       },
       {
         language: 'en',
         name: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
       },
     ],
+    order: 2,
   };
 
-  let result: Post = {
+  let result: Data | null = {
     id: faker.string.uuid(),
     type: resultType.code,
-    thumbnailUrl: faker.image.url(),
+    image: faker.image.url(),
   };
-
-  //Post-type
-  it('Create [POST /api/post-type/add]', async () => {
+  it('Create [POST /api/data-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/post-type/add')
+      .post('/api/data-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataType as CreatePostTypeRequestDto)
+      .send(dataType as CreateDataTypeRequestDto)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     if (type) {
@@ -82,9 +79,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/post-type/list]', async () => {
+  it('Get all [GET /api/data-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post-type/list')
+      .get('/api/data-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -92,12 +89,12 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get one [GET /api/post-type/:id]', async () => {
+  it('Get one [GET /api/data-type/:id]', async () => {
     if (!type) {
-      resultType = await BaseTest.moduleFixture.get(PostTypeService).create(dataType);
+      resultType = await BaseTest.moduleFixture!.get(DataTypeService).create(dataType);
     }
     const { body } = await request(BaseTest.server)
-      .get('/api/post-type/' + resultType.id)
+      .get('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
@@ -105,37 +102,38 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Update one [PUT /api/post-type/:id]', async () => {
+  it('Update one [PUT /api/data-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post-type/' + resultType.id)
+      .put('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataType)
+      .send(dataUpdateType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
 
-  it('Update one [PUT /api/post-type/:id/disable/:bolean]', async () => {
+  it('Update one [PUT /api/data-type/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post-type/' + resultType.id + '/disable/true')
+      .put('/api/data-type/' + resultType!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultType!.isDisabled }),
+      );
     }
   });
 
-  //Post
-  it('Create [POST /api/post/add]', async () => {
+  it('Create [POST /api/data]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/post/add')
+      .post('/api/data')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(data as CreatePostRequestDto)
+      .send(data)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(test));
@@ -143,23 +141,26 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/post/list]', async () => {
+  it('Get all [GET /api/data]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/list')
+      .get('/api/data')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    const { translations, ...test } = data;
+
     if (type) {
+      body.data[0].translations = data.translations;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { translations, ...test } = data;
       expect(body.data[0]).toEqual(jasmine.objectContaining(test));
     }
   });
 
-  it('Get all [GET /api/post/array]', async () => {
+  it('Get all [GET /api/data/array]', async () => {
     if (!type) {
-      result = await BaseTest.moduleFixture.get(PostService).create(data);
+      result = await BaseTest.moduleFixture!.get(DataService).create(data);
     }
     const { body } = await request(BaseTest.server)
-      .get(`/api/post/array?array=%5B%22${dataType.code}%22%5D`)
+      .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
 
@@ -169,74 +170,75 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     expect(body.data[dataType.code][0]).toEqual(jasmine.objectContaining(test));
   });
 
-  it('Get detail [GET /api/post/slug/:slug]', async () => {
+  it('Get one [GET /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/slug/' + data.translations[0].slug)
+      .get('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
-      const { translations, ...test } = data;
-      expect(body.data).toEqual(jasmine.objectContaining(test));
+      body.data.translations.forEach((item) => {
+        let index;
+        data.translations.forEach((subItem, i: number) => {
+          if (subItem.language === item.language) {
+            index = i;
+          }
+        });
+        expect(item).toEqual(jasmine.objectContaining(data.translations[index]));
+        if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
+      });
+      body.data.translations = data.translations;
+      expect(body.data).toEqual(jasmine.objectContaining(data));
     }
   });
 
-  it('Get one [GET /api/post/:id]', async () => {
-    if (!type) {
-      result = await BaseTest.moduleFixture.get(PostService).create(data);
-    }
+  it('Update one [PUT /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/' + result.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
-    const { translations, ...test } = data;
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(test));
-    }
-  });
-
-  it('Update one [PUT /api/post/:id]', async () => {
-    const { body } = await request(BaseTest.server)
-      .put('/api/post/' + result.id)
+      .put('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { translations, ...test } = dataUpdate;
+      body.data.translations = dataUpdate.translations;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { translations, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
-  it('Update one [PUT /api/post/:id/disable/:boolean]', async () => {
+  it('Update one [PUT /api/data/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post/' + result.id + '/disable/true')
+      .put('/api/data/' + result!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(data)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
     if (type) {
-      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
     }
   });
 
-  it('Delete one [DELETE /api/post/:id]', async () => {
+  it('Delete one [DELETE /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/post/' + result.id)
+      .delete('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    const { translations, ...test } = dataUpdate;
     if (type) {
+      body.data.translations = dataUpdate.translations;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { translations, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
-  it('Delete one [DELETE /api/post-type/:id]', async () => {
+  it('Delete one [DELETE /api/data-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/post-type/' + resultType.id)
+      .delete('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

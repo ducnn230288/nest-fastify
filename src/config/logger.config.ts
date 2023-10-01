@@ -1,5 +1,5 @@
 import { Logger as LoggerNest } from '@nestjs/common';
-import { Logger, QueryRunner } from 'typeorm';
+import { Logger } from 'typeorm';
 
 import * as winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
@@ -32,9 +32,9 @@ export class DbCustomLogger implements Logger {
    * Logs query and parameters used in it.
    * @param {string} query - The query that was executed.
    * @param {unknown[]} [parameters] - []
-   * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries.
+   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    */
-  logQuery(query: string, parameters?: unknown[], queryRunner?: QueryRunner): void {
+  logQuery(query: string, parameters?: unknown[]): void {
     this.logger.log('logQuery->>>:', [query, parameters]);
   }
 
@@ -43,9 +43,9 @@ export class DbCustomLogger implements Logger {
    * @param {string | Error} error - string | Error
    * @param {string} query - The query that was executed.
    * @param {unknown[]} [parameters] -
-   * @param {QueryRunner} [queryRunner] - QueryRunner
+   *   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    */
-  logQueryError(error: string | Error, query: string, parameters?: unknown[], queryRunner?: QueryRunner): void {
+  logQueryError(error: string | Error, query: string, parameters?: unknown[]): void {
     this.logger.error('logQueryError->>>:', error, query, parameters);
   }
 
@@ -54,27 +54,27 @@ export class DbCustomLogger implements Logger {
    * @param {number} time - The time it took to execute the query in milliseconds.
    * @param {string} query - The query that was executed.
    * @param {unknown[]} [parameters] -
-   * @param {QueryRunner} [queryRunner] - QueryRunner
+   *   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    */
-  logQuerySlow(time: number, query: string, parameters?: unknown[], queryRunner?: QueryRunner): void {
+  logQuerySlow(time: number, query: string, parameters?: unknown[]): void {
     this.logger.warn('logQuerySlow->>>:', time, query, parameters);
   }
 
   /**
    * This function logs the message to the console if the queryRunner is not undefined.
    * @param {string} message - The message to be logged.
-   * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries.
+   *   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    */
-  logSchemaBuild(message: string, queryRunner?: QueryRunner): void {
+  logSchemaBuild(message: string): void {
     this.logger.debug('logSchemaBuild->>>:', message);
   }
 
   /**
    * This function logs a message to the console, but only if the debug flag is set to true.
    * @param {string} message - The message to log.
-   * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries.
+   *   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    */
-  logMigration(message: string, queryRunner?: QueryRunner): void {
+  logMigration(message: string): void {
     this.logger.debug('logMigration->>>:', message);
   }
 
@@ -83,10 +83,10 @@ export class DbCustomLogger implements Logger {
    * otherwise log the message as log.
    * @param {'log' | 'info' | 'warn'} level - 'log' | 'info' | 'warn'
    * @param {unknown} message - The message to log.
-   * @param {QueryRunner} [queryRunner] - QueryRunner - QueryRunner instance.
+   *   // * @param {QueryRunner} [queryRunner] - The QueryRunner instance that is used to execute queries. , queryRunner?: QueryRunner
    * @returns The return type is void.
    */
-  log(level: 'log' | 'info' | 'warn', message: unknown, queryRunner?: QueryRunner): void {
+  log(level: 'log' | 'info' | 'warn', message: unknown): void {
     switch (level) {
       case 'info':
         return this.logger.debug(message);

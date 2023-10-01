@@ -5,11 +5,10 @@ import { HttpStatus } from '@nestjs/common';
 import { Code, CodeType } from '@model';
 import { CreateCodeTypeRequestDto, UpdateCodeTypeRequestDto, CreateCodeRequestDto, UpdateCodeRequestDto } from '@dto';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreateCodeTypeRequestDto = {
     name: faker.person.jobType(),
@@ -43,9 +42,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
   };
 
   //code-type
-  it('Create [POST /api/code-type/add]', async () => {
+  it('Create [POST /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code-type/add')
+      .post('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -56,9 +55,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/code-type/list]', async () => {
+  it('Get all [GET /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code-type/list')
+      .get('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -101,9 +100,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Create [POST /api/code/add]', async () => {
+  it('Create [POST /api/code]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code/add')
+      .post('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -114,9 +113,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/code/list]', async () => {
+  it('Get all [GET /api/code]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code/list')
+      .get('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -177,4 +176,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

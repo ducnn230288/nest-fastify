@@ -20,7 +20,7 @@ export class CodeController {
     summary: 'Get List data',
     permission: P_CODE_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -49,7 +49,7 @@ export class CodeController {
     summary: 'Create data',
     permission: P_CODE_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateCodeRequestDto,

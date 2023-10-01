@@ -7,11 +7,10 @@ import { CreateUserRoleRequestDto, UpdateUserRoleRequestDto, CreateUserRequestDt
 import { User, UserRole } from '@model';
 import { P_USER_CREATE, P_USER_UPDATE } from '@service';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataRole: CreateUserRoleRequestDto = {
     name: faker.person.jobType(),
@@ -71,22 +70,21 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     dateOff: faker.number.int({ min: 0.5, max: 12 }),
   };
   // User-role: 7 api test
-  it('Create [POST /api/user-role/add]', async () => {
+  it('Create [POST /api/user-role]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/user-role/add')
+      .post('/api/user-role')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRole)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataRole));
       resultRole = body.data;
     }
   });
 
-  it('Get all [GET /api/user-role/list]', async () => {
+  it('Get all [GET /api/user-role]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user-role/list')
+      .get('/api/user-role')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -138,11 +136,11 @@ export const testCase = (type?: string, permissions: string[] = []) => {
 
   // User: 6 api test
 
-  it('Create [POST /api/user/add]', async () => {
+  it('Create [POST /api/user]', async () => {
     data.roleCode = resultRole.code;
     dataUpdate.roleCode = resultRole.code;
     const { body } = await request(BaseTest.server)
-      .post('/api/user/add')
+      .post('/api/user')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -156,9 +154,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/user/list]', async () => {
+  it('Get all [GET /api/user]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user/list')
+      .get('/api/user')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -236,4 +234,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateRole));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

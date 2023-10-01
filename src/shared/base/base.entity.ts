@@ -5,11 +5,7 @@ import { faker } from '@faker-js/faker';
 import { IsDateString, IsOptional, IsUUID } from 'class-validator';
 
 @Entity()
-export abstract class Base<T extends Base = any> {
-  constructor(partial: Partial<T> = {}) {
-    Object.assign(this, partial);
-  }
-
+export abstract class Base {
   @PrimaryGeneratedColumn('uuid')
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
@@ -19,10 +15,10 @@ export abstract class Base<T extends Base = any> {
   @Exclude()
   isDeleted?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'date' })
   @IsDateString()
   @IsOptional()
-  isDisabled?: Date;
+  isDisabled?: Date | null;
 
   @CreateDateColumn({ name: 'created_at' })
   @IsDateString()

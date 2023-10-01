@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { ClassTransformOptions } from 'class-transformer';
 
-import { AccessTokenGuard, PermissionGuard } from '@shared';
+import { AccessTokenGuard, PermissionGuard, RefreshTokenGuard } from '@shared';
 
 export function Auth({
   summary,
@@ -19,7 +19,7 @@ export function Auth({
   summary: string;
   permission?: string;
   serializeOptions?: ClassTransformOptions;
-  tokenGuard?: any;
+  tokenGuard?: typeof AccessTokenGuard | typeof RefreshTokenGuard;
 }): MethodDecorator {
   const _permissionGuard = tokenGuard === AccessTokenGuard ? PermissionGuard(permission) : tokenGuard;
   return applyDecorators(

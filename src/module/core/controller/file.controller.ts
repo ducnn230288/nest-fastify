@@ -31,7 +31,7 @@ export class FileController {
     summary: 'Get List data',
     permission: P_FILE_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -60,7 +60,7 @@ export class FileController {
       },
     },
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Req() req: FastifyRequest,
@@ -82,7 +82,7 @@ export class FileController {
     @Param('userId') userId: string,
     @Param('name') name: string,
     @Res({ passthrough: true }) res: FastifyReply,
-  ): Promise<any> {
+  ): Promise<StreamableFile | undefined> {
     try {
       const filePath = join(process.cwd(), appConfig.UPLOAD_LOCATION, `${userId}/${name}`);
       if (!existsSync(filePath)) throw new BadRequestException();

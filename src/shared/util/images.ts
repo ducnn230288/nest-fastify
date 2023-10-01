@@ -1,4 +1,5 @@
 import { appConfig } from '@config';
+import { IEditor } from '@dto';
 
 export function setImage(value?: string, before = true): string | undefined {
   if (value) {
@@ -7,13 +8,13 @@ export function setImage(value?: string, before = true): string | undefined {
   }
   return value;
 }
-export function setImageContent(value?: Record<string, any>, before = true): Record<string, any> | undefined {
+export function setImageContent(value?: { blocks: IEditor[] }, before = true): { blocks: IEditor[] } | undefined {
   if (value?.blocks) {
     value.blocks = value?.blocks.map((item) => {
       if (item.type === 'image') {
-        if (before && item.data.file.url.indexOf(appConfig.URL_FILE) === 0)
+        if (before && item?.data?.file?.url?.indexOf(appConfig.URL_FILE) === 0)
           item.data.file.url = item.data.file.url.replace(appConfig.URL_FILE, '');
-        else if (!before && item.data.file.url.indexOf('http') === -1)
+        else if (!before && item?.data?.file?.url?.indexOf('http') === -1)
           item.data.file.url = appConfig.URL_FILE + item.data.file.url;
       }
 

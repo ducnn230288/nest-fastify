@@ -33,7 +33,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
    *
    * @param paginationQuery string or object describing the error condition.
    */
-  async findAll(paginationQuery: PaginationQueryDto): Promise<any[]> {
+  async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 
@@ -130,12 +130,12 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
-        request = request.orderBy('base.' + key, sorts[key]);
+        request = request.orderBy('base.' + key, sorts![key]);
       });
     }
     if (perPage !== undefined && page !== undefined)
       request = request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
-    const res: [any, number] = await request.getManyAndCount();
+    const res: [T[], number] = await request.getManyAndCount();
     if (extend && Object.keys(extend).length) {
       let isGet = false;
       const request = this.repo.createQueryBuilder('base').andWhere(
@@ -166,6 +166,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         const data = await request.getMany();
         const ids = new Set(res[0].map((d) => d.id));
         res[0] = res[0].concat(data.filter((item) => !ids.has(item['id'])));
+        res[1] = res[0].length;
       }
     }
     return [res[0], res[1]];
@@ -193,13 +194,12 @@ export abstract class BaseService<T extends ObjectLiteral> {
     return data;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create(body: DeepPartial<T>): Promise<T | null> {
     const data = this.repo.create({ ...body });
     return this.repo.save(data);
   }
 
-  async update(id: string, body: any, callBack?: (data: T) => Promise<T>): Promise<T | null> {
+  async update(id: string, body: DeepPartial<T>, callBack?: (data: T) => Promise<T>): Promise<T | null> {
     const i18n = I18nContext.current()!;
     let data = await this.repo.preload({
       id,

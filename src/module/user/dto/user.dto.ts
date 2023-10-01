@@ -49,7 +49,10 @@ export class ProfileAuthRequestDto extends PickType(User, [
   @IsOptional()
   passwordOld: string;
 }
-export class ForgottenPasswordAuthRequestDto extends PickType(User, ['email'] as const) {}
+export class ForgottenPasswordAuthRequestDto extends PickType(User, ['email'] as const) {
+  @IsOptional()
+  notSendEmail: boolean;
+}
 export class OTPConfirmationAuthRequestDto extends PickType(User, ['email', 'otp'] as const) {}
 export class RestPasswordAuthRequestDto extends PickType(User, ['email', 'otp', 'password'] as const) {
   @MinLength(6)
@@ -59,6 +62,9 @@ export class RestPasswordAuthRequestDto extends PickType(User, ['email', 'otp', 
 
 export class DefaultAuthResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: AuthDto;
+}
+export class DefaultForgottenPasswordResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: string | boolean;
 }
 
 export class AuthDto {
@@ -124,7 +130,7 @@ export class UpdateUserRequestDto extends PickType(User, [
 }
 
 export class ListUserResponseDto extends PartialType(PaginationResponsesDto) {
-  readonly data: UserDto[];
+  readonly data: User[];
 }
 export class UserDto extends PartialType(
   OmitType(User, ['isDeleted', 'createdAt', 'updatedAt', 'password', 'position', 'role'] as const),
