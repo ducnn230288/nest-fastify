@@ -33,8 +33,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
    *
    * @param paginationQuery string or object describing the error condition.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async findAll(paginationQuery: PaginationQueryDto): Promise<[any[], number]> {
+  async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 
@@ -136,7 +135,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     }
     if (perPage !== undefined && page !== undefined)
       request = request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
-    const res: [DeepPartial<T>[], number] = await request.getManyAndCount();
+    const res: [T[], number] = await request.getManyAndCount();
     if (extend && Object.keys(extend).length) {
       let isGet = false;
       const request = this.repo.createQueryBuilder('base').andWhere(
@@ -167,6 +166,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         const data = await request.getMany();
         const ids = new Set(res[0].map((d) => d.id));
         res[0] = res[0].concat(data.filter((item) => !ids.has(item['id'])));
+        res[1] = res[0].length;
       }
     }
     return [res[0], res[1]];

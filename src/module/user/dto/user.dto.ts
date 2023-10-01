@@ -118,7 +118,7 @@ export class UpdateUserRequestDto extends PickType(User, [
 ] as const) {}
 
 export class ListUserResponseDto extends PartialType(PaginationResponsesDto) {
-  readonly data: UserDto[];
+  readonly data: User[];
 }
 export class UserDto extends PartialType(
   OmitType(User, ['isDeleted', 'createdAt', 'updatedAt', 'password', 'position', 'role'] as const),
