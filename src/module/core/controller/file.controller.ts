@@ -31,7 +31,7 @@ export class FileController {
     summary: 'Get List data',
     permission: P_FILE_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -60,7 +60,7 @@ export class FileController {
       },
     },
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Req() req: FastifyRequest,

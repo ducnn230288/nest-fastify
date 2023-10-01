@@ -28,9 +28,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     vn: faker.lorem.paragraph(),
     en: faker.lorem.paragraph(),
   };
-  it('Create [POST /api/parameter/add]', async () => {
+  it('Create [POST /api/parameter/]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/parameter/add')
+      .post('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -40,9 +40,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/parameter/list]', async () => {
+  it('Get all [GET /api/parameter/]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/parameter/list')
+      .get('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {

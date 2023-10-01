@@ -42,9 +42,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   //code-type
-  it('Create [POST /api/code-type/add]', async () => {
+  it('Create [POST /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code-type/add')
+      .post('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -55,9 +55,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/code-type/list]', async () => {
+  it('Get all [GET /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code-type/list')
+      .get('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -100,9 +100,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Create [POST /api/code/add]', async () => {
+  it('Create [POST /api/code]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code/add')
+      .post('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -113,9 +113,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/code/list]', async () => {
+  it('Get all [GET /api/code]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code/list')
+      .get('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 

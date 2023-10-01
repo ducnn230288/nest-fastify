@@ -25,7 +25,7 @@ export class ParameterController {
     summary: 'Get List data',
     permission: P_PARAMETER_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -54,7 +54,7 @@ export class ParameterController {
     summary: 'Create data',
     permission: P_PARAMETER_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateParameterRequestDto,

@@ -68,9 +68,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   //Post-type
-  it('Create [POST /api/post-type/add]', async () => {
+  it('Create [POST /api/post-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/post-type/add')
+      .post('/api/post-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType as CreatePostTypeRequestDto)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -81,9 +81,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/post-type/list]', async () => {
+  it('Get all [GET /api/post-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post-type/list')
+      .get('/api/post-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -129,9 +129,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   //Post
-  it('Create [POST /api/post/add]', async () => {
+  it('Create [POST /api/post]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/post/add')
+      .post('/api/post')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data as CreatePostRequestDto)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -143,9 +143,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/post/list]', async () => {
+  it('Get all [GET /api/post]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/list')
+      .get('/api/post')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
