@@ -22,7 +22,7 @@
     "seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d database/data-source.ts",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d database/data-source.ts",
     "migration:generate": "npm run typeorm migration:generate",
-    "migration:run": "npm run typeorm migration:run",
+    "migration": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
     "update-all": "npx -p npm-check-updates ncu -u && npm install",
     "css:build": "lessc other/public/css/less.less ./other/public/css/less.css && tailwindcss other/public/css/less.css -o ./other/public/css/style.css --minify --watch"

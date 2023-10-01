@@ -15,7 +15,7 @@ export abstract class Base {
   @Exclude()
   isDeleted?: Date;
 
-  @Column({ nullable: true, type: 'date' })
+  @Column({ nullable: true, type: 'timestamp' })
   @IsDateString()
   @IsOptional()
   isDisabled?: Date | null;
