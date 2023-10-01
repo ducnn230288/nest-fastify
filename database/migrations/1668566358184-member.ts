@@ -38,13 +38,10 @@ export class member1669372347132 implements MigrationInterface {
       `CREATE TABLE "post_type" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, "isPrimary" boolean NOT NULL DEFAULT false, CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE ("code"), CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "booking_room" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "bookDate" TIMESTAMP NOT NULL, "startTime" TIMESTAMP, "endTime" TIMESTAMP, "description" character varying NOT NULL, "meetingName" character varying NOT NULL, "userId" uuid NOT NULL, "roomId" uuid NOT NULL, CONSTRAINT "PK_e35dcb428979ee7cc7808440126" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "booking" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "description" character varying NOT NULL, "startTime" TIMESTAMP, "endTime" TIMESTAMP, "userId" uuid NOT NULL, "typeCode" character varying, "itemCode" character varying, "type" character varying, CONSTRAINT "PK_49171efc69702ed84c812f33540" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "day_off" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "code" character varying NOT NULL, "type" integer NOT NULL, "status" integer NOT NULL DEFAULT '0', "reason" character varying, "time" integer NOT NULL, "timeNumber" real, "image" character varying, "dateLeaveStart" TIMESTAMP NOT NULL, "dateLeaveEnd" TIMESTAMP NOT NULL, "approvedAt" TIMESTAMP, "approvedById" uuid, "reasonReject" character varying, "staffId" uuid NOT NULL, "managerId" uuid, CONSTRAINT "PK_4ebe4c08c950e3dbc87f0249811" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "room" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "room_code" character varying NOT NULL, "room_name" character varying, CONSTRAINT "PK_c6d46db005d623e691b2fbcba23" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "user_team" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "isDeleted" TIMESTAMP, "isDisabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "description" character varying, "managerId" uuid, CONSTRAINT "PK_155dbc144ff2bd4713fdf1f6c77" PRIMARY KEY ("id"))`,
@@ -79,10 +76,13 @@ export class member1669372347132 implements MigrationInterface {
       `ALTER TABLE "post_translation" ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES "post"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE "booking_room" ADD CONSTRAINT "FK_fdb3cb9bc8afbe9dc2d689ddbeb" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "booking" ADD CONSTRAINT "FK_336b3f4a235460dc93645fbf222" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "booking_room" ADD CONSTRAINT "FK_50557fd862e2f80337e385433d4" FOREIGN KEY ("roomId") REFERENCES "room"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "booking" ADD CONSTRAINT "FK_a4108479a7402c440d98205ff09" FOREIGN KEY ("type") REFERENCES "code_type"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "booking" ADD CONSTRAINT "FK_631f222540372c59aefc6cebf75" FOREIGN KEY ("itemCode") REFERENCES "code"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "day_off" ADD CONSTRAINT "FK_a3474e339d2d6ab7f55076e48e5" FOREIGN KEY ("approvedById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -111,8 +111,9 @@ export class member1669372347132 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "day_off" DROP CONSTRAINT "FK_08670238291d69988dbf4902e39"`);
     await queryRunner.query(`ALTER TABLE "day_off" DROP CONSTRAINT "FK_c2b584b7b7008a7cc4b60cb6318"`);
     await queryRunner.query(`ALTER TABLE "day_off" DROP CONSTRAINT "FK_a3474e339d2d6ab7f55076e48e5"`);
-    await queryRunner.query(`ALTER TABLE "booking_room" DROP CONSTRAINT "FK_50557fd862e2f80337e385433d4"`);
-    await queryRunner.query(`ALTER TABLE "booking_room" DROP CONSTRAINT "FK_fdb3cb9bc8afbe9dc2d689ddbeb"`);
+    await queryRunner.query(`ALTER TABLE "booking" DROP CONSTRAINT "FK_631f222540372c59aefc6cebf75"`);
+    await queryRunner.query(`ALTER TABLE "booking" DROP CONSTRAINT "FK_a4108479a7402c440d98205ff09"`);
+    await queryRunner.query(`ALTER TABLE "booking" DROP CONSTRAINT "FK_336b3f4a235460dc93645fbf222"`);
     await queryRunner.query(`ALTER TABLE "post_translation" DROP CONSTRAINT "FK_c3b205aea6eff06096f6f439240"`);
     await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_b499447822de3f24ad355e19b8c"`);
     await queryRunner.query(`ALTER TABLE "data_translation" DROP CONSTRAINT "FK_eae311ec0c99d120558506acd05"`);
@@ -125,9 +126,8 @@ export class member1669372347132 implements MigrationInterface {
     await queryRunner.query(`DROP INDEX "public"."IDX_74cb5a61491f8722d90c376972"`);
     await queryRunner.query(`DROP TABLE "user_teams_user_team"`);
     await queryRunner.query(`DROP TABLE "user_team"`);
-    await queryRunner.query(`DROP TABLE "room"`);
     await queryRunner.query(`DROP TABLE "day_off"`);
-    await queryRunner.query(`DROP TABLE "booking_room"`);
+    await queryRunner.query(`DROP TABLE "booking"`);
     await queryRunner.query(`DROP TABLE "post_type"`);
     await queryRunner.query(`DROP TABLE "post_translation"`);
     await queryRunner.query(`DROP TABLE "post"`);
