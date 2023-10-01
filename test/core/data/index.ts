@@ -18,7 +18,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const dataUpdateType: UpdateDataTypeRequestDto = {
     name: faker.person.jobType(),
   };
-  let resultType: DataType = {
+  let resultType: DataType | null = {
     id: faker.string.uuid(),
     name: faker.person.jobType(),
     code: faker.finance.bic(),
@@ -61,7 +61,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     order: 2,
   };
 
-  let result: Data = {
+  let result: Data | null = {
     id: faker.string.uuid(),
     type: resultType.code,
     image: faker.image.url(),
@@ -91,10 +91,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/data-type/:id]', async () => {
     if (!type) {
-      resultType = await BaseTest.moduleFixture.get(DataTypeService).create(dataType);
+      resultType = await BaseTest.moduleFixture!.get(DataTypeService).create(dataType);
     }
     const { body } = await request(BaseTest.server)
-      .get('/api/data-type/' + resultType.id)
+      .get('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
@@ -104,7 +104,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/data-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/data-type/' + resultType.id)
+      .put('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdateType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -116,13 +116,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/data-type/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/data-type/' + resultType.id + '/disable' + '/true')
+      .put('/api/data-type/' + resultType!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
       expect({ isDisabled: body.isDisabled }).not.toEqual(
-        jasmine.objectContaining({ isDisabled: resultType.isDisabled }),
+        jasmine.objectContaining({ isDisabled: resultType!.isDisabled }),
       );
     }
   });
@@ -157,7 +157,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/data/array]', async () => {
     if (!type) {
-      result = await BaseTest.moduleFixture.get(DataService).create(data);
+      result = await BaseTest.moduleFixture!.get(DataService).create(data);
     }
     const { body } = await request(BaseTest.server)
       .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
@@ -172,7 +172,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/data/' + result.id)
+      .get('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
@@ -193,7 +193,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/data/' + result.id)
+      .put('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -208,18 +208,18 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/data/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/data/' + result.id + '/disable' + '/true')
+      .put('/api/data/' + result!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
     }
   });
 
   it('Delete one [DELETE /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/data/' + result.id)
+      .delete('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -232,7 +232,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Delete one [DELETE /api/data-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/data-type/' + resultType.id)
+      .delete('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {

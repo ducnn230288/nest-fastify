@@ -9,8 +9,55 @@ import { UserRoleService, UserService } from '@service';
 
 import { AppModule } from '../src/app.module';
 import { AppDataSource } from '../database/data-source';
+import * as http from 'http';
 
-export const BaseTest: any = {
+export const BaseTest: {
+  moduleFixture?: TestingModule;
+  serviceRole?: UserRoleService;
+  serviceUser?: UserService;
+  app?: NestFastifyApplication;
+  server?: http.Server;
+  loginAdmin: () => Promise<void>;
+  userAdmin: {
+    retypedPassword: Example;
+    password: Example;
+    phoneNumber: string;
+    dob: Date;
+    roleCode?: string;
+    name: string;
+    description: string;
+    email: string;
+    startDate: Date;
+  };
+  login: (user) => Promise<void>;
+  token: undefined;
+
+  initBeforeAll: (type?: string, permissions?: string[]) => Promise<void>;
+  loginUser: () => Promise<void>;
+  initAfterAll: () => Promise<void>;
+  loginRole: (permissions?: string[]) => Promise<void>;
+  userRole: {
+    retypedPassword: Example;
+    password: Example;
+    phoneNumber: string;
+    dob: Date;
+    roleCode?: string;
+    name: string;
+    description: string;
+    email: string;
+    startDate: Date;
+  };
+  user: {
+    retypedPassword: Example;
+    password: Example;
+    phoneNumber: string;
+    dob: Date;
+    name: string;
+    description: string;
+    email: string;
+    startDate: Date;
+  };
+} = {
   userAdmin: {
     name: faker.person.fullName(),
     password: Example.password,
@@ -48,7 +95,6 @@ export const BaseTest: any = {
   token: undefined,
   serviceRole: undefined,
   serviceUser: undefined,
-  moduleFixture: undefined,
 
   initBeforeAll: async (type?: string, permissions: string[] = []) => {
     await new Promise((res) => setTimeout(res, 1));
@@ -75,7 +121,7 @@ export const BaseTest: any = {
     }
   },
   login: async (user) => {
-    await BaseTest.serviceUser.create(user);
+    await BaseTest.serviceUser!.create(user);
     const { body } = await request(BaseTest.server)
       .post('/api/auth/login')
       .send({
@@ -86,29 +132,29 @@ export const BaseTest: any = {
     BaseTest.token = body.data.accessToken;
   },
   loginAdmin: async () => {
-    const role = await BaseTest.serviceRole.create({
+    const role = await BaseTest.serviceRole!.create({
       name: 'Administrator',
       isSystemAdmin: true,
       permissions: [],
       code: 'supper_admin',
     });
-    BaseTest.userAdmin.roleCode = role.code;
+    BaseTest.userAdmin.roleCode = role!.code;
     await BaseTest.login(BaseTest.userAdmin);
   },
   loginUser: async () => await BaseTest.login(BaseTest.user),
   loginRole: async (permissions: string[] = []) => {
-    const role = await BaseTest.serviceRole.create({
+    const role = await BaseTest.serviceRole!.create({
       name: 'Role',
       isSystemAdmin: false,
       permissions,
       code: 'role',
     });
-    BaseTest.userRole.roleCode = role.code;
+    BaseTest.userRole.roleCode = role!.code;
     await BaseTest.login(BaseTest.userRole);
   },
 
   initAfterAll: async () => {
-    await BaseTest.app.close();
+    await BaseTest.app!.close();
     await AppDataSource.dropDatabase();
   },
 };

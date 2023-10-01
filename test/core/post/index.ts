@@ -16,7 +16,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     code: faker.finance.bic(),
   };
 
-  let resultType: PostType = {
+  let resultType: PostType | null = {
     id: faker.string.uuid(),
     name: faker.person.jobType(),
     code: faker.finance.bic(),
@@ -61,7 +61,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     ],
   };
 
-  let result: Post = {
+  let result: Post | null = {
     id: faker.string.uuid(),
     type: resultType.code,
     thumbnailUrl: faker.image.url(),
@@ -93,10 +93,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/post-type/:id]', async () => {
     if (!type) {
-      resultType = await BaseTest.moduleFixture.get(PostTypeService).create(dataType);
+      resultType = await BaseTest.moduleFixture!.get(PostTypeService).create(dataType);
     }
     const { body } = await request(BaseTest.server)
-      .get('/api/post-type/' + resultType.id)
+      .get('/api/post-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
@@ -106,7 +106,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/post-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post-type/' + resultType.id)
+      .put('/api/post-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -118,7 +118,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/post-type/:id/disable/:bolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post-type/' + resultType.id + '/disable/true')
+      .put('/api/post-type/' + resultType!.id + '/disable/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -157,7 +157,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/post/array]', async () => {
     if (!type) {
-      result = await BaseTest.moduleFixture.get(PostService).create(data);
+      result = await BaseTest.moduleFixture!.get(PostService).create(data);
     }
     const { body } = await request(BaseTest.server)
       .get(`/api/post/array?array=%5B%22${dataType.code}%22%5D`)
@@ -184,7 +184,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/post/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/' + result.id)
+      .get('/api/post/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -206,7 +206,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/post/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post/' + result.id)
+      .put('/api/post/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -220,18 +220,18 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/post/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/post/' + result.id + '/disable/true')
+      .put('/api/post/' + result!.id + '/disable/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
-      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
     }
   });
 
   it('Delete one [DELETE /api/post/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/post/' + result.id)
+      .delete('/api/post/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -243,7 +243,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Delete one [DELETE /api/post-type/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/post-type/' + resultType.id)
+      .delete('/api/post-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {

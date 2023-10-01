@@ -22,7 +22,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     vn: faker.lorem.paragraph(),
     en: faker.lorem.paragraph(),
   };
-  let result: Parameter = {
+  let result: Parameter | null = {
     id: faker.string.uuid(),
     code: faker.finance.bic(),
     vn: faker.lorem.paragraph(),
@@ -52,10 +52,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/parameter/:code]', async () => {
     if (!type) {
-      result = await BaseTest.moduleFixture.get(ParameterService).create(dataType);
+      result = await BaseTest.moduleFixture!.get(ParameterService).create(dataType);
     }
     const { body } = await request(BaseTest.server)
-      .get('/api/parameter/' + result.code)
+      .get('/api/parameter/' + result!.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     expect(body.data).toEqual(jasmine.objectContaining(dataType));
@@ -63,7 +63,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/parameter/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/parameter/' + result.id)
+      .put('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -74,17 +74,17 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/parameter/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/parameter/' + result.id + '/disable' + '/true')
+      .put('/api/parameter/' + result!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
-      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
     }
   });
 
   it('Delete one [DELETE /api/parameter/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/parameter/' + result.id)
+      .delete('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
