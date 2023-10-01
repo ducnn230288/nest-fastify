@@ -33,7 +33,8 @@ export abstract class BaseService<T extends ObjectLiteral> {
    *
    * @param paginationQuery string or object describing the error condition.
    */
-  async findAll(paginationQuery: PaginationQueryDto): Promise<any[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async findAll(paginationQuery: PaginationQueryDto): Promise<[any[], number]> {
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 
@@ -135,7 +136,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     }
     if (perPage !== undefined && page !== undefined)
       request = request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
-    const res: [any, number] = await request.getManyAndCount();
+    const res: [DeepPartial<T>[], number] = await request.getManyAndCount();
     if (extend && Object.keys(extend).length) {
       let isGet = false;
       const request = this.repo.createQueryBuilder('base').andWhere(
@@ -193,13 +194,12 @@ export abstract class BaseService<T extends ObjectLiteral> {
     return data;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create(body: DeepPartial<T>): Promise<T | null> {
     const data = this.repo.create({ ...body });
     return this.repo.save(data);
   }
 
-  async update(id: string, body: any, callBack?: (data: T) => Promise<T>): Promise<T | null> {
+  async update(id: string, body: DeepPartial<T>, callBack?: (data: T) => Promise<T>): Promise<T | null> {
     const i18n = I18nContext.current()!;
     let data = await this.repo.preload({
       id,

@@ -15,10 +15,10 @@ export abstract class Base {
   @Exclude()
   isDeleted?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'date' })
   @IsDateString()
   @IsOptional()
-  isDisabled?: Date;
+  isDisabled?: Date | null;
 
   @CreateDateColumn({ name: 'created_at' })
   @IsDateString()

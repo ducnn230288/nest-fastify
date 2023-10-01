@@ -54,17 +54,17 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @Exclude()
-  refreshToken?: string;
+  refreshToken?: string | null;
   @BeforeUpdate()
   async beforeRefreshToken?(): Promise<void> {
     this.refreshToken = this.refreshToken && (await argon2.hash(this.refreshToken));
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @IsString()
-  otp?: string;
+  otp?: string | null;
 
   @Column()
   @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
