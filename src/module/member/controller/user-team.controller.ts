@@ -20,7 +20,7 @@ export class UserTeamController {
     summary: 'Get List Team',
     permission: P_USER_TEAM_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(@I18n() i18n: I18nContext, @Query() paginationQuery: PaginationQueryDto): Promise<ListTeamResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
@@ -46,7 +46,7 @@ export class UserTeamController {
     summary: 'Create Team',
     permission: P_USER_TEAM_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) createTeamDto: CreateTeamRequestDto,

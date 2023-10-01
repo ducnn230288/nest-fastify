@@ -40,7 +40,7 @@ export class UserService extends BaseService<User> {
     if (body.password !== body.retypedPassword)
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
-    const existingUser = await this.repo.getDataByEmail(body.email);
+    const existingUser = await this.repo.getDataByEmail(body.email!);
 
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
     body.dateLeave = this.getTotalDate(body.startDate!);

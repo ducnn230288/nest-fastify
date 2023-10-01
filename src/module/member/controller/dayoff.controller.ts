@@ -29,7 +29,7 @@ export class DayoffController {
     permission: P_DAYOFF_LISTED,
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -63,7 +63,7 @@ export class DayoffController {
     summary: 'Create data',
     permission: P_DAYOFF_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateDayoffRequestDto,

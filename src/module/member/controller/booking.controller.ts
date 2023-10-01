@@ -22,7 +22,7 @@ export class BookingController {
     permission: P_BOOKING_LISTED,
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -51,7 +51,7 @@ export class BookingController {
     summary: 'Create new booking',
     permission: P_BOOKING_CREATE,
   })
-  @Post('/add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) dataRequest: CreateBookingRequestDto,
