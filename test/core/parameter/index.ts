@@ -8,9 +8,8 @@ import { ParameterService } from '@service';
 
 import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreateParameterRequestDto = {
     code: faker.finance.bic(),
@@ -89,8 +88,11 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { code, en, vn, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

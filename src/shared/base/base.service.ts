@@ -130,7 +130,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
-        request = request.orderBy('base.' + key, sorts[key]);
+        request = request.orderBy('base.' + key, sorts![key]);
       });
     }
     if (perPage !== undefined && page !== undefined)

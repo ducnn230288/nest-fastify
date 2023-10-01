@@ -7,9 +7,8 @@ import { CreateCodeTypeRequestDto, UpdateCodeTypeRequestDto, CreateCodeRequestDt
 
 import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreateCodeTypeRequestDto = {
     name: faker.person.jobType(),
@@ -177,4 +176,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

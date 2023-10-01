@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 import { DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';
-import { DataDto, PostDto } from '@dto';
+import { DataDto, IEditor, PostDto } from '@dto';
 
 @Controller()
 export class AppController {
@@ -405,21 +405,7 @@ interface IPost extends ICommon {
   post: PostDto[];
   detail: object;
 }
-interface IEditor {
-  id: string;
-  data: {
-    text: string;
-    level?: string;
-    file?: {
-      url?: string;
-    };
-    caption?: string;
-    stretched?: boolean;
-    withBorder?: boolean;
-    withBackground?: boolean;
-  };
-  type: string;
-}
+
 interface IAbout extends ICommon {
   urlLang: string;
   JSON: {

@@ -8,9 +8,8 @@ import { PostTypeService, PostService } from '@service';
 
 import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreatePostTypeRequestDto = {
     name: faker.person.jobType(),
@@ -136,6 +135,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data as CreatePostRequestDto)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(test));
@@ -148,6 +148,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .get('/api/post/list')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
     if (type) {
       expect(body.data[0]).toEqual(jasmine.objectContaining(test));
@@ -175,6 +176,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { translations, ...test } = data;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
@@ -185,11 +187,12 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .get('/api/post/' + result.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
     if (type) {
-      body.data.translations.forEach((item: any) => {
-        let index;
-        data.translations.forEach((subItem: any, i: number) => {
+      body.data.translations.forEach((item) => {
+        let index = 0;
+        data.translations.forEach((subItem, i) => {
           if (subItem.language === item.language) {
             index = i;
           }
@@ -209,8 +212,8 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { translations, ...test } = dataUpdate;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { translations, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
@@ -231,6 +234,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .delete('/api/post/' + result.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = dataUpdate;
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(test));
@@ -246,4 +250,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

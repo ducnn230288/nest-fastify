@@ -5,11 +5,7 @@ import { faker } from '@faker-js/faker';
 import { IsDateString, IsOptional, IsUUID } from 'class-validator';
 
 @Entity()
-export abstract class Base<T extends Base = any> {
-  constructor(partial: Partial<T> = {}) {
-    Object.assign(this, partial);
-  }
-
+export abstract class Base {
   @PrimaryGeneratedColumn('uuid')
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })

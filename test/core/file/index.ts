@@ -2,7 +2,8 @@
 // import { HttpStatus } from '@nestjs/common';
 // import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+// type?: string, permissions: string[] = []
+export const testCase = (): void => {
   // beforeAll(() => BaseTest.initBeforeAll(type, permissions));
   // afterAll(BaseTest.initAfterAll);
   // let result;

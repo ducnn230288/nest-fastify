@@ -69,7 +69,7 @@ export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
   @IsEmail()
-  readonly email: string;
+  email?: string;
 
   @Column()
   @ApiProperty({ example: faker.phone.number('0#########'), description: '' })

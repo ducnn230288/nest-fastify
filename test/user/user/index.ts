@@ -9,9 +9,8 @@ import { P_USER_CREATE, P_USER_UPDATE } from '@service';
 
 import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataRole: CreateUserRoleRequestDto = {
     name: faker.person.jobType(),
@@ -77,8 +76,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRole)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    // expect(res.body).to.have.property("category_id");
-    // expect(res.body.category_id).to.equal(2);
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataRole));
       resultRole = body.data;
@@ -237,4 +234,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateRole));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

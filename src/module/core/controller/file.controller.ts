@@ -82,7 +82,7 @@ export class FileController {
     @Param('userId') userId: string,
     @Param('name') name: string,
     @Res({ passthrough: true }) res: FastifyReply,
-  ): Promise<any> {
+  ): Promise<StreamableFile | undefined> {
     try {
       const filePath = join(process.cwd(), appConfig.UPLOAD_LOCATION, `${userId}/${name}`);
       if (!existsSync(filePath)) throw new BadRequestException();

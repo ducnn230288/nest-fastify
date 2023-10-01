@@ -8,9 +8,8 @@ import { DataService, DataTypeService } from '@service';
 
 import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreateDataTypeRequestDto = {
     name: faker.person.jobType(),
@@ -177,9 +176,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     if (type) {
-      body.data.translations.forEach((item: any) => {
+      body.data.translations.forEach((item) => {
         let index;
-        data.translations.forEach((subItem: any, i: number) => {
+        data.translations.forEach((subItem, i: number) => {
           if (subItem.language === item.language) {
             index = i;
           }
@@ -240,4 +239,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };
