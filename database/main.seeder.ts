@@ -9,6 +9,7 @@ import {
   PostTypeSeeder,
   UserSeeder,
   StoreSeeder,
+  CategorySeeder,
 } from './seeds';
 
 export class MainSeeder implements Seeder {
@@ -20,5 +21,6 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
     await runSeeder(dataSource, StoreSeeder);
+    await runSeeder(dataSource, CategorySeeder);
   }
 }

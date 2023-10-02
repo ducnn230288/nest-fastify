@@ -1,15 +1,19 @@
-import { Get, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import { Headers, PaginationQueryDto } from '@shared';
-import { CategoryService } from '@service';
-import { ListCategoryResponseDto } from '@dto';
+import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
+import { CATRGORY_TYPE_CREATE, CategoryService } from '@service';
+import { ListCategoryResponseDto, CategoryResponseDto, CreateCategoryTypeRequestDto } from '@dto';
 
 @Headers('category')
 export class CategoryController {
   constructor(private readonly service: CategoryService) {}
 
-  @Get('list')
+  @Public({
+    summary: 'Get List data',
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -19,6 +23,33 @@ export class CategoryController {
       message: i18n.t('common.Get List success'),
       count: total,
       data: result,
+    };
+  }
+
+  @Public({
+    summary: 'Get Detail data',
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Get('/slug/:slug')
+  async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<CategoryResponseDto> {
+    return {
+      message: i18n.t('common.Get Detail Success'),
+      data: await this.service.findSlug(slug),
+    };
+  }
+
+  @Auth({
+    summary: 'Create data',
+    permission: CATRGORY_TYPE_CREATE,
+  })
+  @Post('')
+  async create(
+    @I18n() i18n: I18nContext,
+    @Body(new SerializerBody([MaxGroup])) body: CreateCategoryTypeRequestDto,
+  ): Promise<CategoryResponseDto> {
+    return {
+      message: i18n.t('common.Create Success'),
+      data: await this.service.create(body),
     };
   }
 }
