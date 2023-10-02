@@ -13,3 +13,4 @@ export * from './module/user/dto/user-role.dto';
 export * from './module/category/dto/category.dto';
 export * from './module/product/dto/product.dto';
 export * from './module/store/dto/store.dto';
+export * from './module/order/dto/order.dto';
