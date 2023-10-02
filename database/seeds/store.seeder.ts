@@ -9,12 +9,12 @@ export class StoreSeeder implements Seeder {
     const listData: Store[] = [
       {
         name: 'TaiStore',
-        status: 'Dev',
+        status: 0,
         phone: faker.phone.number().toString(),
         slug: 'tais',
         avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
         description: faker.lorem.paragraph(),
-        userId: `dfd6fc2c-02a8-4706-bb7c-0ff395c7e7a5`,
+        userId: 'asdasd213sss',
       },
     ];
 

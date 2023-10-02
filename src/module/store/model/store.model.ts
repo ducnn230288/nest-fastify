@@ -1,43 +1,52 @@
+import { faker } from '@faker-js/faker';
 import { IsString, IsNumber, IsOptional, IsUUID } from 'class-validator';
 import { Base, MaxGroup } from '@shared';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { Product, User } from '@model';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Store extends Base {
   @Column()
   @IsString()
+  @ApiProperty({ example: faker.person.jobType(), description: '' })
   name: string;
 
-  @Column()
-  @IsString()
-  status: string;
+  @Column({ default: 0 })
+  @ApiProperty({ example: 0, description: '' })
+  @Exclude()
+  status: number;
 
   @Column()
   @IsString()
+  @ApiProperty({ example: faker.phone.number(), description: '' })
   phone: string;
 
   @Column()
   @IsString()
   @IsOptional()
+  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   description: string;
 
   @Column()
   @IsString()
+  @ApiProperty({ example: faker.lorem.slug(), description: '' })
   slug: string;
 
   @Column()
   @IsString()
+  @ApiProperty({ example: faker.image.url(), description: '' })
   avatar: string;
 
   @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
-  @IsOptional()
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  // @IsOptional()
   userId?: string;
 
-  @OneToOne(() => User, (user) => user.store)
+  @OneToOne(() => User, (user) => user.store, { eager: true })
   @JoinColumn()
   user?: User;
 
