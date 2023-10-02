@@ -1,13 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Base } from "@shared";
-import { Column, Entity, OneToOne } from "typeorm";
+import { Base, MaxGroup } from "@shared";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, Unique } from "typeorm";
 import { faker } from '@faker-js/faker';
-import { IsString } from 'class-validator';
-import { Expose } from "class-transformer";
+import { IsString, IsArray } from 'class-validator';
+import { Expose, Type } from "class-transformer";
 import { Address } from "./address.model";
+import { District } from "./district.model";
 
 
 @Entity()
+@Unique(['code'])
 export class Province extends Base {
     @Column()
     @ApiProperty({ example: faker.person.jobType(), description: '' })
@@ -21,6 +23,11 @@ export class Province extends Base {
     @IsString()
     code: string;
 
-    @OneToOne(() => Address)
-    address: Address;
+    @OneToMany(() => Address, address => address.provinceItem, { eager: true })
+    @Expose({ groups: [MaxGroup] })
+    items?: Address[];
+
+    @OneToMany(() => District, district => district.provinceItem, { eager: true })
+    @Expose({ groups: [MaxGroup] })
+    districtItem?: District[];
 }

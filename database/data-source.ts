@@ -12,17 +12,18 @@ import {
   Data,
   DataTranslation,
   DataType,
-  District,
   Order,
   Parameter,
   Post,
   PostTranslation,
   PostType,
   Product,
-  Province,
   Store,
   User,
   UserRole,
+  Province,
+  District,
+  Ward,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -33,6 +34,11 @@ const options: DataSourceOptions & SeederOptions = {
   password: appConfig.DATABASE_PASSWORD,
   database: appConfig.DATABASE_NAME,
   entities: [
+    Address,
+    Category,
+    Order,
+    Product,
+    Store,
     Code,
     CodeType,
     User,
@@ -44,6 +50,9 @@ const options: DataSourceOptions & SeederOptions = {
     Post,
     PostTranslation,
     PostType,
+    Province,
+    District,
+    Ward
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

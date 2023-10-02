@@ -1,13 +1,13 @@
-import { OmitType, PartialType, PickType } from '@nestjs/swagger';
-import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { PaginationResponsesDto } from '@shared';
 import { District } from '@model';
-
-// export class CreateDistrictDto extends PickType(District, ['code', 'name'] as const) {}
-// export class UpdateDistrictDto extends PickType(District, ['name'] as const) {}
+import { WardDto } from '@dto';
 
 export class DistrictDto extends PartialType(
-    OmitType(District, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code'] as const),
-) {}
+    OmitType(District, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code', 'codeProvince'] as const),
+) {
+    readonly code: WardDto;
+}
 
 export class ListDistrictResponseDto extends PartialType(PaginationResponsesDto) {
     readonly data: DistrictDto[];

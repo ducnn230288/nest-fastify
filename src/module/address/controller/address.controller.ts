@@ -1,19 +1,22 @@
 import { BadRequestException, Body, Get, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import { Headers, PaginationQueryDto } from '@shared';
+import { Auth, Headers, PaginationQueryDto, SerializerBody } from '@shared';
 
-import { ListAddressResponseDto } from '@dto';
-import { AddressService, P_ADDRESS_LISTED } from '@service';
+import { ListAddressResponseDto, AddressResponseDto, CreateAddressRequestDto } from '@dto';
+import { 
+    AddressService, 
+    P_ADDRESS_LISTED 
+} from '@service';
 
 @Headers('address')
 export class AddressController {
     constructor(private readonly service: AddressService) {}
 
-    // @Auth({
-    //     summary: 'Get List data',
-    //     permission: P_ADDRESS_LISTED,
-    // })
+    @Auth({
+        summary: 'Get List data',
+        permission: P_ADDRESS_LISTED,
+    })
     @Get('list')
     async findAll(
     @I18n() i18n: I18nContext,

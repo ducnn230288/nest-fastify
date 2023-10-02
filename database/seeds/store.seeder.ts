@@ -14,7 +14,7 @@ export class StoreSeeder implements Seeder {
         slug: 'tais',
         avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
         description: faker.lorem.paragraph(),
-        userId: `dfd6fc2c-02a8-4706-bb7c-0ff395c7e7a5`,
+        userId: `b88bf76c-4aab-49bb-929b-a6d24549a225`,
       },
     ];
 

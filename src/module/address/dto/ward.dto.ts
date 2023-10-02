@@ -4,7 +4,7 @@ import { Ward } from '@model';
 
 
 export class WardDto extends PartialType(
-    OmitType(Ward, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code'] as const),
+    OmitType(Ward, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code', 'codeDistrict'] as const),
 ) {}
 
 export class ListWardResponseDto extends PartialType(PaginationResponsesDto) {
