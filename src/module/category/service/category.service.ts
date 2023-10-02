@@ -2,19 +2,25 @@ import { Injectable } from '@nestjs/common';
 
 import { BaseService } from '@shared';
 import { Category } from '@model';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CategoryRepository } from '@repository';
 
-export const P_CATEGORY_LISTED = '4c34dc92-cbbe-4419-8dbc-745818d76098';
+export const CATRGORY_TYPE_CREATE = '45f014c0-9ebe-497e-9766-2054ebb7e1d5';
 
 @Injectable()
 export class CategoryService extends BaseService<Category> {
-  constructor(
-    @InjectRepository(Category)
-    public repo: Repository<Category>,
-    public repoPost: CategoryRepository,
-  ) {
+  constructor(public repo: CategoryRepository) {
     super(repo);
+    // this.listJoin = ['products'];
+  }
+
+  /**
+   * @param slug
+   * @returns Category
+   */
+  async findSlug(slug: string): Promise<Category | null> {
+    // console.log(slug);
+    const category = await this.repo.getDataBySlug(slug);
+    // console.log(category);
+    return category;
   }
 }

@@ -9,19 +9,22 @@ export class CategorySeeder implements Seeder {
     const repository = dataSource.getRepository(Category);
     const listData: Category[] = [
       {
-        name: 'quần',
+        name: 'DELL',
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
+        slug: 'DELL',
+        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
       },
       {
-        name: 'mũ',
+        name: 'ASUS',
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
+        slug: 'ASUS',
+        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
       },
       {
-        name: 'áo',
+        name: 'HP',
         description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
+        slug: 'HP',
+        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
       },
     ];
 
