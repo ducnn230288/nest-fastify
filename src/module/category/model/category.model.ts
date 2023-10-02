@@ -18,7 +18,7 @@ export class Category extends Base {
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
-  @Expose()
+  // @Expose()
   description: string;
 
   @Column()
@@ -32,7 +32,7 @@ export class Category extends Base {
   @IsOptional()
   parentId?: string;
 
-  @OneToMany(() => Product, (product) => product.category, { eager: true })
+  @OneToMany(() => Product, (product) => product.category)
   @IsArray()
   @IsOptional()
   public products?: Product[];

@@ -9,7 +9,7 @@ export class StoreSeeder implements Seeder {
     const listData: Store[] = [
       {
         name: 'TaiStore',
-        status: 'Dev',
+        status: 0,
         phone: faker.phone.number().toString(),
         slug: 'tais',
         avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',

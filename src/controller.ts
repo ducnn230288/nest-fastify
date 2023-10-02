@@ -21,3 +21,4 @@ export * from './module/address/controller/ward.controller';
 export * from './module/category/controller/category.controller';
 export * from './module/product/controller/product.controller';
 export * from './module/store/controller/store.controller';
+export * from './module/order/controller/order.controller';

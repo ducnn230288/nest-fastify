@@ -31,12 +31,13 @@ export class Product extends Base {
   @Column()
   @IsNumber()
   @IsPositive()
-  @ApiProperty({ example: faker.number.int() })
+  @ApiProperty({ example: faker.number.int({ min: 0, max: 100000000 }) })
   @Expose()
   price: number;
 
   @Column()
   @IsString()
+  @ApiProperty({ example: faker.image.url() })
   @Expose()
   images: string;
 
@@ -59,7 +60,7 @@ export class Product extends Base {
   @Expose()
   mass: number;
 
-  @Column()
+  @Column({ default: 0 })
   @IsNumber()
   @ApiProperty({ example: faker.number.int(100) })
   @IsPositive()
@@ -69,6 +70,7 @@ export class Product extends Base {
 
   @Column()
   @Expose({ groups: [MaxGroup] })
+  @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   categoryId: string;
 
@@ -80,6 +82,7 @@ export class Product extends Base {
 
   @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
+  @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   @IsOptional()
   storeId?: string;
