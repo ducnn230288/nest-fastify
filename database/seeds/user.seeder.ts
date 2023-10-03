@@ -53,6 +53,7 @@ import {
   STORE_CREATE,
   STORE_UPDATE,
   STORE_DELETE,
+  P_ADDRESS_LISTED,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -117,6 +118,7 @@ export class UserSeeder implements Seeder {
         STORE_CREATE,
         STORE_UPDATE,
         STORE_DELETE,
+        P_ADDRESS_LISTED,
       ],
       isSystemAdmin: false,
     };

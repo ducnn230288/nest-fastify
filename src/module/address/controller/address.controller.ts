@@ -13,11 +13,11 @@ import {
 export class AddressController {
     constructor(private readonly service: AddressService) {}
 
-    @Auth({
-        summary: 'Get List data',
-        permission: P_ADDRESS_LISTED,
-    })
-    @Get('list')
+    // @Auth({
+    //     summary: 'Get List data',
+    //     permission: P_ADDRESS_LISTED,
+    // })
+    @Get()
     async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,

@@ -18,6 +18,6 @@ export class AddressService extends BaseService<Address> {
   ) {
     super(repo);
     this.listQuery = ['specificAddress'];
-    this.listJoin = ['province', 'district', 'ward']
+    this.listJoin = ['provinceItem', 'districtItem', 'wardItem']
   }
 }

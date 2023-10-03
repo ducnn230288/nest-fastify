@@ -10,7 +10,7 @@ import { DistrictService } from '@service';
 export class DistrictController {
     constructor(private readonly service: DistrictService) {}
 
-    @Get('list')
+    @Get()
     async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
