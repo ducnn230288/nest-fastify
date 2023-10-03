@@ -9,25 +9,39 @@ export class CategorySeeder implements Seeder {
     const repository = dataSource.getRepository(Category);
     const listData: Category[] = [
       {
-        name: 'DELL',
+        name: 'quần',
         description: faker.lorem.paragraph(),
-        slug: 'DELL',
-        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        slug: faker.lorem.slug(),
       },
       {
-        name: 'ASUS',
+        name: 'mũ',
         description: faker.lorem.paragraph(),
-        slug: 'ASUS',
-        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        slug: faker.lorem.slug(),
       },
       {
-        name: 'HP',
+        name: 'áo',
         description: faker.lorem.paragraph(),
-        slug: 'HP',
-        parentId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        slug: faker.lorem.slug(),
       },
+      // {
+      //   name: 'DELL',
+      //   description: faker.lorem.paragraph(),
+      //   slug: 'DELL',
+      //   parentId: '319603b1-472c-4ea7-8ec2-0286fa70c16d',
+      // },
+      // {
+      //   name: 'ASUS',
+      //   description: faker.lorem.paragraph(),
+      //   slug: 'ASUS',
+      //   parentId: '319603b1-472c-4ea7-8ec2-0286fa70c16d',
+      // },
+      // {
+      //   name: 'HP',
+      //   description: faker.lorem.paragraph(),
+      //   slug: 'HP',
+      //   parentId: '319603b1-472c-4ea7-8ec2-0286fa70c16d',
+      // },
     ];
-
     for (const data of listData) {
       const dataExists = await repository
         .createQueryBuilder('base')

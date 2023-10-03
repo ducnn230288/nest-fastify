@@ -8,13 +8,13 @@ export class StoreSeeder implements Seeder {
     const repository = dataSource.getRepository(Store);
     const listData: Store[] = [
       {
-        name: 'TaiStore',
+        name: faker.person.fullName(),
         status: 0,
         phone: faker.phone.number().toString(),
-        slug: 'tais',
-        avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
+        slug: faker.lorem.slug(),
+        avatar: faker.image.url(),
         description: faker.lorem.paragraph(),
-        userId: `b88bf76c-4aab-49bb-929b-a6d24549a225`,
+        userId: `dfd6fc2c-02a8-4706-bb7c-0ff395c7e7a5`,
       },
     ];
 
