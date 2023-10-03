@@ -12,6 +12,7 @@ export class DistrictService extends BaseService<District> {
     public repo: Repository<District>,
   ) {
     super(repo);
-    this.listQuery = ['name', 'code', 'address'];
+    this.listQuery = ['name', 'code', 'codeProvince'];
+    // this.listJoin = ['wardItem']
   }
 }

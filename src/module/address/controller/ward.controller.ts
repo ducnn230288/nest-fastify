@@ -10,7 +10,7 @@ import { WardService } from '@service';
 export class WardController {
     constructor(private readonly service: WardService) {}
 
-    @Get('list')
+    @Get()
     async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
