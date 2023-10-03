@@ -1,7 +1,8 @@
 import { CreateStoreRequestDto, ListStoreResponseDto, StoreResponseDto, UpdateStoreRequestDto } from '@dto';
+import { User } from '@model';
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { StoreService, STORE_LISTED, STORE_DETAIL, STORE_CREATE, STORE_UPDATE, STORE_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import dayjs from 'dayjs';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -9,25 +10,27 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
-  // @Auth({
-  //   summary: 'Create a STORE',
-  //   permission: STORE_CREATE,
-  // })
+  @Auth({
+    summary: 'Create a STORE',
+    permission: STORE_CREATE,
+  })
   @Post('')
   async create(
+    @AuthUser() user: User,
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateStoreRequestDto,
   ): Promise<StoreResponseDto> {
+    const data = Object.assign(body, { userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.storeService.create(body),
+      data: await this.storeService.create(data),
     };
   }
 
-  // @Auth({
-  //   summary: 'Get List STORE',
-  //   permission: STORE_LISTED,
-  // })
+  @Auth({
+    summary: 'Get List STORE',
+    permission: STORE_LISTED,
+  })
   @Get('')
   async getAll(@I18n() i18n: I18nContext, @Query() paginationQuery: PaginationQueryDto): Promise<ListStoreResponseDto> {
     const [result, total] = await this.storeService.findAll(paginationQuery);
@@ -38,10 +41,10 @@ export class StoreController {
     };
   }
 
-  // @Auth({
-  //   summary: 'Get detail a STORE',
-  //   permission: STORE_DETAIL,
-  // })
+  @Auth({
+    summary: 'Get detail a STORE',
+    permission: STORE_DETAIL,
+  })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<StoreResponseDto> {
     return {
@@ -50,10 +53,10 @@ export class StoreController {
     };
   }
 
-  // @Auth({
-  //   summary: 'Update a STORE',
-  //   permission: STORE_UPDATE,
-  // })
+  @Auth({
+    summary: 'Update a STORE',
+    permission: STORE_UPDATE,
+  })
   @Put(':id')
   async update(
     @I18n() i18n: I18nContext,
@@ -66,22 +69,22 @@ export class StoreController {
     };
   }
 
-  // @Auth({
-  //   summary: 'Delete a STORE',
-  //   permission: STORE_DELETE,
-  // })
+  @Auth({
+    summary: 'Delete a STORE',
+    permission: STORE_DELETE,
+  })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<StoreResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.storeService.removeHard(id),
+      data: await this.storeService.remove(id),
     };
   }
 
-  // @Auth({
-  //   summary: 'Delete a STORE',
-  //   permission: STORE_UPDATE,
-  // })
+  @Auth({
+    summary: 'Delete a STORE',
+    permission: STORE_UPDATE,
+  })
   @Put(':id/disable/:boolean')
   async updateDisable(
     @I18n() i18n: I18nContext,
