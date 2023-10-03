@@ -42,7 +42,6 @@ export class CategorySeeder implements Seeder {
       //   parentId: '319603b1-472c-4ea7-8ec2-0286fa70c16d',
       // },
     ];
-
     for (const data of listData) {
       const dataExists = await repository
         .createQueryBuilder('base')

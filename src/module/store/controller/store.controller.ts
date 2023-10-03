@@ -9,10 +9,10 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
-  @Auth({
-    summary: 'Create a STORE',
-    permission: STORE_CREATE,
-  })
+  // @Auth({
+  //   summary: 'Create a STORE',
+  //   permission: STORE_CREATE,
+  // })
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
@@ -24,10 +24,10 @@ export class StoreController {
     };
   }
 
-  @Auth({
-    summary: 'Get List STORE',
-    permission: STORE_LISTED,
-  })
+  // @Auth({
+  //   summary: 'Get List STORE',
+  //   permission: STORE_LISTED,
+  // })
   @Get('')
   async getAll(@I18n() i18n: I18nContext, @Query() paginationQuery: PaginationQueryDto): Promise<ListStoreResponseDto> {
     const [result, total] = await this.storeService.findAll(paginationQuery);
@@ -38,10 +38,10 @@ export class StoreController {
     };
   }
 
-  @Auth({
-    summary: 'Get detail a STORE',
-    permission: STORE_DETAIL,
-  })
+  // @Auth({
+  //   summary: 'Get detail a STORE',
+  //   permission: STORE_DETAIL,
+  // })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<StoreResponseDto> {
     return {
@@ -50,10 +50,10 @@ export class StoreController {
     };
   }
 
-  @Auth({
-    summary: 'Update a STORE',
-    permission: STORE_UPDATE,
-  })
+  // @Auth({
+  //   summary: 'Update a STORE',
+  //   permission: STORE_UPDATE,
+  // })
   @Put(':id')
   async update(
     @I18n() i18n: I18nContext,
@@ -66,10 +66,10 @@ export class StoreController {
     };
   }
 
-  @Auth({
-    summary: 'Delete a STORE',
-    permission: STORE_DELETE,
-  })
+  // @Auth({
+  //   summary: 'Delete a STORE',
+  //   permission: STORE_DELETE,
+  // })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<StoreResponseDto> {
     return {
@@ -78,10 +78,10 @@ export class StoreController {
     };
   }
 
-  @Auth({
-    summary: 'Delete a STORE',
-    permission: STORE_UPDATE,
-  })
+  // @Auth({
+  //   summary: 'Delete a STORE',
+  //   permission: STORE_UPDATE,
+  // })
   @Put(':id/disable/:boolean')
   async updateDisable(
     @I18n() i18n: I18nContext,
