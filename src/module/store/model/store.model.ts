@@ -15,7 +15,8 @@ export class Store extends Base {
 
   @Column({ default: 0 })
   @ApiProperty({ example: 0, description: '' })
-  @Exclude()
+  @IsNumber()
+  @Expose()
   status: number;
 
   @Column()
@@ -40,10 +41,9 @@ export class Store extends Base {
   avatar: string;
 
   @Column()
-  @Expose({ groups: [MaxGroup] })
+  @Expose()
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
-  // @IsOptional()
   userId?: string;
 
   @OneToOne(() => User, (user) => user.store, { eager: true })

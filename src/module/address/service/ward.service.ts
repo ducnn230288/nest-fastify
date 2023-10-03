@@ -12,6 +12,6 @@ export class WardService extends BaseService<Ward> {
     public repo: Repository<Ward>,
   ) {
     super(repo);
-    this.listQuery = ['name', 'code', 'address'];
+    this.listQuery = ['name', 'code', 'codeDistrict'];
   }
 }

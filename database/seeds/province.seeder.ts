@@ -24,7 +24,7 @@ export class ProvinceSeeder implements Seeder {
       { name: 'Cần Thơ', code: '90' },
       { name: 'Cao Bằng', code: '27' },
       { name: 'Đắk Lắk', code: '63' },
-      { name: 'Đăk Nông', code: '64' },
+      { name: 'Đắk Nông', code: '64' },
       { name: 'Đà Nẵng', code: '55' },
       { name: 'Điện Biên', code: '38' },
       { name: 'Đồng Nai', code: '81' },
@@ -70,7 +70,6 @@ export class ProvinceSeeder implements Seeder {
       { name: 'Vĩnh Long', code: '89' },
       { name: 'Vĩnh Phúc', code: '28' },
       { name: 'Yên Bái', code: '32' },
-      { code: '08', name: 'Tỉnh Tuyên Quang' },
     ];
 
     for (const data of listData) {

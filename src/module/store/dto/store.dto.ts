@@ -23,7 +23,7 @@ export class CreateStoreRequestDto extends PickType(Store, [
   'description',
   'slug',
   'avatar',
-  'userId',
+  // 'userId',
 ] as const) {}
 
 export class StoreDto extends PartialType(
@@ -32,17 +32,15 @@ export class StoreDto extends PartialType(
     'createdAt',
     'updatedAt',
     'name',
-    'status',
     'phone',
     'description',
     'slug',
     'avatar',
     'userId',
+    'status',
   ] as const),
-) {
-  readonly userId: UserDto;
-}
+) {}
 
 export class StoreResponseDto extends PartialType(DefaultResponsesDto) {
-  readonly data: DefaultAuthResponsesUserDto | null;
+  readonly data: StoreDto | null;
 }

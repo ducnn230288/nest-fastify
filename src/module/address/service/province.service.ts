@@ -12,6 +12,7 @@ export class ProvinceService extends BaseService<Province> {
     public repo: Repository<Province>,
   ) {
     super(repo);
-    this.listQuery = ['name', 'code', 'address'];
+    this.listQuery = ['name', 'code'];
+    // this.listJoin = ['districtItem']
   }
 }

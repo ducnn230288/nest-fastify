@@ -10,7 +10,7 @@ import { ProvinceService } from '@service';
 export class ProvinceController {
     constructor(private readonly service: ProvinceService) {}
 
-    @Get('list')
+    @Get()
     async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,

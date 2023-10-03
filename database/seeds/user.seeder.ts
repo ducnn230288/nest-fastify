@@ -50,6 +50,12 @@ import {
   P_USER_ROLE_UPDATE,
   PRODUCT_TYPE_CREATE,
   CATEGORY_TYPE_CREATE,
+  STORE_LISTED,
+  STORE_DETAIL,
+  STORE_CREATE,
+  STORE_UPDATE,
+  STORE_DELETE,
+  P_ADDRESS_LISTED,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -112,6 +118,12 @@ export class UserSeeder implements Seeder {
         PRODUCT_TYPE_CREATE,
 
         CATEGORY_TYPE_CREATE,
+        STORE_LISTED,
+        STORE_DETAIL,
+        STORE_CREATE,
+        STORE_UPDATE,
+        STORE_DELETE,
+        P_ADDRESS_LISTED,
       ],
       isSystemAdmin: false,
     };
