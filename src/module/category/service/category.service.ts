@@ -4,7 +4,8 @@ import { BaseService } from '@shared';
 import { Category } from '@model';
 import { CategoryRepository } from '@repository';
 
-export const CATRGORY_TYPE_CREATE = '45f014c0-9ebe-497e-9766-2054ebb7e1d5';
+export const CATEGORY_TYPE_CREATE = '45f014c0-9ebe-497e-9766-2054ebb7e1d5';
+export const CATEGORY_TYPE_UPDATE = '45f014c0-9ebe-497e-9766-2054ebb7e1d5';
 
 @Injectable()
 export class CategoryService extends BaseService<Category> {

@@ -12,6 +12,7 @@ import { AppDataSource } from '../database/data-source';
 
 export const BaseTest: any = {
   userAdmin: {
+    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,
@@ -23,6 +24,7 @@ export const BaseTest: any = {
     roleCode: undefined,
   },
   userRole: {
+    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,
@@ -34,6 +36,7 @@ export const BaseTest: any = {
     roleCode: undefined,
   },
   user: {
+    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,

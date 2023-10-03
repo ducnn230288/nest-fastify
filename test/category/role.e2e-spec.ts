@@ -1,5 +1,5 @@
 import { testCase } from './index';
 
-import { CATRGORY_TYPE_CREATE } from '@service';
+import { CATEGORY_TYPE_CREATE, CATEGORY_TYPE_UPDATE } from '@service';
 
-describe('Role - /api/code', () => testCase('Role', [CATRGORY_TYPE_CREATE]));
+describe('Role - /api/code', () => testCase('Role', [CATEGORY_TYPE_CREATE, CATEGORY_TYPE_UPDATE]));

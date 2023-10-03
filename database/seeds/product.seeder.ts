@@ -19,6 +19,7 @@ export class ProductSeeder implements Seeder {
         mass: faker.number.int({ min: 0, max: 100 }),
         disCount: faker.number.int({ min: 0, max: 100 }),
         categoryId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        storeId: 'b366c230-330f-4f37-acd5-034b648e726a',
       },
       {
         name: 'áo khoác',
@@ -31,6 +32,7 @@ export class ProductSeeder implements Seeder {
         mass: faker.number.int({ min: 0, max: 100 }),
         disCount: faker.number.int({ min: 0, max: 100 }),
         categoryId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        storeId: 'b366c230-330f-4f37-acd5-034b648e726a',
       },
       {
         name: 'áo thun',
@@ -43,6 +45,7 @@ export class ProductSeeder implements Seeder {
         mass: faker.number.int({ min: 0, max: 100 }),
         disCount: faker.number.int({ min: 0, max: 100 }),
         categoryId: '1e525980-5242-4719-bd35-ec7b8532e9fa',
+        storeId: 'b366c230-330f-4f37-acd5-034b648e726a',
       },
     ];
 

@@ -45,7 +45,8 @@ export class Product extends Base {
   @ApiProperty({ example: 0, description: '' })
   @IsNumber()
   @Exclude()
-  status: number;
+  @IsOptional()
+  status?: number;
 
   @Column()
   @ApiProperty({ example: faker.lorem.slug(), description: '' })
@@ -69,7 +70,6 @@ export class Product extends Base {
   disCount: number;
 
   @Column()
-  @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   categoryId: string;
@@ -81,11 +81,9 @@ export class Product extends Base {
   public category?: Category;
 
   @Column({ nullable: true })
-  @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  @IsOptional()
-  storeId?: string;
+  storeId: string;
 
   @ManyToOne(() => Store, (store) => store.products)
   @Expose({ groups: [MaxGroup] })

@@ -23,7 +23,7 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, ParameterSeeder);
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
-    await runSeeder(dataSource, StoreSeeder);
+    // await runSeeder(dataSource, StoreSeeder);
     await runSeeder(dataSource, ProvinceSeeder);
     await runSeeder(dataSource, DistrictSeeder);
     await runSeeder(dataSource, WardSeeder);

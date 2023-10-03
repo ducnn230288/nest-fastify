@@ -18,6 +18,6 @@ export class CodeService extends BaseService<Code> {
     public repo: Repository<Code>,
   ) {
     super(repo);
-    this.listQuery = ['code', 'name', 'description'];
+    this.listJoin = ['code', 'name', 'description'];
   }
 }

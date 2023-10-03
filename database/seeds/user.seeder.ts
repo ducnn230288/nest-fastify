@@ -48,6 +48,8 @@ import {
   P_USER_ROLE_DETAIL,
   P_USER_ROLE_LISTED,
   P_USER_ROLE_UPDATE,
+  PRODUCT_TYPE_CREATE,
+  CATEGORY_TYPE_CREATE,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -106,6 +108,10 @@ export class UserSeeder implements Seeder {
         P_POST_TYPE_DELETE,
         P_POST_TYPE_LISTED,
         P_POST_TYPE_UPDATE,
+
+        PRODUCT_TYPE_CREATE,
+
+        CATEGORY_TYPE_CREATE,
       ],
       isSystemAdmin: false,
     };

@@ -10,7 +10,7 @@ export class ProductRepository extends BaseRepository<Product> {
   }
 
   async getDataBySlug(slug: string): Promise<Product | null> {
-    console.log(slug);
+    // console.log(slug);
     return await this.createQueryBuilder('base').where(`base.slug=:slug`, { slug }).withDeleted().getOne();
   }
 }

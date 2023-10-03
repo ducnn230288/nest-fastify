@@ -14,7 +14,7 @@ export class StoreSeeder implements Seeder {
         slug: faker.lorem.slug(),
         avatar: faker.image.url(),
         description: faker.lorem.paragraph(),
-        userId: `dfd6fc2c-02a8-4706-bb7c-0ff395c7e7a5`,
+        userId: `15770167-33b8-432d-89a0-187a871ced25`,
       },
     ];
 
