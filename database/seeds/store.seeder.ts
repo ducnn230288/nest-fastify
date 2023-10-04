@@ -1,11 +1,18 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
-import { Store } from '@model';
+import { Store, User } from '@model';
+// import { UserDto } from '@dto';
 
 export class StoreSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
     const repository = dataSource.getRepository(Store);
+    const repoUser = dataSource.getRepository(User);
+    const user = await repoUser
+      .createQueryBuilder('base')
+      .andWhere(`base.email=:email`, { email: 'admin@admin.com' })
+      .withDeleted()
+      .getOne();
     const listData: Store[] = [
       {
         name: faker.person.fullName(),
@@ -14,7 +21,7 @@ export class StoreSeeder implements Seeder {
         slug: faker.lorem.slug(),
         avatar: faker.image.url(),
         description: faker.lorem.paragraph(),
-        userId: `15770167-33b8-432d-89a0-187a871ced25`,
+        userId: user?.id,
       },
     ];
 

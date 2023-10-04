@@ -13,6 +13,7 @@ import {
   DistrictSeeder,
   WardSeeder,
   CategorySeeder,
+  ProductSeeder,
 } from './seeds';
 
 export class MainSeeder implements Seeder {
@@ -23,10 +24,11 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, ParameterSeeder);
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
-    // await runSeeder(dataSource, StoreSeeder);
     await runSeeder(dataSource, ProvinceSeeder);
     await runSeeder(dataSource, DistrictSeeder);
     await runSeeder(dataSource, WardSeeder);
+    // await runSeeder(dataSource, StoreSeeder);
     await runSeeder(dataSource, CategorySeeder);
+    await runSeeder(dataSource, ProductSeeder);
   }
 }

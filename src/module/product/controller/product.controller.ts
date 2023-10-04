@@ -1,13 +1,17 @@
 import { Body, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { ProductService, PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL } from '@service';
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
+import { ProductService, PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL, StoreService } from '@service';
 import { CreateProductTypeRequestDto, ListProductResponseDto, ProductResponseDto } from '@dto';
+import { User } from '@model';
 
 @Headers('product')
 export class ProductController {
-  constructor(private readonly service: ProductService) {}
+  constructor(
+    private readonly service: ProductService,
+    private readonly stroreService: StoreService,
+  ) {}
 
   @Public({
     summary: 'Get List data',
@@ -44,12 +48,15 @@ export class ProductController {
   })
   @Post('')
   async create(
+    @AuthUser() user: User,
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateProductTypeRequestDto,
   ): Promise<ProductResponseDto> {
+    const store = await this.stroreService.getStoreByUserId(user.id || '');
+    const data = Object.assign(body, { storeId: store?.id });
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.create(data),
     };
   }
 }

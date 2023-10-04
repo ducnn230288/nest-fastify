@@ -1,5 +1,5 @@
 import { testCase } from './index';
 
-import { PRODUCT_TYPE_CREATE } from '@service';
+import { PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL } from '@service';
 
-describe('Role - /api/code', () => testCase('Role', [PRODUCT_TYPE_CREATE]));
+describe('Role - /api/product', () => testCase('Role', [PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL]));

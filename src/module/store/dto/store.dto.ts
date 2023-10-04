@@ -23,7 +23,7 @@ export class CreateStoreRequestDto extends PickType(Store, [
   'description',
   'slug',
   'avatar',
-  // 'userId',
+  'userId',
 ] as const) {}
 
 export class StoreDto extends PartialType(

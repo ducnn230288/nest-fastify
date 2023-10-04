@@ -83,7 +83,7 @@ export class Product extends Base {
   @Column({ nullable: true })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  storeId: string;
+  storeId?: string;
 
   @ManyToOne(() => Store, (store) => store.products)
   @Expose({ groups: [MaxGroup] })

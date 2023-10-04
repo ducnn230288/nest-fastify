@@ -5,10 +5,10 @@ import { Product } from '@model';
 import { ProductRepository } from '@repository';
 
 export const PRODUCT_TYPE_CREATE = '55f014c0-9ebe-497e-9766-2054ebb7e1d8';
-export const PRODUCT_TYPE_LIST = '56f014c0-9ebe-497e-9766-2054ebb7e1d8';
-export const PRODUCT_TYPE_DETAIL = '57f014c0-9ebe-497e-9766-2054ebb7e1d8';
-export const PRODUCT_TYPE_UPDATE = '58f014c0-9ebe-497e-9766-2054ebb7e1d8';
-export const PRODUCT_TYPE_DELETE = '59014c0-9ebe-497e-9766-2054ebb7e1d8';
+export const PRODUCT_TYPE_LIST = '56f014c0-9ebe-497e-9766-2054ebb7e1d9';
+export const PRODUCT_TYPE_DETAIL = '57f014c0-9ebe-497e-9766-2054ebb7e1d0';
+export const PRODUCT_TYPE_UPDATE = '58f014c0-9ebe-497e-9766-2054ebb7e1d1';
+export const PRODUCT_TYPE_DELETE = '59014c0-9ebe-497e-9766-2054ebb7e1d2';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {
