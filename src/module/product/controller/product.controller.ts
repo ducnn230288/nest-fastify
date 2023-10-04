@@ -2,8 +2,8 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { ProductService, PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL, StoreService, PRODUCT_TYPE_UPDATE } from '@service';
-import { CreateProductTypeRequestDto, ListProductResponseDto, ProductResponseDto, UpdateProductRequestDto } from '@dto';
+import { ProductService, PRODUCT_CREATE, PRODUCT_DETAIL, StoreService, PRODUCT_UPDATE, PRODUCT_DELETE } from '@service';
+import { CreateProductRequestDto, ListProductResponseDto, ProductResponseDto, UpdateProductRequestDto } from '@dto';
 import { User } from '@model';
 import dayjs from 'dayjs';
 
@@ -33,7 +33,7 @@ export class ProductController {
 
   @Auth({
     summary: 'Get Detail data',
-    permission: PRODUCT_TYPE_DETAIL,
+    permission: PRODUCT_DETAIL,
   })
   @Get('slug/:slug')
   async findBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<ProductResponseDto> {
@@ -43,6 +43,10 @@ export class ProductController {
     };
   }
 
+  @Auth({
+    summary: 'Get Detail data',
+    permission: PRODUCT_DETAIL,
+  })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductResponseDto> {
     return {
@@ -53,13 +57,13 @@ export class ProductController {
 
   @Auth({
     summary: 'Create data',
-    permission: PRODUCT_TYPE_CREATE,
+    permission: PRODUCT_CREATE,
   })
   @Post('')
   async create(
     @AuthUser() user: User,
     @I18n() i18n: I18nContext,
-    @Body(new SerializerBody([MaxGroup])) body: CreateProductTypeRequestDto,
+    @Body(new SerializerBody([MaxGroup])) body: CreateProductRequestDto,
   ): Promise<ProductResponseDto> {
     const store = await this.stroreService.getStoreByUserId(user.id || '');
     const data = Object.assign(body, { storeId: store?.id });
@@ -69,6 +73,10 @@ export class ProductController {
     };
   }
 
+  @Auth({
+    summary: 'Update data',
+    permission: PRODUCT_UPDATE,
+  })
   @Put(':id')
   async update(
     @I18n() i18n: I18nContext,
@@ -81,6 +89,10 @@ export class ProductController {
     };
   }
 
+  @Auth({
+    summary: 'Update data',
+    permission: PRODUCT_UPDATE,
+  })
   @Put(':id/disable/:boolean')
   async updateDisable(
     @I18n() i18n: I18nContext,
@@ -93,6 +105,10 @@ export class ProductController {
     };
   }
 
+  @Auth({
+    summary: 'Delete data',
+    permission: PRODUCT_DELETE,
+  })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductResponseDto> {
     return {

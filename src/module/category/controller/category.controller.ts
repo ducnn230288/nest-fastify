@@ -2,13 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import {
-  CATEGORY_TYPE_CREATE,
-  CategoryService,
-  CATEGORY_TYPE_UPDATE,
-  CATEGORY_TYPE_DETAIL,
-  CATEGORY_TYPE_DELETE,
-} from '@service';
+import { CATEGORY_CREATE, CategoryService, CATEGORY_UPDATE, CATEGORY_DETAIL, CATEGORY_DELETE } from '@service';
 import { ListCategoryResponseDto, CategoryResponseDto, CreateCategoryRequestDto, UpdateCategoryRequestDto } from '@dto';
 import dayjs from 'dayjs';
 
@@ -35,7 +29,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Get Detail data',
-    permission: CATEGORY_TYPE_DETAIL,
+    permission: CATEGORY_DETAIL,
   })
   @Get('/slug/:slug')
   async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<CategoryResponseDto> {
@@ -47,7 +41,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Get Detail data',
-    permission: CATEGORY_TYPE_DETAIL,
+    permission: CATEGORY_DETAIL,
   })
   @Get(':id')
   async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryResponseDto> {
@@ -59,7 +53,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Create data',
-    permission: CATEGORY_TYPE_CREATE,
+    permission: CATEGORY_CREATE,
   })
   @Post('')
   async create(
@@ -74,7 +68,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Update data',
-    permission: CATEGORY_TYPE_UPDATE,
+    permission: CATEGORY_UPDATE,
   })
   @Put(':id')
   async update(
@@ -90,7 +84,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Delete a STORE',
-    permission: CATEGORY_TYPE_UPDATE,
+    permission: CATEGORY_UPDATE,
   })
   @Put(':id/disable/:boolean')
   async updateDisable(
@@ -106,7 +100,7 @@ export class CategoryController {
 
   @Auth({
     summary: 'Delete a Category',
-    permission: CATEGORY_TYPE_DELETE,
+    permission: CATEGORY_DELETE,
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryResponseDto> {
