@@ -22,7 +22,7 @@ export class UpdateProductRequestDto extends PickType(Product, [
   'mass',
 ]) {}
 
-export class CreateProductTypeRequestDto extends PickType(Product, [
+export class CreateProductRequestDto extends PickType(Product, [
   'name',
   'description',
   'quantity',
