@@ -12,6 +12,16 @@ export class ListProductResponseDto extends PartialType(PaginationResponsesDto) 
   readonly data: ProductDto[];
 }
 
+export class UpdateProductRequestDto extends PickType(Product, [
+  'name',
+  'description',
+  'quantity',
+  'price',
+  'images',
+  'slug',
+  'mass',
+]) {}
+
 export class CreateProductTypeRequestDto extends PickType(Product, [
   'name',
   'description',
