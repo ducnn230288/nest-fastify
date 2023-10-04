@@ -1,10 +1,11 @@
-import { Body, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { ProductService, PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL, StoreService } from '@service';
-import { CreateProductTypeRequestDto, ListProductResponseDto, ProductResponseDto } from '@dto';
+import { ProductService, PRODUCT_TYPE_CREATE, PRODUCT_TYPE_DETAIL, StoreService, PRODUCT_TYPE_UPDATE } from '@service';
+import { CreateProductTypeRequestDto, ListProductResponseDto, ProductResponseDto, UpdateProductRequestDto } from '@dto';
 import { User } from '@model';
+import dayjs from 'dayjs';
 
 @Headers('product')
 export class ProductController {
@@ -42,6 +43,14 @@ export class ProductController {
     };
   }
 
+  @Get(':id')
+  async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductResponseDto> {
+    return {
+      message: i18n.t('common.Get Detail Success'),
+      data: await this.service.findOne(id, []),
+    };
+  }
+
   @Auth({
     summary: 'Create data',
     permission: PRODUCT_TYPE_CREATE,
@@ -57,6 +66,38 @@ export class ProductController {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.create(data),
+    };
+  }
+
+  @Put(':id')
+  async update(
+    @I18n() i18n: I18nContext,
+    @Param('id') id: string,
+    @Body(new SerializerBody([MaxGroup])) updateData: UpdateProductRequestDto,
+  ): Promise<ProductResponseDto> {
+    return {
+      message: i18n.t('common.Update Success'),
+      data: await this.service.update(id, updateData),
+    };
+  }
+
+  @Put(':id/disable/:boolean')
+  async updateDisable(
+    @I18n() i18n: I18nContext,
+    @Param('id') id: string,
+    @Param('boolean') boolean: string,
+  ): Promise<ProductResponseDto> {
+    return {
+      message: i18n.t('common.Update Success'),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
+    };
+  }
+
+  @Delete(':id')
+  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductResponseDto> {
+    return {
+      message: i18n.t('common.Delete Success'),
+      data: await this.service.remove(id),
     };
   }
 }
