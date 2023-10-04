@@ -1,9 +1,16 @@
-import { Body, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { CATEGORY_TYPE_CREATE, CategoryService, CATEGORY_TYPE_UPDATE } from '@service';
+import {
+  CATEGORY_TYPE_CREATE,
+  CategoryService,
+  CATEGORY_TYPE_UPDATE,
+  CATEGORY_TYPE_DETAIL,
+  CATEGORY_TYPE_DELETE,
+} from '@service';
 import { ListCategoryResponseDto, CategoryResponseDto, CreateCategoryRequestDto, UpdateCategoryRequestDto } from '@dto';
+import dayjs from 'dayjs';
 
 @Headers('category')
 export class CategoryController {
@@ -26,9 +33,9 @@ export class CategoryController {
     };
   }
 
-  @Public({
+  @Auth({
     summary: 'Get Detail data',
-    serializeOptions: { groups: [MaxGroup] },
+    permission: CATEGORY_TYPE_DETAIL,
   })
   @Get('/slug/:slug')
   async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<CategoryResponseDto> {
@@ -38,6 +45,10 @@ export class CategoryController {
     };
   }
 
+  @Auth({
+    summary: 'Get Detail data',
+    permission: CATEGORY_TYPE_DETAIL,
+  })
   @Get(':id')
   async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryResponseDto> {
     return {
@@ -74,6 +85,34 @@ export class CategoryController {
     return {
       message: i18n.t('common.Update Success'),
       data: await this.service.update(id, body),
+    };
+  }
+
+  @Auth({
+    summary: 'Delete a STORE',
+    permission: CATEGORY_TYPE_UPDATE,
+  })
+  @Put(':id/disable/:boolean')
+  async updateDisable(
+    @I18n() i18n: I18nContext,
+    @Param('id') id: string,
+    @Param('boolean') boolean: string,
+  ): Promise<CategoryResponseDto> {
+    return {
+      message: i18n.t('common.Update Success'),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
+    };
+  }
+
+  @Auth({
+    summary: 'Delete a Category',
+    permission: CATEGORY_TYPE_DELETE,
+  })
+  @Delete(':id')
+  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryResponseDto> {
+    return {
+      message: i18n.t('common.Delete Success'),
+      data: await this.service.remove(id),
     };
   }
 }

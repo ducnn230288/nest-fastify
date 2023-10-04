@@ -1,14 +1,12 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
-import { ExecutionContext, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
 import { CreateCategoryRequestDto, UpdateCategoryRequestDto } from '@dto';
 
 import { BaseTest } from '../base';
 import { Category } from '@model';
 import { CategoryService } from '@service';
-import c from 'config';
-import { http } from 'winston';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -19,7 +17,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
   };
 
-  let resultType: Category = {
+  let resultCategory: Category = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
@@ -40,62 +38,72 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
-      resultType = body.data;
+      resultCategory = body.data;
     }
   });
 
-  // it('Get all [GET /api/category]', async () => {
-  //   if (!type) {
-  //     resultType = await BaseTest.moduleFixture!.get(CategoryService).create(dataType);
-  //   }
-  //   // console.log(resultType);
+  it('Get all [GET /api/category]', async () => {
+    if (!type) {
+      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataType);
+    }
 
-  //   const { body } = await request(BaseTest.server).get('/api/category').expect(HttpStatus.OK);
-  //   // console.log(body.data);
-  //   expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
-  // });
+    const { body } = await request(BaseTest.server).get('/api/category').expect(HttpStatus.OK);
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
+  });
 
-  // it('Get one [GET /api/category/slug/:slug]', async () => {
-  //   if (!type) {
-  //     resultType = await BaseTest.moduleFixture!.get(CategoryService).create(dataType);
-  //   }
+  it('Get one [GET /api/category/slug/:slug]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/category/slug/' + resultCategory.slug)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+    }
+  });
 
-  //   // console.log(resultType.id);
+  it('Get One [GET /api/category/:id', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/category/' + resultCategory.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/category/slug/' + resultType.slug)
-  //     .expect(HttpStatus.OK);
-  //   // if (type) {
-  //   //   console.log(type);
-  //   //   console.log(body);
-  //   //   expect(body.data).toEqual(jasmine.objectContaining(dataType));
-  //   // }
-  //   expect(body.data).toEqual(jasmine.objectContaining(dataType));
-  // });
-
-  // it('Get One [GET /api/category/:id', async () => {
-  //   if (!type) {
-  //     resultType = await BaseTest.moduleFixture!.get(CategoryService).create(dataType);
-  //   }
-
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/category/' + resultType.id)
-  //     .expect(HttpStatus.OK);
-
-  //   expect(body.data).toEqual(jasmine.objectContaining(dataType));
-  // });
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+    }
+  });
 
   it('Update Category [PUT /api/category/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category/' + resultType.id)
+      .put('/api/category/' + resultCategory.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    // console.log(body.data);
-    // console.log(resultType.id);
-    // console.log(dataUpdate);
     // const { name, ...test } = dataUpdate;
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+    }
+  });
+
+  it('Update One [PUT  /api/category/:id/disable/:boolean', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/category/' + resultCategory.id + '/disable' + '/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultCategory!.isDisabled }),
+      );
+    }
+  });
+
+  it('Detete [DELETE /api/category/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/category/' + resultCategory.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
     }
