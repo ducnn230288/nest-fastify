@@ -4,8 +4,8 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, Unique } from "typeorm
 import { faker } from '@faker-js/faker';
 import { IsString, IsArray } from 'class-validator';
 import { Expose, Type } from "class-transformer";
-import { Address } from "./address.model";
-import { District } from "./district.model";
+import { Address } from "@model";
+import { District } from "@model";
 
 
 @Entity()

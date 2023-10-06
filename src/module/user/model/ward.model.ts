@@ -2,15 +2,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Base, MaxGroup } from "@shared";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from "typeorm";
 import { faker } from '@faker-js/faker';
-import { IsString, IsArray } from 'class-validator';
+import { IsString } from 'class-validator';
 import { Expose } from "class-transformer";
-import { Address } from "./address.model";
-import { Province, Ward } from "@model";
+import { Address } from "@model";
+import { District } from "@model";
 
 
 @Entity()
 @Unique(['code'])
-export class District extends Base {
+export class Ward extends Base {
     @Column()
     @ApiProperty({ example: faker.person.jobType(), description: '' })
     @Expose()
@@ -27,17 +27,13 @@ export class District extends Base {
     @ApiProperty({ example: faker.finance.bic(), description: '' })
     @Expose()
     @IsString()
-    codeProvince: string;
+    codeDistrict: string;
 
-    @OneToMany(() => Address, address => address.districtItem, { eager: false })
+    @OneToMany(() => Address, address => address.wardItem, { eager: false })
     @Expose({ groups: [MaxGroup] })
     item?: Address;
 
-    @ManyToOne(() => Province, province => province.districtItem, { eager: false })
-    @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
-    public provinceItem?: Province;
-
-    @OneToMany(() => Ward, ward => ward.districtItem, { eager: false })
-    @Expose({ groups: [MaxGroup] })
-    wardItem?: Ward[];
+    @ManyToOne(() => District, district => district.wardItem, { eager: false })
+    @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+    public districtItem?: District;
 }

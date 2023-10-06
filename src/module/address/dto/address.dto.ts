@@ -1,7 +1,6 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Address } from '@model';
-import { DistrictDto, ProvinceDto, WardDto } from '@dto';
 
 export class CreateAddressRequestDto extends PickType(Address, [
   'codeProvince',

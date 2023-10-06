@@ -10,24 +10,7 @@ import { User } from '@model';
 @Headers('address')
 export class AddressController {
   constructor(private readonly service: AddressService) {}
-
-  @Auth({
-    summary: 'Get List data',
-    // permission: P_ADDRESS_CREATE,
-  })
-  @Post()
-  async create(
-    @AuthUser() user: User,
-    @I18n() i18n: I18nContext,
-    @Body(new SerializerBody([MaxGroup])) body: CreateAddressRequestDto,
-  ): Promise<AddressResponseDto> {
-    const data = Object.assign(body, { userId: user.id });
-    return {
-      message: i18n.t('common.Create Success'),
-      data: await this.service.create(data),
-    };
-  }
-
+  
   // @Auth({
   //     summary: 'Get List data',
   //     permission: P_ADDRESS_LISTED,
@@ -42,6 +25,23 @@ export class AddressController {
       message: i18n.t('common.Get List success'),
       count: total,
       data: result,
+    };
+  }
+
+  // @Auth({
+  //   summary: 'Get List data',
+  //   // permission: P_ADDRESS_CREATE,
+  // })
+  @Post('add')
+  async create(
+    @AuthUser() user: User,
+    @I18n() i18n: I18nContext,
+    @Body(new SerializerBody([MaxGroup])) body: CreateAddressRequestDto,
+  ): Promise<AddressResponseDto> {
+    const data = Object.assign(body, { userId: user.id });
+    return {
+      message: i18n.t('common.Create Success'),
+      data: await this.service.create(data),
     };
   }
 }

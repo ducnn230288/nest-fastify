@@ -9,11 +9,11 @@ export * from './module/core/dto/post-type.dto';
 
 export * from './module/user/dto/user.dto';
 export * from './module/user/dto/user-role.dto';
+export * from './module/user/dto/province.dto';
+export * from './module/user/dto/district.dto';
+export * from './module/user/dto/ward.dto';
 
 export * from './module/address/dto/address.dto';
-export * from './module/address/dto/province.dto';
-export * from './module/address/dto/district.dto';
-export * from './module/address/dto/ward.dto';
 
 export * from './module/category/dto/category.dto';
 export * from './module/product/dto/product.dto';

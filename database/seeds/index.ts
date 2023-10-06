@@ -10,5 +10,3 @@ export * from './product.seeder';
 export * from './store.seeder';
 
 export * from './province.seeder';
-export * from './district.seeder';
-export * from './ward.seeder';
