@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
 
 import { Base, MaxGroup } from '@shared';
-import { Category, Store } from '@model';
+import { Category, StoreProduct } from '@model';
 
 @Entity()
 export class Product extends Base {
@@ -85,8 +85,8 @@ export class Product extends Base {
   @IsUUID()
   storeId?: string;
 
-  @ManyToOne(() => Store, (store) => store.products)
+  @ManyToOne(() => StoreProduct, (store) => store.products)
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
-  public store?: Store;
+  public store?: StoreProduct;
 }
