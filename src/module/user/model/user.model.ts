@@ -25,7 +25,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, Store } from '@model';
+import { UserRole, Code, Address, StoreProduct } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -144,11 +144,6 @@ export class User extends Base {
   @Type(() => Address)
   readonly address?: Address[];
 
-  @Expose()
-  @IsUUID()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  storeId?: string;
-
-  @OneToOne(() => Store, (store) => store.user)
-  store?: Store;
+  @OneToOne(() => StoreProduct, (store) => store.user)
+  store?: StoreProduct;
 }
