@@ -64,6 +64,8 @@ import {
   STORE_UPDATE,
   STORE_DELETE,
   P_ADDRESS_LISTED,
+  P_ORDER_LISTED,
+  P_ORDER_CREATE
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -141,7 +143,10 @@ export class UserSeeder implements Seeder {
         STORE_UPDATE,
         STORE_DELETE,
         P_ADDRESS_LISTED,
-      ],
+
+        P_ORDER_LISTED,
+        P_ORDER_CREATE
+      ], 
       isSystemAdmin: false,
     };
     const repoRole = dataSource.getRepository(UserRole);

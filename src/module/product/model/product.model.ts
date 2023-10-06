@@ -3,10 +3,10 @@ import { IsString, IsNumber, IsUUID, IsOptional, IsPositive } from 'class-valida
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
-
+ 
 import { Base, MaxGroup } from '@shared';
 import { CategoryProduct, OrderProduct, StoreProduct } from '@model';
-
+  
 @Entity()
 export class Product extends Base {
   @Column()

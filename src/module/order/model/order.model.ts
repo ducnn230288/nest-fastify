@@ -45,6 +45,6 @@ export class Order extends Base {
   @IsOptional()
   reason?: string;
 
-  @OneToOne(() => OrderAddress, (orderAddress) => orderAddress.order)
+  @OneToOne(() => OrderAddress, (orderAddress) => orderAddress.orderId)
   orderId: OrderAddress;
 }

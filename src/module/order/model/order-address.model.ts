@@ -38,11 +38,9 @@ export class OrderAddress extends Base {
   codeProvince: string;
 
   @OneToOne(() => Province, (province) => province.code)
-  @JoinColumn(
-   
-  )
+  @JoinColumn()
   @Type(() => Province)
-  readonly province?: Province;
+  readonly province?: Province; 
 
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
@@ -72,6 +70,6 @@ export class OrderAddress extends Base {
   @JoinColumn()
   readonly address?: Address;
 
-}
+} 
 
 
