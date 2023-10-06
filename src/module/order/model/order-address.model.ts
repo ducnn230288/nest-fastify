@@ -46,8 +46,8 @@ export class OrderAddress extends Base {
   @IsUUID()
   @Type(() => String)
   orderId: string;
- 
-  @OneToOne(() => Order, (order) => order.orderId)
+
+  @OneToOne(() => Order, (order) => order.orderAddress)
   @Type(() => Order)
   @JoinColumn()
   readonly order?: Order;
@@ -62,7 +62,4 @@ export class OrderAddress extends Base {
   @Type(() => Address)
   @JoinColumn()
   readonly address?: Address;
-
-} 
-
-
+}

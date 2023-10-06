@@ -32,7 +32,7 @@ export class ProductSeeder implements Seeder {
           status: 0,
           slug: faker.lorem.slug(),
           mass: faker.number.int({ min: 0, max: 100 }),
-          disCount: faker.number.int({ min: 0, max: 100 }),
+          discount: faker.number.int({ min: 0, max: 100 }),
           categoryProductId: newDataCategoryProduct.id || '',
         },
         {
@@ -44,7 +44,7 @@ export class ProductSeeder implements Seeder {
           status: 0,
           slug: faker.lorem.slug(),
           mass: faker.number.int({ min: 0, max: 100 }),
-          disCount: faker.number.int({ min: 0, max: 100 }),
+          discount: faker.number.int({ min: 0, max: 100 }),
           categoryProductId: newDataCategoryProduct.id || '',
         },
       ];

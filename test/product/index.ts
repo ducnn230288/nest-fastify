@@ -45,7 +45,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     mass: faker.number.int({ min: 0, max: 100 }),
     storeId: faker.string.uuid() || '',
     categoryProductId: faker.string.uuid() || '',
-    disCount: 0,
+    discount: 0,
   };
 
   const dataUpdate: UpdateProductRequestDto = {

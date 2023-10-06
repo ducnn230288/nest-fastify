@@ -67,7 +67,7 @@ export class Product extends Base {
   @IsPositive()
   @IsOptional()
   @Expose()
-  disCount: number;
+  discount: number;
 
   @Column()
   @ApiProperty({ example: faker.string.uuid() })
