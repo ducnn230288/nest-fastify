@@ -2,29 +2,29 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { CreateCategoryRequestDto, CreateProductRequestDto, UpdateProductRequestDto } from '@dto';
+import { CreateCategoryProductRequestDto, CreateProductRequestDto, UpdateProductRequestDto } from '@dto';
 
 import { BaseTest } from '../base';
-import { Category, Product } from '@model';
-import { CategoryService, ProductService } from '@service';
+import { CategoryProduct, Product } from '@model';
+import { CategoryProductService, ProductService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataCategory: CreateCategoryRequestDto = {
+  const dataCategoryProduct: CreateCategoryProductRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  let resultCategory: Category = {
+  let resultCategoryProduct: CategoryProduct = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  const dataType: CreateProductRequestDto = {
+  const dataProduct: CreateProductRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     quantity: faker.number.int({ max: 100 }),
@@ -32,8 +32,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     images: faker.image.url(),
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
-    categoryId: faker.string.uuid() || '',
-    // storeId: faker.string.uuid() || '',
+    categoryProductId: faker.string.uuid() || '',
   };
 
   let resultProduct: Product = {
@@ -45,7 +44,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
     storeId: faker.string.uuid() || '',
-    categoryId: faker.string.uuid() || '',
+    categoryProductId: faker.string.uuid() || '',
     disCount: 0,
   };
 
@@ -60,29 +59,29 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   it('Create [POST api/product]', async () => {
-    resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCategory);
+    resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataCategoryProduct);
 
-    dataType.categoryId = resultCategory.id || '';
+    dataProduct.categoryProductId = resultCategoryProduct.id || '';
 
     const { body } = await request(BaseTest.server)
       .post('/api/product')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataType)
+      .send(dataProduct)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
       resultProduct = body.data;
     }
   });
 
   it('GET List [GET api/product]', async () => {
     if (!type) {
-      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataType);
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
     }
 
     const { body } = await request(BaseTest.server).get('/api/product').expect(HttpStatus.OK);
 
-    expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataProduct));
   });
 
   it('GET by slug [GET api/product/slug/:slug]', async () => {
@@ -92,7 +91,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
     }
   });
 
@@ -103,7 +102,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
     }
   });
 

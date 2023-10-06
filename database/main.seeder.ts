@@ -12,7 +12,7 @@ import {
   ProvinceSeeder,
   DistrictSeeder,
   WardSeeder,
-  CategorySeeder,
+  CategoryProductSeeder,
   ProductSeeder,
 } from './seeds';
 
@@ -28,7 +28,7 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, DistrictSeeder);
     await runSeeder(dataSource, WardSeeder);
     // await runSeeder(dataSource, StoreSeeder);
-    await runSeeder(dataSource, CategorySeeder);
-    await runSeeder(dataSource, ProductSeeder);
+    await runSeeder(dataSource, CategoryProductSeeder);
+    // await runSeeder(dataSource, ProductSeeder);
   }
 }

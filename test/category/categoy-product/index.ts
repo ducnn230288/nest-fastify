@@ -2,58 +2,58 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { CreateCategoryRequestDto, UpdateCategoryRequestDto } from '@dto';
+import { CreateCategoryProductRequestDto, UpdateCategoryProductRequestDto } from '@dto';
 
-import { BaseTest } from '../base';
-import { Category } from '@model';
-import { CategoryService } from '@service';
+import { BaseTest } from '../../base';
+import { CategoryProduct } from '@model';
+import { CategoryProductService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataType: CreateCategoryRequestDto = {
+  const dataType: CreateCategoryProductRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  let resultCategory: Category = {
+  let resultCategoryProduct: CategoryProduct = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  const dataUpdate: UpdateCategoryRequestDto = {
+  const dataUpdate: UpdateCategoryProductRequestDto = {
     name: 'thien 123456789',
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  it('Create [POST /api/category]', async () => {
+  it('Create [POST /api/category-product]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/category')
+      .post('/api/category-product')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
-      resultCategory = body.data;
+      resultCategoryProduct = body.data;
     }
   });
 
-  it('Get all [GET /api/category]', async () => {
+  it('Get all [GET /api/category-product]', async () => {
     if (!type) {
-      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataType);
+      resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataType);
     }
 
-    const { body } = await request(BaseTest.server).get('/api/category').expect(HttpStatus.OK);
+    const { body } = await request(BaseTest.server).get('/api/category-product').expect(HttpStatus.OK);
     expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
-  it('Get one [GET /api/category/slug/:slug]', async () => {
+  it('Get one [GET /api/category-product/slug/:slug]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category/slug/' + resultCategory.slug)
+      .get('/api/category-product/slug/' + resultCategoryProduct.slug)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -61,9 +61,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get One [GET /api/category/:id', async () => {
+  it('Get One [GET /api/category-product/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category/' + resultCategory.id)
+      .get('/api/category-product/' + resultCategoryProduct.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -72,9 +72,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update Category [PUT /api/category/:id', async () => {
+  it('Update CategoryProduct [PUT /api/category-product/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category/' + resultCategory.id)
+      .put('/api/category-product/' + resultCategoryProduct.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -85,22 +85,22 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update One [PUT  /api/category/:id/disable/:boolean', async () => {
+  it('Update One [PUT  /api/category-product/:id/disable/:boolean', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category/' + resultCategory.id + '/disable' + '/true')
+      .put('/api/category-product/' + resultCategoryProduct.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
       expect({ isDisabled: body.isDisabled }).not.toEqual(
-        jasmine.objectContaining({ isDisabled: resultCategory!.isDisabled }),
+        jasmine.objectContaining({ isDisabled: resultCategoryProduct!.isDisabled }),
       );
     }
   });
 
-  it('Detete [DELETE /api/category/:id]', async () => {
+  it('Detete [DELETE /api/category-product/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/category/' + resultCategory.id)
+      .delete('/api/category-product/' + resultCategoryProduct.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 

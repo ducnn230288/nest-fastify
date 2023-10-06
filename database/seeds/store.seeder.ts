@@ -13,6 +13,7 @@ export class StoreSeeder implements Seeder {
       .andWhere(`base.email=:email`, { email: 'admin@admin.com' })
       .withDeleted()
       .getOne();
+    console.log(user);
     const listData: Store[] = [
       {
         name: faker.person.fullName(),

@@ -21,6 +21,7 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  IsUUID,
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
@@ -142,6 +143,11 @@ export class User extends Base {
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)
   readonly address?: Address[];
+
+  @Expose()
+  @IsUUID()
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  storeId?: string;
 
   @OneToOne(() => Store, (store) => store.user)
   store?: Store;
