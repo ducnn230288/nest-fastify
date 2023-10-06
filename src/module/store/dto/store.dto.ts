@@ -1,13 +1,9 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
-import { Store } from '@model';
+import { StoreProduct } from '@model';
 import { DefaultAuthResponsesUserDto, UserDto } from '@dto';
 
-export class ListStoreResponseDto extends PartialType(PaginationResponsesDto) {
-  readonly data: StoreDto[];
-}
-
-export class UpdateStoreRequestDto extends PickType(Store, [
+export class UpdateStoreRequestDto extends PickType(StoreProduct, [
   'name',
   'status',
   'phone',
@@ -16,7 +12,7 @@ export class UpdateStoreRequestDto extends PickType(Store, [
   'avatar',
 ] as const) {}
 
-export class CreateStoreRequestDto extends PickType(Store, [
+export class CreateStoreRequestDto extends PickType(StoreProduct, [
   'name',
   'status',
   'phone',
@@ -27,7 +23,7 @@ export class CreateStoreRequestDto extends PickType(Store, [
 ] as const) {}
 
 export class StoreDto extends PartialType(
-  OmitType(Store, [
+  OmitType(StoreProduct, [
     'isDeleted',
     'createdAt',
     'updatedAt',
@@ -43,4 +39,8 @@ export class StoreDto extends PartialType(
 
 export class StoreResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: StoreDto | null;
+}
+
+export class ListStoreResponseDto extends PartialType(PaginationResponsesDto) {
+  readonly data: StoreDto[];
 }
