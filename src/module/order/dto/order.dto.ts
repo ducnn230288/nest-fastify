@@ -1,14 +1,36 @@
-import { OmitType, PartialType } from "@nestjs/swagger";
+import { OmitType, PartialType, PickType } from "@nestjs/swagger";
 import { PaginationResponsesDto } from "@shared";
 import { Order } from "../model/order.model";
+import { OrderAddress, Product } from "@model";
+import { IsString, IsUUID, IsArray } from 'class-validator';
 
+export class OrderProduct extends PickType(Product, ['id'] as const) {
+    quantity: number  ;
+}
 
 export class OrderDto extends PartialType(
     OmitType(Order, ['isDeleted', 'createdAt', 'updatedAt'] as const),
 ) { }
 
-export class CreateOrderRequestDto {
-    
+
+export class OrderAddressDto extends PickType(OrderAddress, ['codeWard', 'codeDistrict', 'codeProvince'] as const) {
+
+}
+
+export class CreateOrderRequestDto extends PickType(Order, ['reason'] as const) {
+
+    @IsArray() 
+    products: OrderProduct[]
+    @IsString()
+    codeWard: string
+    @IsString()
+    codeDistrict: string
+    @IsString()
+    codeProvince: string
+    @IsString()
+    specificAddress?: string
+    @IsUUID()
+    addressId : string
 }
 
 export class ListOrderResponseDto extends PartialType(PaginationResponsesDto) {

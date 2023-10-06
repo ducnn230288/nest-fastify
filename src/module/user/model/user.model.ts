@@ -77,7 +77,7 @@ export class User extends Base {
   otp?: string;
 
   @Column()
-  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: 'admin@admin.com' })
+  @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
   @IsEmail()
   readonly email: string;
 
