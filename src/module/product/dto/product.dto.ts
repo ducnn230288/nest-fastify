@@ -2,7 +2,9 @@ import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Product } from '@model';
 
-export class ProductDto extends PartialType(OmitType(Product, ['isDisabled', 'categoryId', 'storeId'] as const)) {}
+export class ProductDto extends PartialType(
+  OmitType(Product, ['isDisabled', 'categoryProductId', 'storeId'] as const),
+) {}
 
 export class ProductResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: ProductDto | null;
@@ -30,6 +32,6 @@ export class CreateProductRequestDto extends PickType(Product, [
   'images',
   'slug',
   'mass',
-  'categoryId',
+  'categoryProductId',
   // 'storeId',
 ] as const) {}

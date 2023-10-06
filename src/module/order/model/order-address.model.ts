@@ -12,9 +12,9 @@ export class OrderAddress extends Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   @Type(() => String)
-  wardId: string;
+  codeWard: string;
 
-  @OneToOne(() => Ward, (ward) => ward.id)
+  @OneToOne(() => Ward, (ward) => ward.code)
   @JoinColumn()
   @Type(() => Ward)
   readonly ward?: Ward;
@@ -22,29 +22,31 @@ export class OrderAddress extends Base {
   @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
-  @Type(() => String)
-  districtId: string;
+  @IsString()
+  codeDistrict: string;
 
-  @OneToOne(() => District, (district) => district.id)
-  @JoinColumn()
+  @OneToOne(() => District, (district) => district.code)
+  @JoinColumn(
+   )
   @Type(() => District)
   readonly district?: District;
 
   @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
-  @Type(() => String)
-  provinceId: string;
+  @IsString()
+  codeProvince: string;
 
-  @OneToOne(() => Province, (province) => province.id)
-  @JoinColumn()
+  @OneToOne(() => Province, (province) => province.code)
+  @JoinColumn(
+   
+  )
   @Type(() => Province)
   readonly province?: Province;
 
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
-  @Type(() => String)
   @IsOptional()
   specificAddress?: string;
 
@@ -54,8 +56,9 @@ export class OrderAddress extends Base {
   @Type(() => String)
   orderId: string;
 
-  @OneToOne(() => Order, (order) => order.id)
+  @OneToOne(() => Order, (order) => order.orderId)
   @Type(() => Order)
+  @JoinColumn()
   readonly order?: Order;
 
   @Column()
@@ -66,5 +69,9 @@ export class OrderAddress extends Base {
 
   @OneToOne(() => Address, (address) => address.id)
   @Type(() => Address)
+  @JoinColumn()
   readonly address?: Address;
+
 }
+
+

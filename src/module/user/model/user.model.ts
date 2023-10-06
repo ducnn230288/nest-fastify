@@ -21,6 +21,7 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  IsUUID,
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
@@ -77,7 +78,7 @@ export class User extends Base {
   otp?: string;
 
   @Column()
-  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: 'admin@admin.com' })
+  @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
   @IsEmail()
   readonly email: string;
 

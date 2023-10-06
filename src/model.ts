@@ -17,11 +17,10 @@ export * from './module/order/model/order-product.model';
 export * from './module/order/model/order-address.model';
 
 export * from './module/address/model/address.model';
-export * from './module/category/model/category.model';
+export * from './module/category/model/category-product.model';
 export * from './module/product/model/product.model';
 export * from './module/address/model/province.model';
 export * from './module/address/model/district.model';
 export * from './module/address/model/ward.model';
 
 export * from './module/store/model/store.model';
-

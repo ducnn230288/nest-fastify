@@ -20,6 +20,6 @@ export * from './module/address/service/ward.service';
 
 export * from './module/product/service/product.service';
 export * from './module/store/service/store.service';
-export * from './module/category/service/category.service';
+export * from './module/category/service/category-product.service';
 
 export * from './module/order/service/order.service';

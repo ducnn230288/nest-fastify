@@ -32,6 +32,12 @@ export class OrderProduct extends Base {
   @Column()
   @IsNumber()
   @ApiProperty({ example: faker.number.int(), description: '' })
+  @Type(() => String)
+  name: string;
+
+  @Column()
+  @IsNumber()
+  @ApiProperty({ example: faker.number.int(), description: '' })
   @Type(() => Number)
   price: number;
 

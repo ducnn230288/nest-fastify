@@ -1,11 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { IsString, IsNumber, IsUUID, IsOptional, IsPositive } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
 
 import { Base, MaxGroup } from '@shared';
-import { Category, StoreProduct } from '@model';
+import { CategoryProduct, OrderProduct, StoreProduct } from '@model';
 
 @Entity()
 export class Product extends Base {
@@ -72,13 +72,13 @@ export class Product extends Base {
   @Column()
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  categoryId: string;
+  categoryProductId: string;
 
-  @ManyToOne(() => Category, (category) => category.products, {
+  @ManyToOne(() => CategoryProduct, (categoryProduct) => categoryProduct.products, {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  public category?: Category;
+  public categoryProduct?: CategoryProduct;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.string.uuid() })
@@ -89,4 +89,8 @@ export class Product extends Base {
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   public store?: StoreProduct;
+
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+  @IsOptional()
+  readonly orderProducts?: OrderProduct[];
 }

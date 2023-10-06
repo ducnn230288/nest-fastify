@@ -1,10 +1,11 @@
-import { User } from '@model';
+import { OrderAddress, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
 import { Base } from '@shared';
 import { Type } from 'class-transformer';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
-import { IsOptional, IsUUID } from 'class-validator';
+import { IsOptional, IsUUID, IsString, IsNumber } from 'class-validator';
+import { customAlphabet } from 'nanoid';
 
 @Entity()
 export class Order extends Base {
@@ -21,22 +22,29 @@ export class Order extends Base {
     default: 'pending',
   })
   @ApiProperty({ example: 'pending', description: '' })
-  @Type(() => String)
+  @IsString()
   status?: string;
 
   @Column()
   @ApiProperty({ example: faker.number.int(10), description: '' })
-  @Type(() => String)
+  
   orderCode: string;
+  @BeforeInsert()
+  beforeInsertOrderCode() : void {
+    this.orderCode =  customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)();
+  }
 
   @Column()
   @ApiProperty({ example: faker.number.int(5), description: '' })
-  @Type(() => Number)
+  @IsNumber()
   total: number;
 
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
-  @Type(() => String)
+  @IsString()
   @IsOptional()
   reason?: string;
+
+  @OneToOne(() => OrderAddress, (orderAddress) => orderAddress.order)
+  orderId: OrderAddress;
 }
