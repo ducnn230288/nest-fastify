@@ -25,6 +25,7 @@ import {
   District,
   Ward,
   OrderProduct,
+  OrderAddress,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -55,6 +56,7 @@ const options: DataSourceOptions & SeederOptions = {
     District,
     Ward,
     OrderProduct,
+    OrderAddress,
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

@@ -1,6 +1,6 @@
 import { Base } from '@shared';
 import { Type } from 'class-transformer';
-import { Column, OneToMany, Entity, ManyToOne } from 'typeorm';
+import { Column, OneToMany, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsNumber } from 'class-validator';
@@ -25,7 +25,8 @@ export class OrderProduct extends Base {
   @Type(() => String)
   orderId: string;
 
-  @ManyToOne(() => Order, (order) => order.id)
+  @ManyToOne(() => Order, (order) => order.orderProduct)
+  @JoinColumn()
   @Type(() => Order)
   readonly order?: Order;
 
