@@ -58,7 +58,7 @@ export class OrderAddress extends Base {
   @Type(() => String)
   addressId: string;
 
-  @OneToOne(() => Address, (address) => address.id)
+  @ManyToOne(() => Address, (address) => address.orderAddress)
   @Type(() => Address)
   @JoinColumn()
   readonly address?: Address;
