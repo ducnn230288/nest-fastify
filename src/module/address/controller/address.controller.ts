@@ -51,6 +51,8 @@ export class AddressController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateAddressRequestDto,
   ): Promise<AddressResponseDto> {
+    console.log(user);
+     
     const data = Object.assign(body, { userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
@@ -75,7 +77,7 @@ export class AddressController {
   }
 
   @Auth({
-    summary: 'Delete address',
+    summary: 'Delete Address',
     permission: P_ADDRESS_DELETE,
   })
   @Delete(':id')

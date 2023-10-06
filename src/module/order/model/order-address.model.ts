@@ -13,7 +13,8 @@ export class OrderAddress extends Base {
   codeWard: string;
 
   @ManyToOne(() => Ward, (ward) => ward.orderAddress, { eager: true })
-  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  // @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  @JoinColumn()
   public ward?: Ward;
 
   @Column()
@@ -21,7 +22,8 @@ export class OrderAddress extends Base {
   codeDistrict: string;
 
   @ManyToOne(() => District, (district) => district.orderAddress, { eager: true })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  // @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn()
   public district?: District;
 
   @Column()
@@ -29,7 +31,8 @@ export class OrderAddress extends Base {
   codeProvince: string;
 
   @ManyToOne(() => Province, (province) => province.orderAddress, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  // @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn()
   public province?: Province;
 
   @Column()
@@ -55,7 +58,7 @@ export class OrderAddress extends Base {
   @Type(() => String)
   addressId: string;
 
-  @OneToOne(() => Address, (address) => address.id)
+  @ManyToOne(() => Address, (address) => address.orderAddress)
   @Type(() => Address)
   @JoinColumn()
   readonly address?: Address;

@@ -1,9 +1,9 @@
-import { District, Province, User } from '@model';
+import { District, OrderAddress, Province, User } from '@model';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
 import { Base, MaxGroup } from '@shared';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Ward } from '@model';
 import { IsOptional, IsString } from 'class-validator';
 
@@ -51,4 +51,7 @@ export class Address extends Base {
   @ManyToOne(() => User, (user) => user.address, { eager: true })
   @Type(() => User)
   readonly user: User;
+
+  @OneToMany(() => OrderAddress, (orderAddress) => orderAddress.address)
+  readonly orderAddress: OrderAddress;
 }
