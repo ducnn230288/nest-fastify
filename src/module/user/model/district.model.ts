@@ -3,9 +3,10 @@ import { Base, MaxGroup } from '@shared';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { IsString, IsArray } from 'class-validator';
-import { Expose } from 'class-transformer';
-import { Address } from './address.model';
-import { Province, Ward } from '@model';
+import { Expose } from "class-transformer";
+import { Address, OrderAddress } from "@model";
+import { Province, Ward } from "@model";
+
 
 @Entity()
 @Unique(['code'])
@@ -39,4 +40,8 @@ export class District extends Base {
   @OneToMany(() => Ward, (ward) => ward.districtItem, { eager: false })
   @Expose({ groups: [MaxGroup] })
   wardItem?: Ward[];
+
+  @OneToMany(() => OrderAddress, orderAddress => orderAddress.district, { eager: false })
+  @Expose({ groups: [MaxGroup] })
+  orderAddress?: OrderAddress;
 }

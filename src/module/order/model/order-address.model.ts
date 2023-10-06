@@ -4,43 +4,36 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Base } from '@shared';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity()
 export class OrderAddress extends Base {
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @Type(() => String)
   codeWard: string;
 
-  @OneToOne(() => Ward, (ward) => ward.code)
+  @ManyToOne(() => Ward, (ward) => ward.orderAddress, { eager: true })
+  // @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
   @JoinColumn()
-  @Type(() => Ward)
-  readonly ward?: Ward;
+  public ward?: Ward;
 
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @IsString()
   codeDistrict: string;
 
-  @OneToOne(() => District, (district) => district.code)
-  @JoinColumn(
-   )
-  @Type(() => District)
-  readonly district?: District;
+  @ManyToOne(() => District, (district) => district.orderAddress, { eager: true })
+  // @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn()
+  public district?: District;
 
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @IsString()
   codeProvince: string;
 
-  @OneToOne(() => Province, (province) => province.code)
+  @ManyToOne(() => Province, (province) => province.orderAddress, { eager: false })
+  // @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
   @JoinColumn()
-  @Type(() => Province)
-  readonly province?: Province; 
+  public province?: Province;
 
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
@@ -53,7 +46,7 @@ export class OrderAddress extends Base {
   @IsUUID()
   @Type(() => String)
   orderId: string;
-
+ 
   @OneToOne(() => Order, (order) => order.orderId)
   @Type(() => Order)
   @JoinColumn()

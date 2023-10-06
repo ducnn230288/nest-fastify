@@ -10,8 +10,6 @@ import {
   UserSeeder,
   StoreSeeder,
   ProvinceSeeder,
-  DistrictSeeder,
-  WardSeeder,
   CategoryProductSeeder,
   ProductSeeder,
 } from './seeds';
@@ -25,8 +23,6 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
     await runSeeder(dataSource, ProvinceSeeder);
-    await runSeeder(dataSource, DistrictSeeder);
-    await runSeeder(dataSource, WardSeeder);
     // await runSeeder(dataSource, StoreSeeder);
     await runSeeder(dataSource, CategoryProductSeeder);
     // await runSeeder(dataSource, ProductSeeder);

@@ -53,20 +53,29 @@ export class OrderService extends BaseService<Order> {
             const p = await this.productService.findOne(String(item.id))
 
             console.log(p);
+            console.log({
+                orderId: order?.id,
+                productId: item.id,
+                quantity: item.quantity,
+                name: p?.name,
+                price: p?.price,
+                total: Number(p?.price) * item.quantity
+            });
             
-        //    const pn = await this.orderProductService.create({
-        //         orderId: order?.id,
-        //         productId: item.id,
-        //         quantity: item.quantity,
-        //         name: p?.name,
-        //         price: p?.price,
-        //         total: Number(p?.price) * item.quantity
-        //     })
+            
+           const pn = await this.orderProductService.create({
+                orderId: order?.id,
+                productId: item.id,
+                quantity: item.quantity,
+                name: p?.name,
+                price: p?.price,
+                total: Number(p?.price) * item.quantity
+            })
 
-        //     console.log(pn);
-        //     return {
-        //         ...pn
-        //     }
+            console.log(pn);
+            return {
+                ...pn
+            }
         }))
 
         return {
