@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } fr
 import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from "class-transformer";
-import { Address } from "@model";
+import { Address, OrderAddress } from "@model";
 import { District } from "@model";
 
 
@@ -36,4 +36,8 @@ export class Ward extends Base {
     @ManyToOne(() => District, district => district.wardItem, { eager: false })
     @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
     public districtItem?: District;
+
+    @OneToMany(() => OrderAddress, orderAddress => orderAddress.ward, { eager: false })
+    @Expose({ groups: [MaxGroup] })
+    orderAddress?: OrderAddress;
 }

@@ -4,45 +4,33 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Base } from '@shared';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity()
 export class OrderAddress extends Base {
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @Type(() => String)
   codeWard: string;
 
-  @OneToOne(() => Ward, (ward) => ward.code)
-  @JoinColumn()
-  @Type(() => Ward)
-  readonly ward?: Ward;
+  @ManyToOne(() => Ward, (ward) => ward.orderAddress, { eager: true })
+  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  public ward?: Ward;
 
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @IsString()
   codeDistrict: string;
 
-  @OneToOne(() => District, (district) => district.code)
-  @JoinColumn(
-   )
-  @Type(() => District)
-  readonly district?: District;
+  @ManyToOne(() => District, (district) => district.orderAddress, { eager: true })
+  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  public district?: District;
 
   @Column()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @IsUUID()
   @IsString()
   codeProvince: string;
 
-  @OneToOne(() => Province, (province) => province.code)
-  @JoinColumn(
-   
-  )
-  @Type(() => Province)
-  readonly province?: Province;
+  @ManyToOne(() => Province, (province) => province.orderAddress, { eager: false })
+  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  public province?: Province;
 
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
