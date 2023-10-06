@@ -6,7 +6,7 @@ import { MainSeeder } from './main.seeder';
 import { member1669372347132 } from './migrations/1668566358184-member';
 import {
   Address,
-  Category,
+  CategoryProduct,
   Code,
   CodeType,
   Data,
@@ -18,12 +18,13 @@ import {
   PostTranslation,
   PostType,
   Product,
-  Store,
+  StoreProduct,
   User,
   UserRole,
   Province,
   District,
   Ward,
+  OrderProduct,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -35,10 +36,10 @@ const options: DataSourceOptions & SeederOptions = {
   database: appConfig.DATABASE_NAME,
   entities: [
     Address,
-    Category,
+    CategoryProduct,
     Order,
     Product,
-    Store,
+    StoreProduct,
     Code,
     CodeType,
     User,
@@ -52,7 +53,8 @@ const options: DataSourceOptions & SeederOptions = {
     PostType,
     Province,
     District,
-    Ward
+    Ward,
+    OrderProduct,
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],

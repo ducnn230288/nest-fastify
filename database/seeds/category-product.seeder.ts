@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker/locale/vi';
 
 import { CategoryProduct, Product } from '@model';
 
-export class ProductSeeder implements Seeder {
+export class CategoryProductSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
     const dataCategoryProduct: CategoryProduct = {
       name: 'Thiệt bị điện tử',
@@ -22,7 +22,7 @@ export class ProductSeeder implements Seeder {
       const newDataCategoryProduct = repoCategoryProduct.create(dataCategoryProduct);
       await repoCategoryProduct.save(newDataCategoryProduct);
       const repository = dataSource.getRepository(Product);
-      const listData: Product[] = [
+      const listDataProduct: Product[] = [
         {
           name: 'áo sơ mi',
           description: faker.lorem.paragraph(),
@@ -49,7 +49,7 @@ export class ProductSeeder implements Seeder {
         },
       ];
 
-      for (const data of listData) {
+      for (const data of listDataProduct) {
         const dataExists = await repository
           .createQueryBuilder('base')
           .andWhere(`base.name=:name`, { name: data.name })

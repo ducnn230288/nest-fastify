@@ -2,26 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 import { BaseRepository } from '@shared';
-import { Category } from '@model';
+import { CategoryProduct } from '@model';
 
 @Injectable()
-export class CategoryRepository extends BaseRepository<Category> {
+export class CategoryProductRepository extends BaseRepository<CategoryProduct> {
   constructor(public readonly dataSource: DataSource) {
-    super(Category, dataSource.createEntityManager());
+    super(CategoryProduct, dataSource.createEntityManager());
   }
 
   /**
    *
    * @param slug
-   * @returns Category
+   * @returns CategoryProduct
    *
    */
-  // async getDataBySlug(slug: string): Promise<Category | null> {
+  // async getDataBySlug(slug: string): Promise<CategoryProduct | null> {
   //   console.log(slug);
   //   return await this.createQueryBuilder('base').where(`base.slug=:slug`, { slug }).withDeleted().getOne();
   // }
 
-  async getDataBySlug(slug: string): Promise<Category | null> {
+  async getDataBySlug(slug: string): Promise<CategoryProduct | null> {
     return await this.createQueryBuilder('base')
       .where(`base.slug=:slug`, { slug })
       .leftJoinAndSelect('base.products', 'products')

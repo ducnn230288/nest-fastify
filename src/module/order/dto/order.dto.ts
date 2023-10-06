@@ -13,9 +13,7 @@ export class OrderDto extends PartialType(
 ) { }
 
 
-export class OrderAddressDto extends PickType(OrderAddress, ['codeWard', 'codeDistrict', 'codeProvince'] as const) {
-
-}
+export class OrderAddressDto extends PickType(OrderAddress, ['codeWard', 'codeDistrict', 'codeProvince'] as const) {}
 
 export class CreateOrderRequestDto extends PickType(Order, ['reason'] as const) {
 
