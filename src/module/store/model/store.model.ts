@@ -7,7 +7,7 @@ import { Product, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class Store extends Base {
+export class StoreProduct extends Base {
   @Column()
   @IsString()
   @ApiProperty({ example: faker.person.jobType(), description: '' })

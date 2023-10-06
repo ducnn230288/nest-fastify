@@ -21,10 +21,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  IsUUID,
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, Store } from '@model';
+import { UserRole, Code, Address, StoreProduct } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -77,7 +78,7 @@ export class User extends Base {
   otp?: string;
 
   @Column()
-  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: 'admin@admin.com' })
+  @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
   @IsEmail()
   readonly email: string;
 
@@ -143,6 +144,6 @@ export class User extends Base {
   @Type(() => Address)
   readonly address?: Address[];
 
-  @OneToOne(() => Store, (store) => store.user)
-  store?: Store;
+  @OneToOne(() => StoreProduct, (store) => store.user)
+  store?: StoreProduct;
 }

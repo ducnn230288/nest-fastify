@@ -24,7 +24,7 @@ export class ProductService extends BaseService<Product> {
   async findSlug(slug: string): Promise<Product | null> {
     // console.log(slug);
     const product = await this.repo.getDataBySlug(slug);
-    // if (category?.id) return this.findOne(category.id);
+    // if (categoryProduct?.id) return this.findOne(categoryProduct.id);
     return product;
   }
 }

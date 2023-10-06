@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
 import { CreateStoreRequestDto, UpdateStoreRequestDto } from '@dto';
-import { Store } from '@model';
+import { StoreProduct } from '@model';
 
 import { BaseTest } from '../base';
 
@@ -27,7 +27,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     slug: faker.lorem.slug(),
     avatar: faker.image.url(),
   };
-  let resultStore: Store = {
+  let resultStore: StoreProduct = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     phone: faker.phone.number(),

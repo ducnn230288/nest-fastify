@@ -6,12 +6,12 @@ import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody }
 import dayjs from 'dayjs';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-@Headers('store')
+@Headers('store-product')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   @Auth({
-    summary: 'Create a STORE',
+    summary: 'Create a STORE_PRODUCT',
     permission: STORE_CREATE,
   })
   @Post('')
@@ -28,7 +28,7 @@ export class StoreController {
   }
 
   @Auth({
-    summary: 'Get List STORE',
+    summary: 'Get List STORE_PRODUCT',
     permission: STORE_LISTED,
   })
   @Get('')
@@ -42,7 +42,7 @@ export class StoreController {
   }
 
   @Auth({
-    summary: 'Get detail a STORE',
+    summary: 'Get detail a STORE_PRODUCT',
     permission: STORE_DETAIL,
   })
   @Get(':id')
@@ -54,7 +54,7 @@ export class StoreController {
   }
 
   @Auth({
-    summary: 'Update a STORE',
+    summary: 'Update a STORE_PRODUCT',
     permission: STORE_UPDATE,
   })
   @Put(':id')
@@ -70,7 +70,7 @@ export class StoreController {
   }
 
   @Auth({
-    summary: 'Delete a STORE',
+    summary: 'Delete a STORE_PRODUCT',
     permission: STORE_DELETE,
   })
   @Delete(':id')
@@ -82,7 +82,7 @@ export class StoreController {
   }
 
   @Auth({
-    summary: 'Delete a STORE',
+    summary: 'Delete a STORE_PRODUCT',
     permission: STORE_UPDATE,
   })
   @Put(':id/disable/:boolean')

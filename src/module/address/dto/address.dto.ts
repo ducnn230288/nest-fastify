@@ -15,9 +15,9 @@ export class AddressDto extends PartialType(
     'isDeleted',
     'createdAt',
     'updatedAt',
-    'codeProvince',
-    'codeDistrict',
-    'codeWard',
+    'provinceItem',
+    'districtItem',
+    'wardItem',
     'specificAddress',
   ] as const),
 ) {}

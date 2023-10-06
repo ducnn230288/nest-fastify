@@ -33,7 +33,7 @@ export class Post extends Base {
   @JoinColumn({ name: 'type', referencedColumnName: 'code' })
   @Expose({ groups: [MaxGroup] })
   public item?: PostType;
-
+ 
   @OneToMany(() => PostTranslation, (data) => data.post, { eager: true })
   @IsArray()
   public translations?: PostTranslation[];
