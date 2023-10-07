@@ -21,6 +21,23 @@ services:
     volumes:
       - redis:/data
 
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-fastify
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+      NODE_ENV: 'prod'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - cache
+    volumes:
+      - ./src:/app/src
+
 networks:
   postgres:
     driver: bridge

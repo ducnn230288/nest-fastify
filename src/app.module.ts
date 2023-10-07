@@ -45,7 +45,13 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
     }),
     CacheModule.registerAsync({
       useFactory: async () => ({
-        store: await redisStore({ ttl: 3600 * 1000 }),
+        store: await redisStore({
+          socket: {
+            host: appConfig.REDIS_HOST,
+            port: 6379,
+          },
+          ttl: 3600 * 1000,
+        }),
       }),
       isGlobal: true,
     }),

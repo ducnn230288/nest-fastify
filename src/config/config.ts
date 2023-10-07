@@ -13,8 +13,9 @@ const UPLOAD_LOCATION = config.get<string>('upload.location');
 const ACCESS_SECRET = config.get<string>('token.secret.access');
 const REFRESH_SECRET = config.get<string>('token.secret.refresh');
 const SESSION_SALT = config.get<string>('token.salt');
+const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 
-const DATABASE_HOST = process.env.DATABASE_HOST;
+const DATABASE_HOST = process.env.DATABASE_HOST || 'localhost';
 const DATABASE_PORT = +(process.env.DATABASE_PORT || '0');
 const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
@@ -48,6 +49,7 @@ export const appConfig = {
   ACCESS_SECRET,
   REFRESH_SECRET,
   SESSION_SALT,
+  REDIS_HOST,
 
   DATABASE_HOST,
   DATABASE_PORT,
