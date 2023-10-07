@@ -24,6 +24,8 @@ services:
   server:
     build:
       context: .
+      args:
+        - PROD=true
       dockerfile: Dockerfile
     container_name: nest-fastify
     environment:
