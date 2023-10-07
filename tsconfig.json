@@ -48,5 +48,8 @@
         "test"
       ]
     }
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
   }
 }
