@@ -21,22 +21,22 @@ services:
     volumes:
       - redis:/data
 
-#  server:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: nest-fastify-dev
-#    ports:
-#      - '3000:3000'
-#    depends_on:
-#      - database
-#      - cache
-#    environment:
-#      REDIS_HOST: 'cache'
-#      DATABASE_HOST: 'database'
-#    volumes:
-#      - ./src:/app/src
-#    command: npm run dev
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-fastify-dev
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - cache
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+    volumes:
+      - ./src:/app/src
+    command: npm run dev
 
 networks:
   postgres:
