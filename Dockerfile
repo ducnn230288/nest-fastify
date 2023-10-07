@@ -8,4 +8,3 @@ RUN chmod 777 /app
 RUN npm run build
 RUN npm install -g npm@10.2.0
 USER node
-CMD [ "npm", "run", "start:prod" ]

@@ -8,14 +8,14 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
-      - postgres:/data/postgres
+      - postgres:/database
     ports:
       - 5432:5432
     restart: always
 
   cache:
     container_name: redis-cache
-    image: redis:7.0-alpine
+    image: redis:latest
     ports:
       - 6379:6379
     volumes:
