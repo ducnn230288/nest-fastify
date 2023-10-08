@@ -112,7 +112,7 @@ export class AuthController {
     };
   }
 
-  @Get('refresh')
+  @Get('refresh-token')
   @Auth({
     summary: 'Refresh Token',
     tokenGuard: RefreshTokenGuard,

@@ -8,18 +8,17 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
-      - postgres:/database
+      - database:/database
     ports:
       - 5432:5432
     restart: always
 
   cache:
-    container_name: redis-cache
     image: redis:latest
     ports:
       - 6379:6379
     volumes:
-      - redis:/data
+      - cache:/data
 
   server:
     build:
@@ -38,13 +37,14 @@ services:
       - database
       - cache
     volumes:
-      - ./src:/app/src
+      - server:/app
     command: npm run start:prod
 
 networks:
-  postgres:
+  database:
     driver: bridge
 
 volumes:
-  postgres:
-  redis:
+  database:
+  cache:
+  server:
