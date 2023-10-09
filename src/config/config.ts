@@ -31,10 +31,10 @@ const smtpSecureAsString = process.env.SMTP_SECURE;
 const SMTP_SECURE: boolean = smtpSecureAsString ? smtpSecureAsString.toLowerCase() === 'true' : true;
 
 const ID_TOKEN_PRIVATE_KEY_AS_BASE64 = process.env.ID_TOKEN_PRIVATE_KEY_AS_BASE64 as string;
-const ID_TOKEN_PRIVATE_KEY = Buffer.from(ID_TOKEN_PRIVATE_KEY_AS_BASE64, 'base64').toString('utf8');
+const ID_TOKEN_PRIVATE_KEY = ID_TOKEN_PRIVATE_KEY_AS_BASE64;
 
 const ID_TOKEN_PUBLIC_KEY_AS_BASE64 = process.env.ID_TOKEN_PUBLIC_KEY_AS_BASE64 as string;
-const ID_TOKEN_PUBLIC_KEY = Buffer.from(ID_TOKEN_PUBLIC_KEY_AS_BASE64, 'base64').toString('utf8');
+const ID_TOKEN_PUBLIC_KEY = ID_TOKEN_PUBLIC_KEY_AS_BASE64;
 
 export const appConfig = {
   NODE_ENV,
