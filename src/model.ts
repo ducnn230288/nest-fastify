@@ -23,4 +23,4 @@ export * from './module/user/model/province.model';
 export * from './module/user/model/district.model';
 export * from './module/user/model/ward.model';
 
-export * from './module/product/model/store.model';
+export * from './module/product/model/product-store.model';

@@ -25,7 +25,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, StoreProduct, Order } from '@model';
+import { UserRole, Code, Address, ProductStore, Order } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -144,8 +144,8 @@ export class User extends Base {
   @Type(() => Address)
   readonly address?: Address[];
 
-  @OneToOne(() => StoreProduct, (store) => store.user)
-  store?: StoreProduct;
+  @OneToOne(() => ProductStore, (store) => store.user)
+  store?: ProductStore;
 
   @OneToMany(() => Order, (order) => order.user)
   order?: Order;

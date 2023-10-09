@@ -1,12 +1,12 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
-import { StoreProduct, User } from '@model';
+import { ProductStore, User } from '@model';
 // import { UserDto } from '@dto';
 
 export class StoreSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
-    const repository = dataSource.getRepository(StoreProduct);
+    const repository = dataSource.getRepository(ProductStore);
     const repoUser = dataSource.getRepository(User);
     const user = await repoUser
       .createQueryBuilder('base')
@@ -14,7 +14,7 @@ export class StoreSeeder implements Seeder {
       .withDeleted()
       .getOne();
     console.log('user: ', user);
-    const listData: StoreProduct[] = [
+    const listData: ProductStore[] = [
       {
         name: faker.person.fullName(),
         status: 0,

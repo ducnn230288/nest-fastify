@@ -9,4 +9,4 @@ export * from './module/user/repository/user.repository';
 
 export * from './module/product/repository/category-product.repository';
 export * from './module/product/repository/product.repository';
-export * from './module/product/repository/store.repository';
+export * from './module/product/repository/product-store.repository';

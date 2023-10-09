@@ -2,15 +2,15 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { CreateStoreRequestDto, UpdateStoreRequestDto } from '@dto';
-import { StoreProduct } from '@model';
+import { ProductCreateStoreRequestDto, ProductUpdateStoreRequestDto } from '@dto';
+import { ProductStore } from '@model';
 
 import { BaseTest } from '../base';
 
 export const testCase = (type?: string, permissions: string[] = []) => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataStore: CreateStoreRequestDto = {
+  const dataStore: ProductCreateStoreRequestDto = {
     name: faker.person.fullName(),
     phone: faker.phone.number(),
     status: 0,
@@ -19,7 +19,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     avatar: faker.image.url(),
     // userId: faker.string.uuid(),
   };
-  const dataUpdate: UpdateStoreRequestDto = {
+  const dataUpdate: ProductUpdateStoreRequestDto = {
     name: faker.person.fullName(),
     phone: faker.phone.number(),
     status: 0,
@@ -27,7 +27,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     slug: faker.lorem.slug(),
     avatar: faker.image.url(),
   };
-  let resultStore: StoreProduct = {
+  let resultStore: ProductStore = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     phone: faker.phone.number(),

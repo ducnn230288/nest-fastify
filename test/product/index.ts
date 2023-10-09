@@ -5,12 +5,12 @@ import { HttpStatus } from '@nestjs/common';
 import {
   CreateCategoryProductRequestDto,
   CreateProductRequestDto,
-  CreateStoreRequestDto,
+  ProductCreateStoreRequestDto,
   UpdateProductRequestDto,
 } from '@dto';
 
 import { BaseTest } from '../base';
-import { CategoryProduct, Product, StoreProduct } from '@model';
+import { CategoryProduct, Product, ProductStore } from '@model';
 import { CategoryProductService, ProductService, StoreService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
@@ -29,7 +29,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
   };
 
-  const dataStore: CreateStoreRequestDto = {
+  const dataStore: ProductCreateStoreRequestDto = {
     name: faker.person.fullName(),
     phone: faker.phone.number(),
     status: 0,
@@ -39,7 +39,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     // userId: faker.string.uuid(),
   };
 
-  let resultStore: StoreProduct = {
+  let resultStore: ProductStore = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     phone: faker.phone.number(),
