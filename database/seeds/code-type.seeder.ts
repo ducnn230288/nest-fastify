@@ -1,10 +1,10 @@
-import { Seeder } from 'typeorm-extension';
+import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
 import { CodeType } from '@model';
 
 export class CodeTypeSeeder implements Seeder {
-  async run(dataSource: DataSource): Promise<void> {
+  async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
     const repository = dataSource.getRepository(CodeType);
     const data: CodeType = { name: 'Position', code: 'position', isPrimary: true };
 
@@ -18,8 +18,8 @@ export class CodeTypeSeeder implements Seeder {
       await repository.save(newData);
     }
 
-    // const userFactory = await factoryManager.get(CategoryType);
-    // await userFactory.save();
-    // await userFactory.saveMany(5);
+    // const userFactory = factoryManager.get(CodeType);
+    // const datas = await userFactory.saveMany(5);
+    // console.log(datas);
   }
 }
