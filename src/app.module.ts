@@ -15,8 +15,8 @@ import {
   UserModule,
   AddressModule,
   ProductModule,
-  CategoryProductModule,
-  StoreModule,
+  // CategoryProductModule,
+  // StoreModule,
   OrderModule,
 } from '@module';
 
@@ -30,8 +30,8 @@ import {
     UserModule,
     AddressModule,
     ProductModule,
-    CategoryProductModule,
-    StoreModule,
+    // CategoryProductModule,
+    // StoreModule,
     OrderModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
