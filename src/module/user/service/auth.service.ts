@@ -95,14 +95,14 @@ export class AuthService extends BaseService<User> {
    * @returns boolean
    *
    */
-  async forgottenPassword(body: ForgottenPasswordAuthRequestDto): Promise<boolean> {
+  async forgottenPassword(body: ForgottenPasswordAuthRequestDto): Promise<string> {
     const i18n = I18nContext.current()!;
-    const user = await this.repo.getDataByEmail(body.email);
+    const user = await this.repo.getDataByEmail(body.email!);
     if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
 
     user.otp = customAlphabet('0123456789', 10)(6);
     await this.update(user.id!, user);
-    await this.emailService.sendUserConfirmation(user, user.otp);
+    if (!body.notSendEmail) await this.emailService.sendUserConfirmation(user, user.otp);
 
     const name = user.id + 'forgottenPassword';
     if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);
@@ -113,7 +113,7 @@ export class AuthService extends BaseService<User> {
     this.schedulerRegistry.addCronJob(name, job);
     job.start();
 
-    return true;
+    return user.otp;
   }
 
   /**
@@ -124,7 +124,7 @@ export class AuthService extends BaseService<User> {
    */
   async OTPConfirmation(body: OTPConfirmationAuthRequestDto): Promise<User> {
     const i18n = I18nContext.current()!;
-    const user = await this.repo.getDataByEmailAndOTP(body.email, body.otp!);
+    const user = await this.repo.getDataByEmailAndOTP(body.email!, body.otp!);
     if (!user) throw new BadRequestException(i18n.t('common.Auth.Invalid email'));
     return user;
   }
@@ -165,7 +165,7 @@ export class AuthService extends BaseService<User> {
    */
   async login(body: LoginAuthRequestDto): Promise<User> {
     const i18n = I18nContext.current()!;
-    const user = await this.repo.getDataByEmailJoin(body.email);
+    const user = await this.repo.getDataByEmailJoin(body.email!);
     if (!user) throw new UnauthorizedException(i18n.t('common.Auth.User not found', { args: { email: body.email } }));
 
     if (!(await argon2.verify(user.password!, body.password!)))
@@ -187,7 +187,7 @@ export class AuthService extends BaseService<User> {
     if (body.password !== body.retypedPassword)
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
-    const existingUser = await this.repo.getDataByEmail(body.email);
+    const existingUser = await this.repo.getDataByEmail(body.email!);
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
 
     const user = this.repo.create(body);

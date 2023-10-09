@@ -26,7 +26,7 @@ export class PaginationQueryDto {
 
   @IsOptional()
   @Transform(({ value }) => JSON.parse(value))
-  sorts?: any;
+  sorts?: object;
 
   @IsOptional()
   @Transform(({ value }) => JSON.parse(value))

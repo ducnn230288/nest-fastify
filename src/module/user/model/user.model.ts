@@ -65,22 +65,22 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @Exclude()
-  refreshToken?: string;
+  refreshToken?: string | null;
   @BeforeUpdate()
   async beforeRefreshToken?(): Promise<void> {
     this.refreshToken = this.refreshToken && (await argon2.hash(this.refreshToken));
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @IsString()
-  otp?: string;
+  otp?: string | null;
 
   @Column()
   @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
   @IsEmail()
-  readonly email: string;
+  email?: string;
 
   @Column()
   @ApiProperty({ example: faker.phone.number(), description: '' })

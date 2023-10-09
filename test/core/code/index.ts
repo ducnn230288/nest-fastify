@@ -5,11 +5,10 @@ import { HttpStatus } from '@nestjs/common';
 import { Code, CodeType } from '@model';
 import { CreateCodeTypeRequestDto, UpdateCodeTypeRequestDto, CreateCodeRequestDto, UpdateCodeRequestDto } from '@dto';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
-export const testCase = (type?: string, permissions: string[] = []) => {
+export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
   const dataType: CreateCodeTypeRequestDto = {
     name: faker.person.jobType(),
@@ -41,9 +40,11 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     type: resultType.code,
     code: faker.finance.bic(),
   };
-  it('Create [POST /api/code-type/add]', async () => {
+
+  //code-type
+  it('Create [POST /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code-type/add')
+      .post('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -54,9 +55,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/code-type/list]', async () => {
+  it('Get all [GET /api/code-type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code-type/list')
+      .get('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -64,7 +65,7 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get one [GET /api/code-type/:id]', async () => {
+  it('Get one [GET /api/code-type/:code]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/code-type/' + resultType.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -86,9 +87,22 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Create [POST /api/code/add]', async () => {
+  it('Update one [PUT /api/code-type/:id/disable/:bolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/code/add')
+      .put('/api/code-type/' + resultType.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send()
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultType.isDisabled }),
+      );
+    }
+  });
+
+  it('Create [POST /api/code]', async () => {
+    const { body } = await request(BaseTest.server)
+      .post('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -99,9 +113,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get all [GET /api/code/list]', async () => {
+  it('Get all [GET /api/code]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/code/list')
+      .get('/api/code')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -133,6 +147,16 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
+  it('Update one [PUT /api/code/:id/disable/:bolean]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/code-type/' + resultType.id + '/disable/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result.isDisabled }));
+    }
+  });
+
   it('Delete one [DELETE /api/code/:id]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/code/' + result.id)
@@ -152,4 +176,6 @@ export const testCase = (type?: string, permissions: string[] = []) => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

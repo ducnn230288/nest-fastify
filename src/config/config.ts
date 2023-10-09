@@ -13,8 +13,9 @@ const UPLOAD_LOCATION = config.get<string>('upload.location');
 const ACCESS_SECRET = config.get<string>('token.secret.access');
 const REFRESH_SECRET = config.get<string>('token.secret.refresh');
 const SESSION_SALT = config.get<string>('token.salt');
+const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 
-const DATABASE_HOST = process.env.DATABASE_HOST;
+const DATABASE_HOST = process.env.DATABASE_HOST || 'localhost';
 const DATABASE_PORT = +(process.env.DATABASE_PORT || '0');
 const DATABASE_USER = process.env.DATABASE_USER;
 const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
@@ -30,10 +31,10 @@ const smtpSecureAsString = process.env.SMTP_SECURE;
 const SMTP_SECURE: boolean = smtpSecureAsString ? smtpSecureAsString.toLowerCase() === 'true' : true;
 
 const ID_TOKEN_PRIVATE_KEY_AS_BASE64 = process.env.ID_TOKEN_PRIVATE_KEY_AS_BASE64 as string;
-const ID_TOKEN_PRIVATE_KEY = Buffer.from(ID_TOKEN_PRIVATE_KEY_AS_BASE64, 'base64').toString('utf8');
+const ID_TOKEN_PRIVATE_KEY = ID_TOKEN_PRIVATE_KEY_AS_BASE64;
 
 const ID_TOKEN_PUBLIC_KEY_AS_BASE64 = process.env.ID_TOKEN_PUBLIC_KEY_AS_BASE64 as string;
-const ID_TOKEN_PUBLIC_KEY = Buffer.from(ID_TOKEN_PUBLIC_KEY_AS_BASE64, 'base64').toString('utf8');
+const ID_TOKEN_PUBLIC_KEY = ID_TOKEN_PUBLIC_KEY_AS_BASE64;
 
 export const appConfig = {
   NODE_ENV,
@@ -48,6 +49,7 @@ export const appConfig = {
   ACCESS_SECRET,
   REFRESH_SECRET,
   SESSION_SALT,
+  REDIS_HOST,
 
   DATABASE_HOST,
   DATABASE_PORT,

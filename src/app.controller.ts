@@ -1,11 +1,13 @@
-import { Get, Controller, Render, Res, Param } from '@nestjs/common';
+import { Get, Controller, Render, Res, Param, Inject, UseInterceptors } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import { FastifyReply } from 'fastify';
 import dayjs from 'dayjs';
+import { Cache } from 'cache-manager';
+import { CacheInterceptor, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import { DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';
-import { DataDto, PostDto } from '@dto';
+import { DataDto, IEditor, PostDto } from '@dto';
 
 @Controller()
 export class AppController {
@@ -13,11 +15,18 @@ export class AppController {
     private readonly dataService: DataService,
     private readonly postService: PostService,
     private readonly parameterService: ParameterService,
-  ) {}
+  ) // @Inject(CACHE_MANAGER) private managerCache: Cache,
+  {}
 
   @Get('')
   @Render('index')
+  @UseInterceptors(CacheInterceptor)
   async root(language: string = 'vn', urlLang = '/en'): Promise<IHome> {
+    // let product = await this.managerCache.get<ProductEntity>(`product-${id}`);
+    // if (!product) {
+    //   product = await this.productService.findById(id);
+    //   await this.managerCache.set(`product-${id}`, product);
+    // }
     const i18n = I18nContext.current()!;
     const { data, dataArray } = await this.common(language, ['mission', 'services', 'value', 'member']);
     return {
@@ -79,6 +88,7 @@ export class AppController {
 
   @Get('/en')
   @Render('index')
+  @UseInterceptors(CacheInterceptor)
   async rootLang(): Promise<IHome> {
     return await this.root('en', '/');
   }
@@ -137,6 +147,7 @@ export class AppController {
 
   @Get('/tin-tuc/:slug')
   @Render('post/detail')
+  @UseInterceptors(CacheInterceptor)
   async newsDetail(
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
@@ -188,6 +199,7 @@ export class AppController {
   }
   @Get('/en/news/:slug')
   @Render('post/detail')
+  @UseInterceptors(CacheInterceptor)
   async newsDetailEn(
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
@@ -197,6 +209,7 @@ export class AppController {
 
   @Get('/du-an/:slug')
   @Render('post/detail')
+  @UseInterceptors(CacheInterceptor)
   async projectsDetail(
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
@@ -205,6 +218,7 @@ export class AppController {
   }
   @Get('/en/projects/:slug')
   @Render('post/detail')
+  @UseInterceptors(CacheInterceptor)
   async projectsDetailEn(
     @Param('slug') slug: string,
     @Res({ passthrough: true }) res: FastifyReply,
@@ -214,6 +228,7 @@ export class AppController {
 
   @Get('/ve-cong-nghe')
   @Render('about/tech')
+  @UseInterceptors(CacheInterceptor)
   async aboutTech(language: string = 'vn', urlLang = '/en/about-tech'): Promise<IAbout> {
     const i18n = I18nContext.current()!;
     const { data, dataArray } = await this.common(language, ['tech']);
@@ -235,12 +250,14 @@ export class AppController {
 
   @Get('/en/about-tech')
   @Render('about/tech')
+  @UseInterceptors(CacheInterceptor)
   async aboutTechEn(): Promise<IAbout> {
     return await this.aboutTech('en', '/ve-cong-nghe');
   }
 
   @Get('/doi-ngu-phat-trien-chinh')
   @Render('about/member')
+  @UseInterceptors(CacheInterceptor)
   async aboutCoreMember(language: string = 'vn', urlLang = '/en/about-core-member'): Promise<IAbout> {
     const i18n = I18nContext.current()!;
     const { data, dataArray } = await this.common(language, ['member']);
@@ -275,6 +292,7 @@ export class AppController {
 
   @Get('/en/about-core-member')
   @Render('about/member')
+  @UseInterceptors(CacheInterceptor)
   async aboutCoreMemberEn(): Promise<IAbout> {
     return await this.aboutCoreMember('en', '/doi-ngu-phat-trien-chinh');
   }
@@ -405,21 +423,7 @@ interface IPost extends ICommon {
   post: PostDto[];
   detail: object;
 }
-interface IEditor {
-  id: string;
-  data: {
-    text: string;
-    level?: string;
-    file?: {
-      url?: string;
-    };
-    caption?: string;
-    stretched?: boolean;
-    withBorder?: boolean;
-    withBackground?: boolean;
-  };
-  type: string;
-}
+
 interface IAbout extends ICommon {
   urlLang: string;
   JSON: {

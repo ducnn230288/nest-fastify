@@ -88,7 +88,7 @@ export class FileService extends BaseService<File> {
    */
   private async saveToLocalPath(
     multipartFile: MultipartFile,
-    mimeTypesRegex?: any,
+    mimeTypesRegex?: RegExp,
     validationErrorMessage?: string,
     userId?: string,
   ): Promise<{

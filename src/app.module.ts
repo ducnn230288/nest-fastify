@@ -3,6 +3,8 @@ import { WinstonModule } from 'nest-winston';
 import { resolve } from 'path';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
@@ -55,6 +57,18 @@ import {
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
       }),
+    }),
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: appConfig.REDIS_HOST,
+            port: 6379,
+          },
+          ttl: 3600 * 1000,
+        }),
+      }),
+      isGlobal: true,
     }),
   ],
 })

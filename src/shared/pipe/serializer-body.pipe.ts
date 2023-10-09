@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 export class SerializerBody implements PipeTransform {
   constructor(private group?: string[]) {}
 
-  async transform(value: any, { metatype }: ArgumentMetadata): Promise<any> {
+  async transform(value: object, { metatype }: ArgumentMetadata): Promise<object> {
     if (!metatype) return value;
     const object = plainToInstance(metatype, value, { groups: this.group });
     const errors = await validate(object, {
@@ -20,7 +20,7 @@ export class SerializerBody implements PipeTransform {
       throw new BadRequestException(
         errors
           .map((e) => {
-            const collect: any = [];
+            const collect: string[] = [];
             for (const key in e.constraints) {
               collect.push(e.constraints[key]);
             }

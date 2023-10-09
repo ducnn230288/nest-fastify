@@ -14,7 +14,7 @@ export class UserController {
     summary: 'Get List User',
     permission: P_USER_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(@I18n() i18n: I18nContext, @Query() paginationQuery: PaginationQueryDto): Promise<ListUserResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
@@ -42,7 +42,7 @@ export class UserController {
     permission: P_USER_CREATE,
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) createData: CreateUserRequestDto,
