@@ -27,6 +27,9 @@ export class CreateDataTranslationRequestDto extends PickType(DataTranslation, [
 
 export class UpdateDataRequestDto extends PartialType(CreateDataRequestDto) {}
 
+export class ArrayDataResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: { [key: string]: Data[] };
+}
 export class DataDto extends PartialType(
   OmitType(Data, ['isDeleted', 'createdAt', 'updatedAt', 'translations', 'item'] as const),
 ) {}

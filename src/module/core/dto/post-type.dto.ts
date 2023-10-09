@@ -6,9 +6,6 @@ import { PostType } from '@model';
 export class CreatePostTypeRequestDto extends PickType(PostType, ['name', 'code'] as const) {}
 export class UpdatePostTypeRequestDto extends PickType(PostType, ['name', 'code'] as const) {}
 
-export class ArrayPostTypeResponseDto extends PartialType(DefaultResponsesDto) {
-  readonly data: { [key: string]: PostType };
-}
 export class PostTypeDto extends PartialType(
   OmitType(PostType, ['isDeleted', 'createdAt', 'updatedAt', 'items'] as const),
 ) {}
