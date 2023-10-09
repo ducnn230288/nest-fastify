@@ -2,18 +2,18 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { CATEGORY_CREATE, CategoryProductService, CATEGORY_UPDATE, CATEGORY_DETAIL, CATEGORY_DELETE } from '@service';
+import { CATEGORY_CREATE, ProductCategoryService, CATEGORY_UPDATE, CATEGORY_DETAIL, CATEGORY_DELETE } from '@service';
 import {
-  ListCategoryProductResponseDto,
-  CategoryProductResponseDto,
-  CreateCategoryProductRequestDto,
-  UpdateCategoryProductRequestDto,
+  ListProductCategoryResponseDto,
+  ProductCategoryResponseDto,
+  CreateProductCategoryRequestDto,
+  UpdateProductCategoryRequestDto,
 } from '@dto';
 import dayjs from 'dayjs';
 
 @Headers('category-product')
-export class CategoryProductController {
-  constructor(private readonly service: CategoryProductService) {}
+export class ProductCategoryController {
+  constructor(private readonly service: ProductCategoryService) {}
 
   @Public({
     summary: 'Get List data',
@@ -23,7 +23,7 @@ export class CategoryProductController {
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
-  ): Promise<ListCategoryProductResponseDto> {
+  ): Promise<ListProductCategoryResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List success'),
@@ -37,7 +37,7 @@ export class CategoryProductController {
     permission: CATEGORY_DETAIL,
   })
   @Get('/slug/:slug')
-  async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<CategoryProductResponseDto> {
+  async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
       data: await this.service.findSlug(slug),
@@ -49,7 +49,7 @@ export class CategoryProductController {
     permission: CATEGORY_DETAIL,
   })
   @Get(':id')
-  async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryProductResponseDto> {
+  async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
       data: await this.service.findOne(id, []),
@@ -63,8 +63,8 @@ export class CategoryProductController {
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
-    @Body(new SerializerBody([MaxGroup])) body: CreateCategoryProductRequestDto,
-  ): Promise<CategoryProductResponseDto> {
+    @Body(new SerializerBody([MaxGroup])) body: CreateProductCategoryRequestDto,
+  ): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.create(body),
@@ -79,8 +79,8 @@ export class CategoryProductController {
   async update(
     @I18n() i18n: I18nContext,
     @Param('id') id: string,
-    @Body(new SerializerBody([MaxGroup])) body: UpdateCategoryProductRequestDto,
-  ): Promise<CategoryProductResponseDto> {
+    @Body(new SerializerBody([MaxGroup])) body: UpdateProductCategoryRequestDto,
+  ): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
       data: await this.service.update(id, body),
@@ -96,7 +96,7 @@ export class CategoryProductController {
     @I18n() i18n: I18nContext,
     @Param('id') id: string,
     @Param('boolean') boolean: string,
-  ): Promise<CategoryProductResponseDto> {
+  ): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
       data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
@@ -104,11 +104,11 @@ export class CategoryProductController {
   }
 
   @Auth({
-    summary: 'Delete a CategoryProduct',
+    summary: 'Delete a ProductCategory',
     permission: CATEGORY_DELETE,
   })
   @Delete(':id')
-  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<CategoryProductResponseDto> {
+  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
       data: await this.service.remove(id),

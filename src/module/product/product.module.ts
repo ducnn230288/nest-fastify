@@ -1,21 +1,21 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import { CategoryProduct, Product, StoreProduct } from '@model';
-import { CategoryProductController, ProductController, StoreController } from '@controller';
-import { CategoryProductService, ProductService, StoreService } from '@service';
-import { CategoryProductRepository, ProductRepository, StoreRepository } from '@repository';
+import { ProductCategory, Product, StoreProduct } from '@model';
+import { ProductCategoryController, ProductController, StoreController } from '@controller';
+import { ProductCategoryService, ProductService, StoreService } from '@service';
+import { ProductCategoryRepository, ProductRepository, StoreRepository } from '@repository';
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, CategoryProduct, StoreProduct])],
-  controllers: [ProductController, CategoryProductController, StoreController],
+  imports: [TypeOrmModule.forFeature([Product, ProductCategory, StoreProduct])],
+  controllers: [ProductController, ProductCategoryController, StoreController],
   providers: [
     ProductService,
-    CategoryProductService,
+    ProductCategoryService,
     StoreService,
     ProductRepository,
-    CategoryProductRepository,
+    ProductCategoryRepository,
     StoreRepository,
   ],
-  exports: [ProductService, CategoryProductService, ProductRepository, CategoryProductRepository],
+  exports: [ProductService, ProductCategoryService, ProductRepository, ProductCategoryRepository],
 })
 export class ProductModule {}

@@ -15,8 +15,9 @@ export const PRODUCT_DELETE = '59014c0-9ebe-497e-9766-2054ebb7e1d2';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {
-  constructor(public repo: ProductRepository) // private storeService: StoreService,
-  {
+  constructor(
+    public repo: ProductRepository, // private storeService: StoreService,
+  ) {
     super(repo);
     // this.listQuery = ['caregoryId', 'storeId'];
   }
@@ -28,7 +29,7 @@ export class ProductService extends BaseService<Product> {
   async findSlug(slug: string): Promise<Product | null> {
     // console.log(slug);
     const product = await this.repo.getDataBySlug(slug);
-    // if (categoryProduct?.id) return this.findOne(categoryProduct.id);
+    // if (productCategory?.id) return this.findOne(productCategory.id);
     return product;
   }
 

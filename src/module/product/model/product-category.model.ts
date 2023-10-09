@@ -8,7 +8,7 @@ import { Base } from '@shared';
 import { Product } from '@model';
 
 @Entity()
-export class CategoryProduct extends Base {
+export class ProductCategory extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })
   @IsString()
@@ -32,7 +32,7 @@ export class CategoryProduct extends Base {
   @IsOptional()
   parentId?: string;
 
-  @OneToMany(() => Product, (product) => product.categoryProduct)
+  @OneToMany(() => Product, (product) => product.productCategory)
   @IsArray()
   @IsOptional()
   public products?: Product[];

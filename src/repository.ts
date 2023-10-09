@@ -7,6 +7,6 @@ export * from './module/core/repository/post-translation.repository';
 
 export * from './module/user/repository/user.repository';
 
-export * from './module/product/repository/category-product.repository';
+export * from './module/product/repository/product-category.repository';
 export * from './module/product/repository/product.repository';
 export * from './module/product/repository/store.repository';

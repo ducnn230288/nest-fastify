@@ -15,7 +15,7 @@ import {
   UserModule,
   AddressModule,
   ProductModule,
-  // CategoryProductModule,
+  // ProductCategoryModule,
   // StoreModule,
   OrderModule,
 } from '@module';
@@ -30,7 +30,7 @@ import {
     UserModule,
     AddressModule,
     ProductModule,
-    // CategoryProductModule,
+    // ProductCategoryModule,
     // StoreModule,
     OrderModule,
     I18nModule.forRootAsync({

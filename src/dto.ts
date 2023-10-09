@@ -15,7 +15,7 @@ export * from './module/user/dto/ward.dto';
 
 export * from './module/address/dto/address.dto';
 
-export * from './module/product/dto/category-product.dto';
+export * from './module/product/dto/product-category.dto';
 export * from './module/product/dto/product.dto';
 export * from './module/product/dto/store.dto';
 export * from './module/order/dto/order.dto';

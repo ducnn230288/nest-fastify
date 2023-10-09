@@ -18,7 +18,7 @@ export * from './module/user/controller/ward.controller';
 
 export * from './module/address/controller/address.controller';
 
-export * from './module/product/controller/category-product.controller';
+export * from './module/product/controller/product-category.controller';
 export * from './module/product/controller/product.controller';
 export * from './module/product/controller/store.controller';
 export * from './module/order/controller/order.controller';
