@@ -8,16 +8,13 @@ export class CreateAddressRequestDto extends PickType(Address, [
   'codeWard',
   'specificAddress',
 ] as const) {}
-export class UpdateAddressRequestDto extends PickType(Address, ['specificAddress'] as const) {}
+export class UpdateAddressRequestDto extends PartialType(CreateAddressRequestDto) {}
 
 export class AddressDto extends PartialType(
   OmitType(Address, [
     'isDeleted',
     'createdAt',
     'updatedAt',
-    'provinceItem',
-    'districtItem',
-    'wardItem',
     'specificAddress',
   ] as const),
 ) {}

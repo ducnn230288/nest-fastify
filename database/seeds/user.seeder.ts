@@ -64,6 +64,10 @@ import {
   STORE_UPDATE,
   STORE_DELETE,
   P_ADDRESS_LISTED,
+  P_ADDRESS_CREATE,
+  P_ADDRESS_UPDATE,
+  P_ADDRESS_DETAIL,
+  P_ADDRESS_DELETE,
   P_ORDER_LISTED,
   P_ORDER_CREATE
 } from '@service';
@@ -142,7 +146,12 @@ export class UserSeeder implements Seeder {
         STORE_CREATE,
         STORE_UPDATE,
         STORE_DELETE,
+
         P_ADDRESS_LISTED,
+        P_ADDRESS_DETAIL,
+        P_ADDRESS_CREATE,
+        P_ADDRESS_UPDATE,
+        P_ADDRESS_DELETE,
 
         P_ORDER_LISTED,
         P_ORDER_CREATE
