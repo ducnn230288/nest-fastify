@@ -2,11 +2,16 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { CreateCategoryProductRequestDto, CreateProductRequestDto, UpdateProductRequestDto } from '@dto';
+import {
+  CreateCategoryProductRequestDto,
+  CreateProductRequestDto,
+  CreateStoreRequestDto,
+  UpdateProductRequestDto,
+} from '@dto';
 
 import { BaseTest } from '../base';
-import { CategoryProduct, Product } from '@model';
-import { CategoryProductService, ProductService } from '@service';
+import { CategoryProduct, Product, StoreProduct } from '@model';
+import { CategoryProductService, ProductService, StoreService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -22,6 +27,27 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
+  };
+
+  const dataStore: CreateStoreRequestDto = {
+    name: faker.person.fullName(),
+    phone: faker.phone.number(),
+    status: 0,
+    description: faker.lorem.paragraph(),
+    slug: faker.lorem.slug(),
+    avatar: faker.image.url(),
+    // userId: faker.string.uuid(),
+  };
+
+  let resultStore: StoreProduct = {
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    phone: faker.phone.number(),
+    description: faker.lorem.paragraph(),
+    slug: faker.lorem.slug(),
+    avatar: faker.image.url(),
+    // userId: dataStore.userId,
+    status: 0,
   };
 
   const dataProduct: CreateProductRequestDto = {
@@ -60,6 +86,17 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Create [POST api/product]', async () => {
     resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataCategoryProduct);
+
+    const res = await request(BaseTest.server)
+      .get('/api/auth/profile')
+      .set('Authorization', 'Bearer ' + BaseTest.token);
+
+    const userId = res.body.data.id;
+
+    resultStore = await BaseTest.moduleFixture!.get(StoreService).create({
+      ...dataStore,
+      userId: userId,
+    });
 
     dataProduct.categoryProductId = resultCategoryProduct.id || '';
 
