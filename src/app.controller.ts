@@ -14,9 +14,8 @@ export class AppController {
   constructor(
     private readonly dataService: DataService,
     private readonly postService: PostService,
-    private readonly parameterService: ParameterService,
-  ) // @Inject(CACHE_MANAGER) private managerCache: Cache,
-  {}
+    private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
+  ) {}
 
   @Get('')
   @Render('index')

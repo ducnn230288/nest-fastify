@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, Unique } from 'typeorm';
+import { Entity, Column, OneToMany, Unique, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsBoolean, IsString, MaxLength } from 'class-validator';
@@ -9,6 +9,7 @@ import { Post } from '@model';
 
 @Entity()
 @Unique(['code'])
+@Tree('materialized-path')
 export class PostType extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })
@@ -27,9 +28,15 @@ export class PostType extends Base {
   @Expose()
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()
-  isPrimary: boolean;
+  isPrimary?: boolean;
 
   @OneToMany(() => Post, (data) => data.item, { eager: true, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @Expose({ groups: [MaxGroup] })
   items?: Post[];
+
+  @TreeChildren()
+  children?: PostType[];
+
+  @TreeParent()
+  parent?: PostType;
 }

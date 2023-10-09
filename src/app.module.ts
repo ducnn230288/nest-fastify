@@ -16,8 +16,8 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     SchedulerModule,
-    CoreModule,
     UserModule,
+    CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',

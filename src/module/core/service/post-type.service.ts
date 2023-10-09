@@ -1,11 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { I18nContext } from 'nestjs-i18n';
 
 import { BaseService } from '@shared';
 import { PostType } from '@model';
-import { PostRepository } from '@repository';
+import { PostRepository, PostTypeRepository } from '@repository';
 
 export const P_POST_TYPE_LISTED = 'efa34c52-8c9a-444d-a82b-8bec109dbab5';
 export const P_POST_TYPE_CREATE = '87cb77c4-565c-43ec-bffc-fbaf5077c2be';
@@ -15,11 +13,19 @@ export const P_POST_TYPE_DELETE = 'cd00c62e-1ec4-4c61-b273-cdd6867a3212';
 @Injectable()
 export class PostTypeService extends BaseService<PostType> {
   constructor(
-    @InjectRepository(PostType)
-    public repo: Repository<PostType>,
+    public repo: PostTypeRepository,
     public repoPost: PostRepository,
   ) {
     super(repo);
+  }
+
+  /**
+   *
+   * @returns PostType[]
+   *
+   */
+  async findTree(): Promise<PostType[]> {
+    return this.repo.getTree();
   }
 
   /**

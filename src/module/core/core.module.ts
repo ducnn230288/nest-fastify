@@ -40,6 +40,7 @@ import {
   ParameterRepository,
   PostRepository,
   PostTranslationRepository,
+  PostTypeRepository,
 } from '@repository';
 
 @Module({
@@ -81,6 +82,7 @@ import {
     PostRepository,
     PostService,
     PostTypeService,
+    PostTypeRepository,
     PostTranslationRepository,
   ],
   exports: [DataService, FileService, ParameterService, PostService],
