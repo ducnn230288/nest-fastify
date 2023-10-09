@@ -3,33 +3,33 @@ import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
 import {
-  CreateCategoryProductRequestDto,
+  CreateProductCategoryRequestDto,
   CreateProductRequestDto,
-  CreateStoreRequestDto,
+  ProductCreateStoreRequestDto,
   UpdateProductRequestDto,
 } from '@dto';
 
-import { BaseTest } from '../base';
-import { CategoryProduct, Product, StoreProduct } from '@model';
-import { CategoryProductService, ProductService, StoreService } from '@service';
+import { BaseTest } from '@test';
+import { ProductCategory, Product, ProductStore } from '@model';
+import { ProductCategoryService, ProductService, StoreService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataCategoryProduct: CreateCategoryProductRequestDto = {
+  const dataProductCategory: CreateProductCategoryRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  let resultCategoryProduct: CategoryProduct = {
+  let resultProductCategory: ProductCategory | null = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  const dataStore: CreateStoreRequestDto = {
+  const dataStore: ProductCreateStoreRequestDto = {
     name: faker.person.fullName(),
     phone: faker.phone.number(),
     status: 0,
@@ -39,7 +39,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     // userId: faker.string.uuid(),
   };
 
-  let resultStore: StoreProduct = {
+  let resultStore: ProductStore | null = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     phone: faker.phone.number(),
@@ -58,10 +58,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     images: faker.image.url(),
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
-    categoryProductId: faker.string.uuid() || '',
+    productCategoryId: faker.string.uuid() || '',
   };
 
-  let resultProduct: Product = {
+  let resultProduct: Product | null = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     quantity: faker.number.int({ max: 100 }),
@@ -70,7 +70,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
     storeId: faker.string.uuid() || '',
-    categoryProductId: faker.string.uuid() || '',
+    productCategoryId: faker.string.uuid() || '',
     discount: 0,
   };
 
@@ -85,7 +85,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   it('Create [POST api/product]', async () => {
-    resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataCategoryProduct);
+    resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataProductCategory);
 
     const res = await request(BaseTest.server)
       .get('/api/auth/profile')
@@ -98,7 +98,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       userId: userId,
     });
 
-    dataProduct.categoryProductId = resultCategoryProduct.id || '';
+    dataProduct.productCategoryId = resultProductCategory?.id || '';
 
     const { body } = await request(BaseTest.server)
       .post('/api/product')
@@ -123,7 +123,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('GET by slug [GET api/product/slug/:slug]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/product/slug/' + resultProduct.slug)
+      .get('/api/product/slug/' + resultProduct?.slug)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -134,7 +134,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('GET [GET api/product/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/product/' + resultProduct.id)
+      .get('/api/product/' + resultProduct?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -145,7 +145,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update Product [PUT /api/product/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/product/' + resultProduct.id)
+      .put('/api/product/' + resultProduct?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -158,7 +158,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update One [PUT /api/product/:id/disable/:boolean', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/product/' + resultProduct.id + '/disable' + '/true')
+      .put('/api/product/' + resultProduct?.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -171,7 +171,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Detete [DELETE /api/product/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/product/' + resultProduct.id)
+      .delete('/api/product/' + resultProduct?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 

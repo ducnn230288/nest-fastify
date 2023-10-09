@@ -19,7 +19,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
     });
   }
 
-  async validate(req: FastifyRequest, payload: any): Promise<User> {
+  async validate(req: FastifyRequest, payload: { userId: string; email: string }): Promise<User> {
     const user = await this.repo.getDataByIdAndEmail(payload.userId, payload.email);
     const authorization = req.headers?.authorization ? req.headers.authorization : '';
     if (!user || !user.refreshToken || !authorization) throw new UnauthorizedException();

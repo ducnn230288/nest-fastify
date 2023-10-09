@@ -14,7 +14,8 @@
     "@model": "<rootDir>../src/model",
     "@module": "<rootDir>../src/module",
     "@repository": "<rootDir>../src/repository",
-    "@service": "<rootDir>../src/service"
+    "@service": "<rootDir>../src/service",
+    "@test": "<rootDir>../test"
   },
   "testRunner": "jest-jasmine2"
 }

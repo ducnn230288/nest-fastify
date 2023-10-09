@@ -21,7 +21,7 @@ export class PostController {
     permission: P_POST_LISTED,
     serializeOptions: { groups: [] },
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -35,7 +35,7 @@ export class PostController {
   }
 
   @Public({
-    summary: 'Get Detail data',
+    summary: 'Get Array data',
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get('/array')
@@ -77,7 +77,7 @@ export class PostController {
     summary: 'Create data',
     permission: P_POST_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreatePostRequestDto,

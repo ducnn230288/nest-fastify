@@ -3,10 +3,10 @@ import { IsString, IsNumber, IsUUID, IsOptional, IsPositive } from 'class-valida
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
- 
+
 import { Base, MaxGroup } from '@shared';
-import { CategoryProduct, OrderProduct, StoreProduct } from '@model';
-  
+import { ProductCategory, OrderProduct, ProductStore } from '@model';
+
 @Entity()
 export class Product extends Base {
   @Column()
@@ -72,23 +72,23 @@ export class Product extends Base {
   @Column()
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  categoryProductId: string;
+  productCategoryId: string;
 
-  @ManyToOne(() => CategoryProduct, (categoryProduct) => categoryProduct.products, {
+  @ManyToOne(() => ProductCategory, (productCategory) => productCategory.products, {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  public categoryProduct?: CategoryProduct;
+  public productCategory?: ProductCategory;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   storeId?: string;
 
-  @ManyToOne(() => StoreProduct, (store) => store.products)
+  @ManyToOne(() => ProductStore, (store) => store.products)
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
-  public store?: StoreProduct;
+  public store?: ProductStore;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
   @IsOptional()

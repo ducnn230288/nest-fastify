@@ -6,6 +6,7 @@ import { Expose } from 'class-transformer';
 
 import { Data } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
+import { IEditor } from '@dto';
 
 @Entity()
 export class DataTranslation extends Base {
@@ -39,7 +40,7 @@ export class DataTranslation extends Base {
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
-  content?: Record<string, any>;
+  content?: { blocks: IEditor[] };
   @BeforeInsert()
   @BeforeUpdate()
   beforeContent?(): void {

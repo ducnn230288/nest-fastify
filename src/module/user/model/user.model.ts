@@ -25,7 +25,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, StoreProduct, Order } from '@model';
+import { UserRole, Code, Address, ProductStore, Order } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -65,22 +65,22 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @Exclude()
-  refreshToken?: string;
+  refreshToken?: string | null;
   @BeforeUpdate()
   async beforeRefreshToken?(): Promise<void> {
     this.refreshToken = this.refreshToken && (await argon2.hash(this.refreshToken));
   }
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   @IsString()
-  otp?: string;
+  otp?: string | null;
 
   @Column()
   @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
   @IsEmail()
-  readonly email: string;
+  email?: string;
 
   @Column()
   @ApiProperty({ example: faker.phone.number(), description: '' })
@@ -144,8 +144,8 @@ export class User extends Base {
   @Type(() => Address)
   readonly address?: Address[];
 
-  @OneToOne(() => StoreProduct, (store) => store.user)
-  store?: StoreProduct;
+  @OneToOne(() => ProductStore, (store) => store.user)
+  store?: ProductStore;
 
   @OneToMany(() => Order, (order) => order.user)
   order?: Order;

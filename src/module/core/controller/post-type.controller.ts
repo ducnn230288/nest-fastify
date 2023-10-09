@@ -20,7 +20,7 @@ export class PostTypeController {
     summary: 'Get List data',
     permission: P_POST_TYPE_LISTED,
   })
-  @Get('list')
+  @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
@@ -48,7 +48,7 @@ export class PostTypeController {
     summary: 'Create data',
     permission: P_POST_TYPE_CREATE,
   })
-  @Post('add')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreatePostTypeRequestDto,

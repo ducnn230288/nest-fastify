@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 
-import { CreateUserRequestDto } from '@dto';
+import { CreateUserRequestDto, UpdateUserRequestDto } from '@dto';
 import { User } from '@model';
 import { UserRepository } from '@repository';
 import { BaseService, getImages } from '@shared';
@@ -35,7 +35,7 @@ export class UserService extends BaseService<User> {
     if (body.password !== body.retypedPassword)
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
-    const existingUser = await this.repo.getDataByEmail(body.email);
+    const existingUser = await this.repo.getDataByEmail(body.email!);
 
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
     const data = await super.create(body);
@@ -52,7 +52,11 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async update(id: string, body: any, callBack?: (data: User) => Promise<User>): Promise<User | null> {
+  async update(
+    id: string,
+    body: UpdateUserRequestDto | { isDisabled: Date | null },
+    callBack?: (data: User) => Promise<User>,
+  ): Promise<User | null> {
     const oldData = await this.findOne(id, []);
     const data = await super.update(id, body, callBack);
     const [listFilesActive, listFilesRemove] = getImages<User>(['thumbnailUrl'], data, [], oldData);

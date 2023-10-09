@@ -2,25 +2,25 @@ import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 
-import { CategoryProduct, Product } from '@model';
+import { ProductCategory, Product } from '@model';
 
 export class ProductSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
-    const dataCategoryProduct: CategoryProduct = {
+    const dataProductCategory: ProductCategory = {
       name: 'Thiệt bị điện tử',
       slug: faker.lorem.slug(),
       description: faker.lorem.paragraph(),
     };
 
-    const repoCategoryProduct = dataSource.getRepository(CategoryProduct);
-    const dataCategoryProductExists = await repoCategoryProduct
+    const repoProductCategory = dataSource.getRepository(ProductCategory);
+    const dataProductCategoryExists = await repoProductCategory
       .createQueryBuilder('base')
-      .andWhere(`base.name=:name`, { name: dataCategoryProduct.name })
+      .andWhere(`base.name=:name`, { name: dataProductCategory.name })
       .getOne();
 
-    if (!dataCategoryProductExists) {
-      const newDataCategoryProduct = repoCategoryProduct.create(dataCategoryProduct);
-      await repoCategoryProduct.save(newDataCategoryProduct);
+    if (!dataProductCategoryExists) {
+      const newDataProductCategory = repoProductCategory.create(dataProductCategory);
+      await repoProductCategory.save(newDataProductCategory);
       const repository = dataSource.getRepository(Product);
       const listData: Product[] = [
         {
@@ -33,7 +33,7 @@ export class ProductSeeder implements Seeder {
           slug: faker.lorem.slug(),
           mass: faker.number.int({ min: 0, max: 100 }),
           discount: faker.number.int({ min: 0, max: 100 }),
-          categoryProductId: newDataCategoryProduct.id || '',
+          productCategoryId: newDataProductCategory.id || '',
         },
         {
           name: 'áo khoác',
@@ -45,7 +45,7 @@ export class ProductSeeder implements Seeder {
           slug: faker.lorem.slug(),
           mass: faker.number.int({ min: 0, max: 100 }),
           discount: faker.number.int({ min: 0, max: 100 }),
-          categoryProductId: newDataCategoryProduct.id || '',
+          productCategoryId: newDataProductCategory.id || '',
         },
       ];
 

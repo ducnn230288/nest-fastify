@@ -44,6 +44,12 @@
       "@service": [
         "src/service"
       ],
+      "@test": [
+        "test"
+      ]
     }
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
   }
 }

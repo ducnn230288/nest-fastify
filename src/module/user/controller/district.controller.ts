@@ -8,18 +8,18 @@ import { DistrictService } from '@service';
 
 @Headers('district')
 export class DistrictController {
-    constructor(private readonly service: DistrictService) {}
+  constructor(private readonly service: DistrictService) {}
 
-    @Get()
-    async findAll(
+  @Get()
+  async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
-    ): Promise<ListDistrictResponseDto> {
-        const [result, total] = await this.service.findAll(paginationQuery);
-        return {
-            message: i18n.t('common.Get List success'),
-            count: total,
-            data: result,
-        };
-    }
+  ): Promise<ListDistrictResponseDto> {
+    const [result, total] = await this.service.findAll(paginationQuery);
+    return {
+      message: i18n.t('common.Get List success'),
+      count: total,
+      data: result,
+    };
+  }
 }
