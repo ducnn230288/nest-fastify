@@ -3,7 +3,7 @@ import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Product } from '@model';
 
 export class ProductDto extends PartialType(
-  OmitType(Product, ['isDisabled', 'categoryProductId', 'storeId'] as const),
+  OmitType(Product, ['isDisabled', 'productCategoryId', 'storeId'] as const),
 ) {}
 
 export class ProductResponseDto extends PartialType(DefaultResponsesDto) {
@@ -32,6 +32,6 @@ export class CreateProductRequestDto extends PickType(Product, [
   'images',
   'slug',
   'mass',
-  'categoryProductId',
+  'productCategoryId',
   // 'storeId',
 ] as const) {}

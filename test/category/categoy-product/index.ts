@@ -2,29 +2,29 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
-import { CreateCategoryProductRequestDto, UpdateCategoryProductRequestDto } from '@dto';
+import { CreateProductCategoryRequestDto, UpdateProductCategoryRequestDto } from '@dto';
 
 import { BaseTest } from '../../base';
-import { CategoryProduct } from '@model';
-import { CategoryProductService } from '@service';
+import { ProductCategory } from '@model';
+import { ProductCategoryService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataType: CreateCategoryProductRequestDto = {
+  const dataType: CreateProductCategoryRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  let resultCategoryProduct: CategoryProduct = {
+  let resultProductCategory: ProductCategory = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  const dataUpdate: UpdateCategoryProductRequestDto = {
+  const dataUpdate: UpdateProductCategoryRequestDto = {
     name: 'thien 123456789',
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
@@ -38,13 +38,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
-      resultCategoryProduct = body.data;
+      resultProductCategory = body.data;
     }
   });
 
   it('Get all [GET /api/category-product]', async () => {
     if (!type) {
-      resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataType);
+      resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataType);
     }
 
     const { body } = await request(BaseTest.server).get('/api/category-product').expect(HttpStatus.OK);
@@ -53,7 +53,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/category-product/slug/:slug]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category-product/slug/' + resultCategoryProduct.slug)
+      .get('/api/category-product/slug/' + resultProductCategory.slug)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -63,7 +63,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get One [GET /api/category-product/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category-product/' + resultCategoryProduct.id)
+      .get('/api/category-product/' + resultProductCategory.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -72,9 +72,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update CategoryProduct [PUT /api/category-product/:id', async () => {
+  it('Update ProductCategory [PUT /api/category-product/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category-product/' + resultCategoryProduct.id)
+      .put('/api/category-product/' + resultProductCategory.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -87,20 +87,20 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update One [PUT  /api/category-product/:id/disable/:boolean', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category-product/' + resultCategoryProduct.id + '/disable' + '/true')
+      .put('/api/category-product/' + resultProductCategory.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
       expect({ isDisabled: body.isDisabled }).not.toEqual(
-        jasmine.objectContaining({ isDisabled: resultCategoryProduct!.isDisabled }),
+        jasmine.objectContaining({ isDisabled: resultProductCategory!.isDisabled }),
       );
     }
   });
 
   it('Detete [DELETE /api/category-product/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/category-product/' + resultCategoryProduct.id)
+      .delete('/api/category-product/' + resultProductCategory.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 

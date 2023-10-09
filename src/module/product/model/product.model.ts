@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
 
 import { Base, MaxGroup } from '@shared';
-import { CategoryProduct, OrderProduct, ProductStore } from '@model';
+import { ProductCategory, OrderProduct, ProductStore } from '@model';
 
 @Entity()
 export class Product extends Base {
@@ -72,13 +72,13 @@ export class Product extends Base {
   @Column()
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  categoryProductId: string;
+  productCategoryId: string;
 
-  @ManyToOne(() => CategoryProduct, (categoryProduct) => categoryProduct.products, {
+  @ManyToOne(() => ProductCategory, (productCategory) => productCategory.products, {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  public categoryProduct?: CategoryProduct;
+  public productCategory?: ProductCategory;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.string.uuid() })

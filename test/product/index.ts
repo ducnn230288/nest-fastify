@@ -3,26 +3,26 @@ import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
 import {
-  CreateCategoryProductRequestDto,
+  CreateProductCategoryRequestDto,
   CreateProductRequestDto,
   ProductCreateStoreRequestDto,
   UpdateProductRequestDto,
 } from '@dto';
 
-import { BaseTest } from '../base';
-import { CategoryProduct, Product, ProductStore } from '@model';
-import { CategoryProductService, ProductService, StoreService } from '@service';
+import { BaseTest } from '@test';
+import { ProductCategory, Product, ProductStore } from '@model';
+import { ProductCategoryService, ProductService, StoreService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataCategoryProduct: CreateCategoryProductRequestDto = {
+  const dataProductCategory: CreateProductCategoryRequestDto = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     slug: faker.lorem.slug(),
   };
 
-  let resultCategoryProduct: CategoryProduct = {
+  let resultProductCategory: ProductCategory = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
@@ -58,7 +58,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     images: faker.image.url(),
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
-    categoryProductId: faker.string.uuid() || '',
+    productCategoryId: faker.string.uuid() || '',
   };
 
   let resultProduct: Product = {
@@ -70,7 +70,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
     storeId: faker.string.uuid() || '',
-    categoryProductId: faker.string.uuid() || '',
+    productCategoryId: faker.string.uuid() || '',
     discount: 0,
   };
 
@@ -85,7 +85,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   it('Create [POST api/product]', async () => {
-    resultCategoryProduct = await BaseTest.moduleFixture!.get(CategoryProductService).create(dataCategoryProduct);
+    resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataProductCategory);
 
     const res = await request(BaseTest.server)
       .get('/api/auth/profile')
@@ -98,7 +98,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       userId: userId,
     });
 
-    dataProduct.categoryProductId = resultCategoryProduct.id || '';
+    dataProduct.productCategoryId = resultProductCategory.id || '';
 
     const { body } = await request(BaseTest.server)
       .post('/api/product')
