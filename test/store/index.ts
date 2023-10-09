@@ -5,7 +5,7 @@ import { HttpStatus } from '@nestjs/common';
 import { ProductCreateStoreRequestDto, ProductUpdateStoreRequestDto } from '@dto';
 import { ProductStore } from '@model';
 
-import { BaseTest } from '../base';
+import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []) => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));

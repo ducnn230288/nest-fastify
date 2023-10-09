@@ -59,7 +59,6 @@ export const BaseTest: {
   };
 } = {
   userAdmin: {
-    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,
@@ -69,10 +68,9 @@ export const BaseTest: {
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
     roleCode: undefined,
-    // id: faker.string.uuid(),
+    //
   },
   userRole: {
-    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,
@@ -82,10 +80,9 @@ export const BaseTest: {
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
     roleCode: undefined,
-    // id: faker.string.uuid(),
+    //
   },
   user: {
-    id: faker.string.uuid(),
     name: faker.person.fullName(),
     password: Example.password,
     retypedPassword: Example.password,
@@ -94,7 +91,7 @@ export const BaseTest: {
     dob: faker.date.birthdate(),
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
-    // id: faker.string.uuid(),
+    //
   },
   app: undefined,
   server: undefined,
