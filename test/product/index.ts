@@ -11,7 +11,7 @@ import {
 
 import { BaseTest } from '@test';
 import { ProductCategory, Product, ProductStore } from '@model';
-import { ProductCategoryService, ProductService, StoreService } from '@service';
+import { ProductCategoryService, ProductService, ProductStoreService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -93,7 +93,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
     const userId = res.body.data.id;
 
-    resultStore = await BaseTest.moduleFixture!.get(StoreService).create({
+    resultStore = await BaseTest.moduleFixture!.get(ProductStoreService).create({
       ...dataStore,
       userId: userId,
     });

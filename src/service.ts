@@ -19,7 +19,7 @@ export * from './module/user/service/ward.service';
 export * from './module/address/service/address.service';
 
 export * from './module/product/service/product.service';
-export * from './module/product/service/store.service';
+export * from './module/product/service/product-store.service';
 export * from './module/product/service/product-category.service';
 
 export * from './module/order/service/order.service';

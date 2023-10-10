@@ -38,21 +38,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     status: 0,
   };
 
-  it('Create [POST /api/store]', async () => {
-    // let userId = '';
-    // switch (type) {
-    //   case 'Admin':
-    //     userId = BaseTest.userAdmin.id;
-    //     break;
-    //   case 'Role':
-    //     userId = BaseTest.userRole.id;
-    //     break;
-    //   default:
-    //     userId = BaseTest.user.id;
-    // }
-    // dataStore.userId = userId;
+  it('Create [POST /api/product-store]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/store')
+      .post('/api/product-store')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataStore)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -62,9 +50,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get [GET /api/store]', async () => {
+  it('Get [GET /api/product-store]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/store')
+      .get('/api/product-store')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -72,9 +60,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Get [GET /api/store/{id}]', async () => {
+  it('Get [GET /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/store/' + resultStore.id)
+      .get('/api/product-store/' + resultStore.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -82,9 +70,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Update [PUT /api/store/{id}]', async () => {
+  it('Update [PUT /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/store/' + resultStore.id)
+      .put('/api/product-store/' + resultStore.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -93,9 +81,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Update one [PUT /api/store/:id/disable/:boolean]', async () => {
+  it('Update one [PUT /api/product-store/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/store/' + resultStore!.id + '/disable' + '/true')
+      .put('/api/product-store/' + resultStore!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -106,9 +94,9 @@ export const testCase = (type?: string, permissions: string[] = []) => {
     }
   });
 
-  it('Delete [DELETE /api/store/{id}]', async () => {
+  it('Delete [DELETE /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/store/' + resultStore.id)
+      .delete('/api/product-store/' + resultStore.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {

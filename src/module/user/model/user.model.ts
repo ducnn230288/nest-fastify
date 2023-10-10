@@ -144,8 +144,8 @@ export class User extends Base {
   @Type(() => Address)
   readonly address?: Address[];
 
-  @OneToOne(() => ProductStore, (store) => store.user)
-  store?: ProductStore;
+  @OneToMany(() => ProductStore, (store) => store.user)
+  store?: ProductStore[];
 
   @OneToMany(() => Order, (order) => order.user)
   order?: Order;

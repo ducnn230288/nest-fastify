@@ -2,7 +2,14 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { ProductService, PRODUCT_CREATE, PRODUCT_DETAIL, StoreService, PRODUCT_UPDATE, PRODUCT_DELETE } from '@service';
+import {
+  ProductService,
+  PRODUCT_CREATE,
+  PRODUCT_DETAIL,
+  ProductStoreService,
+  PRODUCT_UPDATE,
+  PRODUCT_DELETE,
+} from '@service';
 import { CreateProductRequestDto, ListProductResponseDto, ProductResponseDto, UpdateProductRequestDto } from '@dto';
 import { User } from '@model';
 import dayjs from 'dayjs';
@@ -11,7 +18,7 @@ import dayjs from 'dayjs';
 export class ProductController {
   constructor(
     private readonly service: ProductService,
-    private readonly stroreService: StoreService,
+    private readonly stroreService: ProductStoreService,
   ) {}
 
   @Public({

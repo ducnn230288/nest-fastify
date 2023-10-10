@@ -11,7 +11,7 @@ export const STORE_UPDATE = 'zz0b5f32-ddf7-4c61-b435-384fc5ac7574';
 export const STORE_DELETE = 'zz2e6224-12c3-4e6c-b4e0-62495fb799bf';
 
 @Injectable()
-export class StoreService extends BaseService<ProductStore> {
+export class ProductStoreService extends BaseService<ProductStore> {
   constructor(public repo: ProductStoreRepository) {
     super(repo);
     this.listQuery = ['name', 'status', 'phone', 'description', 'slug', 'avatar'];

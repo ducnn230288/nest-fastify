@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { IsString, IsNumber, IsOptional, IsUUID } from 'class-validator';
 import { Base, MaxGroup } from '@shared';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 import { Product, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -46,7 +46,7 @@ export class ProductStore extends Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   userId?: string;
 
-  @OneToOne(() => User, (user) => user.store, { eager: true })
+  @ManyToOne(() => User, (user) => user.store, { eager: true })
   @JoinColumn()
   user?: User;
 
