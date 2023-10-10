@@ -26,13 +26,13 @@ import {
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     SchedulerModule,
-    CoreModule,
     UserModule,
     AddressModule,
     ProductModule,
     // ProductCategoryModule,
     // StoreModule,
     OrderModule,
+    CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',

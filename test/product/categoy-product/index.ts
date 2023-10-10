@@ -44,7 +44,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/category-product]', async () => {
     if (!type) {
-      // resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataType);
       resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataType);
     }
 

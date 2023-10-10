@@ -18,7 +18,9 @@ export class CreatePostTranslationRequestDto extends PickType(PostTranslation, [
 ] as const) {}
 
 export class UpdatePostRequestDto extends PartialType(CreatePostRequestDto) {}
-
+export class ArrayPostResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: { [key: string]: Post[] };
+}
 export class PostDto extends PartialType(
   OmitType(Post, ['isDeleted', 'createdAt', 'updatedAt', 'translations', 'item'] as const),
 ) {}

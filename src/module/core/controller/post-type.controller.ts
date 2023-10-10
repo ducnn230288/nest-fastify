@@ -32,6 +32,19 @@ export class PostTypeController {
       data: result,
     };
   }
+
+  @Auth({
+    summary: 'Get Tree data',
+    permission: P_POST_TYPE_LISTED,
+  })
+  @Get('tree')
+  async findTree(@I18n() i18n: I18nContext): Promise<ListPostTypeResponseDto> {
+    return {
+      message: i18n.t('common.Get List success'),
+      data: await this.service.findTree(),
+    };
+  }
+
   @Public({
     summary: 'Get Detail data',
     serializeOptions: { groups: [MaxGroup] },

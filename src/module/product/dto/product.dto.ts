@@ -33,5 +33,5 @@ export class CreateProductRequestDto extends PickType(Product, [
   'slug',
   'mass',
   'productCategoryId',
-  // 'storeId',
+  'storeId',
 ] as const) {}
