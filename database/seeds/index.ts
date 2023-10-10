@@ -4,7 +4,7 @@ export * from './parameter.seeder';
 export * from './post-type.seeder';
 export * from './user.seeder';
 
-export * from './category-product.seeder';
+export * from './product-category.seeder';
 export * from './product.seeder';
 export * from './store.seeder';
 

@@ -1,3 +1,3 @@
 import { testCase } from './index';
 
-describe('Admin - /api/category-product', () => testCase('Admin'));
+describe('Admin - /api/product-category', () => testCase('Admin'));

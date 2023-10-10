@@ -11,7 +11,7 @@ import {
 } from '@dto';
 import dayjs from 'dayjs';
 
-@Headers('category-product')
+@Headers('product-category')
 export class ProductCategoryController {
   constructor(private readonly service: ProductCategoryService) {}
 

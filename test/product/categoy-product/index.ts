@@ -30,9 +30,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
   };
 
-  it('Create [POST /api/category-product]', async () => {
+  it('Create [POST /api/product-category]', async () => {
     const { body } = await request(BaseTest.server)
-      .post('/api/category-product')
+      .post('/api/product-category')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -42,18 +42,18 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/category-product]', async () => {
+  it('Get all [GET /api/product-category]', async () => {
     if (!type) {
       resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataType);
     }
 
-    const { body } = await request(BaseTest.server).get('/api/category-product').expect(HttpStatus.OK);
+    const { body } = await request(BaseTest.server).get('/api/product-category').expect(HttpStatus.OK);
     expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
-  it('Get one [GET /api/category-product/slug/:slug]', async () => {
+  it('Get one [GET /api/product-category/slug/:slug]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category-product/slug/' + resultProductCategory?.slug)
+      .get('/api/product-category/slug/' + resultProductCategory?.slug)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
@@ -61,9 +61,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get One [GET /api/category-product/:id', async () => {
+  it('Get One [GET /api/product-category/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/category-product/' + resultProductCategory?.id)
+      .get('/api/product-category/' + resultProductCategory?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -72,9 +72,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update ProductCategory [PUT /api/category-product/:id', async () => {
+  it('Update ProductCategory [PUT /api/product-category/:id', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category-product/' + resultProductCategory?.id)
+      .put('/api/product-category/' + resultProductCategory?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -85,9 +85,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update One [PUT  /api/category-product/:id/disable/:boolean', async () => {
+  it('Update One [PUT  /api/product-category/:id/disable/:boolean', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/category-product/' + resultProductCategory?.id + '/disable' + '/true')
+      .put('/api/product-category/' + resultProductCategory?.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -98,9 +98,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Detete [DELETE /api/category-product/:id]', async () => {
+  it('Detete [DELETE /api/product-category/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/category-product/' + resultProductCategory?.id)
+      .delete('/api/product-category/' + resultProductCategory?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
