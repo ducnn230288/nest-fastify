@@ -60,7 +60,8 @@ const options: DataSourceOptions & SeederOptions = {
   ],
   migrations: [member1669372347132],
   seeds: [MainSeeder],
+  factories: ['database/factories/**/*{.ts,.js}'],
   logging: ['error'],
-  logger: appConfig.NODE_ENV !== 'production' ? 'advanced-console' : new DbCustomLogger(),
+  logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
 };
 export const AppDataSource = new DataSource(options);
