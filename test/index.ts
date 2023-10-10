@@ -68,7 +68,6 @@ export const BaseTest: {
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
     roleCode: undefined,
-    //
   },
   userRole: {
     name: faker.person.fullName(),
@@ -80,7 +79,6 @@ export const BaseTest: {
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
     roleCode: undefined,
-    //
   },
   user: {
     name: faker.person.fullName(),
@@ -91,7 +89,6 @@ export const BaseTest: {
     dob: faker.date.birthdate(),
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
-    //
   },
   app: undefined,
   server: undefined,

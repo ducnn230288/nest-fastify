@@ -65,11 +65,9 @@ export class ProductController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateProductRequestDto,
   ): Promise<ProductResponseDto> {
-    const store = await this.stroreService.getStoreByUserId(user.id || '');
-    const data = Object.assign(body, { storeId: store?.id });
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(data),
+      data: await this.service.create(body),
     };
   }
 

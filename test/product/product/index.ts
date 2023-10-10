@@ -5,6 +5,7 @@ import { HttpStatus } from '@nestjs/common';
 import {
   CreateProductCategoryRequestDto,
   CreateProductRequestDto,
+  ProductCategoryDto,
   ProductCreateStoreRequestDto,
   UpdateProductRequestDto,
 } from '@dto';
@@ -59,6 +60,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     slug: faker.lorem.slug(),
     mass: faker.number.int({ min: 0, max: 100 }),
     productCategoryId: faker.string.uuid() || '',
+    storeId: faker.string.uuid() || '',
   };
 
   let resultProduct: Product | null = {
@@ -99,6 +101,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     });
 
     dataProduct.productCategoryId = resultProductCategory?.id || '';
+    dataProduct.storeId = resultStore?.id;
 
     const { body } = await request(BaseTest.server)
       .post('/api/product')
