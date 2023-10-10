@@ -15,11 +15,9 @@ export const PRODUCT_DELETE = '59014c0-9ebe-497e-9766-2054ebb7e1d2';
 
 @Injectable()
 export class ProductService extends BaseService<Product> {
-  constructor(
-    public repo: ProductRepository, // private storeService: ProductStoreService,
-  ) {
+  constructor(public repo: ProductRepository) {
     super(repo);
-    // this.listQuery = ['caregoryId', 'storeId'];
+    // this.listQuery = ['caregoryId', 'productStoreId'];
   }
 
   /**
@@ -32,16 +30,4 @@ export class ProductService extends BaseService<Product> {
     // if (productCategory?.id) return this.findOne(productCategory.id);
     return product;
   }
-
-  // /**
-  //  * @param body
-  //  * @param userId
-  //  * @returns Product
-  //  */
-  // async createProduct(body: CreateProductRequestDto, userId: string): Promise<ProductResponseDto | any> {
-  //   const store = await this.storeService.getStoreByUserId(userId);
-  //   const data = Object.assign(body, { storeId: store?.id });
-  //   const product = await this.repo.create(data);
-  //   return product;
-  // }
 }

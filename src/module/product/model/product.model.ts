@@ -83,12 +83,12 @@ export class Product extends Base {
   @Column({ nullable: true })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  storeId?: string;
+  productStoreId?: string;
 
   @ManyToOne(() => ProductStore, (store) => store.products)
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
-  public store?: ProductStore;
+  public productStore?: ProductStore;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
   @IsOptional()

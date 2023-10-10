@@ -50,6 +50,6 @@ export class ProductStore extends Base {
   @JoinColumn()
   user?: User;
 
-  @OneToMany(() => Product, (product) => product.store)
+  @OneToMany(() => Product, (product) => product.productStore)
   products?: Product[];
 }
