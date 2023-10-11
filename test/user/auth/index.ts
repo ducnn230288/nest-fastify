@@ -116,15 +116,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     expect(testData).toEqual(jasmine.objectContaining(testData2));
   });
 
-  // it('Get profile [GET /api/auth/refresh]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/auth/refresh')
-  //     .set('Authorization', 'Bearer ' + login.refreshToken)
-  //     .expect(HttpStatus.OK);
+  it('Get profile [GET /api/auth/refresh]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/auth/refresh')
+      .set('Authorization', 'Bearer ' + login.refreshToken)
+      .expect(HttpStatus.OK);
 
-  //   expect(body.data).toHaveProperty('accessToken');
-  //   expect(body.data).toHaveProperty('refreshToken');
-  // });
+    expect(body.data).toHaveProperty('accessToken');
+    expect(body.data).toHaveProperty('refreshToken');
+  });
 
   // it('Forgotten password [POST /api/auth/forgotten-password]', async () => {
   //   const { body } = await request(BaseTest.server)

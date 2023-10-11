@@ -20,33 +20,16 @@
     /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "esModuleInterop": true,
     "paths": {
-      "@config": [
-        "src/config"
-      ],
-      "@shared": [
-        "src/shared"
-      ],
-      "@controller": [
-        "src/controller"
-      ],
-      "@dto": [
-        "src/dto"
-      ],
-      "@model": [
-        "src/model"
-      ],
-      "@module": [
-        "src/module"
-      ],
-      "@repository": [
-        "src/repository"
-      ],
-      "@service": [
-        "src/service"
-      ],
-      "@test": [
-        "test"
-      ]
+      "@config": ["src/config"],
+      "@shared": ["src/shared"],
+      "@controller": ["src/controller"],
+      "@dto": ["src/dto"],
+      "@model": ["src/model"],
+      "@module": ["src/module"],
+      "@repository": ["src/repository"],
+      "@service": ["src/service"],
+      "@test": ["test"],
+      "@factories": ["database/factories"]
     }
   },
   "watchOptions": {
