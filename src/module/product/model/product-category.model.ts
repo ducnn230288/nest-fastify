@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, TreeChildren, TreeParent } from 'typeorm';
 import { IsString, IsNumber, IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
@@ -27,10 +27,11 @@ export class ProductCategory extends Base {
   @Expose()
   slug: string;
 
-  @Column({ nullable: true })
-  @IsNumber()
-  @IsOptional()
-  parentId?: string;
+  @TreeChildren()
+  children?: ProductCategory[];
+
+  @TreeParent()
+  parent?: ProductCategory[];
 
   @OneToMany(() => Product, (product) => product.productCategory)
   @IsArray()

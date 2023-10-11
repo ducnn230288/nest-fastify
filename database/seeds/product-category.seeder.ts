@@ -6,7 +6,7 @@ import { ProductCategory, Product } from '@model';
 
 export class ProductCategorySeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
-    const dataProductCategory: ProductCategory = {
+    /* const dataProductCategory: ProductCategory = {
       name: 'Thiệt bị điện tử',
       slug: faker.lorem.slug(),
       description: faker.lorem.paragraph(),
@@ -60,6 +60,6 @@ export class ProductCategorySeeder implements Seeder {
           newData = await repository.save(newData);
         }
       }
-    }
+    } */
   }
 }

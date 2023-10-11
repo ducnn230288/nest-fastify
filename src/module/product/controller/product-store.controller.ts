@@ -7,7 +7,7 @@ import {
 import { User } from '@model';
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ProductStoreService, STORE_LISTED, STORE_DETAIL, STORE_CREATE, STORE_UPDATE, STORE_DELETE } from '@service';
-import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
 import dayjs from 'dayjs';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
@@ -32,9 +32,9 @@ export class ProductStoreController {
     };
   }
 
-  @Auth({
-    summary: 'Get List STORE_PRODUCT',
-    permission: STORE_LISTED,
+  @Public({
+    summary: 'Get List Data',
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get('')
   async getAll(
@@ -49,9 +49,9 @@ export class ProductStoreController {
     };
   }
 
-  @Auth({
-    summary: 'Get detail a STORE_PRODUCT',
-    permission: STORE_DETAIL,
+  @Public({
+    summary: 'Get Detail Data',
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductStoreResponseDto> {

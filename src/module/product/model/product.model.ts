@@ -78,16 +78,19 @@ export class Product extends Base {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
+  @JoinColumn()
   public productCategory?: ProductCategory;
 
-  @Column({ nullable: true })
+  @Column()
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
-  productStoreId?: string;
+  productStoreId: string;
 
-  @ManyToOne(() => ProductStore, (store) => store.products)
+  @ManyToOne(() => ProductStore, (productStore) => productStore.products, {
+    eager: false,
+  })
   @Expose({ groups: [MaxGroup] })
-  @IsOptional()
+  @JoinColumn()
   public productStore?: ProductStore;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)

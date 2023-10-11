@@ -6,18 +6,16 @@ import { ProductCategory, Product } from '@model';
 
 export class ProductSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
-    const dataProductCategory: ProductCategory = {
+    /* const dataProductCategory: ProductCategory = {
       name: 'Thiệt bị điện tử',
       slug: faker.lorem.slug(),
       description: faker.lorem.paragraph(),
     };
-
     const repoProductCategory = dataSource.getRepository(ProductCategory);
     const dataProductCategoryExists = await repoProductCategory
       .createQueryBuilder('base')
       .andWhere(`base.name=:name`, { name: dataProductCategory.name })
       .getOne();
-
     if (!dataProductCategoryExists) {
       const newDataProductCategory = repoProductCategory.create(dataProductCategory);
       await repoProductCategory.save(newDataProductCategory);
@@ -48,18 +46,16 @@ export class ProductSeeder implements Seeder {
           productCategoryId: newDataProductCategory.id || '',
         },
       ];
-
       for (const data of listData) {
         const dataExists = await repository
           .createQueryBuilder('base')
           .andWhere(`base.name=:name`, { name: data.name })
           .getOne();
-
         if (!dataExists) {
           let newData = repository.create(data);
           newData = await repository.save(newData);
         }
       }
-    }
+    } */
   }
 }

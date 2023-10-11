@@ -5,7 +5,8 @@ import { HttpStatus } from '@nestjs/common';
 import {
   CreateProductCategoryRequestDto,
   CreateProductRequestDto,
-  ProductCategoryDto,
+  CreateUserRequestDto,
+  CreateUserRoleRequestDto,
   ProductCreateStoreRequestDto,
   ProductUpdateStoreRequestDto,
   UpdateProductCategoryRequestDto,
@@ -13,11 +14,63 @@ import {
 } from '@dto';
 
 import { BaseTest } from '@test';
-import { ProductCategory, Product, ProductStore, Data } from '@model';
-import { ProductCategoryService, ProductService, ProductStoreService } from '@service';
+import { ProductCategory, Product, ProductStore, UserRole, User } from '@model';
+import {
+  P_USER_CREATE,
+  ProductCategoryService,
+  ProductService,
+  ProductStoreService,
+  STORE_CREATE,
+  UserRoleService,
+  UserService,
+} from '@service';
+import { Example } from '@shared';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
+
+  const dataRole: CreateUserRoleRequestDto = {
+    name: faker.person.jobType(),
+    code: faker.string.alpha(),
+    isSystemAdmin: true,
+    permissions: [P_USER_CREATE, STORE_CREATE],
+  };
+
+  let resultRole: UserRole | null = {
+    id: faker.string.uuid(),
+    code: faker.string.alpha(),
+    name: faker.person.jobType(),
+    isSystemAdmin: true,
+    permissions: [P_USER_CREATE, STORE_CREATE],
+  };
+
+  const dataUser: CreateUserRequestDto = {
+    avatar: faker.image.url(),
+    name: faker.person.fullName(),
+    password: Example.password,
+    retypedPassword: Example.password,
+    email: faker.internet.email().toLowerCase(),
+    phoneNumber: faker.phone.number(),
+    dob: faker.date.birthdate(),
+    description: faker.lorem.paragraph(),
+    startDate: faker.date.past(),
+    roleCode: resultRole.code,
+    dateLeave: faker.number.int({ min: 0.5, max: 12 }),
+  };
+
+  let resultUser: User | null = {
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    email: faker.internet.email().toLowerCase(),
+    phoneNumber: faker.phone.number(),
+    dob: faker.date.birthdate(),
+    startDate: faker.date.past(),
+    positionCode: 'DEV',
+    description: faker.lorem.paragraph(),
+    avatar: faker.image.url(),
+    dateLeave: faker.number.int({ min: 0.5, max: 12 }),
+    dateOff: faker.number.int({ min: 0.5, max: 12 }),
+  };
 
   const dataProductStore: ProductCreateStoreRequestDto = {
     name: faker.person.fullName(),
@@ -37,7 +90,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     avatar: faker.image.url(),
   };
 
-  let resultProductStore: ProductStore = {
+  let resultProductStore: ProductStore | null = {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     phone: faker.phone.number(),
@@ -79,6 +132,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   };
 
   let resultProduct: Product | null = {
+    id: faker.string.uuid(),
     name: faker.person.fullName(),
     description: faker.lorem.paragraph(),
     quantity: faker.number.int({ max: 100 }),
@@ -116,28 +170,30 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get [GET /api/product-store]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/product-store')
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(dataProductStore));
+    if (!type) {
+      resultRole = await BaseTest.moduleFixture!.get(UserRoleService).create(dataRole);
+      dataUser.roleCode = resultRole?.code;
+
+      resultUser = await BaseTest.moduleFixture!.get(UserService).create(dataUser);
+
+      resultProductStore = await BaseTest.moduleFixture!.get(ProductStoreService).create(
+        Object.assign(dataProductStore, { userId: resultUser?.id }),
+      );
     }
+    const { body } = await request(BaseTest.server).get('/api/product-store').expect(HttpStatus.OK);
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataProductStore));
   });
 
   it('Get [GET /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/product-store/' + resultProductStore.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataProductStore));
-    }
+      .get('/api/product-store/' + resultProductStore!.id)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataProductStore));
   });
 
   it('Update [PUT /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/product-store/' + resultProductStore.id)
+      .put('/api/product-store/' + resultProductStore!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataProductStoreUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -183,24 +239,24 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/product-category/slug/:slug]', async () => {
+    if (!type) {
+      resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataProductCategory);
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/product-category/slug/' + resultProductCategory?.slug)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataProductCategory));
-    }
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataProductCategory));
   });
 
   it('Get One [GET /api/product-category/:id', async () => {
+    if (!type) {
+      resultProductCategory = await BaseTest.moduleFixture!.get(ProductCategoryService).create(dataProductCategory);
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/product-category/' + resultProductCategory?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataProductCategory));
-    }
+    expect(body.data).toEqual(jasmine.objectContaining(dataProductCategory));
   });
 
   it('Update ProductCategory [PUT /api/product-category/:id', async () => {
@@ -233,7 +289,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Create [POST api/product]', async () => {
     dataProduct.productCategoryId = resultProductCategory?.id || '';
-    dataProduct.productStoreId = resultProductStore?.id;
+    dataProduct.productStoreId = resultProductStore!.id || '';
 
     const { body } = await request(BaseTest.server)
       .post('/api/product')
@@ -244,39 +300,46 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
       resultProduct = body.data;
     }
-    console.log(resultProduct);
   });
 
   it('GET List [GET api/product]', async () => {
     if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+
       resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
     }
-
     const { body } = await request(BaseTest.server).get('/api/product').expect(HttpStatus.OK);
 
     expect(body.data[0]).toEqual(jasmine.objectContaining(dataProduct));
   });
 
   it('GET by slug [GET api/product/slug/:slug]', async () => {
+    if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/product/slug/' + resultProduct?.slug)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
-    }
+    expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
   });
 
   it('GET [GET api/product/:id]', async () => {
+    if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/product/' + resultProduct?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
-    }
+    expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
   });
 
   it('Update Product [PUT /api/product/:id', async () => {
@@ -308,6 +371,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //Test order
 
   // Test api delete order, product, product-category, product-store
+
   it('Detete [DELETE /api/product/:id]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/product/' + resultProduct?.id)
@@ -332,7 +396,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Delete [DELETE /api/product-store/{id}]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/product-store/' + resultProductStore.id)
+      .delete('/api/product-store/' + resultProductStore!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {

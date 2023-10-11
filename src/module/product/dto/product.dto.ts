@@ -3,7 +3,9 @@ import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Product } from '@model';
 
 export class ProductDto extends PartialType(
-  OmitType(Product, ['isDisabled', 'productCategoryId', 'productStoreId'] as const),
+  OmitType(Product, [
+    /* Thêm attibute nếu không muốn trả về*/
+  ] as const),
 ) {}
 
 export class ProductResponseDto extends PartialType(DefaultResponsesDto) {

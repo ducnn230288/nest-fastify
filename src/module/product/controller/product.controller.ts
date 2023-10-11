@@ -38,9 +38,9 @@ export class ProductController {
     };
   }
 
-  @Auth({
+  @Public({
     summary: 'Get Detail data',
-    permission: PRODUCT_DETAIL,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get('slug/:slug')
   async findBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<ProductResponseDto> {
@@ -50,9 +50,9 @@ export class ProductController {
     };
   }
 
-  @Auth({
+  @Public({
     summary: 'Get Detail data',
-    permission: PRODUCT_DETAIL,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductResponseDto> {

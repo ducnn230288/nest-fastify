@@ -32,9 +32,9 @@ export class ProductCategoryController {
     };
   }
 
-  @Auth({
+  @Public({
     summary: 'Get Detail data',
-    permission: CATEGORY_DETAIL,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get('/slug/:slug')
   async findOneBySlug(@I18n() i18n: I18nContext, @Param('slug') slug: string): Promise<ProductCategoryResponseDto> {
@@ -44,9 +44,9 @@ export class ProductCategoryController {
     };
   }
 
-  @Auth({
+  @Public({
     summary: 'Get Detail data',
-    permission: CATEGORY_DETAIL,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get(':id')
   async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductCategoryResponseDto> {

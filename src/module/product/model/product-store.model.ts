@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { IsString, IsNumber, IsOptional, IsUUID } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsUUID, IsArray } from 'class-validator';
 import { Base, MaxGroup } from '@shared';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
@@ -51,5 +51,7 @@ export class ProductStore extends Base {
   user?: User;
 
   @OneToMany(() => Product, (product) => product.productStore)
-  products?: Product[];
+  @IsArray()
+  @IsOptional()
+  public products?: Product[];
 }

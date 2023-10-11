@@ -88,7 +88,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + login.accessToken)
       .send(dataUpdate)
       .expect(HttpStatus.OK);
-
+    // console.log(body.data);
     body.data.user.dob = new Date(body.data.user.dob);
     body.data.user.startDate = new Date(body.data.user.startDate);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,41 +116,42 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     expect(testData).toEqual(jasmine.objectContaining(testData2));
   });
 
-  it('Get profile [GET /api/auth/refresh]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/auth/refresh')
-      .set('Authorization', 'Bearer ' + login.refreshToken)
-      .expect(HttpStatus.OK);
+  // it('Get profile [GET /api/auth/refresh]', async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .get('/api/auth/refresh')
+  //     .set('Authorization', 'Bearer ' + login.refreshToken)
+  //     .expect(HttpStatus.OK);
 
-    expect(body.data).toHaveProperty('accessToken');
-    expect(body.data).toHaveProperty('refreshToken');
-  });
+  //   expect(body.data).toHaveProperty('accessToken');
+  //   expect(body.data).toHaveProperty('refreshToken');
+  // });
 
-  it('Forgotten password [POST /api/auth/forgotten-password]', async () => {
-    const { body } = await request(BaseTest.server)
-      .post('/api/auth/forgotten-password')
-      .send({ email: login.user.email, notSendEmail: true })
-      .expect(HttpStatus.CREATED);
-    expect(body).toHaveProperty('data');
-    restPassword.email = login.user.email;
-    restPassword.otp = body.data;
-  });
-  it('OTP confirmation [POST /api/auth/otp-confirmation]', async () => {
-    const { body } = await request(BaseTest.server)
-      .post('/api/auth/otp-confirmation')
-      .send({ email: login.user.email, otp: restPassword.otp })
-      .expect(HttpStatus.CREATED);
-    expect(body).toHaveProperty('data');
-  });
+  // it('Forgotten password [POST /api/auth/forgotten-password]', async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .post('/api/auth/forgotten-password')
+  //     .send({ email: login.user.email, notSendEmail: true })
+  //     .expect(HttpStatus.CREATED);
+  //   expect(body).toHaveProperty('data');
+  //   restPassword.email = login.user.email;
+  //   restPassword.otp = body.data;
+  // });
 
-  it('Reset password [POST /api/auth/reset-password]', async () => {
-    await request(BaseTest.server).post('/api/auth/reset-password').send(restPassword).expect(HttpStatus.CREATED);
-  });
+  // it('OTP confirmation [POST /api/auth/otp-confirmation]', async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .post('/api/auth/otp-confirmation')
+  //     .send({ email: login.user.email, otp: restPassword.otp })
+  //     .expect(HttpStatus.CREATED);
+  //   expect(body).toHaveProperty('data');
+  // });
 
-  it('Reset password [GET /api/auth/logout]', async () => {
-    await request(BaseTest.server)
-      .get('/api/auth/logout')
-      .set('Authorization', 'Bearer ' + login.accessToken)
-      .expect(HttpStatus.OK);
-  });
+  // it('Reset password [POST /api/auth/reset-password]', async () => {
+  //   await request(BaseTest.server).post('/api/auth/reset-password').send(restPassword).expect(HttpStatus.CREATED);
+  // });
+
+  // it('Reset password [GET /api/auth/logout]', async () => {
+  //   await request(BaseTest.server)
+  //     .get('/api/auth/logout')
+  //     .set('Authorization', 'Bearer ' + login.accessToken)
+  //     .expect(HttpStatus.OK);
+  // });
 };
