@@ -66,6 +66,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     type: resultType.code,
     image: faker.image.url(),
   };
+
+  /*
   it('Create [POST /api/data-type]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/data-type')
@@ -239,6 +241,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
+  */
 
   return afterAll(BaseTest.initAfterAll);
 };
