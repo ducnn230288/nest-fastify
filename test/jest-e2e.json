@@ -2,7 +2,7 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": "user/.+\\.e2e-spec\\.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
@@ -15,7 +15,8 @@
     "@module": "<rootDir>../src/module",
     "@repository": "<rootDir>../src/repository",
     "@service": "<rootDir>../src/service",
-    "@test": "<rootDir>../test"
+    "@test": "<rootDir>../test",
+    "@factories": "<rootDir>../database/factories"
   },
   "testRunner": "jest-jasmine2"
 }
