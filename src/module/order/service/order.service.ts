@@ -1,4 +1,4 @@
-import { Order } from '@model';
+import { Order, Product } from '@model';
 import { BaseService } from '@shared';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,62 +25,113 @@ export class OrderService extends BaseService<Order> {
   async createOrder(body: CreateOrderRequestDto): Promise<number | any> {
     const { products, codeWard, codeDistrict, codeProvince, specificAddress, addressId, ...item } = body;
 
-    const d = await Promise.all(
-      products.map(async (item) => {
+
+
+
+    // products.forEach(async (e, i) => {
+    //   const p = await this.productService.findOne(String(e.id));
+    //   console.log(p);
+
+    //   result.push(1)
+    // });
+
+    // console.log(result);
+
+    const a = await Promise.all(
+      products.map(async (item, index) => {
         const p = await this.productService.findOne(String(item.id));
-        return Number(p?.price) * item.quantity;
-      }),
-    );
-    const total = d.reduce((a, b) => a + b, 0);
-
-    const order = await this.create({
-      ...item,
-      total,
-    });
-
-    const orderAddress = await this.orderAddressService.create({
-      codeWard,
-      codeDistrict,
-      codeProvince,
-      specificAddress,
-      addressId,
-      orderId: order?.id,
-    });
-
-    const orderProduct = await Promise.all(
-      products.map(async (item) => {
-        const p = await this.productService.findOne(String(item.id));
-
-        console.log(p);
-        console.log({
-          orderId: order?.id,
-          productId: item.id,
-          quantity: item.quantity,
-          name: p?.name,
-          price: p?.price,
-          total: Number(p?.price) * item.quantity,
-        });
-
-        const pn = await this.orderProductService.create({
-          orderId: order?.id,
-          productId: item.id,
-          quantity: item.quantity,
-          name: p?.name,
-          price: p?.price,
-          total: Number(p?.price) * item.quantity,
-        });
-
-        console.log(pn);
         return {
-          ...pn,
+          ...p,
+          quantityRq: item.quantity,
+          nameRq: item.name,
+          priceRq: item.price,
+          total: Number(item.price) * item.quantity
         };
       }),
     );
 
-    return {
-      ...order,
-      address: orderAddress,
-      products: orderProduct,
-    };
+    let ap = this.groupBy(a, 'productStoreId');
+
+
+    const ap2 = [...ap].map((data) => data);
+
+    for (let i = 0; i < ap2.length; i++) {
+      for (let j = 0; j < ap2[i].length; j++) {
+        console.log((ap2[i][j]?.id).toString());
+        const o = await this.create({
+          ...item,
+          total: 0,
+        });
+        await this.orderAddressService.create({
+          codeWard,
+          codeDistrict,
+          codeProvince,
+          specificAddress,
+          addressId,
+          orderId: o?.id,
+        });
+
+        await this.orderProductService.create({
+          orderId: o?.id,
+          productId: ap2[i][j]?.id,
+          quantity: item.quantity,
+          name: ap2[i][j]?.name,
+          price: p?.price,
+          total: Number(p?.price) * item.quantity,
+        });
+      }
+    }
+ 
+
+    // const total = d.reduce((a, b) => a + b, 0);
+
+    // const order = await this.create({
+    //   ...item,
+    //   total, 
+    // });
+
+    // const orderAddress = await this.orderAddressService.create({
+    //   codeWard,
+    //   codeDistrict,
+    //   codeProvince,
+    //   specificAddress,
+    //   addressId,
+    //   orderId: order?.id,
+    // });
+
+    // const orderProduct = await Promise.all(
+    //   products.map(async (item) => {
+    //     const p = await this.productService.findOne(String(item.id));
+
+    //     const pn = await this.orderProductService.create({
+    //       orderId: order?.id,
+    //       productId: item.id,
+    //       quantity: item.quantity,
+    //       name: p?.name,
+    //       price: p?.price,
+    //       total: Number(p?.price) * item.quantity,
+    //     });
+
+    //     return {
+    //       ...pn,
+    //     };
+    //   }),
+    // );
+
+    // return {
+    //   ...order,
+    //   address: orderAddress,
+    //   products: orderProduct,
+    // };
+  }
+
+  groupBy(list: any[], key: string): Map<string, Array<any>> {
+    let map = new Map();
+    list.map(val => {
+      if (!map.has(val[key])) {
+        map.set(val[key], list.filter(data => data[key] == val[key]));
+      }
+    });
+    return map;
   }
 }

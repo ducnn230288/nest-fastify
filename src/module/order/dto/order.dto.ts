@@ -4,9 +4,7 @@ import { Order } from "../model/order.model";
 import { OrderAddress, Product } from "@model";
 import { IsString, IsUUID, IsArray } from 'class-validator';
 
-export class OrderProduct extends PickType(Product, ['id'] as const) {
-    quantity: number  ;
-}
+export class OrderProduct extends PickType(Product, ['id','name','price','quantity'] as const) {}
 
 export class OrderDto extends PartialType(
     OmitType(Order, ['isDeleted', 'createdAt', 'updatedAt'] as const),
