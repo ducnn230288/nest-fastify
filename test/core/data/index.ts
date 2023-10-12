@@ -1,4 +1,3 @@
-import { mailerOptions } from './../../../src/config/mailer.config';
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
