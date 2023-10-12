@@ -6,7 +6,6 @@ export default setSeederFactory(DataType, (faker) => {
 
   data.name = faker.person.jobType();
   data.code = faker.finance.bic();
-  data.isPrimary = false;
 
   return data;
 });

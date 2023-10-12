@@ -14,7 +14,7 @@ export class CreateDataRequestDto extends PickType(Data, [
 ] as const) {
   @IsArray()
   @IsOptional()
-  translations: CreateDataTranslationRequestDto[];
+  translations?: CreateDataTranslationRequestDto[];
 }
 export class CreateDataTranslationRequestDto extends PickType(DataTranslation, [
   'id',

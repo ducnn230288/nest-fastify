@@ -56,7 +56,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //code-type
   it('Create [POST /api/code-type]', async () => {
     dataType = await factoryManager.get(CodeType).make();
-    resultType = await factoryManager.get(CodeType).make();
     const { body } = await request(BaseTest.server)
       .post('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -70,6 +69,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get all [GET /api/code-type]', async () => {
+    if (!type) {
+      resultType = await factoryManager.get(CodeType).make();
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/code-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -77,8 +79,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     if (type) {
       expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
     }
+    console.log(body);
   });
-
   it('Get one [GET /api/code-type/:code]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/code-type/' + resultType.code)
