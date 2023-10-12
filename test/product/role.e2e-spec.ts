@@ -27,8 +27,8 @@ describe('Role - /api/product', () =>
     PRODUCT_LIST,
     PRODUCT_UPDATE,
     // permission product-store
-    STORE_LISTED,
-    STORE_DETAIL,
+    // STORE_LISTED,
+    // STORE_DETAIL,
     STORE_CREATE,
     STORE_UPDATE,
     STORE_DELETE,
