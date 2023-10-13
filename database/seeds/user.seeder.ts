@@ -127,7 +127,7 @@ export class UserSeeder implements Seeder {
         roleCode: newDataRoleSuperAdmin.code,
         name: faker.person.fullName(),
         password: Example.password,
-        phoneNumber: faker.phone.number(),
+        phoneNumber: faker.phone.number('0#########'),
         dob: faker.date.birthdate(),
         description: faker.lorem.paragraph(),
         startDate: faker.date.past(),
