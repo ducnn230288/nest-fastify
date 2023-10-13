@@ -5,3 +5,5 @@ export * from './data.factory';
 export * from './parameter.factory';
 export * from './post-type.factory';
 export * from './post.factory';
+export * from './user-role.factory';
+export * from './user.factory';

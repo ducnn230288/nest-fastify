@@ -22,7 +22,7 @@ export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })
   @IsString()
-  readonly name: string;
+  name: string;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
@@ -76,7 +76,7 @@ export class User extends Base {
   @IsString()
   @MinLength(8)
   @MaxLength(12)
-  readonly phoneNumber: string;
+  phoneNumber: string;
 
   @Column()
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
