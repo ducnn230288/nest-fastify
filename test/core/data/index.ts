@@ -203,6 +203,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/data/:id]', async () => {
     dataUpdate.type = resultType?.code;
+    dataUpdate.translations = result?.translations;
     const { body } = await request(BaseTest.server)
       .put('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -250,9 +251,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
     }
   });
-  /*
 
-  */
+  /**/
 
   return afterAll(BaseTest.initAfterAll);
 };

@@ -1,34 +1,45 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { CreateParameterRequestDto, UpdateParameterRequestDto } from '@dto';
 import { Parameter } from '@model';
 import { ParameterService } from '@service';
 
 import { BaseTest } from '@test';
+import '@factories';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
+  const factoryManager = useSeederFactoryManager();
+  let dataType: CreateParameterRequestDto;
+  let dataUpdate: UpdateParameterRequestDto;
+  let result: Parameter | null;
+
+  // const dataUpdate: UpdateParameterRequestDto = {
+  //   code: faker.finance.bic(),
+  //   vn: faker.lorem.paragraph(),
+  //   en: faker.lorem.paragraph(),
+  // };
+  /*
   const dataType: CreateParameterRequestDto = {
     code: faker.finance.bic(),
     vn: faker.lorem.paragraph(),
     en: faker.lorem.paragraph(),
   };
 
-  const dataUpdate: UpdateParameterRequestDto = {
-    code: faker.finance.bic(),
-    vn: faker.lorem.paragraph(),
-    en: faker.lorem.paragraph(),
-  };
   let result: Parameter | null = {
     id: faker.string.uuid(),
     code: faker.finance.bic(),
     vn: faker.lorem.paragraph(),
     en: faker.lorem.paragraph(),
   };
+  */
+
   it('Create [POST /api/parameter/]', async () => {
+    dataType = await factoryManager.get(Parameter).make();
     const { body } = await request(BaseTest.server)
       .post('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -62,6 +73,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/parameter/:id]', async () => {
+    dataUpdate = await factoryManager.get(Parameter).make();
     const { body } = await request(BaseTest.server)
       .put('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -93,6 +105,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
+
+  /**/
 
   return afterAll(BaseTest.initAfterAll);
 };

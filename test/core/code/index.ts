@@ -174,5 +174,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
+  /* */
+
   return afterAll(BaseTest.initAfterAll);
 };
