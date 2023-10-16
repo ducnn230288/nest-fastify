@@ -1,29 +1,28 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { UpdatePostRequestDto, CreatePostRequestDto, CreatePostTypeRequestDto } from '@dto';
 import { Post, PostType } from '@model';
 import { PostTypeService, PostService } from '@service';
+import '@factories';
 
 import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataType: CreatePostTypeRequestDto = {
-    name: faker.person.jobType(),
-    code: faker.finance.bic(),
-  };
+  const factoryManager = useSeederFactoryManager();
+  let dataType: CreatePostTypeRequestDto;
+  let resultType: PostType | null;
 
-  let resultType: PostType | null = {
-    id: faker.string.uuid(),
-    name: faker.person.jobType(),
-    code: faker.finance.bic(),
-    isPrimary: false,
-  };
+  let data: CreatePostRequestDto;
+  let dataUpdate: UpdatePostRequestDto;
+  let result: Post | null;
 
-  const data: CreatePostRequestDto = {
+  /*
+    const data: CreatePostRequestDto = {
     type: dataType.code,
     thumbnailUrl: faker.image.url(),
     translations: [
@@ -61,14 +60,19 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     ],
   };
 
+
   let result: Post | null = {
     id: faker.string.uuid(),
     type: resultType.code,
     thumbnailUrl: faker.image.url(),
-  };
+  };*/
 
   //Post-type
   it('Create [POST /api/post-type]', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isPrimary, ...test } = await factoryManager.get(PostType).make();
+    dataType = test;
+
     const { body } = await request(BaseTest.server)
       .post('/api/post-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -129,7 +133,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   //Post
+
   it('Create [POST /api/post]', async () => {
+    data = await factoryManager.get(Post).make();
+    data.type = dataType.code;
     const { body } = await request(BaseTest.server)
       .post('/api/post')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -172,9 +179,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get detail [GET /api/post/slug/:slug]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/slug/' + data.translations[0].slug)
+      .get('/api/post/slug/' + data!.translations![0].slug)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
+
     if (type) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { translations, ...test } = data;
@@ -183,21 +191,24 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/post/:id]', async () => {
+    dataUpdate = await factoryManager.get(Post).make();
+    dataUpdate.type = dataType.code;
     const { body } = await request(BaseTest.server)
       .get('/api/post/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
     if (type) {
       body.data.translations.forEach((item) => {
         let index = 0;
-        data.translations.forEach((subItem, i) => {
+        data!.translations!.forEach((subItem, i) => {
           if (subItem.language === item.language) {
             index = i;
           }
         });
-        expect(item).toEqual(jasmine.objectContaining(data.translations[index]));
+        expect(item).toEqual(jasmine.objectContaining(data!.translations![index]));
         if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
       });
       expect(body.data).toEqual(jasmine.objectContaining(test));
@@ -205,12 +216,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/post/:id]', async () => {
+    dataUpdate = await factoryManager.get(Post).make();
+    // dataUpdate.type = dataType.code;
+    delete dataUpdate.type;
+    dataUpdate.translations = result?.translations;
     const { body } = await request(BaseTest.server)
       .put('/api/post/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-
     if (type) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { translations, ...test } = dataUpdate;
@@ -222,7 +236,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .put('/api/post/' + result!.id + '/disable/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(data)
+      // .send(data)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
       expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
@@ -250,6 +264,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
     }
   });
+  /*
+
+  /* */
 
   return afterAll(BaseTest.initAfterAll);
 };

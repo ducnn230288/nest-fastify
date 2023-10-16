@@ -6,7 +6,7 @@ import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 
 export class CreatePostRequestDto extends PickType(Post, ['type', 'thumbnailUrl', 'createdAt', 'isDisabled'] as const) {
   @IsArray()
-  translations: CreatePostTranslationRequestDto[];
+  translations?: CreatePostTranslationRequestDto[];
 }
 export class CreatePostTranslationRequestDto extends PickType(PostTranslation, [
   'id',
