@@ -43,9 +43,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
   it('Get one [GET /api/code-type/:code]', async () => {
-    if (!type) {
+    if (!type)
       resultType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());
-    }
     const { body } = await request(BaseTest.server)
       .get('/api/code-type/' + resultType!.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -57,7 +56,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { code, ...makeData } = await factoryManager.get(CodeType).make();
     dataUpdateType = makeData;
-
     const { body } = await request(BaseTest.server)
       .put('/api/code-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -107,11 +105,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/code/:id]', async () => {
-    if (!type) {
+    if (!type)
       result = await BaseTest.moduleFixture!.get(CodeService).create(
         await factoryManager.get(Code).make({ type: resultType!.code }),
       );
-    }
     const { body } = await request(BaseTest.server)
       .get('/api/code/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
