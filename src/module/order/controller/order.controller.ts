@@ -1,14 +1,13 @@
-import { Body, Get, Post, Query, ValidationPipe } from "@nestjs/common";
-import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from "@shared";
-import { I18n, I18nContext } from "nestjs-i18n";
-import { OrderService, P_ORDER_CREATE, P_ORDER_LISTED } from "@service";
-import { CreateOrderRequestDto, ListOrderResponseDto } from "@dto";
-import { User } from "@model";
-
+import { Body, Get, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { OrderService, P_ORDER_CREATE, P_ORDER_LISTED } from '@service';
+import { CreateOrderRequestDto, ListOrderResponseDto } from '@dto';
+import { User } from '@model';
 
 @Headers('order')
 export class OrderController {
-  constructor(private readonly service: OrderService) { }
+  constructor(private readonly service: OrderService) {}
 
   @Auth({
     summary: 'Get List data',
@@ -40,12 +39,14 @@ export class OrderController {
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateOrderRequestDto,
-    @AuthUser() user: User
+    @AuthUser() user: User,
   ): Promise<ListOrderResponseDto | any> {
-    body = Object.assign(body, { userId: user.id});    
+    body = Object.assign(body, { userId: user.id });
+    // console.log(body);
+    const data = await this.service.createOrder(body);
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.createOrder(body),
+      data: data,
     };
   }
 }

@@ -1,8 +1,8 @@
-import { Order, Product } from '@model';
+import { Order, OrderAddress, OrderProduct, Product } from '@model';
 import { BaseService } from '@shared';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { OrderAddressService } from './order-address.service';
 import { OrderProductService } from './order-product.service';
 import { CreateOrderRequestDto } from '../dto/order.dto';
@@ -18,120 +18,117 @@ export class OrderService extends BaseService<Order> {
     private orderAddressService: OrderAddressService,
     private orderProductService: OrderProductService,
     private productService: ProductService,
+    private dataSource: DataSource,
   ) {
     super(repo);
   }
 
-  async createOrder(body: CreateOrderRequestDto): Promise<number | any> {
-    const { products, codeWard, codeDistrict, codeProvince, specificAddress, addressId, ...item } = body;
+  async createOrder(body: any): Promise<number | any> {
+    // console.log(body);
 
+    const orders: Order[] = [];
+    // let orderProducts: Array<OrderProduct | null> = [];
+    // let orderAddresses: Array<OrderAddress | null> = [];
 
+    const { products, codeProvince, codeDistrict, codeWard, userId, specificAddress, reason, addressId } = body;
 
-
-    // products.forEach(async (e, i) => {
-    //   const p = await this.productService.findOne(String(e.id));
-    //   console.log(p);
-
-    //   result.push(1)
-    // });
-
-    // console.log(result);
-
-    const a = await Promise.all(
-      products.map(async (item, index) => {
-        const p = await this.productService.findOne(String(item.id));
-        return {
-          ...p,
-          quantityRq: item.quantity,
-          nameRq: item.name,
-          priceRq: item.price,
-          total: Number(item.price) * item.quantity
-        };
-      }),
+    // const { products, codeWard, codeDistrict, codeProvince, specificAddress, addressId, ...item } = body;
+    const listProds: Array<Product | undefined> = [];
+    await this.dataSource.transaction(
+      async (entityManager) =>
+        await Promise.all(
+          products.map(async (product) => {
+            const data = await entityManager.preload(Product, {
+              id: product.id,
+            });
+            if (!data) {
+              throw new BadRequestException(`${product.name} not exists`);
+            }
+            if (product.quantity > Number(data?.quantity)) {
+              throw new BadRequestException(`Quantity of ${product.name} is not enough`);
+            }
+            if (product.name !== data?.name) {
+              throw new BadRequestException(`The name has been changed to ${data?.name}`);
+            }
+            if (product.price !== data?.price) {
+              throw new BadRequestException(`The price of ${product.name} has been changed`);
+            }
+            if (product.productStoreId !== data?.productStoreId) {
+              throw new BadRequestException(`The Store of ${product.name} was wrong`);
+            }
+            // console.log(data);
+            data!.quantity = Number(product.quantity);
+            listProds.push(data);
+          }),
+        ),
     );
+    // console.log(listProds);
+    const data = this.groupByProperty(listProds, 'productStoreId');
+    // console.log(data);
 
-    let ap = this.groupBy(a, 'productStoreId');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [key, value] of Object.entries(data)) {
+      const total = data[key].reduce((init, curProd) => {
+        return (
+          init +
+          (curProd.price * curProd.quantity - Math.round((curProd.price * curProd.quantity * curProd.discount) / 100))
+        );
+      }, 0);
+      const dataOrder = await this.repo.create({ userId, total: total, reason: reason });
+      const order = await this.repo.save(dataOrder);
+      orders.push(order);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const orderAddress = await this.orderAddressService.create({
+        codeProvince,
+        codeDistrict,
+        codeWard,
+        specificAddress,
+        addressId,
+        orderId: order.id,
+      });
 
+      // orderAddresses.push(orderAddress);
 
-    const ap2 = [...ap].map((data) => data);
-
-    for (let i = 0; i < ap2.length; i++) {
-      for (let j = 0; j < ap2[i].length; j++) {
-        console.log((ap2[i][j]?.id).toString());
-        const o = await this.create({
-          ...item,
-          total: 0,
+      data[key].forEach(async (prob) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const orderProduct = await this.orderProductService.create({
+          name: prob.name,
+          orderId: order.id,
+          price: prob.price,
+          quantity: prob.quantity,
+          total: prob.price * prob.quantity - Math.round((prob.price * prob.quantity * prob.discount) / 100),
+          discount: prob.discount,
+          productId: prob.id,
         });
-        await this.orderAddressService.create({
-          codeWard,
-          codeDistrict,
-          codeProvince,
-          specificAddress,
-          addressId,
-          orderId: o?.id,
-        });
-
-        await this.orderProductService.create({
-          orderId: o?.id,
-          productId: ap2[i][j]?.id,
-          quantity: item.quantity,
-          name: ap2[i][j]?.name,
-          price: p?.price,
-          total: Number(p?.price) * item.quantity,
-        });
-      }
+      });
     }
- 
 
-    // const total = d.reduce((a, b) => a + b, 0);
-
-    // const order = await this.create({
-    //   ...item,
-    //   total, 
-    // });
-
-    // const orderAddress = await this.orderAddressService.create({
-    //   codeWard,
-    //   codeDistrict,
-    //   codeProvince,
-    //   specificAddress,
-    //   addressId,
-    //   orderId: order?.id,
-    // });
-
-    // const orderProduct = await Promise.all(
-    //   products.map(async (item) => {
-    //     const p = await this.productService.findOne(String(item.id));
-
-    //     const pn = await this.orderProductService.create({
-    //       orderId: order?.id,
-    //       productId: item.id,
-    //       quantity: item.quantity,
-    //       name: p?.name,
-    //       price: p?.price,
-    //       total: Number(p?.price) * item.quantity,
-    //     });
-
-    //     return {
-    //       ...pn,
-    //     };
-    //   }),
-    // );
-
-    // return {
-    //   ...order,
-    //   address: orderAddress,
-    //   products: orderProduct,
-    // };
+    return {
+      // orders,
+    };
   }
 
-  groupBy(list: any[], key: string): Map<string, Array<any>> {
-    let map = new Map();
-    list.map(val => {
-      if (!map.has(val[key])) {
-        map.set(val[key], list.filter(data => data[key] == val[key]));
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  groupByProperty(arr, property) {
+    const grouped = {};
+    for (const item of arr) {
+      const key = item[property]; // = "productStoreId"
+      if (!grouped[key]) {
+        // grouped["productStoreId"]
+        grouped[key] = [];
       }
-    });
-    return map;
+      grouped[key].push(item);
+    }
+    return grouped;
   }
+
+  // groupBy(list: any[], key: string): Map<string, Array<any>> {
+  //   let map = new Map();
+  //   list.map(val => {
+  //     if (!map.has(val[key])) {
+  //       map.set(val[key], list.filter(data => data[key] == val[key]));
+  //     }
+  //   });
+  //   return map;
+  // }
 }

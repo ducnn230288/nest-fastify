@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { Column, OneToMany, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsNumber } from 'class-validator';
+import { IsUUID, IsNumber, Max, Min } from 'class-validator';
 import { Order } from './order.model';
 import { Product } from '../../product/model/product.model';
 
@@ -47,6 +47,13 @@ export class OrderProduct extends Base {
   @ApiProperty({ example: faker.number.int(), description: '' })
   @Type(() => Number)
   quantity: number;
+
+  @Column()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  @ApiProperty({ example: faker.number.int({ min: 0, max: 100 }), description: '' })
+  discount: number;
 
   @Column()
   @IsNumber()
