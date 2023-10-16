@@ -1,13 +1,11 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
 import { Data, DataType } from '@model';
+import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
 import { DataService, DataTypeService } from '@service';
 import '@factories';
-
 import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
@@ -17,56 +15,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   let dataType: CreateDataTypeRequestDto;
   let dataUpdateType: UpdateDataTypeRequestDto;
-  // const dataUpdateType: UpdateDataTypeRequestDto = {
-  //   name: faker.person.jobType(),
-  // };
   let resultType: DataType | null;
 
   let data: CreateDataRequestDto;
   let dataUpdate: UpdateDataRequestDto;
   let result: Data | null;
-
-  /*
-  const dataType: CreateDataTypeRequestDto = {
-    name: faker.person.jobType(),
-    code: faker.finance.bic(),
-  };
-  
-  let resultType: DataType | null = {
-    id: faker.string.uuid(),
-    name: faker.person.jobType(),
-    code: faker.finance.bic(),
-    isPrimary: false,
-  };
-  */
-
-  /*
-
-  const dataUpdate: UpdateDataRequestDto = {
-    type: dataType.code,
-    image: faker.image.url(),
-    translations: [
-      {
-        language: 'vn',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-      },
-      {
-        language: 'en',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-      },
-    ],
-    order: 2,
-  };
-
-  let result: Data | null = {
-    id: faker.string.uuid(),
-    type: resultType.code,
-    image: faker.image.url(),
-  };
-
-  */
 
   it('Create [POST /api/data-type]', async () => {
     dataType = await factoryManager.get(DataType).make();
@@ -87,22 +40,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/data-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Get one [GET /api/data-type/:id]', async () => {
-    if (!type) {
-      resultType = await BaseTest.moduleFixture!.get(DataTypeService).create(dataType);
-    }
+    if (!type) resultType = await BaseTest.moduleFixture!.get(DataTypeService).create(dataType);
     const { body } = await request(BaseTest.server)
       .get('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Update one [PUT /api/data-type/:id]', async () => {
@@ -114,9 +61,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send(dataUpdateType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
   });
 
   it('Update one [PUT /api/data-type/:id/disable/:boolean]', async () => {
@@ -125,11 +70,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    if (type) {
+    if (type)
       expect({ isDisabled: body.isDisabled }).not.toEqual(
         jasmine.objectContaining({ isDisabled: resultType!.isDisabled }),
       );
-    }
   });
 
   // Api Data
@@ -165,9 +109,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get all [GET /api/data/array]', async () => {
-    if (!type) {
-      result = await BaseTest.moduleFixture!.get(DataService).create(data);
-    }
+    if (!type) result = await BaseTest.moduleFixture!.get(DataService).create(data);
     const { body } = await request(BaseTest.server)
       .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -224,9 +166,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    if (type) {
+    if (type)
       expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
-    }
   });
 
   it('Delete one [DELETE /api/data/:id]', async () => {
@@ -247,12 +188,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .delete('/api/data-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
   });
-
-  /**/
 
   return afterAll(BaseTest.initAfterAll);
 };

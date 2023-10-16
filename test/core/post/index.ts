@@ -1,13 +1,11 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { UpdatePostRequestDto, CreatePostRequestDto, CreatePostTypeRequestDto } from '@dto';
 import { Post, PostType } from '@model';
+import { UpdatePostRequestDto, CreatePostRequestDto, CreatePostTypeRequestDto } from '@dto';
 import { PostTypeService, PostService } from '@service';
 import '@factories';
-
 import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
@@ -20,52 +18,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let data: CreatePostRequestDto;
   let dataUpdate: UpdatePostRequestDto;
   let result: Post | null;
-
-  /*
-    const data: CreatePostRequestDto = {
-    type: dataType.code,
-    thumbnailUrl: faker.image.url(),
-    translations: [
-      {
-        language: 'vn',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
-      },
-      {
-        language: 'en',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
-      },
-    ],
-  };
-
-  const dataUpdate: UpdatePostRequestDto = {
-    type: dataType.code,
-    thumbnailUrl: faker.image.url(),
-    translations: [
-      {
-        language: 'vn',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
-      },
-      {
-        language: 'en',
-        name: faker.lorem.sentence(4),
-        description: faker.lorem.paragraph(),
-        slug: faker.lorem.slug(),
-      },
-    ],
-  };
-
-
-  let result: Post | null = {
-    id: faker.string.uuid(),
-    type: resultType.code,
-    thumbnailUrl: faker.image.url(),
-  };*/
 
   //Post-type
   it('Create [POST /api/post-type]', async () => {
@@ -90,22 +42,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/post-type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Get one [GET /api/post-type/:id]', async () => {
-    if (!type) {
-      resultType = await BaseTest.moduleFixture!.get(PostTypeService).create(dataType);
-    }
+    if (!type) resultType = await BaseTest.moduleFixture!.get(PostTypeService).create(dataType);
     const { body } = await request(BaseTest.server)
       .get('/api/post-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Update one [PUT /api/post-type/:id]', async () => {
@@ -115,9 +61,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send(dataType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Update one [PUT /api/post-type/:id/disable/:bolean]', async () => {
@@ -127,9 +71,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send(dataType)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataType));
   });
 
   //Post
@@ -157,15 +99,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = data;
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(test));
-    }
+    if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(test));
   });
 
   it('Get all [GET /api/post/array]', async () => {
-    if (!type) {
-      result = await BaseTest.moduleFixture!.get(PostService).create(data);
-    }
+    if (!type) result = await BaseTest.moduleFixture!.get(PostService).create(data);
     const { body } = await request(BaseTest.server)
       .get(`/api/post/array?array=%5B%22${dataType.code}%22%5D`)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -217,7 +155,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Update one [PUT /api/post/:id]', async () => {
     dataUpdate = await factoryManager.get(Post).make();
-    // dataUpdate.type = dataType.code;
     delete dataUpdate.type;
     dataUpdate.translations = result?.translations;
     const { body } = await request(BaseTest.server)
@@ -236,11 +173,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .put('/api/post/' + result!.id + '/disable/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      // .send(data)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
+    if (type)
       expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
-    }
   });
 
   it('Delete one [DELETE /api/post/:id]', async () => {
@@ -250,9 +185,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { translations, ...test } = dataUpdate;
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(test));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   it('Delete one [DELETE /api/post-type/:id]', async () => {
@@ -260,13 +193,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .delete('/api/post-type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataType));
   });
-  /*
-
-  /* */
 
   return afterAll(BaseTest.initAfterAll);
 };

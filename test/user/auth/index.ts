@@ -1,14 +1,12 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
-
-import { Example } from '@shared';
-import { RegisterAuthRequestDto, AuthDto, ProfileAuthRequestDto, RestPasswordAuthRequestDto } from '@dto';
-import { User } from '@model';
-
-import { BaseTest } from '@test';
 import { useSeederFactoryManager } from 'typeorm-extension';
+
+import { User } from '@model';
+import { RegisterAuthRequestDto, AuthDto, ProfileAuthRequestDto, RestPasswordAuthRequestDto } from '@dto';
+import { Example } from '@shared';
 import '@factories';
+import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -20,62 +18,12 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let restPassword: RestPasswordAuthRequestDto;
   let result: User;
   let login: AuthDto;
-  /*
-  const data: RegisterAuthRequestDto = {
-    name: faker.person.fullName(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    startDate: faker.date.past(),
-  };
 
-  const dataUpdate: ProfileAuthRequestDto = {
-    name: faker.person.fullName(),
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    avatar: faker.image.url(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    passwordOld: Example.password,
-  };
-
-  const restPassword: RestPasswordAuthRequestDto = {
-    email: faker.internet.email().toLowerCase(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    otp: Example.password,
-  };
-
-  let result: User = {
-    id: faker.string.uuid(),
-    name: faker.person.fullName(),
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    startDate: faker.date.past(),
-    positionCode: 'DEV',
-    description: faker.lorem.paragraph(),
-    avatar: faker.image.url(),
-    dateLeave: faker.number.int({ min: 0.5, max: 12 }),
-    dateOff: faker.number.int({ min: 0.5, max: 12 }),
-  };
-  let login: AuthDto;
-*/
   it('Register [POST /api/auth/register]', async () => {
     const fakerData = await factoryManager.get(User).make();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, dateLeave, ...data2 } = fakerData;
-
-    // data = {
-    //   ...fakerData,
-    //   password: Example.password,
-    //   retypedPassword: Example.password,
-    // };
     data = {
       ...data2,
       password: Example.password,
@@ -109,6 +57,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   it('Update profile [PUT /api/auth/profile]', async () => {
     const fakerData = await factoryManager.get(User).make();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { dateLeave, startDate, ...data2 } = fakerData;
     dataUpdate = {
       ...data2,
