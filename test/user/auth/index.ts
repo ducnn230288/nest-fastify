@@ -7,11 +7,20 @@ import { RegisterAuthRequestDto, AuthDto, ProfileAuthRequestDto, RestPasswordAut
 import { User } from '@model';
 
 import { BaseTest } from '@test';
+import { useSeederFactoryManager } from 'typeorm-extension';
+import '@factories';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
+  const factoryManager = useSeederFactoryManager();
+
+  let data: RegisterAuthRequestDto;
+  let dataUpdate: ProfileAuthRequestDto;
+  let restPassword: RestPasswordAuthRequestDto;
+  let result: User;
+  let login: AuthDto;
+  /*
   const data: RegisterAuthRequestDto = {
     name: faker.person.fullName(),
     password: Example.password,
@@ -56,8 +65,23 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dateOff: faker.number.int({ min: 0.5, max: 12 }),
   };
   let login: AuthDto;
-
+*/
   it('Register [POST /api/auth/register]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    const { avatar, dateLeave, ...data2 } = fakerData;
+
+    // data = {
+    //   ...fakerData,
+    //   password: Example.password,
+    //   retypedPassword: Example.password,
+    // };
+    data = {
+      ...data2,
+      password: Example.password,
+      retypedPassword: Example.password,
+    };
+
     const { body } = await request(BaseTest.server).post('/api/auth/register').send(data).expect(HttpStatus.CREATED);
     body.data.dob = new Date(body.data.dob);
     body.data.startDate = new Date(body.data.startDate);
@@ -83,12 +107,20 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update profile [PUT /api/auth/profile]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    const { dateLeave, startDate, ...data2 } = fakerData;
+    dataUpdate = {
+      ...data2,
+      password: Example.password,
+      retypedPassword: Example.password,
+      passwordOld: Example.password,
+    };
     const { body } = await request(BaseTest.server)
       .put('/api/auth/profile')
       .set('Authorization', 'Bearer ' + login.accessToken)
       .send(dataUpdate)
       .expect(HttpStatus.OK);
-
     body.data.user.dob = new Date(body.data.user.dob);
     body.data.user.startDate = new Date(body.data.user.startDate);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,17 +148,25 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     expect(testData).toEqual(jasmine.objectContaining(testData2));
   });
 
-  it('Get profile [GET /api/auth/refresh]', async () => {
+  it('Get profile [GET /api/auth/refresh-token]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/auth/refresh')
+      .get('/api/auth/refresh-token')
       .set('Authorization', 'Bearer ' + login.refreshToken)
       .expect(HttpStatus.OK);
-
     expect(body.data).toHaveProperty('accessToken');
     expect(body.data).toHaveProperty('refreshToken');
   });
 
   it('Forgotten password [POST /api/auth/forgotten-password]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    restPassword = {
+      email: fakerData.email,
+      password: Example.password,
+      retypedPassword: Example.password,
+      otp: Example.password,
+    };
+
     const { body } = await request(BaseTest.server)
       .post('/api/auth/forgotten-password')
       .send({ email: login.user.email, notSendEmail: true })
@@ -135,6 +175,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     restPassword.email = login.user.email;
     restPassword.otp = body.data;
   });
+
   it('OTP confirmation [POST /api/auth/otp-confirmation]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/auth/otp-confirmation')
@@ -153,4 +194,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + login.accessToken)
       .expect(HttpStatus.OK);
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };
