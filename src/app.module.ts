@@ -17,7 +17,7 @@ import {
   ProductModule,
   // ProductCategoryModule,
   // StoreModule,
-  OrderModule,
+  // OrderModule,
 } from '@module';
 
 @Module({
@@ -31,7 +31,7 @@ import {
     ProductModule,
     // ProductCategoryModule,
     // StoreModule,
-    OrderModule,
+    // OrderModule,
     CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({

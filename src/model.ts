@@ -12,9 +12,9 @@ export * from './module/core/model/post-type.model';
 export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
 
-export * from './module/order/model/order.model';
-export * from './module/order/model/order-product.model';
-export * from './module/order/model/order-address.model';
+export * from './module/product/model/order.model';
+export * from './module/product/model/order-product.model';
+export * from './module/product/model/order-address.model';
 
 export * from './module/address/model/address.model';
 export * from './module/product/model/product-category.model';

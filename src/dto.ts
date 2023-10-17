@@ -18,4 +18,4 @@ export * from './module/address/dto/address.dto';
 export * from './module/product/dto/product-category.dto';
 export * from './module/product/dto/product.dto';
 export * from './module/product/dto/product-store.dto';
-export * from './module/order/dto/order.dto';
+export * from './module/product/dto/order.dto';

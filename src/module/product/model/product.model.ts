@@ -35,11 +35,15 @@ export class Product extends Base {
   @Expose()
   price: number;
 
-  @Column()
+  @Column({
+    type: 'array',
+    array: false,
+    default: [],
+  })
   @IsString()
   @ApiProperty({ example: faker.image.url() })
   @Expose()
-  images: string;
+  images: string[];
 
   @Column({ default: 0 })
   @ApiProperty({ example: 0, description: '' })

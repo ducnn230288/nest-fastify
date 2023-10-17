@@ -24,15 +24,10 @@ export class OrderService extends BaseService<Order> {
   }
 
   async createOrder(body: any): Promise<number | any> {
-    // console.log(body);
-
     const orders: Order[] = [];
-    // let orderProducts: Array<OrderProduct | null> = [];
-    // let orderAddresses: Array<OrderAddress | null> = [];
 
     const { products, codeProvince, codeDistrict, codeWard, userId, specificAddress, reason, addressId } = body;
 
-    // const { products, codeWard, codeDistrict, codeProvince, specificAddress, addressId, ...item } = body;
     const listProds: Array<Product | undefined> = [];
     await this.dataSource.transaction(
       async (entityManager) =>
@@ -88,7 +83,6 @@ export class OrderService extends BaseService<Order> {
       });
 
       // orderAddresses.push(orderAddress);
-
       data[key].forEach(async (prob) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const orderProduct = await this.orderProductService.create({
@@ -103,9 +97,7 @@ export class OrderService extends BaseService<Order> {
       });
     }
 
-    return {
-      // orders,
-    };
+    return {};
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

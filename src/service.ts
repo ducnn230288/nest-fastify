@@ -22,4 +22,6 @@ export * from './module/product/service/product.service';
 export * from './module/product/service/product-store.service';
 export * from './module/product/service/product-category.service';
 
-export * from './module/order/service/order.service';
+export * from './module/product/service/order.service';
+export * from './module/product/service/order-address.service';
+export * from './module/product/service/order-product.service';

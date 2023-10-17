@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker/locale/vi';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsNumber, Max, Min } from 'class-validator';
 import { Order } from './order.model';
-import { Product } from '../../product/model/product.model';
+import { Product } from './product.model';
 
 @Entity()
 export class OrderProduct extends Base {
@@ -37,6 +37,7 @@ export class OrderProduct extends Base {
   name: string;
 
   @Column()
+  @Min(0)
   @IsNumber()
   @ApiProperty({ example: faker.number.int(), description: '' })
   @Type(() => Number)
@@ -44,11 +45,12 @@ export class OrderProduct extends Base {
 
   @Column()
   @IsNumber()
+  @Min(0)
   @ApiProperty({ example: faker.number.int(), description: '' })
   @Type(() => Number)
   quantity: number;
 
-  @Column()
+  @Column({ default: 0 })
   @IsNumber()
   @Min(0)
   @Max(100)

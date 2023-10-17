@@ -21,4 +21,4 @@ export * from './module/address/controller/address.controller';
 export * from './module/product/controller/product-category.controller';
 export * from './module/product/controller/product.controller';
 export * from './module/product/controller/product-store.controller';
-export * from './module/order/controller/order.controller';
+export * from './module/product/controller/order.controller';
