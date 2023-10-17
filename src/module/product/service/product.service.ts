@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { BaseService } from '@shared';
 import { Product } from '@model';
 import { ProductRepository } from '@repository';
 import { ProductStoreService } from '@service';
+import { I18nContext } from 'nestjs-i18n';
 // import { CreateProductRequestDto, ProductResponseDto } from '../dto/product.dto';
 // import { ProductStoreService } from '@service';
 
@@ -30,5 +31,19 @@ export class ProductService extends BaseService<Product> {
     const product = await this.repo.getDataBySlug(slug);
     // if (productCategory?.id) return this.findOne(productCategory.id);
     return product;
+  }
+
+  async findOneAndUpdateQuantity(id: string, quantity: number, cancel: boolean = false): Promise<Product | null> {
+    const i18n = I18nContext.current()!;
+    const product = await this.findOne(id);
+    if (!product) {
+      throw new BadRequestException(i18n.t('common.Data not found'));
+    }
+    if (cancel) {
+      product.quantity += quantity;
+    } else {
+      product.quantity -= quantity;
+    }
+    return await this.update(id, { quantity: product.quantity });
   }
 }

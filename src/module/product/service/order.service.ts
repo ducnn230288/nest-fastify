@@ -7,6 +7,7 @@ import { OrderAddressService } from './order-address.service';
 import { OrderProductService } from './order-product.service';
 import { CreateOrderRequestDto } from '../dto/order.dto';
 import { ProductService } from '@service';
+import { I18nContext } from 'nestjs-i18n';
 
 export const P_ORDER_LISTED = '54e3dc6a-5e96-11ee-8c99-0242ac120002';
 export const P_ORDER_CREATE = 'f4dc7e8b-84e4-469b-8342-946fd8f24f13';
@@ -25,6 +26,7 @@ export class OrderService extends BaseService<Order> {
 
   async createOrder(body: any): Promise<number | any> {
     const orders: Order[] = [];
+    const i18n = I18nContext.current()!;
 
     const { products, codeProvince, codeDistrict, codeWard, userId, specificAddress, reason, addressId } = body;
 
@@ -37,20 +39,26 @@ export class OrderService extends BaseService<Order> {
               id: product.id,
             });
             if (!data) {
-              throw new BadRequestException(`${product.name} not exists`);
+              throw new BadRequestException(i18n.t(`common.Data ${data!.id} is not found`));
             }
-            if (product.quantity > Number(data?.quantity)) {
-              throw new BadRequestException(`Quantity of ${product.name} is not enough`);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            for (const [key, value] of Object.entries(product)) {
+              if (key === 'quantity' && product[key] > Number(data[key])) {
+                throw new BadRequestException(i18n.t(`common.Data ${key} is not enough`));
+              } else if (key !== 'quantity' && product[key] !== data[key]) {
+                throw new BadRequestException(i18n.t(`common.Data ${key} was changed`));
+              }
             }
-            if (product.name !== data?.name) {
-              throw new BadRequestException(`The name has been changed to ${data?.name}`);
-            }
-            if (product.price !== data?.price) {
-              throw new BadRequestException(`The price of ${product.name} has been changed`);
-            }
-            if (product.productStoreId !== data?.productStoreId) {
-              throw new BadRequestException(`The Store of ${product.name} was wrong`);
-            }
+
+            // if (product.name !== data?.name) {
+            //   throw new BadRequestException(`The name has been changed to ${data?.name}`);
+            // }
+            // if (product.price !== data?.price) {
+            //   throw new BadRequestException(`The price of ${product.name} has been changed`);
+            // }
+            // if (product.productStoreId !== data?.productStoreId) {
+            //   throw new BadRequestException(`The Store of ${product.name} was wrong`);
+            // }
             // console.log(data);
             data!.quantity = Number(product.quantity);
             listProds.push(data);
@@ -94,6 +102,8 @@ export class OrderService extends BaseService<Order> {
           discount: prob.discount,
           productId: prob.id,
         });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const product = await this.productService.findOneAndUpdateQuantity(prob.id, prob.quantity);
       });
     }
 
