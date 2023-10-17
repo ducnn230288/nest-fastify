@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { IsString, IsNumber, IsUUID, IsOptional, IsPositive } from 'class-validator';
+import { IsString, IsNumber, IsUUID, IsOptional, IsPositive, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { Exclude, Expose } from 'class-transformer';
@@ -36,14 +36,18 @@ export class Product extends Base {
   price: number;
 
   @Column({
-    type: 'array',
+    type: 'text',
     array: false,
-    default: [],
+    transformer: {
+      to: (value: string[]) => value.join(','),
+      from: (value: string) => value.split(','),
+    },
+    default: '',
   })
-  @IsString()
-  @ApiProperty({ example: faker.image.url() })
+  @ApiProperty({ example: [faker.image.url(), faker.image.url()] })
+  @IsArray()
   @Expose()
-  images: string[];
+  images?: string[];
 
   @Column({ default: 0 })
   @ApiProperty({ example: 0, description: '' })
