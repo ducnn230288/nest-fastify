@@ -1,13 +1,14 @@
 import { setSeederFactory } from 'typeorm-extension';
 import { User } from '@model';
+import {Example} from "@shared";
 
 export default setSeederFactory(User, (faker) => {
   const data = new User();
   data.avatar = faker.image.url();
   data.name = faker.person.fullName();
-  data.password = 'Password1!';
+  data.password = Example.password;
   data.email = faker.internet.email().toLowerCase();
-  data.phoneNumber = faker.phone.number('0#########');
+  data.phoneNumber = faker.finance.accountNumber(12);
   data.dob = faker.date.birthdate();
   data.description = faker.lorem.paragraph();
   data.startDate = faker.date.past();

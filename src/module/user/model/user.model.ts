@@ -72,7 +72,7 @@ export class User extends Base {
   email?: string;
 
   @Column()
-  @ApiProperty({ example: faker.phone.number('0#########'), description: '' })
+  @ApiProperty({ example: faker.phone.number(), description: '' })
   @IsString()
   @MinLength(8)
   @MaxLength(12)
