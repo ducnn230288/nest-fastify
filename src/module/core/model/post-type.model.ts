@@ -24,7 +24,7 @@ export class PostType extends Base {
   @MaxLength(100)
   code: string;
 
-  @Column({ default: false })
+  @Column({ default: false, name: 'is_primary' })
   @Expose()
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()

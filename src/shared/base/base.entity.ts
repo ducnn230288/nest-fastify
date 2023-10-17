@@ -11,11 +11,11 @@ export abstract class Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   id?: string;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ name: 'is_deleted' })
   @Exclude()
   isDeleted?: Date;
 
-  @Column({ nullable: true, type: 'timestamp' })
+  @Column({ nullable: true, type: 'timestamp', name: 'is_disabled' })
   @IsDateString()
   @IsOptional()
   isDisabled?: Date | null;
