@@ -17,7 +17,7 @@ export class ProductStoreController {
 
   @Auth({
     summary: 'Create a STORE_PRODUCT',
-    // permission: STORE_CREATE,
+    permission: STORE_CREATE,
   })
   @Post('')
   async create(
