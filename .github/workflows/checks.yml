@@ -20,6 +20,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Docker build
         run: docker-compose -f docker-test.yml build
+      - name: Migration Database
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
       - name: Lint
         run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
 
