@@ -40,7 +40,7 @@ export class Product extends Base {
     array: false,
     transformer: {
       to: (value: string[]) => value.join(','),
-      from: (value: string) => value.split(','),
+      from: (value: string) => value?.split(','),
     },
     default: '',
   })

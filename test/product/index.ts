@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 
 import {
@@ -48,6 +47,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   let dataProductCategoryUpdate;
   let dataProductStoreUpdate;
+  let dataProductUpdate: UpdateProductRequestDto;
 
   // const dataRole: CreateUserRoleRequestDto = {
   //   name: faker.person.jobType(),
@@ -219,17 +219,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  // it('Detete [DELETE /api/product-category/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .delete('/api/product-category/' + resultProductCategory?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataProductCategoryUpdate));
-  //   }
-  // });
-
   //Test store 5 API
 
   it('Create [POST /api/product-store]', async () => {
@@ -252,14 +241,12 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
         .get(UserRole)
         .make({ permissions: [STORE_CREATE, PRODUCT_CREATE, CATEGORY_CREATE] });
       resultRole = await BaseTest.moduleFixture!.get(UserRoleService).create(dataRole);
-
       // dataUser = await factoryManager.get(User).make({ roleCode: resultRole?.code });
       const data = {
         ...(await factoryManager.get(User).make({ roleCode: resultRole?.code })),
         retypedPassword: Example.password,
       };
       resultUser = await BaseTest.moduleFixture!.get(UserService).create(data);
-
       dataProductStore = await factoryManager.get(ProductStore).make({ userId: resultUser.id });
       resultProductStore = await BaseTest.moduleFixture!.get(ProductStoreService).create(dataProductStore);
     }
@@ -276,6 +263,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update [PUT /api/product-store/{id}]', async () => {
+    dataProductStoreUpdate = await factoryManager.get(ProductStore).make();
     const { body } = await request(BaseTest.server)
       .put('/api/product-store/' + resultProductStore!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -301,116 +289,123 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   //Test product 5 API
 
-  // it('Create [POST api/product]', async () => {
-  //   dataProduct = await factoryManager.get(Product).make();
-  //   resultProduct = await factoryManager.get(Product).make();
+  it('Create [POST api/product]', async () => {
+    dataProduct = await factoryManager.get(Product).make();
+    // resultProduct = await factoryManager.get(Product).make();
 
-  //   dataProduct.productCategoryId = resultProductCategory?.id || '';
-  //   dataProduct.productStoreId = resultProductStore?.id || '';
+    dataProduct.productCategoryId = resultProductCategory?.id || '';
+    dataProduct.productStoreId = resultProductStore?.id || '';
 
-  //   const { body } = await request(BaseTest.server)
-  //     .post('/api/product')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataProduct)
-  //     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(await dataProduct));
-  //     resultProduct = body.data;
-  //   }
-  // });
+    const { body } = await request(BaseTest.server)
+      .post('/api/product')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataProduct)
+      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
-  // it('GET List [GET api/product]', async () => {
-  //   dataProduct = await factoryManager.get(Product).make();
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(await dataProduct));
+      resultProduct = body.data;
+    }
+  });
 
-  //   if (!type) {
-  //     dataProduct.productStoreId = resultProductStore?.id || '';
-  //     dataProduct.productCategoryId = resultProductCategory?.id || '';
+  it('GET List [GET api/product]', async () => {
+    if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
+    }
+    const { body } = await request(BaseTest.server).get('/api/product').expect(HttpStatus.OK);
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataProduct));
+  });
 
-  //     resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
-  //   }
-  //   const { body } = await request(BaseTest.server).get('/api/product').expect(HttpStatus.OK);
-  //   console.log(body);
-  //   expect(body.data[0]).toEqual(jasmine.objectContaining(dataProduct));
-  // });
+  it('GET by slug [GET api/product/slug/:slug]', async () => {
+    if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
+    }
+    const { body } = await request(BaseTest.server)
+      .get('/api/product/slug/' + resultProduct?.slug)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
+  });
 
-  // it('GET by slug [GET api/product/slug/:slug]', async () => {
-  //   if (!type) {
-  //     dataProduct.productStoreId = resultProductStore?.id || '';
-  //     dataProduct.productCategoryId = resultProductCategory?.id || '';
+  it('GET [GET api/product/:id]', async () => {
+    if (!type) {
+      dataProduct.productStoreId = resultProductStore?.id || '';
+      dataProduct.productCategoryId = resultProductCategory?.id || '';
+      resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
+    }
+    const { body } = await request(BaseTest.server)
+      .get('/api/product/' + resultProduct?.id)
+      .expect(HttpStatus.OK);
 
-  //     resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
-  //   }
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/product/slug/' + resultProduct?.slug)
-  //     .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
+  });
 
-  //   expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
-  // });
+  it('Update Product [PUT /api/product/:id', async () => {
+    const fakeData = await factoryManager.get(Product).make();
 
-  // it('GET [GET api/product/:id]', async () => {
-  //   if (!type) {
-  //     dataProduct.productStoreId = resultProductStore?.id || '';
-  //     dataProduct.productCategoryId = resultProductCategory?.id || '';
+    const { productCategoryId, productStoreId, ...test } = fakeData;
+    dataProductUpdate = test;
+    const { body } = await request(BaseTest.server)
+      .put('/api/product/' + resultProduct?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataProductUpdate)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-  //     resultProduct = await BaseTest.moduleFixture!.get(ProductService).create(dataProduct);
-  //   }
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/product/' + resultProduct?.id)
-  //     .expect(HttpStatus.OK);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataProductUpdate));
+    }
+  });
 
-  //   expect(body.data).toEqual(jasmine.objectContaining(dataProduct));
-  // });
+  it('Update One [PUT /api/product/:id/disable/:boolean', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/product/' + resultProduct?.id + '/disable' + '/true')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-  // it('Update Product [PUT /api/product/:id', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/product/' + resultProduct?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataProductUpdate)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect({ isDisabled: body.isDisabled }).not.toEqual(
+        jasmine.objectContaining({ isDisabled: resultProduct!.isDisabled }),
+      );
+    }
+  });
 
-  //   // const { name, ...test } = dataProductUpdate;
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataProductUpdate));
-  //   }
-  // });
+  // Test api delete order, product, product-category, product-store
 
-  // it('Update One [PUT /api/product/:id/disable/:boolean', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/product/' + resultProduct?.id + '/disable' + '/true')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  it('Detete [DELETE /api/product-category/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/product-category/' + resultProductCategory?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-  //   if (type) {
-  //     expect({ isDisabled: body.isDisabled }).not.toEqual(
-  //       jasmine.objectContaining({ isDisabled: resultProduct!.isDisabled }),
-  //     );
-  //   }
-  // });
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataProductCategoryUpdate));
+    }
+  });
 
-  // //Test order
+  it('Delete [DELETE /api/product-store/{id}]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/product-store/' + resultProductStore!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataProductStoreUpdate));
+    }
+  });
 
-  // // Test api delete order, product, product-category, product-store
+  it('Detete [DELETE /api/product/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/product/' + resultProduct?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
 
-  // it('Detete [DELETE /api/product/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .delete('/api/product/' + resultProduct?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataProductUpdate));
-  //   }
-  // });
-
-  // it('Delete [DELETE /api/product-store/{id}]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .delete('/api/product-store/' + resultProductStore!.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataProductStoreUpdate));
-  //   }
-  // });
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataProductUpdate));
+    }
+  });
 
   return afterAll(BaseTest.initAfterAll);
 };
