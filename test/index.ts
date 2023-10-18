@@ -1,15 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import * as http from 'http';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { Example } from '@shared';
 import { UserRoleService, UserService } from '@service';
-
+import { User } from '@model';
 import { AppModule } from '../src/app.module';
 import { AppDataSource } from '../database/data-source';
-import * as http from 'http';
 
 export const BaseTest: {
   moduleFixture?: TestingModule;
@@ -17,79 +16,16 @@ export const BaseTest: {
   serviceUser?: UserService;
   app?: NestFastifyApplication;
   server?: http.Server;
-  loginAdmin: () => Promise<void>;
-  userAdmin: {
-    retypedPassword: Example;
-    password: Example;
-    phoneNumber: string;
-    dob: Date;
-    roleCode?: string;
-    name: string;
-    description: string;
-    email: string;
-    startDate: Date;
-  };
-  login: (user) => Promise<void>;
   token: undefined;
 
-  initBeforeAll: (type?: string, permissions?: string[]) => Promise<void>;
-  loginUser: () => Promise<void>;
-  initAfterAll: () => Promise<void>;
+  login: (user: User) => Promise<void>;
+  loginAdmin: () => Promise<void>;
   loginRole: (permissions?: string[]) => Promise<void>;
-  userRole: {
-    retypedPassword: Example;
-    password: Example;
-    phoneNumber: string;
-    dob: Date;
-    roleCode?: string;
-    name: string;
-    description: string;
-    email: string;
-    startDate: Date;
-  };
-  user: {
-    retypedPassword: Example;
-    password: Example;
-    phoneNumber: string;
-    dob: Date;
-    name: string;
-    description: string;
-    email: string;
-    startDate: Date;
-  };
+  loginUser: () => Promise<void>;
+
+  initBeforeAll: (type?: string, permissions?: string[]) => Promise<void>;
+  initAfterAll: () => Promise<void>;
 } = {
-  userAdmin: {
-    name: faker.person.fullName(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number(),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    startDate: faker.date.past(),
-    roleCode: undefined,
-  },
-  userRole: {
-    name: faker.person.fullName(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number(),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    startDate: faker.date.past(),
-    roleCode: undefined,
-  },
-  user: {
-    name: faker.person.fullName(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number(),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    startDate: faker.date.past(),
-  },
   app: undefined,
   server: undefined,
   token: undefined,
@@ -121,7 +57,7 @@ export const BaseTest: {
     }
   },
   login: async (user) => {
-    await BaseTest.serviceUser!.create(user);
+    await BaseTest.serviceUser!.create({ ...user, retypedPassword: user.password! });
     const { body } = await request(BaseTest.server)
       .post('/api/auth/login')
       .send({
@@ -138,10 +74,13 @@ export const BaseTest: {
       permissions: [],
       code: 'supper_admin',
     });
-    BaseTest.userAdmin.roleCode = role!.code;
-    await BaseTest.login(BaseTest.userAdmin);
+    const factoryManager = useSeederFactoryManager();
+    await BaseTest.login(await factoryManager.get(User).make({ roleCode: role!.code }));
   },
-  loginUser: async () => await BaseTest.login(BaseTest.user),
+  loginUser: async () => {
+    const factoryManager = useSeederFactoryManager();
+    await BaseTest.login(await factoryManager.get(User).make());
+  },
   loginRole: async (permissions: string[] = []) => {
     const role = await BaseTest.serviceRole!.create({
       name: 'Role',
@@ -149,8 +88,8 @@ export const BaseTest: {
       permissions,
       code: 'role',
     });
-    BaseTest.userRole.roleCode = role!.code;
-    await BaseTest.login(BaseTest.userRole);
+    const factoryManager = useSeederFactoryManager();
+    await BaseTest.login(await factoryManager.get(User).make({ roleCode: role!.code }));
   },
 
   initAfterAll: async () => {

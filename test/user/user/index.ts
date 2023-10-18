@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { User, UserRole } from '@model';
-import { CreateUserRoleRequestDto, UpdateUserRoleRequestDto, CreateUserRequestDto, UpdateUserRequestDto } from '@dto';
+import { CreateUserRoleRequestDto, UpdateUserRoleRequestDto, UpdateUserRequestDto } from '@dto';
 import { P_USER_CREATE, UserRoleService, UserService } from '@service';
 import { Example } from '@shared';
 import '@factories';
@@ -17,7 +17,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataUpdateRole: UpdateUserRoleRequestDto;
   let resultRole: UserRole | null;
 
-  let data: CreateUserRequestDto;
+  let data: User;
   let dataUpdate: UpdateUserRequestDto;
   let result: User | null;
 
@@ -63,8 +63,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/user-role/:id]', async () => {
-    dataUpdateRole = await factoryManager.get(UserRole).make();
-    dataUpdateRole.code = resultRole?.code;
+    dataUpdateRole = await factoryManager.get(UserRole).make({code: resultRole?.code});
 
     const { body } = await request(BaseTest.server)
       .put('/api/user-role/' + resultRole?.id)
@@ -89,22 +88,22 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   // // User: 6 api test
 
   it('Create [POST /api/user]', async () => {
-    const fakerData = await factoryManager.get(User).make({ roleCode: resultRole?.code });
-    data = {
-      ...fakerData,
-      retypedPassword: Example.password,
-    };
+    data = await factoryManager.get(User).make({ roleCode: resultRole?.code });
+
 
     const { body } = await request(BaseTest.server)
       .post('/api/user')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(data)
+      .send({
+        ...data,
+        retypedPassword: Example.password,
+      })
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
       body.data.dob = new Date(body.data.dob);
       body.data.startDate = new Date(body.data.startDate);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, retypedPassword, ...testData } = data;
+      const { password, ...testData } = data;
       expect(body.data).toEqual(jasmine.objectContaining(testData));
       result = body.data;
     }
@@ -120,7 +119,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { position, role, ...testData } = body.data[0];
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, retypedPassword, ...testData2 } = data;
+      const { password, ...testData2 } = data;
       testData.dob = new Date(testData.dob);
       testData.startDate = new Date(testData.startDate);
       expect(testData).toEqual(jasmine.objectContaining(testData2));
@@ -128,7 +127,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/user/:id]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(UserService).create(data);
+    if (!type) result = await BaseTest.moduleFixture!.get(UserService).create({...data, retypedPassword: data.password!});
     const { body } = await request(BaseTest.server)
       .get('/api/user/' + result?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -137,7 +136,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { position, role, ...testData } = body.data;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, retypedPassword, ...testData2 } = data;
+      const { password, ...testData2 } = data;
       testData.dob = new Date(testData.dob);
       testData.startDate = new Date(testData.startDate);
       expect(testData).toEqual(jasmine.objectContaining(testData2));
@@ -145,9 +144,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/user/:id]', async () => {
-    const fakeData = await factoryManager.get(User).make({ roleCode: resultRole?.code });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...test } = fakeData;
+    const { password, ...test } = await factoryManager.get(User).make({ roleCode: resultRole?.code });
     dataUpdate = test;
     const { body } = await request(BaseTest.server)
       .put('/api/user/' + result?.id)
