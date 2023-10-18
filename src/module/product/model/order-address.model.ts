@@ -12,18 +12,16 @@ export class OrderAddress extends Base {
   @Type(() => String)
   codeWard: string;
 
-  @ManyToOne(() => Ward, (ward) => ward.orderAddress, { eager: true })
-  // @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
-  @JoinColumn()
+  @ManyToOne(() => Ward, (ward) => ward.orderAddress, { eager: false })
+  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
   public ward?: Ward;
 
   @Column()
   @IsString()
   codeDistrict: string;
 
-  @ManyToOne(() => District, (district) => district.orderAddress, { eager: true })
-  // @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
-  @JoinColumn()
+  @ManyToOne(() => District, (district) => district.orderAddress, { eager: false })
+  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
   public district?: District;
 
   @Column()
@@ -31,8 +29,7 @@ export class OrderAddress extends Base {
   codeProvince: string;
 
   @ManyToOne(() => Province, (province) => province.orderAddress, { eager: false })
-  // @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
-  @JoinColumn()
+  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
   public province?: Province;
 
   @Column()

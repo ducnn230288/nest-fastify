@@ -11,7 +11,7 @@ import {
   OrderAddressService,
   OrderProductService,
 } from '@service';
-import { ProductCategoryRepository, ProductRepository, ProductStoreRepository } from '@repository';
+import { ProductCategoryRepository, ProductRepository, ProductStoreRepository, OrderRepository } from '@repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, ProductCategory, ProductStore, Order, OrderAddress, OrderProduct])],
@@ -26,6 +26,7 @@ import { ProductCategoryRepository, ProductRepository, ProductStoreRepository } 
     OrderService,
     OrderAddressService,
     OrderProductService,
+    OrderRepository,
   ],
   exports: [
     ProductService,
@@ -35,6 +36,7 @@ import { ProductCategoryRepository, ProductRepository, ProductStoreRepository } 
     OrderService,
     OrderAddressService,
     OrderProductService,
+    OrderRepository,
   ],
 })
 export class ProductModule {}

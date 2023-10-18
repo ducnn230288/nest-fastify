@@ -15,12 +15,11 @@ export * from './module/user/model/user-role.model';
 export * from './module/product/model/order.model';
 export * from './module/product/model/order-product.model';
 export * from './module/product/model/order-address.model';
+export * from './module/product/model/product-category.model';
+export * from './module/product/model/product-store.model';
+export * from './module/product/model/product.model';
 
 export * from './module/address/model/address.model';
-export * from './module/product/model/product-category.model';
-export * from './module/product/model/product.model';
 export * from './module/user/model/province.model';
 export * from './module/user/model/district.model';
 export * from './module/user/model/ward.model';
-
-export * from './module/product/model/product-store.model';

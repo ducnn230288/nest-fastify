@@ -41,9 +41,7 @@ export class OrderController {
     @Body(new SerializerBody([MaxGroup])) body: CreateOrderRequestDto,
     @AuthUser() user: User,
   ): Promise<ListOrderResponseDto | any> {
-    body = Object.assign(body, { userId: user.id });
-    // console.log(body);
-    const data = await this.service.createOrder(body);
+    const data = await this.service.createOrder(body, user!.id!);
     return {
       message: i18n.t('common.Create Success'),
       data: data,

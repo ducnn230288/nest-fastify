@@ -301,23 +301,25 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   //Test product 5 API
 
-  // it('Create [POST api/product]', async () => {
-  //   dataProduct = await factoryManager.get(Product).make();
-  //   resultProduct = await factoryManager.get(Product).make();
+  it('Create [POST api/product]', async () => {
+    dataProduct = await factoryManager.get(Product).make();
+    // resultProduct = await factoryManager.get(Product).make();
 
-  //   dataProduct.productCategoryId = resultProductCategory?.id || '';
-  //   dataProduct.productStoreId = resultProductStore?.id || '';
+    dataProduct.productCategoryId = resultProductCategory?.id || '';
+    dataProduct.productStoreId = resultProductStore?.id || '';
 
-  //   const { body } = await request(BaseTest.server)
-  //     .post('/api/product')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataProduct)
-  //     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(await dataProduct));
-  //     resultProduct = body.data;
-  //   }
-  // });
+    console.log(dataProduct);
+
+    const { body } = await request(BaseTest.server)
+      .post('/api/product')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataProduct)
+      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(await dataProduct));
+      resultProduct = body.data;
+    }
+  });
 
   // it('GET List [GET api/product]', async () => {
   //   dataProduct = await factoryManager.get(Product).make();
