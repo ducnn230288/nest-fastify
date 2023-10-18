@@ -22,7 +22,7 @@ jobs:
         run: docker-compose -f docker-test.yml build
       - name: Get Github network gateway address
         id: github-network
-        run: echo "::set-output name=gateway-address::$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${{ steps.mysql-service.outputs.container-
+        run: echo "::set-output name=gateway-address::$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${{ steps.mysql-service.outputs.container-id }})"
       - name: Test
         run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration && npm run test:e2e"
       - name: Lint
