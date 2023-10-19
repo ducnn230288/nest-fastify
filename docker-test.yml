@@ -1,17 +1,6 @@
 version: '3.9'
 
 services:
-  database:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-    volumes:
-      - database:/database
-    ports:
-      - 5432:5432
-
   cache:
     image: redis:latest
     ports:
@@ -20,20 +9,22 @@ services:
       - cache:/data
 
   server:
-   build:
-     context: .
-     dockerfile: Dockerfile
-   container_name: nest-fastify-dev
-   ports:
-     - '3000:3000'
-   depends_on:
-     - database
-     - cache
-   environment:
-     REDIS_HOST: 'cache'
-     DATABASE_HOST: 'database'
-   volumes:
-     - server:/app
+    build:
+      context: .
+      args:
+        - PROD=true
+      dockerfile: Dockerfile
+    container_name: nest-fastify
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - cache
+    volumes:
+      - server:/app
+    command: npm run start:prod
 
 networks:
   database:
