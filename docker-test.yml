@@ -1,6 +1,18 @@
 version: '3.9'
 
 services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - database:/database
+    ports:
+      - 5432:5432
+    restart: always
+
   cache:
     image: redis:latest
     ports:
@@ -21,6 +33,7 @@ services:
     ports:
       - '3000:3000'
     depends_on:
+      - database
       - cache
     volumes:
       - server:/app
