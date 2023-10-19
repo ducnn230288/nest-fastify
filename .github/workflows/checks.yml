@@ -43,6 +43,4 @@ jobs:
       - name: Check running containers
         run: docker ps -a
       - name: Migration Database
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
-      - name: Run Test
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run test:e2e"
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration && npm run test:e2e"
