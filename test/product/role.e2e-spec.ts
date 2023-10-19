@@ -14,6 +14,10 @@ import {
   CATEGORY_DELETE,
   CATEGORY_DETAIL,
   CATEGORY_LIST,
+  P_ORDER_CREATE,
+  P_ORDER_LISTED,
+  P_ADDRESS_CREATE,
+  P_ORDER_DELETE,
 } from '@service';
 
 describe('Role - /api/product', () =>
@@ -34,4 +38,11 @@ describe('Role - /api/product', () =>
     CATEGORY_DELETE,
     CATEGORY_DETAIL,
     CATEGORY_LIST,
+    // permission order
+    P_ORDER_CREATE,
+    P_ORDER_LISTED,
+    P_ORDER_DELETE,
+
+    //permission address
+    P_ADDRESS_CREATE,
   ]));

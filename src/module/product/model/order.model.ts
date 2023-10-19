@@ -1,7 +1,7 @@
-import { OrderAddress, OrderProduct, User } from '@model';
+import { OrderAddress, OrderProduct, ProductStore, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
-import { Base } from '@shared';
-import { Type } from 'class-transformer';
+import { Base, MaxGroup } from '@shared';
+import { Expose, Type } from 'class-transformer';
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { IsOptional, IsUUID, IsString, IsNumber } from 'class-validator';
@@ -45,9 +45,21 @@ export class Order extends Base {
   @IsOptional()
   reason?: string;
 
+  @Column()
+  @ApiProperty({ example: faker.string.uuid() })
+  @IsUUID()
+  productStoreId: string;
+
+  @ManyToOne(() => ProductStore, (productStore) => productStore.orders, {
+    eager: false,
+  })
+  @Expose({ groups: [MaxGroup] })
+  @JoinColumn()
+  productStore: ProductStore;
+
   @OneToOne(() => OrderAddress, (orderAddress) => orderAddress.order)
   orderAddress?: OrderAddress;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-  orderProduct: OrderProduct;
+  orderProducts: OrderProduct[];
 }

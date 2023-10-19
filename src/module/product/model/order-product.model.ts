@@ -25,7 +25,7 @@ export class OrderProduct extends Base {
   @Type(() => String)
   orderId: string;
 
-  @ManyToOne(() => Order, (order) => order.orderProduct)
+  @ManyToOne(() => Order, (order) => order.orderProducts)
   @JoinColumn()
   @Type(() => Order)
   readonly order?: Order;

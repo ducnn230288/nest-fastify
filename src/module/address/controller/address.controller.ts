@@ -4,16 +4,23 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 
 import { ListAddressResponseDto, AddressResponseDto, CreateAddressRequestDto, UpdateAddressRequestDto } from '@dto';
-import { AddressService, P_ADDRESS_LISTED, P_ADDRESS_CREATE, P_ADDRESS_UPDATE, P_ADDRESS_DELETE, P_ADDRESS_DETAIL } from '@service';
+import {
+  AddressService,
+  P_ADDRESS_LISTED,
+  P_ADDRESS_CREATE,
+  P_ADDRESS_UPDATE,
+  P_ADDRESS_DELETE,
+  P_ADDRESS_DETAIL,
+} from '@service';
 import { User } from '@model';
 
 @Headers('address')
 export class AddressController {
   constructor(private readonly service: AddressService) {}
-  
+
   @Auth({
-      summary: 'Get List Address',
-      permission: P_ADDRESS_LISTED,
+    summary: 'Get List Address',
+    permission: P_ADDRESS_LISTED,
   })
   @Get()
   async findAll(
@@ -43,7 +50,6 @@ export class AddressController {
 
   @Auth({
     summary: 'Create Address',
-    permission: P_ADDRESS_CREATE,
   })
   @Post()
   async create(
@@ -51,8 +57,8 @@ export class AddressController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateAddressRequestDto,
   ): Promise<AddressResponseDto> {
-    console.log(user);
-     
+    // console.log(user);
+
     const data = Object.assign(body, { userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
