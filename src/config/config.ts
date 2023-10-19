@@ -13,13 +13,13 @@ const UPLOAD_LOCATION = config.get<string>('upload.location');
 const ACCESS_SECRET = config.get<string>('token.secret.access');
 const REFRESH_SECRET = config.get<string>('token.secret.refresh');
 const SESSION_SALT = config.get<string>('token.salt');
-const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
+const REDIS_HOST = process.env.REDIS_HOST || 'cache';
 
-const DATABASE_HOST = process.env.DATABASE_HOST || config.get<string>('database.host');
-const DATABASE_PORT = +(process.env.DATABASE_PORT || config.get<string>('database.port'));
-const DATABASE_USER = process.env.DATABASE_USER || config.get<string>('database.username');
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || config.get<string>('database.password');
-const DATABASE_NAME = NODE_ENV !== 'test' ? process.env.DATABASE_NAME : config.get<string>('database.name');
+const DATABASE_HOST = process.env.DATABASE_HOST || 'database';
+const DATABASE_PORT = +(process.env.DATABASE_PORT || '5432');
+const DATABASE_USER = process.env.DATABASE_USER || 'root';
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || 'admin';
+const DATABASE_NAME = process.env.DATABASE_NAME || 'postgres';
 
 const SMTP_HOST = process.env.SMTP_HOST;
 const SMTP_PORT = +(process.env.SMTP_PORT || '0');

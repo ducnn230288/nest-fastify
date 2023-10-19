@@ -3,9 +3,4 @@ log:
     console: debug
     file: debug
     query: query, error
-database:
-  host: database
-  port: 5432
-  username: root
-  password: admin
-  name: ari
+

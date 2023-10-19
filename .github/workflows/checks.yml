@@ -19,7 +19,7 @@ jobs:
       DATABASE_PORT: 5432
       DATABASE_USER: "root"
       DATABASE_PASSWORD: "admin"
-      DATABASE_NAME: "ari"
+      DATABASE_NAME: "postgres"
       REDIS_HOST: 'cache'
       SMTP_HOST: "email-smtp.ap-southeast-1.amazonaws.com"
       SMTP_PORT: 587
