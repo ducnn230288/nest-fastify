@@ -11,7 +11,7 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: development
+      NODE_ENV: test
       DOMAIN_FE: "http://localhost:5173"
       DOMAIN: "http://localhost:3000"
       SERVER_PORT: 3000
