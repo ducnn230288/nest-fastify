@@ -34,10 +34,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout
+      - name: Run actions/checkout@v2
         uses: actions/checkout@v2
-      - name: Docker build
+      - name: Build the docker-compose stack
         run: docker-compose -f docker-test.yml build
+      - name: Check running containers
+        run: docker ps -a
       - name: Migration Database
         run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
       - name: Lint
