@@ -15,10 +15,12 @@ jobs:
       DOMAIN_FE: "http://localhost:5173"
       DOMAIN: "http://localhost:3000"
       SERVER_PORT: 3000
+      DATABASE_HOST: 'database'
       DATABASE_PORT: 5432
       DATABASE_USER: "postgres"
       DATABASE_PASSWORD: "admin"
       DATABASE_NAME: "ari"
+      REDIS_HOST: 'cache'
       SMTP_HOST: "email-smtp.ap-southeast-1.amazonaws.com"
       SMTP_PORT: 587
       SMTP_USER: "AKIAWV6EY3UJOGGGRKGB"
