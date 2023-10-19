@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Run actions/checkout@v2
         uses: actions/checkout@v2
-      - name: Build the docker-compose stack
-        run: docker-compose -f docker-test.yml up -d
       - name: Lint
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint && npm run migration && npm run test:e2e"
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
+      - name: Test
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration && npm run test:e2e"
