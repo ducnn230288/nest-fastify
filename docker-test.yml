@@ -37,7 +37,8 @@ services:
       - cache
     volumes:
       - server:/app
-    command: npm run start:prod
+    links:
+      - database
 
 networks:
   database:
