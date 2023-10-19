@@ -22,8 +22,7 @@ jobs:
         run: docker-compose -f docker-test.yml up -d
       - name: Check running containers
         run: docker ps -a
-      - name: Migration Database
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
       - name: Lint
         run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
-
+      - name: Migration Database
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
