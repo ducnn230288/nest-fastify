@@ -4,4 +4,8 @@ log:
     file: debug
     query: query, error
 database:
-  name: postgres
+  host: database
+  port: 5432
+  username: root
+  password: admin
+  name: ari
