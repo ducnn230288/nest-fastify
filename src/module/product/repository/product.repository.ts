@@ -15,13 +15,13 @@ export class ProductRepository extends BaseRepository<Product> {
     return await this.createQueryBuilder('base').where(`base.slug=:slug`, { slug }).withDeleted().getOne();
   }
 
-  // async updateQuantity(id: string, quantity: number): Promise<Product | null> {
-  //   const i18n = I18nContext.current()!;
-  //   const product = await this.createQueryBuilder('base').where(`base.id=:id`, { id }).withDeleted().getOne();
-  //   if (!product) {
-  //     throw new BadRequestException(i18n.t('common.Data not found'));
-  //   }
-  //   product!.quantity -= quantity;
-  //   return await this.save(product!);
-  // }
+  async updateQuantity(id: string, quantity: number): Promise<Product | null> {
+    const i18n = I18nContext.current()!;
+    const product = await this.createQueryBuilder('base').where(`base.id=:id`, { id }).withDeleted().getOne();
+    if (!product) {
+      throw new BadRequestException(i18n.t('common.Data not found'));
+    }
+    product!.quantity -= quantity;
+    return await this.save(product!);
+  }
 }

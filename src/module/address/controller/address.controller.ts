@@ -51,7 +51,6 @@ export class AddressController {
 
   @Auth({
     summary: 'Create Address',
-    permission: P_ADDRESS_CREATE,
   })
   @Post()
   async create(

@@ -57,7 +57,7 @@ export class ProductStoreController {
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductStoreResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.storeService.findOne(id, []),
+      data: await this.storeService.findOne(id, ['products']),
     };
   }
 

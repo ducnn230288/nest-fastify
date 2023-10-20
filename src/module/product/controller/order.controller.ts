@@ -1,8 +1,8 @@
-import { Body, Get, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { OrderService, P_ORDER_CREATE, P_ORDER_LISTED } from '@service';
-import { CreateOrderRequestDto, ListOrderResponseDto } from '@dto';
+import { OrderService, P_ORDER_CREATE, P_ORDER_LISTED, P_ORDER_DELETE } from '@service';
+import { CreateOrderRequestDto, ListOrderResponseDto, OrderResponseDto } from '@dto';
 import { User } from '@model';
 
 @Headers('order')
@@ -12,10 +12,25 @@ export class OrderController {
   @Auth({
     summary: 'Get List data',
     permission: P_ORDER_LISTED,
-    // serializeOptions: { groups: [] },
   })
-  @Get('list')
+  @Get('')
   async findAll(
+    @I18n() i18n: I18nContext,
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+  ): Promise<ListOrderResponseDto> {
+    const [result, total] = await this.service.findAll(paginationQuery);
+    return {
+      message: i18n.t('common.Get List success'),
+      count: total,
+      data: result,
+    };
+  }
+
+  @Auth({
+    summary: 'Get List data',
+  })
+  @Get('user')
+  async findByUser(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
     @AuthUser() user: User,
@@ -32,10 +47,28 @@ export class OrderController {
   }
 
   @Auth({
-    summary: 'Create data',
-    permission: P_ORDER_CREATE,
+    summary: 'Get List data',
+    permission: P_ORDER_LISTED,
   })
-  @Post('add')
+  @Get('store/:storeId')
+  async findByStore(
+    @I18n() i18n: I18nContext,
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @Param('storeId') storeId: string,
+  ): Promise<ListOrderResponseDto> {
+    paginationQuery.where = [{ productStoreId: storeId }];
+    const [result, total] = await this.service.findAll(paginationQuery);
+    return {
+      message: i18n.t('common.Get List success'),
+      count: total,
+      data: result,
+    };
+  }
+
+  @Auth({
+    summary: 'Create data',
+  })
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateOrderRequestDto,
@@ -45,6 +78,18 @@ export class OrderController {
     return {
       message: i18n.t('common.Create Success'),
       data: data,
+    };
+  }
+
+  @Auth({
+    summary: 'Delete data',
+    permission: P_ORDER_DELETE,
+  })
+  @Delete(':id')
+  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<OrderResponseDto> {
+    return {
+      message: i18n.t('common.Delete Success'),
+      data: await this.service.remove(id),
     };
   }
 }

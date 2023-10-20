@@ -5,22 +5,29 @@ import { DataSource } from 'typeorm';
 
 import { Order, OrderAddress, OrderProduct, Product } from '@model';
 import { CreateOrderRequestDto } from '@dto';
+import { ProductRepository } from './product.repository';
 
 @Injectable()
 export class OrderRepository extends BaseRepository<Order> {
-  constructor(private readonly dataSource: DataSource) {
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly repoProduct: ProductRepository,
+  ) {
     super(Order, dataSource.createEntityManager());
   }
 
-  async createOrder(body: CreateOrderRequestDto, userId: string): Promise<Order | any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async createOrder(body: CreateOrderRequestDto, userId: string): Promise<object | any> {
     const i18n = I18nContext.current()!;
     const { products, codeProvince, codeDistrict, codeWard, specificAddress, reason, addressId } = body;
     // eslint-disable-next-line prefer-const
     let listProdsInDB: Array<Product | undefined> = [];
+    let listProdsInDB2: Array<Product | undefined>;
 
     await this.dataSource.transaction(async (entityManager) => {
       await Promise.all(
         await products.map(async (product) => {
+          // console.log('in:', product);
           const dataProd = await entityManager.preload(Product, {
             id: product.id,
           });
@@ -28,6 +35,7 @@ export class OrderRepository extends BaseRepository<Order> {
             throw new BadRequestException(i18n.t(`common.Data ${dataProd!.id} is not found`));
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           for (const [key, value] of Object.entries(product)) {
             if (key === 'quantity' && product[key] > Number(dataProd[key])) {
               throw new BadRequestException(i18n.t(`common.Data ${key} is not enough`));
@@ -35,61 +43,74 @@ export class OrderRepository extends BaseRepository<Order> {
               throw new BadRequestException(i18n.t(`common.Data ${key} was changed`));
             }
           }
-          //   console.log(dataProd);
+          // console.log('db:', dataProd);
           dataProd.quantity -= product.quantity;
           listProdsInDB.push(dataProd);
         }),
       );
-      //   console.log(listProdsInDB);
       const dataGroupBy = this.groupByProperty(products, 'productStoreId');
-      console.log(dataGroupBy);
+      // console.log(dataGroupBy);
 
-      for (const [key, value] of Object.entries(dataGroupBy)) {
-        const total = dataGroupBy[key].reduce((init, curProd) => {
-          return (
-            init +
-            (curProd.price * curProd.quantity - Math.round((curProd.price * curProd.quantity * curProd.discount) / 100))
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+      await Promise.all(
+        await Object.keys(dataGroupBy).map(async (key) => {
+          // total order
+          const total = dataGroupBy[key].reduce((init, curProd) => {
+            return (
+              init +
+              (curProd.price * curProd.quantity -
+                Math.round((curProd.price * curProd.quantity * curProd.discount) / 100))
+            );
+          }, 0);
+
+          // Create Order
+          const dataOrder = await entityManager.save(
+            entityManager.create(Order, { userId, total: total, reason: reason, productStoreId: key }),
           );
-        }, 0);
 
-        const dataOrder = await entityManager.save(
-          entityManager.create(Order, { userId, total: total, reason: reason }),
-        );
-
-        const orderAddress = await entityManager.save(
-          entityManager.create(OrderAddress, {
-            codeProvince,
-            codeDistrict,
-            codeWard,
-            specificAddress,
-            addressId,
-            orderId: dataOrder.id,
-          }),
-        );
-
-        dataGroupBy[key].forEach(async (prod) => {
-          const orderProduct = await entityManager.save(
-            entityManager.create(OrderProduct, {
-              name: prod.name,
+          // Create OrderAddress
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const orderAddress = await entityManager.save(
+            entityManager.create(OrderAddress, {
+              codeProvince,
+              codeDistrict,
+              codeWard,
+              specificAddress,
+              addressId,
               orderId: dataOrder.id,
-              price: prod.price,
-              quantity: prod.quantity,
-              total: prod.price * prod.quantity - Math.round((prod.price * prod.quantity * prod.discount) / 100),
-              discount: prod.discount,
-              productId: prod.id,
             }),
           );
-        });
 
-        listProdsInDB.forEach(async (prod) => {
-          await entityManager.save(prod);
-        });
-      }
+          // Create OrderProduct
+          dataGroupBy[key].forEach(async (prod) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const orderProduct = await entityManager.save(
+              entityManager.create(OrderProduct, {
+                name: prod.name,
+                orderId: dataOrder.id,
+                price: prod.price,
+                quantity: prod.quantity,
+                total: prod.price * prod.quantity - Math.round((prod.price * prod.quantity * prod.discount) / 100),
+                discount: prod.discount,
+                productId: prod.id,
+              }),
+            );
+          });
+
+          await listProdsInDB.map(async (prod, index) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const product = await this.repoProduct.updateQuantity(prod!.id!, products[index].quantity);
+            // console.log('out:', product);
+          });
+        }),
+      );
     });
 
     return {};
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   groupByProperty(arr, property) {
     const grouped = {};
     for (const item of arr) {

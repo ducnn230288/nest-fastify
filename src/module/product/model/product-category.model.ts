@@ -35,6 +35,5 @@ export class ProductCategory extends Base {
 
   @OneToMany(() => Product, (product) => product.productCategory)
   @IsArray()
-  @IsOptional()
   public products?: Product[];
 }

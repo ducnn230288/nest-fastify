@@ -3,7 +3,7 @@ import { IsString, IsNumber, IsOptional, IsUUID, IsArray } from 'class-validator
 import { Base, MaxGroup } from '@shared';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
-import { Product, User } from '@model';
+import { Order, Product, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -46,12 +46,15 @@ export class ProductStore extends Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   userId?: string;
 
-  @ManyToOne(() => User, (user) => user.store, { eager: true })
+  @ManyToOne(() => User, (user) => user.store, { eager: false })
   @JoinColumn()
   user?: User;
 
+  @OneToMany(() => Order, (order) => order.productStore)
+  @IsArray()
+  orders?: Order[];
+
   @OneToMany(() => Product, (product) => product.productStore)
   @IsArray()
-  @IsOptional()
   public products?: Product[];
 }

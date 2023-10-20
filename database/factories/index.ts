@@ -11,3 +11,5 @@ export * from './post.factory';
 export * from './user-role.factory';
 export * from './user.factory';
 export * from './adress.factory';
+export * from './order.factory';
+export * from './order-product.factory';
