@@ -3,6 +3,10 @@ import { BaseService } from '@shared';
 import { Injectable } from '@nestjs/common';
 import { CreateOrderRequestDto } from '../dto/order.dto';
 import { OrderRepository } from '@repository';
+import { DataSource } from 'typeorm';
+import { OrderAddressService } from './order-address.service';
+import { OrderProductService } from './order-product.service';
+import { ProductService } from './product.service';
 
 export const P_ORDER_LISTED = '54e3dc6a-5e96-11ee-8c99-0242ac120002';
 export const P_ORDER_CREATE = 'f4dc7e8b-84e4-469b-8342-946fd8f24f13';

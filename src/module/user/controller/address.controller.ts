@@ -1,17 +1,10 @@
-import { BadRequestException, Body, Get, Param, Post, Put, Query, ValidationPipe, Delete } from '@nestjs/common';
+import { Body, Get, Param, Post, Put, Query, ValidationPipe, Delete } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 
 import { ListAddressResponseDto, AddressResponseDto, CreateAddressRequestDto, UpdateAddressRequestDto } from '@dto';
-import {
-  AddressService,
-  // P_ADDRESS_LISTED,
-  P_ADDRESS_CREATE,
-  P_ADDRESS_UPDATE,
-  P_ADDRESS_DELETE,
-  // P_ADDRESS_DETAIL,
-} from '@service';
+import { AddressService } from '@service';
 import { User } from '@model';
 
 @Headers('address')
@@ -20,7 +13,6 @@ export class AddressController {
 
   @Auth({
     summary: 'Get List Address',
-    // permission: P_ADDRESS_LISTED,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get()
@@ -38,7 +30,6 @@ export class AddressController {
 
   @Auth({
     summary: 'Get Detail Address',
-    // permission: P_ADDRESS_DETAIL,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get(':id')
@@ -51,6 +42,7 @@ export class AddressController {
 
   @Auth({
     summary: 'Create Address',
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Post()
   async create(
@@ -67,7 +59,7 @@ export class AddressController {
 
   @Auth({
     summary: 'Update Address',
-    permission: P_ADDRESS_UPDATE,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Put(':id')
   async update(
@@ -83,7 +75,7 @@ export class AddressController {
 
   @Auth({
     summary: 'Delete Address',
-    permission: P_ADDRESS_DELETE,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<AddressResponseDto> {

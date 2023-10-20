@@ -4,9 +4,27 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { appConfig } from '@config';
-import { AuthController, DistrictController, ProvinceController, UserController, UserRoleController, WardController } from '@controller';
-import { District, Province, User, UserRole, Ward } from '@model';
-import { AuthService, DistrictService, EmailService, FileService, ProvinceService, UserRoleService, UserService, WardService } from '@service';
+import {
+  AddressController,
+  AuthController,
+  DistrictController,
+  ProvinceController,
+  UserController,
+  UserRoleController,
+  WardController,
+} from '@controller';
+import { Address, District, Province, User, UserRole, Ward } from '@model';
+import {
+  AddressService,
+  AuthService,
+  DistrictService,
+  EmailService,
+  FileService,
+  ProvinceService,
+  UserRoleService,
+  UserService,
+  WardService,
+} from '@service';
 import { FileRepository, UserRepository } from '@repository';
 
 import { AccessTokenStrategy } from './strategy/accessToken.strategy';
@@ -25,9 +43,17 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward]),
+    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward, Address]),
   ],
-  controllers: [AuthController, UserRoleController, UserController, ProvinceController, DistrictController, WardController],
+  controllers: [
+    AuthController,
+    UserRoleController,
+    UserController,
+    ProvinceController,
+    DistrictController,
+    WardController,
+    AddressController,
+  ],
   providers: [
     AccessTokenStrategy,
     RefreshTokenStrategy,
@@ -40,7 +66,8 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     FileService,
     ProvinceService,
     DistrictService,
-    WardService
+    WardService,
+    AddressService,
   ],
 })
 export class UserModule {}

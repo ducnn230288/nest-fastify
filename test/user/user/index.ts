@@ -8,6 +8,7 @@ import {
   UpdateUserRoleRequestDto,
   UpdateUserRequestDto,
   CreateAddressRequestDto,
+  UpdateAddressRequestDto,
 } from '@dto';
 import {
   AddressService,
@@ -38,6 +39,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let province;
   let district;
   let ward;
+  let dataAddressUpdate: UpdateAddressRequestDto;
   let resultAddress: Address | null;
 
   // User-role: 7 api test
@@ -217,38 +219,45 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/address')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataAddress)
-      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
-      resultAddress = body.data;
-    }
+      .expect(HttpStatus.CREATED);
+
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
+    resultAddress = body.data;
   });
 
   it('Get all [GET /api/address]', async () => {
-    if (!type) {
-      console.log(result);
-    }
-    // const { body } = await request(BaseTest.server)
-    //   .get('/api/address')
-    //   .set('Authorization', 'Bearer ' + BaseTest.token)
-    //   .expect(HttpStatus.OK);
-    // console.log(body.data);
-    // expect(body.data[0]).toEqual(jasmine.objectContaining(dataAddress));
+    const { body } = await request(BaseTest.server)
+      .get('/api/address')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataAddress));
   });
 
-  // it('Get one [GET /api/address/:id]', async () => {
-  //   if (!type) {
-  //     resultAddress = await BaseTest.moduleFixture!.get(AddressService).create(dataAddress);
-  //   }
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/address/' + resultAddress!.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token);
-  //   .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  it('Get one [GET /api/address/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
+  });
 
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
-  //   }
-  // });
+  it('Update [PUT /api/address/:id]', async () => {
+    dataAddressUpdate = await factoryManager.get(Address).make();
+    const { body } = await request(BaseTest.server)
+      .put('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataAddressUpdate)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddressUpdate));
+  });
+
+  it('Delete one [DELETE /api/address/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddressUpdate));
+  });
 
   it('Delete one [DELETE /api/user/:id]', async () => {
     const { body } = await request(BaseTest.server)

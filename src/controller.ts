@@ -16,7 +16,7 @@ export * from './module/user/controller/province.controller';
 export * from './module/user/controller/district.controller';
 export * from './module/user/controller/ward.controller';
 
-export * from './module/address/controller/address.controller';
+export * from './module/user/controller/address.controller';
 
 export * from './module/product/controller/product-category.controller';
 export * from './module/product/controller/product.controller';
