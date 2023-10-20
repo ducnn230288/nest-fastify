@@ -4,16 +4,24 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 
 import { ListAddressResponseDto, AddressResponseDto, CreateAddressRequestDto, UpdateAddressRequestDto } from '@dto';
-import { AddressService, P_ADDRESS_LISTED, P_ADDRESS_CREATE, P_ADDRESS_UPDATE, P_ADDRESS_DELETE, P_ADDRESS_DETAIL } from '@service';
+import {
+  AddressService,
+  // P_ADDRESS_LISTED,
+  P_ADDRESS_CREATE,
+  P_ADDRESS_UPDATE,
+  P_ADDRESS_DELETE,
+  // P_ADDRESS_DETAIL,
+} from '@service';
 import { User } from '@model';
 
 @Headers('address')
 export class AddressController {
   constructor(private readonly service: AddressService) {}
-  
+
   @Auth({
-      summary: 'Get List Address',
-      permission: P_ADDRESS_LISTED,
+    summary: 'Get List Address',
+    // permission: P_ADDRESS_LISTED,
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get()
   async findAll(
@@ -30,7 +38,7 @@ export class AddressController {
 
   @Auth({
     summary: 'Get Detail Address',
-    permission: P_ADDRESS_DETAIL,
+    // permission: P_ADDRESS_DETAIL,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get(':id')
@@ -51,8 +59,6 @@ export class AddressController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateAddressRequestDto,
   ): Promise<AddressResponseDto> {
-    console.log(user);
-     
     const data = Object.assign(body, { userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
@@ -84,7 +90,7 @@ export class AddressController {
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<AddressResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
-      data: await this.service.removeHard(id),
+      data: await this.service.remove(id),
     };
   }
 }

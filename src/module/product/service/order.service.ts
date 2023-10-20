@@ -15,7 +15,13 @@ export const P_ORDER_CREATE = 'f4dc7e8b-84e4-469b-8342-946fd8f24f13';
 
 @Injectable()
 export class OrderService extends BaseService<Order> {
-  constructor(public repo: OrderRepository) {
+  constructor(
+    public repo: OrderRepository,
+    private orderAddressService: OrderAddressService,
+    private orderProductService: OrderProductService,
+    private productService: ProductService,
+    private dataSource: DataSource,
+  ) {
     super(repo);
   }
 

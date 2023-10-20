@@ -10,3 +10,4 @@ export * from './post-type.factory';
 export * from './post.factory';
 export * from './user-role.factory';
 export * from './user.factory';
+export * from './adress.factory';

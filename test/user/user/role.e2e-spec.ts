@@ -11,6 +11,11 @@ import {
   P_USER_CREATE,
   P_USER_UPDATE,
   P_USER_DELETE,
+  P_ADDRESS_CREATE,
+  // P_ADDRESS_LISTED,
+  P_ADDRESS_UPDATE,
+  P_ADDRESS_DELETE,
+  // P_ADDRESS_DETAIL,
 } from '@service';
 
 describe('Role - /api/user', () =>
@@ -20,9 +25,16 @@ describe('Role - /api/user', () =>
     P_USER_ROLE_CREATE,
     P_USER_ROLE_UPDATE,
     P_USER_ROLE_DELETE,
+
     P_USER_LISTED,
     P_USER_DETAIL,
     P_USER_CREATE,
     P_USER_UPDATE,
     P_USER_DELETE,
+
+    // P_ADDRESS_LISTED,
+    P_ADDRESS_CREATE,
+    P_ADDRESS_UPDATE,
+    P_ADDRESS_DELETE,
+    // P_ADDRESS_DETAIL,
   ]));
