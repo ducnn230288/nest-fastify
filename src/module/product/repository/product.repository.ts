@@ -3,7 +3,6 @@ import { BaseRepository } from '@shared';
 import { DataSource } from 'typeorm';
 import { Product } from '@model';
 import { I18nContext } from 'nestjs-i18n';
-import { async } from 'rxjs';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {
@@ -26,7 +25,19 @@ export class ProductRepository extends BaseRepository<Product> {
     return await this.save(product!);
   }
 
-  async findListProductWitdId(): Promise<Product[] | any> {}
+  async findProductsWitdId(listProdIds: Array<string> | any): Promise<Product[] | any> {
+    // eslint-disable-next-line prefer-const
+    const datas = await this.createQueryBuilder('base')
+      .where(`base.id IN(:...ids)`, {
+        ids: listProdIds,
+      })
+      .orderBy('base.createdAt', 'DESC')
+      .withDeleted()
+      .andWhere('base.isDeleted Is Null')
+      .getMany();
+
+    return datas;
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   groupByProperty(arr, property) {

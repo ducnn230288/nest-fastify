@@ -47,7 +47,7 @@ export class OrderService extends BaseService<Order> {
           throw new BadRequestException(i18n.t(`addressId was not found`));
         }
       }
-
+      /*
       await Promise.all(
         await products.map(async (product) => {
           const dataProd = await entityManager.findOneBy(Product, {
@@ -70,6 +70,16 @@ export class OrderService extends BaseService<Order> {
           listProdsInDB.push(dataProd);
         }),
       );
+      */
+      const dataProds: Array<Product | undefined> = await this.productRepo.findProductsWitdId(
+        products.map((product) => product.id),
+      );
+      //console.log(dataProds);
+
+      listProdsInDB = dataProds.map((item, index) => {
+        item!.quantity -= products[index].quantity;
+        return item;
+      });
 
       const dataGroupBy = this.productRepo.groupByProperty(products, 'productStoreId');
       for (const storeId in dataGroupBy) {
@@ -120,6 +130,7 @@ export class OrderService extends BaseService<Order> {
 
       await entityManager.save(listProdsInDB);
     });
+
     return {};
   }
 
