@@ -18,9 +18,13 @@ export class AddressController {
   @Get()
   async findAll(
     @I18n() i18n: I18nContext,
-    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @AuthUser() user: User,
+    @Query(new ValidationPipe({ transform: true }))
+    paginationQuery: PaginationQueryDto,
   ): Promise<ListAddressResponseDto> {
+    if (user.roleCode !== 'supper_admin') paginationQuery.where = [{ userId: user.id }];
     const [result, total] = await this.service.findAll(paginationQuery);
+
     return {
       message: i18n.t('common.Get List success'),
       count: total,

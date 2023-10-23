@@ -44,6 +44,7 @@ export class Address extends Base {
   specificAddress: string;
 
   @Column()
+  @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   userId?: string;
