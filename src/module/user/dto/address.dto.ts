@@ -11,12 +11,7 @@ export class CreateAddressRequestDto extends PickType(Address, [
 export class UpdateAddressRequestDto extends PartialType(CreateAddressRequestDto) {}
 
 export class AddressDto extends PartialType(
-  OmitType(Address, [
-    'isDeleted',
-    'createdAt',
-    'updatedAt',
-    'specificAddress',
-  ] as const),
+  OmitType(Address, ['isDeleted', 'createdAt', 'updatedAt', 'specificAddress'] as const),
 ) {}
 export class AddressResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: AddressDto | null;

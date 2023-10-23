@@ -6,7 +6,7 @@ import { Address } from '@model';
 
 @Injectable()
 export class AddressRepository extends BaseRepository<Address> {
-    constructor(public readonly dataSource: DataSource) {
-        super(Address, dataSource.createEntityManager());
-    }
+  constructor(public readonly dataSource: DataSource) {
+    super(Address, dataSource.createEntityManager());
+  }
 }
