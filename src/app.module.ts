@@ -29,9 +29,6 @@ import {
     UserModule,
     AddressModule,
     ProductModule,
-    // ProductCategoryModule,
-    // StoreModule,
-    // OrderModule,
     CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({

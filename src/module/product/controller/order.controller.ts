@@ -1,23 +1,35 @@
-import { Body, Delete, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { OrderService, P_ORDER_CREATE, P_ORDER_LISTED, P_ORDER_DELETE } from '@service';
+import {
+  OrderService,
+  P_ORDER_CREATE,
+  P_ORDER_LISTED,
+  P_ORDER_DELETE,
+  PRODUCT_UPDATE,
+  UserService,
+  P_ORDER_UPDATE,
+} from '@service';
 import { CreateOrderRequestDto, ListOrderResponseDto, OrderResponseDto } from '@dto';
 import { User } from '@model';
 
 @Headers('order')
 export class OrderController {
-  constructor(private readonly service: OrderService) {}
+  constructor(
+    private readonly service: OrderService,
+    private readonly userService: UserService,
+  ) {}
 
   @Auth({
     summary: 'Get List data',
-    permission: P_ORDER_LISTED,
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
+    @AuthUser() user: User,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
   ): Promise<ListOrderResponseDto> {
+    if (user.roleCode !== 'supper_admin') paginationQuery.where = [{ userId: user.id }];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List success'),
@@ -25,7 +37,7 @@ export class OrderController {
       data: result,
     };
   }
-
+  /*
   @Auth({
     summary: 'Get List data',
   })
@@ -45,7 +57,7 @@ export class OrderController {
       data: result,
     };
   }
-
+  */
   @Auth({
     summary: 'Get List data',
     permission: P_ORDER_LISTED,
@@ -74,9 +86,26 @@ export class OrderController {
     @Body(new SerializerBody([MaxGroup])) body: CreateOrderRequestDto,
     @AuthUser() user: User,
   ): Promise<ListOrderResponseDto | any> {
-    const data = await this.service.createOrder(body, user!.id!);
+    user = (await this.userService.findOne(user!.id!)) as User;
     return {
       message: i18n.t('common.Create Success'),
+      data: await this.service.createOrder(body, user),
+    };
+  }
+
+  @Auth({
+    summary: 'Update status data',
+    permission: P_ORDER_UPDATE,
+  })
+  @Put(':id/:status')
+  async changeStatus(
+    @I18n() i18n: I18nContext,
+    @Param('id') id: string,
+    @Param('status') status: string,
+  ): Promise<OrderResponseDto> {
+    const { data, message } = await this.service.updateStatus(id, parseInt(status));
+    return {
+      message: i18n.t(message),
       data: data,
     };
   }

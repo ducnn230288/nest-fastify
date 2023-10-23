@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Base, MaxGroup } from '@shared';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';

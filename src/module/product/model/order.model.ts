@@ -20,11 +20,11 @@ export class Order extends Base {
   readonly user?: User;
 
   @Column({
-    default: 'pending',
+    default: '0',
   })
   @ApiProperty({ example: 'pending', description: '' })
   @IsString()
-  status?: string;
+  status?: number;
 
   @Column()
   @ApiProperty({ example: faker.number.int(10), description: '' })
@@ -39,7 +39,7 @@ export class Order extends Base {
   @IsNumber()
   total: number;
 
-  @Column()
+  @Column({ default: '' })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()

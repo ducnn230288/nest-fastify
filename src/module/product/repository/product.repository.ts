@@ -3,6 +3,7 @@ import { BaseRepository } from '@shared';
 import { DataSource } from 'typeorm';
 import { Product } from '@model';
 import { I18nContext } from 'nestjs-i18n';
+import { async } from 'rxjs';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {
@@ -23,5 +24,21 @@ export class ProductRepository extends BaseRepository<Product> {
     }
     product!.quantity -= quantity;
     return await this.save(product!);
+  }
+
+  async findListProductWitdId(): Promise<Product[] | any> {}
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  groupByProperty(arr, property) {
+    const grouped = {};
+    for (const item of arr) {
+      const key = item[property]; // = "productStoreId"
+      if (!grouped[key]) {
+        // grouped["productStoreId"]
+        grouped[key] = [];
+      }
+      grouped[key].push(item);
+    }
+    return grouped;
   }
 }

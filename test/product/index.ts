@@ -75,7 +75,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let district: District | null;
   let ward: Ward | null;
   let createAddressDto: CreateAddressRequestDto | null;
-  let resultOrder;
+  let resultOrder: Order | null;
 
   //Test category 5 API
 
@@ -342,6 +342,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       codeWard: ward!.code,
       specificAddress: '456789',
     };
+
     const res = await request(BaseTest.server)
       .post('/api/address')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -359,35 +360,22 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       reason: 'dasjdaos',
     };
 
+    const oldProduct = resultProduct;
+
     const { body } = await request(BaseTest.server)
       .post('/api/order')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataOrder)
       .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
+
+    resultProduct = await BaseTest.moduleFixture!.get(ProductService).findOne(resultProduct!.id!);
+    expect(resultProduct?.quantity).toEqual(oldProduct!.quantity - dataOrder.products[0].quantity);
     expect(body.message).toBeDefined();
   });
 
   it('GET List [GET api/order]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/order')
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      const { orderAddress, orderProducts, ...testData } = body.data[0];
-      const { products, reason, ...testAddress } = dataOrder;
-      const { id, productStoreId, ...testOrderProduct } = orderProduct;
-
-      expect(orderAddress).toEqual(jasmine.objectContaining(testAddress));
-      expect(orderProducts[0]).toEqual(jasmine.objectContaining(testOrderProduct));
-      expect(testData).toEqual(jasmine.objectContaining({ reason, status: 'pending' }));
-
-      resultOrder = body.data[0];
-    }
-  });
-
-  it('GET List of User [GET api/order/user]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/order/user')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
@@ -397,7 +385,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
     expect(orderAddress).toEqual(jasmine.objectContaining(testAddress));
     expect(orderProducts[0]).toEqual(jasmine.objectContaining(testOrderProduct));
-    expect(testData).toEqual(jasmine.objectContaining({ reason, status: 'pending' }));
+    expect(testData).toEqual(jasmine.objectContaining({ reason, status: 0 }));
+
     resultOrder = body.data[0];
   });
 
@@ -414,8 +403,23 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
       expect(orderAddress).toEqual(jasmine.objectContaining(testAddress));
       expect(orderProducts[0]).toEqual(jasmine.objectContaining(testOrderProduct));
-      expect(testData).toEqual(jasmine.objectContaining({ reason, status: 'pending' }));
+      expect(testData).toEqual(jasmine.objectContaining({ reason, status: 0 }));
       resultOrder = body.data[0];
+    }
+  });
+
+  it('UPDATE status Order [GET api/order/store/:storeId]', async () => {
+    const { body } = await request(BaseTest.server)
+      .put('/api/order/' + resultOrder?.id + '/' + resultOrder?.status + 1)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+    if (type) {
+      const { orderProducts, orderAddress, updatedAt, status, ...test } = resultOrder!;
+      // console.log(body);
+      // console.log(test);
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+      expect(body.data.status).toEqual(resultOrder!.status! + 1);
     }
   });
 
@@ -427,7 +431,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { updatedAt, isDisabled, isDeleted, ...test } = resultOrder;
+      const { updatedAt, isDisabled, isDeleted, status, ...test } = resultOrder!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
@@ -440,7 +444,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { quantity, updatedAt, isDisabled, isDeleted, ...test } = resultProduct!;
+      // const { createdAt, updatedAt, isDisabled, ...test } = body.data;
+      const { createdAt, updatedAt, isDisabled, isDeleted, status, productStore, productCategory, ...test } =
+        resultProduct!;
+
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });

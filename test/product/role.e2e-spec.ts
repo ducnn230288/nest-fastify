@@ -18,6 +18,7 @@ import {
   P_ORDER_LISTED,
   P_ADDRESS_CREATE,
   P_ORDER_DELETE,
+  P_ORDER_UPDATE,
 } from '@service';
 
 describe('Role - /api/product', () =>
@@ -42,6 +43,7 @@ describe('Role - /api/product', () =>
     P_ORDER_CREATE,
     P_ORDER_LISTED,
     P_ORDER_DELETE,
+    P_ORDER_UPDATE,
 
     //permission address
     P_ADDRESS_CREATE,
