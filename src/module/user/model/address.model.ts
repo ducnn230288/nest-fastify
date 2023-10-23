@@ -11,7 +11,7 @@ import { IsOptional, IsString } from 'class-validator';
 export class Address extends Base {
   @Column()
   @IsString()
-  @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
+  @ApiProperty({ example: faker.location.countryCode('numeric'), description: '' })
   codeProvince: string;
 
   @ManyToOne(() => Province, (province) => province.items, { eager: false })
@@ -44,6 +44,7 @@ export class Address extends Base {
   specificAddress: string;
 
   @Column()
+  @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   userId?: string;

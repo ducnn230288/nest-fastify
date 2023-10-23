@@ -20,6 +20,7 @@ describe('Role - /api/user', () =>
     P_USER_ROLE_CREATE,
     P_USER_ROLE_UPDATE,
     P_USER_ROLE_DELETE,
+
     P_USER_LISTED,
     P_USER_DETAIL,
     P_USER_CREATE,

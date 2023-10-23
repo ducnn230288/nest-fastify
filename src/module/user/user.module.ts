@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 
 import { appConfig } from '@config';
 import {
+  AddressController,
   AuthController,
   DistrictController,
   ProvinceController,
@@ -12,8 +13,9 @@ import {
   UserRoleController,
   WardController,
 } from '@controller';
-import { District, Province, User, UserRole, Ward } from '@model';
+import { Address, District, Province, User, UserRole, Ward } from '@model';
 import {
+  AddressService,
   AuthService,
   DistrictService,
   EmailService,
@@ -41,7 +43,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward]),
+    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward, Address]),
   ],
   controllers: [
     AuthController,
@@ -50,6 +52,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     ProvinceController,
     DistrictController,
     WardController,
+    AddressController,
   ],
   providers: [
     AccessTokenStrategy,
@@ -64,6 +67,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     ProvinceService,
     DistrictService,
     WardService,
+    AddressService,
   ],
   exports: [
     AuthService,
@@ -75,6 +79,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     ProvinceService,
     DistrictService,
     WardService,
+    AddressService,
   ],
 })
 export class UserModule {}

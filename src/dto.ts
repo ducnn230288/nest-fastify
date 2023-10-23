@@ -13,7 +13,7 @@ export * from './module/user/dto/province.dto';
 export * from './module/user/dto/district.dto';
 export * from './module/user/dto/ward.dto';
 
-export * from './module/address/dto/address.dto';
+export * from './module/user/dto/address.dto';
 
 export * from './module/product/dto/product-category.dto';
 export * from './module/product/dto/product.dto';

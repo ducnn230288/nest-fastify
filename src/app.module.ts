@@ -13,7 +13,7 @@ import {
   SchedulerModule,
   CoreModule,
   UserModule,
-  AddressModule,
+  // AddressModule,
   ProductModule,
   // ProductCategoryModule,
   // StoreModule,
@@ -27,7 +27,7 @@ import {
     NotificationModule,
     SchedulerModule,
     UserModule,
-    AddressModule,
+    // AddressModule,
     ProductModule,
     CoreModule,
     I18nModule.forRootAsync({
