@@ -21,7 +21,7 @@ export class CodeType extends Base {
   @MaxLength(100)
   code: string;
 
-  @Column({ default: false })
+  @Column({ default: false, name: 'is_primary' })
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()
   isPrimary?: boolean;

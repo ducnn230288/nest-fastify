@@ -1,9 +1,7 @@
-import { Seeder } from 'typeorm-extension';
+import {Seeder, SeederFactoryManager} from 'typeorm-extension';
 import { DataSource } from 'typeorm';
-import { faker } from '@faker-js/faker/locale/vi';
 import dayjs from 'dayjs';
 
-import { Example } from '@shared';
 import { User, UserRole } from '@model';
 
 import {
@@ -66,7 +64,7 @@ import {
 } from '@service';
 
 export class UserSeeder implements Seeder {
-  async run(dataSource: DataSource): Promise<void> {
+  async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
     const dataRoleSuperAdmin: UserRole = {
       name: 'Supper Admin',
       code: 'supper_admin',
@@ -153,19 +151,11 @@ export class UserSeeder implements Seeder {
       await repoRole.save(newDataRoleSuperAdmin);
 
       const repository = dataSource.getRepository(User);
-      const data: User = {
-        email: 'admin@admin.com',
-        avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
-        positionCode: 'DEV',
-        roleCode: newDataRoleSuperAdmin.code,
-        name: faker.person.fullName(),
-        password: Example.password,
-        phoneNumber: faker.phone.number('0#########'),
-        dob: faker.date.birthdate(),
-        description: faker.lorem.paragraph(),
-        startDate: faker.date.past(),
-        dateOff: 0,
-      };
+      const data: User = await factoryManager.get(User).make({
+          email: 'admin@admin.com',
+          avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
+          roleCode: newDataRoleSuperAdmin.code,
+        });
       if (
         dayjs().endOf('year').toDate().toDateString() === dayjs(data.startDate).endOf('year').toDate().toDateString()
       ) {

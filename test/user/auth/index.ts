@@ -1,63 +1,35 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { Example } from '@shared';
-import { RegisterAuthRequestDto, AuthDto, ProfileAuthRequestDto, RestPasswordAuthRequestDto } from '@dto';
 import { User } from '@model';
-
+import { RegisterAuthRequestDto, AuthDto, ProfileAuthRequestDto, RestPasswordAuthRequestDto } from '@dto';
+import { Example } from '@shared';
+import '@factories';
 import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
-  afterAll(BaseTest.initAfterAll);
 
-  const data: RegisterAuthRequestDto = {
-    name: faker.person.fullName(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    startDate: faker.date.past(),
-  };
+  const factoryManager = useSeederFactoryManager();
 
-  const dataUpdate: ProfileAuthRequestDto = {
-    name: faker.person.fullName(),
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    description: faker.lorem.paragraph(),
-    avatar: faker.image.url(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    passwordOld: Example.password,
-  };
-
-  const restPassword: RestPasswordAuthRequestDto = {
-    email: faker.internet.email().toLowerCase(),
-    password: Example.password,
-    retypedPassword: Example.password,
-    otp: Example.password,
-  };
-
-  let result: User = {
-    id: faker.string.uuid(),
-    name: faker.person.fullName(),
-    email: faker.internet.email().toLowerCase(),
-    phoneNumber: faker.phone.number('0#########'),
-    dob: faker.date.birthdate(),
-    startDate: faker.date.past(),
-    positionCode: 'DEV',
-    description: faker.lorem.paragraph(),
-    avatar: faker.image.url(),
-    dateLeave: faker.number.int({ min: 0.5, max: 12 }),
-    dateOff: faker.number.int({ min: 0.5, max: 12 }),
-  };
+  let data: RegisterAuthRequestDto;
+  let dataUpdate: ProfileAuthRequestDto;
+  let restPassword: RestPasswordAuthRequestDto;
+  let result: User;
   let login: AuthDto;
 
   it('Register [POST /api/auth/register]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { avatar, dateLeave, ...data2 } = fakerData;
+    data = {
+      ...data2,
+      password: Example.password,
+      retypedPassword: Example.password,
+    };
+
     const { body } = await request(BaseTest.server).post('/api/auth/register').send(data).expect(HttpStatus.CREATED);
     body.data.dob = new Date(body.data.dob);
     body.data.startDate = new Date(body.data.startDate);
@@ -83,12 +55,21 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update profile [PUT /api/auth/profile]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { dateLeave, startDate, ...data2 } = fakerData;
+    dataUpdate = {
+      ...data2,
+      password: Example.password,
+      retypedPassword: Example.password,
+      passwordOld: Example.password,
+    };
     const { body } = await request(BaseTest.server)
       .put('/api/auth/profile')
       .set('Authorization', 'Bearer ' + login.accessToken)
       .send(dataUpdate)
       .expect(HttpStatus.OK);
-
     body.data.user.dob = new Date(body.data.user.dob);
     body.data.user.startDate = new Date(body.data.user.startDate);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,17 +97,25 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     expect(testData).toEqual(jasmine.objectContaining(testData2));
   });
 
-  it('Get profile [GET /api/auth/refresh]', async () => {
+  it('Get profile [GET /api/auth/refresh-token]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/auth/refresh')
+      .get('/api/auth/refresh-token')
       .set('Authorization', 'Bearer ' + login.refreshToken)
       .expect(HttpStatus.OK);
-
     expect(body.data).toHaveProperty('accessToken');
     expect(body.data).toHaveProperty('refreshToken');
   });
 
   it('Forgotten password [POST /api/auth/forgotten-password]', async () => {
+    const fakerData = await factoryManager.get(User).make();
+
+    restPassword = {
+      email: fakerData.email,
+      password: Example.password,
+      retypedPassword: Example.password,
+      otp: Example.password,
+    };
+
     const { body } = await request(BaseTest.server)
       .post('/api/auth/forgotten-password')
       .send({ email: login.user.email, notSendEmail: true })
@@ -135,6 +124,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     restPassword.email = login.user.email;
     restPassword.otp = body.data;
   });
+
   it('OTP confirmation [POST /api/auth/otp-confirmation]', async () => {
     const { body } = await request(BaseTest.server)
       .post('/api/auth/otp-confirmation')
@@ -153,4 +143,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + login.accessToken)
       .expect(HttpStatus.OK);
   });
+
+  return afterAll(BaseTest.initAfterAll);
 };

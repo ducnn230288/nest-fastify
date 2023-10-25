@@ -1,34 +1,23 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { CreateParameterRequestDto, UpdateParameterRequestDto } from '@dto';
 import { Parameter } from '@model';
+import { CreateParameterRequestDto, UpdateParameterRequestDto } from '@dto';
 import { ParameterService } from '@service';
-
+import '@factories';
 import { BaseTest } from '@test';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
-  const dataType: CreateParameterRequestDto = {
-    code: faker.finance.bic(),
-    vn: faker.lorem.paragraph(),
-    en: faker.lorem.paragraph(),
-  };
+  const factoryManager = useSeederFactoryManager();
+  let dataType: CreateParameterRequestDto;
+  let dataUpdate: UpdateParameterRequestDto;
+  let result: Parameter | null;
 
-  const dataUpdate: UpdateParameterRequestDto = {
-    code: faker.finance.bic(),
-    vn: faker.lorem.paragraph(),
-    en: faker.lorem.paragraph(),
-  };
-  let result: Parameter | null = {
-    id: faker.string.uuid(),
-    code: faker.finance.bic(),
-    vn: faker.lorem.paragraph(),
-    en: faker.lorem.paragraph(),
-  };
   it('Create [POST /api/parameter/]', async () => {
+    dataType = await factoryManager.get(Parameter).make();
     const { body } = await request(BaseTest.server)
       .post('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -45,15 +34,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
-    }
+    if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Get one [GET /api/parameter/:code]', async () => {
-    if (!type) {
-      result = await BaseTest.moduleFixture!.get(ParameterService).create(dataType);
-    }
+    if (!type) result = await BaseTest.moduleFixture!.get(ParameterService).create(dataType);
     const { body } = await request(BaseTest.server)
       .get('/api/parameter/' + result!.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -62,14 +47,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/parameter/:id]', async () => {
+    dataUpdate = await factoryManager.get(Parameter).make();
     const { body } = await request(BaseTest.server)
       .put('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
-    }
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
   });
 
   it('Update one [PUT /api/parameter/:id/disable/:boolean]', async () => {
@@ -77,9 +61,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .put('/api/parameter/' + result!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
+    if (type)
       expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
-    }
   });
 
   it('Delete one [DELETE /api/parameter/:id]', async () => {
