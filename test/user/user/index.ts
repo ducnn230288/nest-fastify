@@ -63,7 +63,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/user-role/:id]', async () => {
-    dataUpdateRole = await factoryManager.get(UserRole).make({code: resultRole?.code});
+    dataUpdateRole = await factoryManager.get(UserRole).make({ code: resultRole?.code });
 
     const { body } = await request(BaseTest.server)
       .put('/api/user-role/' + resultRole?.id)
@@ -90,7 +90,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   it('Create [POST /api/user]', async () => {
     data = await factoryManager.get(User).make({ roleCode: resultRole?.code });
 
-
     const { body } = await request(BaseTest.server)
       .post('/api/user')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -99,6 +98,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
         retypedPassword: Example.password,
       })
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+
     if (type) {
       body.data.dob = new Date(body.data.dob);
       body.data.startDate = new Date(body.data.startDate);
@@ -127,7 +127,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/user/:id]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(UserService).create({...data, retypedPassword: data.password!});
+    if (!type)
+      result = await BaseTest.moduleFixture!.get(UserService).create({ ...data, retypedPassword: data.password! });
     const { body } = await request(BaseTest.server)
       .get('/api/user/' + result?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
