@@ -28,6 +28,7 @@ import {
   Ward,
   District,
   Order,
+  Address,
 } from '@model';
 import {
   CATEGORY_CREATE,
@@ -319,29 +320,25 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       quantity: 3,
     };
 
-    province = await BaseTest.moduleFixture!.get(ProvinceService).create({
-      code: '10',
-      name: 'Thành phố Hà Nội',
-    });
+    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
 
-    district = await BaseTest.moduleFixture!.get(DistrictService).create({
-      code: '001',
-      name: 'Quận Ba Đình',
-      codeProvince: province?.code,
-    });
+    district = await BaseTest.moduleFixture!.get(DistrictService).create(
+      await factoryManager.get(District).make({
+        codeProvince: province?.code,
+      }),
+    );
 
-    ward = await BaseTest.moduleFixture!.get(WardService).create({
-      code: '00001',
-      name: 'Phường Phúc Xá',
-      codeDistrict: district?.code,
-    });
+    ward = await BaseTest.moduleFixture!.get(WardService).create(
+      await factoryManager.get(Ward).make({
+        codeDistrict: district?.code,
+      }),
+    );
 
-    createAddressDto = {
+    createAddressDto = await factoryManager.get(Address).make({
       codeProvince: province!.code,
       codeDistrict: district!.code,
       codeWard: ward!.code,
-      specificAddress: '456789',
-    };
+    });
 
     const res = await request(BaseTest.server)
       .post('/api/address')
