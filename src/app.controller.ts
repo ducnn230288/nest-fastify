@@ -411,7 +411,6 @@ export class AppController {
   //   detail: object;
   // }
 
-<<<<<<< HEAD
   @Get('/administrator')
   @Render('administrator')
   administrator(): void {}
@@ -537,11 +536,4 @@ interface IAbout extends ICommon {
   JSON: {
     detail: DataDto[];
   };
-=======
-  // interface IAbout extends ICommon {
-  //   urlLang: string;
-  //   JSON: {
-  //     detail: DataDto[];
-  //   };
->>>>>>> cc8f740c6e029c4f7825d7407c7f003164b91df4
 }
