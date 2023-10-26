@@ -32,6 +32,18 @@ export class member1669372347132 implements MigrationInterface {
       `CREATE TABLE "post_type" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, "is_primary" boolean NOT NULL DEFAULT false, "mpath" character varying DEFAULT '', "parentId" uuid, CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE ("code"), CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "province" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, CONSTRAINT "UQ_3288dfa18d390ed33b359fc0418" UNIQUE ("code"), CONSTRAINT "PK_4f461cb46f57e806516b7073659" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "district" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, "codeProvince" character varying NOT NULL, CONSTRAINT "UQ_fbfe5cb0d22c2be8c9a9fff5b6b" UNIQUE ("code"), CONSTRAINT "PK_ee5cb6fd5223164bb87ea693f1e" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "ward" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, "codeDistrict" character varying NOT NULL, CONSTRAINT "UQ_14bd787455693efede59d248a7d" UNIQUE ("code"), CONSTRAINT "PK_e6725fa4a50e449c4352d2230e1" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "address" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "codeProvince" character varying NOT NULL, "codeDistrict" character varying NOT NULL, "codeWard" character varying NOT NULL, "specificAddress" character varying NOT NULL, "userId" uuid NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "avatar" character varying, "password" character varying NOT NULL, "refreshToken" character varying, "otp" character varying, "email" character varying NOT NULL, "phoneNumber" character varying NOT NULL, "dob" TIMESTAMP NOT NULL, "description" character varying, "roleCode" character varying, "positionCode" character varying, "startDate" TIMESTAMP NOT NULL, "dateLeave" real, "dateOff" real DEFAULT '0', CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
@@ -56,6 +68,24 @@ export class member1669372347132 implements MigrationInterface {
       `ALTER TABLE "post_type" ADD CONSTRAINT "FK_51e50f68a97b92e4f7702ee8c1b" FOREIGN KEY ("parentId") REFERENCES "post_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "district" ADD CONSTRAINT "FK_2910f2ae2fc4495b7abde7e4bd8" FOREIGN KEY ("codeProvince") REFERENCES "province"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "ward" ADD CONSTRAINT "FK_9bd4856d9cb2639921e698fb945" FOREIGN KEY ("codeDistrict") REFERENCES "district"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "address" ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "province"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "address" ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "district"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "address" ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "ward"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "address" ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "user" ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user_role"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
@@ -66,6 +96,12 @@ export class member1669372347132 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb"`);
     await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294"`);
+    await queryRunner.query(`ALTER TABLE "address" DROP CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3"`);
+    await queryRunner.query(`ALTER TABLE "address" DROP CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0"`);
+    await queryRunner.query(`ALTER TABLE "address" DROP CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0"`);
+    await queryRunner.query(`ALTER TABLE "address" DROP CONSTRAINT "FK_de67160900785eb9f9123b16e84"`);
+    await queryRunner.query(`ALTER TABLE "ward" DROP CONSTRAINT "FK_9bd4856d9cb2639921e698fb945"`);
+    await queryRunner.query(`ALTER TABLE "district" DROP CONSTRAINT "FK_2910f2ae2fc4495b7abde7e4bd8"`);
     await queryRunner.query(`ALTER TABLE "post_type" DROP CONSTRAINT "FK_51e50f68a97b92e4f7702ee8c1b"`);
     await queryRunner.query(`ALTER TABLE "post_translation" DROP CONSTRAINT "FK_c3b205aea6eff06096f6f439240"`);
     await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_b499447822de3f24ad355e19b8c"`);
@@ -74,6 +110,10 @@ export class member1669372347132 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "code" DROP CONSTRAINT "FK_927209d9e3f6f87ace1a933c978"`);
     await queryRunner.query(`DROP TABLE "user_role"`);
     await queryRunner.query(`DROP TABLE "user"`);
+    await queryRunner.query(`DROP TABLE "address"`);
+    await queryRunner.query(`DROP TABLE "ward"`);
+    await queryRunner.query(`DROP TABLE "district"`);
+    await queryRunner.query(`DROP TABLE "province"`);
     await queryRunner.query(`DROP TABLE "post_type"`);
     await queryRunner.query(`DROP TABLE "post_translation"`);
     await queryRunner.query(`DROP TABLE "post"`);

@@ -14,6 +14,10 @@ import {
   Post,
   PostTranslation,
   PostType,
+  Province,
+  District,
+  Ward,
+  Address,
   User,
   UserRole,
 } from '@model';
@@ -28,6 +32,10 @@ const options: DataSourceOptions & SeederOptions = {
   entities: [
     Code,
     CodeType,
+    Province,
+    District,
+    Ward,
+    Address,
     User,
     UserRole,
     Data,

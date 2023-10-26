@@ -2,9 +2,15 @@ import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { User, UserRole } from '@model';
-import { CreateUserRoleRequestDto, UpdateUserRoleRequestDto, UpdateUserRequestDto } from '@dto';
-import { P_USER_CREATE, UserRoleService, UserService } from '@service';
+import { Address, District, Province, User, UserRole, Ward } from '@model';
+import {
+  CreateUserRoleRequestDto,
+  UpdateUserRoleRequestDto,
+  UpdateUserRequestDto,
+  CreateAddressRequestDto,
+  UpdateAddressRequestDto,
+} from '@dto';
+import { DistrictService, P_USER_CREATE, ProvinceService, UserRoleService, UserService, WardService } from '@service';
 import { Example } from '@shared';
 import '@factories';
 import { BaseTest } from '@test';
@@ -20,6 +26,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let data: User;
   let dataUpdate: UpdateUserRequestDto;
   let result: User | null;
+
+  let dataAddress: CreateAddressRequestDto;
+  let province;
+  let district;
+  let ward;
+  let dataAddressUpdate: UpdateAddressRequestDto;
+  let resultAddress: Address | null;
 
   // User-role: 7 api test
   it('Create [POST /api/user-role]', async () => {
@@ -63,7 +76,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Update one [PUT /api/user-role/:id]', async () => {
-    dataUpdateRole = await factoryManager.get(UserRole).make({code: resultRole?.code});
+    dataUpdateRole = await factoryManager.get(UserRole).make({ code: resultRole?.code });
 
     const { body } = await request(BaseTest.server)
       .put('/api/user-role/' + resultRole?.id)
@@ -89,7 +102,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Create [POST /api/user]', async () => {
     data = await factoryManager.get(User).make({ roleCode: resultRole?.code });
-
 
     const { body } = await request(BaseTest.server)
       .post('/api/user')
@@ -127,7 +139,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get one [GET /api/user/:id]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(UserService).create({...data, retypedPassword: data.password!});
+    if (!type)
+      result = await BaseTest.moduleFixture!.get(UserService).create({ ...data, retypedPassword: data.password! });
     const { body } = await request(BaseTest.server)
       .get('/api/user/' + result?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -168,6 +181,72 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type)
       expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result?.isDisabled }));
+  });
+
+  // test address
+  it('Create [CREATE /api/adress]', async () => {
+    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
+
+    district = await BaseTest.moduleFixture!.get(DistrictService).create(
+      await factoryManager.get(District).make({
+        codeProvince: province?.code,
+      }),
+    );
+
+    ward = await BaseTest.moduleFixture!.get(WardService).create(
+      await factoryManager.get(Ward).make({
+        codeDistrict: district?.code,
+      }),
+    );
+
+    dataAddress = await factoryManager.get(Address).make({
+      codeProvince: province!.code,
+      codeDistrict: district!.code,
+      codeWard: ward!.code,
+    });
+
+    const { body } = await request(BaseTest.server)
+      .post('/api/address')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataAddress)
+      .expect(HttpStatus.CREATED);
+
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
+    resultAddress = body.data;
+  });
+
+  it('Get all [GET /api/address]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/address')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data[0]).toEqual(jasmine.objectContaining(dataAddress));
+  });
+
+  it('Get one [GET /api/address/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddress));
+  });
+
+  it('Update [PUT /api/address/:id]', async () => {
+    dataAddressUpdate = await factoryManager.get(Address).make();
+    const { body } = await request(BaseTest.server)
+      .put('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataAddressUpdate)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddressUpdate));
+  });
+
+  it('Delete one [DELETE /api/address/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/address/' + resultAddress!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    expect(body.data).toEqual(jasmine.objectContaining(dataAddressUpdate));
   });
 
   it('Delete one [DELETE /api/user/:id]', async () => {
