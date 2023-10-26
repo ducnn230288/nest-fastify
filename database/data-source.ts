@@ -3,7 +3,7 @@ import { SeederOptions } from 'typeorm-extension';
 
 import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
-import { member1669372347132 } from './migrations/1668566358184-member';
+import { Core1698359444654 } from './migrations/1698359444654-core';
 import {
   Booking,
   Code,
@@ -52,7 +52,7 @@ const options: DataSourceOptions & SeederOptions = {
     DayOff,
     Booking,
   ],
-  migrations: [member1669372347132],
+  migrations: [Core1698359444654],
   seeds: [MainSeeder],
   factories: ['database/factories/**/*{.ts,.js}'],
   logging: ['error'],
