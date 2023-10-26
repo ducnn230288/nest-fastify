@@ -9,3 +9,4 @@ export * from './user-role.factory';
 export * from './user.factory';
 export * from './dayoff.factory';
 export * from './user-team.factory';
+export * from './booking.factory';
