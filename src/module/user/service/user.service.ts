@@ -26,7 +26,7 @@ export class UserService extends BaseService<User> {
   ) {
     super(repo);
     this.listQuery = ['name', 'email', 'phoneNumber'];
-    this.listJoin = ['role', 'position'];
+    this.listJoin = ['role', 'position', 'address'];
   }
 
   /**

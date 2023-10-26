@@ -4,10 +4,30 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { appConfig } from '@config';
-import { AuthController, UserController, UserRoleController } from '@controller';
-import { User, UserRole } from '@model';
-import { AuthService, EmailService, FileService, UserRoleService, UserService } from '@service';
-import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
+import {
+  AddressController,
+  AuthController,
+  DistrictController,
+  ProvinceController,
+  UserController,
+  UserRoleController,
+  WardController,
+} from '@controller';
+import { Address, District, Province, User, UserRole, Ward } from '@model';
+import {
+  AddressService,
+  AuthService,
+  DistrictService,
+  EmailService,
+  FileService,
+  ProvinceService,
+  UserRoleService,
+  UserService,
+  WardService,
+  DayoffRepository,
+  UserTeamRepository,
+} from '@service';
+import { FileRepository, UserRepository } from '@repository';
 
 import { AccessTokenStrategy } from './strategy/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
@@ -25,9 +45,17 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole]),
+    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward, Address]),
   ],
-  controllers: [AuthController, UserRoleController, UserController],
+  controllers: [
+    AuthController,
+    UserRoleController,
+    UserController,
+    ProvinceController,
+    DistrictController,
+    WardController,
+    AddressController,
+  ],
   providers: [
     AccessTokenStrategy,
     RefreshTokenStrategy,
@@ -38,9 +66,24 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserRoleService,
     FileRepository,
     FileService,
+    ProvinceService,
+    DistrictService,
+    WardService,
+    AddressService,
     UserTeamRepository,
     DayoffRepository,
   ],
-  exports: [UserService, UserRepository],
+  exports: [
+    AuthService,
+    UserRepository,
+    UserService,
+    UserRoleService,
+    FileRepository,
+    FileService,
+    ProvinceService,
+    DistrictService,
+    WardService,
+    AddressService,
+  ],
 })
 export class UserModule {}
