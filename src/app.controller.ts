@@ -16,7 +16,11 @@ export class AppController {
     private readonly postService: PostService,
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   ) {}
-
+  @Get('')
+  @Render('index2')
+  root(): void {}
+  /* */
+  /*
   @Get('')
   @Render('index')
   @UseInterceptors(CacheInterceptor)
@@ -306,7 +310,7 @@ export class AppController {
   @Get('/administrator')
   @Render('administrator')
   administrator(): void {}
-
+  /* */
   async common(
     language: string,
     arrayCode: string[] = [],
