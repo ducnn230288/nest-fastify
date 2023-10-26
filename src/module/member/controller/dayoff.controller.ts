@@ -68,7 +68,7 @@ export class DayoffController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateDayoffRequestDto,
     @AuthUser() user: User,
-  ): Promise<any> {
+  ): Promise<DayoffResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.createDayOff(body, user),

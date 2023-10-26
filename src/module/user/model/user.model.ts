@@ -1,5 +1,15 @@
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn,  JoinTable,
-  ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import {
+  AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';

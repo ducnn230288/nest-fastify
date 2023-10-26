@@ -56,7 +56,7 @@ export class BookingController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) dataRequest: CreateBookingRequestDto,
     @AuthUser() user: User,
-  ): Promise<any> {
+  ): Promise<BookingResponseDto> {
     const data = await this.service.create({ ...dataRequest, userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
