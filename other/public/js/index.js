@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 (function () {
   const r = document.createElement('link').relList;
   if (r && r.supports && r.supports('modulepreload')) return;
@@ -251,6 +253,7 @@ const y = {
       ? window._MESSAGE_.email
       : t === 'checkbox' &&
         i.indexOf('[]') > -1 &&
+        // eslint-disable-next-line no-prototype-builtins
         n.hasOwnProperty('mincheck') &&
         (!e || e.length < parseInt(n.mincheck))
       ? window._MESSAGE_.mincheck + n.mincheck

@@ -19,6 +19,10 @@ export class AppController {
   @Get('')
   @Render('index2')
   root(): void {}
+
+  @Get('auth/profile')
+  @Render('auth/profile')
+  profile(): void {}
   /* */
   /*
   @Get('')

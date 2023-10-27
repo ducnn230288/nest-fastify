@@ -56,7 +56,7 @@
     <link href='https://cdn.jsdelivr.net/npm/choices.js@10/public/assets/styles/choices.min.css' rel='stylesheet' />
     <link rel='stylesheet' href='css/style.css' />
   </head>
-  <body>
+  <body class="relative">
     <!-- header -->
     <div class="h-16 relative">
       <div class="absolute top-0 left-0 right-0">
@@ -261,12 +261,12 @@
     <!-- end slidebar -->
 
     <!-- content -->
-    <main>
+    <main class="px-2 sm:px-0 h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out z-10 relative ml-64">
         {{> content}}
     </main>
     <!-- end content -->
     <!-- footer -->
-    <footer class="text-center pt-1.5 w-full -mt-8 absolute bottom-0 left-0 right-0 py-4"><h4>Công ty cổ phần Công nghệ Ari. ©2023</h4></footer>
+    <footer id="footer" class="text-center pt-1.5 w-full -mt-8 absolute bottom-0 left-0 right-0 py-4"><h4>Công ty cổ phần Công nghệ Ari. ©2023</h4></footer>
     <!-- end footer -->
 
   </body>
