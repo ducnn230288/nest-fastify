@@ -9,7 +9,7 @@ import { customAlphabet } from 'nanoid';
 
 @Entity()
 export class Order extends Base {
-  @Column()
+  @Column({ name: 'user_id' })
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   userId?: string;
@@ -26,7 +26,7 @@ export class Order extends Base {
   @IsString()
   status?: number;
 
-  @Column()
+  @Column({ name: 'order_code' })
   @ApiProperty({ example: faker.number.int(10), description: '' })
   orderCode: string;
   @BeforeInsert()

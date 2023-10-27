@@ -18,7 +18,7 @@ export const PRODUCT_DELETE = '59014c0-9ebe-497e-9766-2054ebb7e1d2';
 export class ProductService extends BaseService<Product> {
   constructor(public repo: ProductRepository) {
     super(repo);
-    // this.listQuery = ['caregoryId', 'productStoreId'];
+    this.listQuery = ['name', 'slug'];
     this.listJoin = ['productStore', 'productCategory'];
   }
 

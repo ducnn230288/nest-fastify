@@ -8,7 +8,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity()
 export class OrderAddress extends Base {
-  @Column()
+  @Column({ name: 'code_ward' })
   @Type(() => String)
   codeWard: string;
 
@@ -16,7 +16,7 @@ export class OrderAddress extends Base {
   @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
   public ward?: Ward;
 
-  @Column()
+  @Column({ name: 'code_district' })
   @IsString()
   codeDistrict: string;
 
@@ -24,7 +24,7 @@ export class OrderAddress extends Base {
   @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
   public district?: District;
 
-  @Column()
+  @Column({ name: 'code_province' })
   @IsString()
   codeProvince: string;
 
@@ -32,13 +32,13 @@ export class OrderAddress extends Base {
   @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
   public province?: Province;
 
-  @Column()
+  @Column({ name: 'specific_address' })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
   specificAddress?: string;
 
-  @Column()
+  @Column({ name: 'order_id' })
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   @Type(() => String)
@@ -49,7 +49,7 @@ export class OrderAddress extends Base {
   @JoinColumn()
   readonly order?: Order;
 
-  @Column()
+  @Column({ name: 'address_id' })
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   @Type(() => String)

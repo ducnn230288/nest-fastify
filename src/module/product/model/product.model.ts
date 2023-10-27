@@ -77,7 +77,7 @@ export class Product extends Base {
   @Expose()
   discount: number;
 
-  @Column()
+  @Column({ name: 'product_category_id' })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   productCategoryId: string;
@@ -89,7 +89,7 @@ export class Product extends Base {
   @JoinColumn()
   public productCategory?: ProductCategory;
 
-  @Column()
+  @Column({ name: 'product_store_id' })
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   productStoreId: string;
