@@ -14,7 +14,7 @@ export const STORE_DELETE = 'zz2e6224-12c3-4e6c-b4e0-62495fb799bf';
 export class ProductStoreService extends BaseService<ProductStore> {
   constructor(public repo: ProductStoreRepository) {
     super(repo);
-    this.listQuery = ['name', 'status', 'phone', 'description', 'slug', 'avatar'];
+    this.listQuery = ['name', 'phone', 'slug'];
     // this.listJoin = ['user'];
   }
 

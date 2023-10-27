@@ -22,7 +22,7 @@ export class District extends Base {
   @IsString()
   code: string;
 
-  @Column()
+  @Column({ name: 'code_province' })
   @ApiProperty({ example: faker.finance.bic(), description: '' })
   @Expose()
   @IsString()
