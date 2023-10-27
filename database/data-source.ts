@@ -3,7 +3,8 @@ import { SeederOptions } from 'typeorm-extension';
 
 import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
-import { member1669372347132 } from './migrations/1668566358184-member';
+import { Core1698359444654 } from './migrations/1698359444654-core';
+import { Member1698359719624 } from './migrations/1698359719624-member';
 import {
   Booking,
   Code,
@@ -16,6 +17,10 @@ import {
   Post,
   PostTranslation,
   PostType,
+  Province,
+  District,
+  Ward,
+  Address,
   User,
   UserRole,
   UserTeam,
@@ -31,6 +36,10 @@ const options: DataSourceOptions & SeederOptions = {
   entities: [
     Code,
     CodeType,
+    Province,
+    District,
+    Ward,
+    Address,
     User,
     UserRole,
     Data,
@@ -44,7 +53,7 @@ const options: DataSourceOptions & SeederOptions = {
     DayOff,
     Booking,
   ],
-  migrations: [member1669372347132],
+  migrations: [Core1698359444654, Member1698359719624],
   seeds: [MainSeeder],
   factories: ['database/factories/**/*{.ts,.js}'],
   logging: ['error'],
