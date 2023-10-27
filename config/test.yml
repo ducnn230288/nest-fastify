@@ -3,5 +3,4 @@ log:
     console: debug
     file: debug
     query: query, error
-database:
-  name: postgres
+
