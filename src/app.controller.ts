@@ -438,3 +438,5 @@ interface IAbout extends ICommon {
     detail: DataDto[];
   };
 }
+*/
+}
