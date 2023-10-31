@@ -1,4 +1,4 @@
-import {Seeder, SeederFactoryManager} from 'typeorm-extension';
+import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import dayjs from 'dayjs';
 
@@ -46,6 +46,11 @@ import {
   P_USER_ROLE_DETAIL,
   P_USER_ROLE_LISTED,
   P_USER_ROLE_UPDATE,
+  // P_ADDRESS_LISTED,
+  P_ADDRESS_CREATE,
+  P_ADDRESS_UPDATE,
+  // P_ADDRESS_DETAIL,
+  P_ADDRESS_DELETE,
   P_USER_TEAM_LISTED,
   P_USER_TEAM_DETAIL,
   P_USER_TEAM_CREATE,
@@ -120,6 +125,12 @@ export class UserSeeder implements Seeder {
         P_POST_TYPE_LISTED,
         P_POST_TYPE_UPDATE,
 
+        // P_ADDRESS_LISTED,
+        // P_ADDRESS_DETAIL,
+        P_ADDRESS_CREATE,
+        P_ADDRESS_UPDATE,
+        P_ADDRESS_DELETE,
+
         P_USER_TEAM_LISTED,
         P_USER_TEAM_DETAIL,
         P_USER_TEAM_CREATE,
@@ -152,10 +163,10 @@ export class UserSeeder implements Seeder {
 
       const repository = dataSource.getRepository(User);
       const data: User = await factoryManager.get(User).make({
-          email: 'admin@admin.com',
-          avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
-          roleCode: newDataRoleSuperAdmin.code,
-        });
+        email: 'admin@admin.com',
+        avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
+        roleCode: newDataRoleSuperAdmin.code,
+      });
       if (
         dayjs().endOf('year').toDate().toDateString() === dayjs(data.startDate).endOf('year').toDate().toDateString()
       ) {
