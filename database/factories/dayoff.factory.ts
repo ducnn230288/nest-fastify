@@ -10,6 +10,5 @@ export default setSeederFactory(DayOff, (faker) => {
   data.image = faker.image.url();
   data.dateLeaveStart = faker.date.soon({ days: 1 });
   data.dateLeaveEnd = faker.date.soon({ days: 10 });
-
   return data;
 });
