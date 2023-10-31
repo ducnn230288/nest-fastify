@@ -4,6 +4,9 @@ import { FastifyReply } from 'fastify';
 import dayjs from 'dayjs';
 import { Cache } from 'cache-manager';
 import { CacheInterceptor, CACHE_MANAGER } from '@nestjs/cache-manager';
+import hbs from 'hbs';
+import hbsUtils from 'hbs-utils';
+import { join } from 'path';
 
 import { DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';
@@ -17,12 +20,15 @@ export class AppController {
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   ) {}
   @Get('')
-  @Render('index2')
-  root(): void {}
+  @Render('home/home')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  root(): Promise<any | void> {
+    return hbs.registerPartials(join(process.cwd(), './other', '/views/home'));
+  }
 
-  @Get('auth/profile')
-  @Render('auth/profile')
-  profile(): void {}
+  // @Get('auth/profile')
+  // @Render('auth/profile')
+  // profile(): void {}
   /* */
   /*
 
