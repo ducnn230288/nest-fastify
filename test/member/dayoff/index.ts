@@ -21,18 +21,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let resultDayoff: DayOff | null;
   let resultProfile: User | null;
 
-  
   it('Create [POST /api/dayoff]', async () => {
-  
-  const res = await request(BaseTest.server).get('/api/auth/profile').set('Authorization', 'Bearer ' + BaseTest.token);
-  resultProfile = res.body.data;
-  
-  dataUser = await BaseTest.moduleFixture!.get(UserService).update(
-    resultProfile!.id!,
-    {
-      managerId: resultProfile!.id
-    }
-  );  
+    const res = await request(BaseTest.server)
+      .get('/api/auth/profile')
+      .set('Authorization', 'Bearer ' + BaseTest.token);
+    resultProfile = res.body.data;
+
+    dataUser = await BaseTest.moduleFixture!.get(UserService).update(resultProfile!.id!, {
+      managerId: resultProfile!.id,
+    });
 
     dataDayoff = await factoryManager.get(DayOff).make();
 
@@ -40,7 +37,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/dayoff')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataDayoff)
- 
+
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     if (type) {
@@ -62,48 +59,49 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Get detail [GET /api/dayoff/{id}]', async () => {
-    const {body} = await request(BaseTest.server)
-    .get("/api/dayoff/" + resultDayoff?.id)
-    .set("Authorization", 'Bearer ' + BaseTest.token)
-    .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if(type){
+    const { body } = await request(BaseTest.server)
+      .get('/api/dayoff/' + resultDayoff?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(resultDayoff));
     }
   });
 
   it('Update [PUT /api/dayoff/{id}]', async () => {
-    const {reason, code,...dataUpdate} = dataDayoff;
-    const {body} = await request(BaseTest.server)
-    .put("/api/dayoff/" + resultDayoff?.id)
-    .set("Authorization", 'Bearer ' + BaseTest.token)
-    .send(dataUpdate)
-    .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if(type){
+    const { reason, code, ...dataUpdate } = dataDayoff;
+    const { body } = await request(BaseTest.server)
+      .put('/api/dayoff/' + resultDayoff?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataUpdate)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
       expect(body.data).toEqual(jasmine.objectContaining(resultDayoff));
     }
   });
   it('Update data status [PUT /api/dayoff/{id}/status]', async () => {
     dataUpdateSlug = {
-      status: 1
+      status: 1,
     };
-    const {body} = await request(BaseTest.server)
-    .put("/api/dayoff/" + resultDayoff?.id + "/status")
-    .set("Authorization", "Bearer " + BaseTest.token)
-    .send(dataUpdateSlug)
-    .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if(type){
-      const {dateLeaveStart, dateLeaveEnd, isDisabled ,approvedAt, reasonReject, updatedAt,status, ...test} = resultDayoff!;
+    const { body } = await request(BaseTest.server)
+      .put('/api/dayoff/' + resultDayoff?.id + '/status')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataUpdateSlug)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      const { dateLeaveStart, dateLeaveEnd, isDisabled, approvedAt, reasonReject, updatedAt, status, ...test } =
+        resultDayoff!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
   it('Delete [DELETE /api/dayoff/{id}]', async () => {
-    const {body} = await request(BaseTest.server)
-    .delete("/api/dayoff/" + resultDayoff?.id )
-    .set("Authorization", "Bearer " + BaseTest.token)
-    .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if(type){
-      const{approvedAt, status,updatedAt,isDeleted, ...test} = resultDayoff!;
+    const { body } = await request(BaseTest.server)
+      .delete('/api/dayoff/' + resultDayoff?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      const { approvedAt, status, updatedAt, isDeleted, ...test } = resultDayoff!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
