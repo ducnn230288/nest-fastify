@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.swal2-html-container {
+  @apply !m-6;
+}
+.swal2-actions {
+  @apply !mt-0 !mb-4;
+}
+form .group.error label {
+  @apply text-red-700;
+}
+form .group.error > input,
+form .group.error > textarea,
+form .group.error > .choices > .choices__inner {
+  @apply !bg-red-50 !border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500;
+}
+form .group.error p.error {
+  @apply text-red-600 text-sm;
+}
+form .group > .choices {
+  @apply mb-2;
+}
+.pretty input:checked ~ .state label:after,
+.pretty.p-toggle .state label:after {
+  @apply !bg-blue-500;
+}
+.pretty input:checked ~ .state label:before,
+.pretty.p-toggle .state label:before {
+  @apply border-blue-500;
+}
+.pretty.p-default:not(.p-fill) input:checked ~ .state label:after {
+  @apply !bg-blue-500;
+}
+.pretty.p-switch input:checked ~ .state:before {
+  @apply border-blue-500;
+}
+.pretty.p-switch.p-fill input:checked ~ .state:before {
+  @apply !bg-blue-500;
+}
+.pretty.p-switch.p-slim input:checked ~ .state:before {
+  @apply !bg-blue-600 border-blue-600;
+}
+.choices__inner {
+  @apply !border-gray-200 !rounded-lg !bg-white;
+}
+.choices__list--multiple .choices__item {
+  @apply !border-blue-600 !bg-blue-500;
+}
+.choices__input {
+  @apply !bg-transparent;
+}
+.html-render {
+  @apply text-justify;
+}
+.html-render .image {
+  @apply inline-block text-center w-full py-5;
+}
+.html-render .image .caption {
+  @apply bg-teal-50 border border-teal-200 mt-1 py-1 px-2 inline-block;
+}
+.html-render p {
+  @apply mb-3;
+}
+.html-render img {
+  @apply mx-auto;
+}
+.html-render h1 {
+  @apply text-5xl text-teal-900 mb-7;
+}
+.html-render h2 {
+  @apply text-4xl text-teal-900 mb-6;
+}
+.html-render h3 {
+  @apply text-3xl text-teal-900 mb-5;
+}
+.html-render h4 {
+  @apply text-2xl text-teal-900 mb-4;
+}
+.html-render h5 {
+  @apply text-xl text-teal-900 mb-4;
+}
+.html-render h6 {
+  @apply text-lg text-teal-900 mb-4;
+}
+.hamburger {
+  @apply flex self-center flex-col justify-between w-6 h-6 cursor-pointer pt-1 pb-1;
+}
+.hamburger span {
+  @apply self-end w-full bg-white transition-all duration-300 ease-in-out h-0.5;
+}
+.hamburger .meat {
+  @apply w-10/12 transition-all duration-150 ease-in-out;
+}
+.hamburger .bottom-bun {
+  @apply w-7/12;
+}
+.hamburger:hover span {
+  @apply w-full;
+}
+.hamburger.body-menu-opened .top-bun {
+  @apply w-full -rotate-45 translate-y-[0.42rem];
+}
+.hamburger.body-menu-opened .bottom-bun {
+  @apply w-full rotate-45 -translate-y-[0.42rem];
+}
+.hamburger.body-menu-opened .meat {
+  @apply w-0;
+}
+.hamburger.body-menu-opened:hover {
+  @apply transition-transform duration-300 hover:rotate-90 ease-in-out;
+}
+.hamburger:not(.body-menu-opened):hover .top-bun {
+  @apply animate-burger-hover-2;
+}
+.hamburger:not(.body-menu-opened):hover .meat {
+  @apply animate-burger-hover-4;
+}
+.hamburger:not(.body-menu-opened):hover .bottom-bun {
+  @apply animate-burger-hover-6;
+}

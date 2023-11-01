@@ -1,0 +1,1411 @@
+<!-- Header -->
+
+<!-- large screen -->
+<div
+  class='hidden xl:font-lato xl:text-[13px] xl:w-full xl:h-[36.6px] xl:flex xl:justify-between xl:py-2.5 xl:border-b'>
+  <div>
+    <ul class='flex'>
+      <li class='px-2.5 border-r text-gray-grey hover:text-black'>
+        <a href=''>About Us</a>
+      </li>
+      <li class='px-2.5 border-r text-gray-grey hover:text-black'>
+        <a href=''>My Account</a>
+      </li>
+      <li class='px-2.5 border-r text-gray-grey hover:text-black'>
+        <a href=''>Wishlist</a>
+      </li>
+      <li class='px-2.5 text-gray-grey hover:text-black'>
+        <a href=''>Order Tracking</a>
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <ul class='flex text-gray-grey'>
+      <li class='flex px-3 border-r'>
+        <p>Need help? Call Us:</p>
+        <strong class='text-green-grn'>+ 1800 900</strong>
+      </li>
+      <li class='px-3 border-r relative group'>
+        <a href='' class='py-3 hover:text-black'>English <i class='fas fa-angle-down ml-1'></i></a>
+        <div class='absolute invisible bg-white min-w-[100px] h-fit border mt-2.5 group-hover:visible rounded-b-lg'>
+          <ul class='space-y-2 py-2.5 px-[15px]'>
+            <li>
+              <a href=''>
+                <img src='/images/flag-fr.png' class='w-3.5 h-2.5 inline-block' alt='' />
+                Français
+              </a>
+            </li>
+            <li>
+              <a href=''>
+                <img src='/images/flag-dt.png' class='w-3.5 h-2.5 inline-block' alt='' />
+                Deutsch
+              </a>
+            </li>
+            <li>
+              <a href=''>
+                <img src='/images/flag-ru.png' class='w-3.5 h-2.5 inline-block' alt='' />
+                Pусский
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </li>
+      <li class='px-3 relative group'>
+        <a href='' class='py-3 hover:text-black'>USD <i class='fas fa-angle-down ml-1'></i></a>
+        <!-- <div class="absolute invisible bg-white min-w-[100px] h-fit border mt-2.5 group-hover:visible rounded-b-lg">
+                      <ul class="space-y-2 py-2.5 px-[15px]">
+                          <li>
+                              <a href="" >
+                                  <img src="/images/flag-fr.png" class="w-3.5 h-2.5 inline-block" alt="">
+                                  INR
+                              </a>
+                          </li>
+                          <li>
+                              <a href="">
+                                  <img src="/images/flag-dt.png" class="w-3.5 h-2.5 inline-block" alt="">
+                                  MBP
+                              </a>
+                          </li>
+                          <li>
+                              <a href="">
+                                  <img src="/images/flag-ru.png" class="w-3.5 h-2.5 inline-block" alt="">
+                                  EU
+                              </a>
+                          </li>
+                      </ul>
+                  </div> -->
+      </li>
+    </ul>
+  </div>
+</div>
+<div class='hidden xl:py-[30px] xl:w-full xl:flex xl:justify-between xl:items-center xl:border-b'>
+  <div>
+    <a href='#'>
+      <img src='/images/logo.svg' alt='logo' class='w-[180px] ml-3' />
+    </a>
+  </div>
+  <div class='relative w-[700px] h-[53.2px] mr-32 border-2 border-green-ligrn rounded-[4px] flex items-center'>
+    <button id='btnlist' class='text-gray-blck font-quicksand font-bold text-sm w-[140px] h-full'>
+      All Categories
+    </button>
+    <i class='fas fa-angle-down text-gray-grey pr-3 border-r h-5 pt-1'></i>
+    <div id='category' class='absolute invisible top-[51px] z-30 bg-white rounded-lg border p-4'>
+      <input id='search' type='text' class='outline-none border border-green-ligrn rounded-lg h-10 mb-2 px-4' />
+      <div class='overflow-y-auto max-h-48 h-fit scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100'>
+        <ul id='listitems'>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>All Categories</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Milks and Dairies</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Wines & Alcohol</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Clothing & Beauty</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Pet Foods & Toy</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Fast food</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Baking material</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Vegetables </span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Fresh Seafood </span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Noodles & Rice</span>
+          </li>
+          <li class='item font-quicksand text-gray-grey text-[15px] cursor-pointer ml-2 py-2 hover:bg-green-bggrn'>
+            <span class='itemtext'>Ice Cream</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <input type='text' placeholder='Search for items...' class='font-lato text-sm focus:outline-none w-2/3 pl-2' />
+    <i class='fas fa-search text-gray-grey fa-lg pl-8'></i>
+  </div>
+  <div class='flex justify-between items-center'>
+    <div class='w-fit px-2.5 flex'>
+      <a href='' class='relative'>
+        <img src='/images/icon-compare.svg' alt='' class='inline-block pt-3' />
+        <span
+          class='absolute left-3.5 top-0.5 bg-green-grn w-5 h-5 rounded-full font-lato inline-block text-center text-[13px] text-white'>3</span>
+
+      </a>
+      <a href='' class='mt-[19px]'>
+        <span class='text-gray-grey'>Compare</span>
+      </a>
+
+    </div>
+    <div class='w-fit px-2.5 flex'>
+      <a href='' class='relative'>
+        <img src='/images/icon-heart.svg' alt='' class='inline-block pt-3' />
+        <span
+          class='absolute left-3.5 top-0.5 bg-green-grn w-5 h-5 rounded-full font-lato inline-block text-center text-[13px] text-white'>6</span>
+      </a>
+      <a href='' class='mt-[19px]'>
+        <span class='text-gray-grey'>Wishlist</span>
+      </a>
+    </div>
+    <div class='w-fit px-2.5 flex group'>
+      <a href='' class='relative'>
+        <img src='/images/icon-cart.svg' alt='' class='inline-block pt-3' />
+        <span
+          class='absolute left-3.5 top-0.5 bg-green-grn w-5 h-5 rounded-full inline-block font-lato text-center text-[13px] text-white'>2</span>
+      </a>
+      <a href='' class='mt-[19px]'>
+        <span class='text-gray-grey'>Cart</span>
+      </a>
+      <div
+        class='absolute z-50 invisible group-hover:visible -translate-x-64 w-80 h-[378px] bg-white rounded-lg border pt-[30px] pb-[27px] px-5 top-32 shadow-xls'>
+        <div>
+          <ul class='border-b-2 block pb-7'>
+            <li class='flex justify-between pb-6'>
+              <div>
+                <a href=''>
+                  <img src='/images/thumbnail-3.jpg' alt='' class='w-20 h-20' />
+                </a>
+              </div>
+              <div>
+                <h4><a href='' class='text-green-grn'>Daisy Casual Bag</a></h4>
+                <h4>1 x $800.00</h4>
+              </div>
+              <div>
+                <i class='fas fa-times text-gray-grey'></i>
+              </div>
+            </li>
+            <li class='flex justify-between'>
+              <div>
+                <a href=''>
+                  <img src='/images/thumbnail-2.jpg' alt='' class='w-20 h-20' />
+                </a>
+              </div>
+              <div>
+                <h4><a href='' class='text-green-grn'>Corduroy Shirts</a></h4>
+                <h4>1 x $3200.00</h4>
+              </div>
+              <div>
+                <i class='fas fa-times text-gray-grey'></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class='mt-4'>
+          <div class='flex justify-between'>
+            <span class='text-gray-grey font-semibold'>Total</span>
+            <strong class='text-green-grn'>$4000.00</strong>
+          </div>
+          <div class='flex justify-between mt-5'>
+            <a href=''
+              class='border-2 border-green-grn rounded-[4px] px-4 py-1.5 text-green-grn hover:text-white hover:bg-orange-orn transition-colors duration-300 ease-in-out'>Viewcart</a>
+            <a href=''
+              class='border-2 border-green-grn rounded-[4px] px-4 py-1.5 bg-green-grn text-white hover:text-green-grn hover:bg-orange-orn transition-colors duration-300 ease-in-out'>Checkout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='w-fit px-2.5 flex group'>
+      <a href=''>
+        <img src='/images/icon-user.svg' alt='' class='inline-block pt-3' />
+      </a>
+      <a href='' class='mt-[19px]'>
+        <span class='text-gray-grey'>Account</span>
+      </a>
+      <div
+        class='absolute invisible z-50 group-hover:visible -translate-x-28 w-48 h-[254px] bg-white rounded-lg border pt-[30px] pb-[27px] px-5 top-32 shadow-xls'>
+        <a href='' class='font-lato block pb-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/user-svgrepo-com.svg' alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2 hover:stroke-green-grn' />
+          My Account
+        </a>
+        <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/location-information-svgrepo-com.svg' alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2' />Order Tracking
+        </a>
+        <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/bag-business-tools-basket-6-svgrepo-com.svg' alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2' />My Voucher
+        </a>
+        <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/heart-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />My Wishlist
+        </a>
+        <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/setting-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />Settings
+        </a>
+        <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
+          <img src='/images/sign-out-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />Sign out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- mobile -->
+<div class='w-full h-[38px] py-[7px] flex items-center justify-center bg-green-grn xl:hidden'>
+  <span class='text-white font-lato text-sm'>Grand opening,
+    <strong>up to 15%</strong>
+    off all items. Only
+    <strong>3 days</strong>
+    left</span>
+</div>
+
+<!-- navbar -->
+<nav class='hidden xl:block xl:sticky xl:top-0 xl:z-20 xl:bg-white'>
+  <div class='w-full border-b h-fit'>
+    <div class='flex justify-between px-3 py-4'>
+      <div class='flex'>
+        <div class='mr-8 relative'>
+          <button id='menubtn'
+            class='bg-green-600 rounded-md font-quicksand font-bold block px-[20px] py-[10px] text-white text-base'>
+            <img src='images/menu-navigation-grid-1528-svgrepo-com.svg' class='w-4 h-4 inline-block stroke-white mb-0.5'
+              alt='' />
+            Browse All Categories
+            <i class='fas fa-chevron-down text-[12px] text-white pl-3' id='arrow'></i>
+          </button>
+          <div id='dropmenu'
+            class='absolute z-10 invisible w-[486.6px] h-auto bg-white rounded-lg border border-green-ligrn py-[30px] px-5 top-20 shadow-xls'>
+            <div class='flex'>
+              <ul>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-1.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Milks and Dairies
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-2.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Clothing & Beauty
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-3.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Pet Foods & Toy
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-4.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Baking material
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-5.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Fresh fruit
+                  </a>
+                </li>
+                <li id='moreitem1'
+                  class='hidden transition-all duration-300 ease-in w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/icon-1.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Milks and Dairies
+                  </a>
+                </li>
+                <li id='moreitem2'
+                  class='hidden transition-all duration-300 ease-in w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/icon-2.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Clothing & beauty
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-6.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Wines & Drinks
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-7.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Fresh Seafood
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-8.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Fast Food
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href=''
+                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'>
+                    <img src='images/category-9.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Vegetables
+                  </a>
+                </li>
+                <li
+                  class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'>
+                  <a href='' class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn'>
+                    <img src='images/category-10.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Bread and Juice
+                  </a>
+                </li>
+                <li id='moreitem3'
+                  class='hidden transition-all duration-300 ease-in w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls'>
+                  <a href='' class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn'>
+                    <img src='images/icon-3.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Wines & Drinks
+                  </a>
+                </li>
+                <li id='moreitem4'
+                  class='hidden transition-all duration-300 ease-in w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls'>
+                  <a href='' class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn'>
+                    <img src='images/icon-4.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                    Fresh Seafood
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <button id='plusbtn'
+              class='w-full mt-3 bg-white font-quicksand text-gray-blck font-bold flex items-center justify-center transition-transform duration-1000 ease-linear'>
+              <i id='plus' class='fas fa-plus-circle text-green-grn text-2xl pr-2'></i>
+              Show more...
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <nav id='navxl'>
+            <ul class='flex py-3 justify-between'>
+              <li>
+                <img src='/images/icon-hot.svg' alt='' class='inline-block align-top' />
+                <a href=''
+                  class='font-quicksand font-bold text-gray-blck transition-colors duration-300 hover:text-green-grn pr-4'>Deals</a>
+              </li>
+              <li class='cover group'>
+                <a href='' class='gsapt font-quicksand font-bold text-green-grn px-5 pb-8'>
+                  Home
+                  <i class='fas fa-chevron-down text-[9px] align-middle text-green-grn pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute z-10 invisible group-hover:visible w-[250px] duration-100 h-60 bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>Home
+                    1</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Home
+                    2</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Home
+                    3</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Home
+                    4</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Home
+                    5</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Home
+                    6</a>
+                </div>
+
+              </li>
+              <li>
+                <a href=''
+                  class='font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn'>About</a>
+              </li>
+              <li class='cover group'>
+                <a href=''
+                  class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'>Shop
+                  <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute z-10 invisible group-hover:visible duration-100 w-[250px] h-[470px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                  <ul>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        Grid - Right Sidebar</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        Grid - Left Sidebar</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        List - Right Sidebar</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        List - Left Sidebar</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        Wide</a>
+                    </li>
+                    <li class='cover group/product'>
+                      <a href=''
+                        class='gsapt font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Single
+                        Product
+                        <i class='fas fa-chevron-right ml-24 text-[9px]'></i>
+                      </a>
+                      <div
+                        class='gsapd absolute z-10 invisible group-hover/product:visible translate-x-[210px] w-[240px] h-[188.6px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                        <ul>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Product
+                              - Right Sidebar</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Product
+                              - Left Sidebar</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Product
+                              - No Sidebar</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Product
+                              - Vendor Infor</a>
+                          </li>
+                        </ul>
+                      </div>
+
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        - Filter</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        - Wishlist</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        - Cart</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        - Checkout</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        - Compare</a>
+                    </li>
+                    <li class='cover group/invoice'>
+                      <a href=''
+                        class='gsapt font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                        Invoice
+                        <i class='fas fa-chevron-right ml-[108px] text-[9px]'></i>
+                      </a>
+                      <div
+                        class='gsapd absolute z-10 invisible group-hover/invoice:visible duration-100 translate-x-[210px] translate-y-52 w-[240px] h-[258.6px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                        <ul>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 1</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 2</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 3</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 4</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 5</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Shop
+                              Invoice 6</a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class='cover group'>
+                <a href=''
+                  class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'>Vendors
+                  <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute z-10 invisible group-hover:visible duration-100 w-[250px] h-60 bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    Grid</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    List</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    Details 01</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    Details 02</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    Dashboard</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Vendors
+                    Guide</a>
+                </div>
+              </li>
+              <li class='cover group'>
+                <a href=''
+                  class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'>Mega
+                  Menu
+                  <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute flex justify-between z-10 left-3 pt-5 pb-[27px] px-10 top-[81px] invisible group-hover:visible duration-100 w-[1495px] h-[376.2px] bg-white rounded-b-lg border shadow-xls'>
+                  <ul>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-bold text-xl text-green-grn hover:text-orange-orn transition-colors duration-300'>Fruit
+                        & Vegetables</a>
+                      <ul>
+                        <li class='pt-5 pb-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Meat
+                            & Poultry</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Fresh
+                            Vegetables</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Herbs
+                            & Seasonings</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Cuts
+                            & Sprouts</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Exotic
+                            Fruits & Veggies</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Packaged
+                            Produce</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-bold text-xl text-green-grn hover:text-orange-orn transition-colors duration-300'>Breakfast
+                        & Dairy</a>
+                      <ul>
+                        <li class='pt-5 pb-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Milk
+                            & Flavoured Milk</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Butter
+                            & Margarine</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Eggs
+                            Substitutes</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Marmalades</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Sour
+                            Cream</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Cheese</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-bold text-xl text-green-grn hover:text-orange-orn transition-colors duration-300'>Meat
+                        & Seafood</a>
+                      <ul>
+                        <li class='pt-5 pb-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Breakfast
+                            Sausage</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Dinner
+                            Sausage</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Chicken</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Sliced
+                            Deli Meat</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Wild
+                            Caught Fillets</a>
+                        </li>
+                        <li class='py-2'>
+                          <a href=''
+                            class='font-quicksand font-bold text-[15px] text-gray-grey hover:text-green-grn transition-colors duration-300'>Crab
+                            and Shellfish</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <div class='relative'>
+                    <a href=''>
+                      <img src='/images/banner-menu.png' alt='' />
+                    </a>
+                    <div class='absolute top-10 left-7'>
+                      <h4 class='font-lato text-gray-blck mb-2'>HOT DEALS</h4>
+                      <h3 class='font-quicksand font-bold text-2xl text-gray-blck mb-3'>Don't miss
+                        <br />
+                        Trending
+                      </h3>
+                      <h1 class='text-green-darkgrn font-quicksand font-bold text-2xl mb-8'>
+                        Save to 50%</h1>
+                      <a href=''
+                        class='w-[120px] h-[42px] bg-green-grn font-quicksand font-bold text-white py-3 px-6 rounded-3xl hover:bg-pink-pnk transition-colors duration-300'>Shop
+                        now</a>
+                    </div>
+                    <div class='absolute top-14 right-10'>
+                      <div class='w-20 h-20 bg-yellow-darkyellow rounded-full flex justify-center items-center'>
+                        <span class='font-quicksand font-bold'>25% <br /> off</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class='cover group'>
+                <a href=''
+                  class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'>Blog
+                  <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute z-10 invisible group-hover:visible duration-100 w-[250px] h-[205.6px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                  <ul>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>Blog
+                        Category Grid</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Blog
+                        Category List</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Blog
+                        Category Big</a>
+                    </li>
+                    <li>
+                      <a href=''
+                        class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Blog
+                        Category Wide</a>
+                    </li>
+                    <li class='cover group/post'>
+                      <a href=''
+                        class='gsapt font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Single
+                        Post
+                        <i class='fas fa-chevron-right ml-[110px] text-[9px]'></i>
+                      </a>
+                      <div
+                        class='gsapd absolute z-10 invisible group-hover/post:visible duration-100 translate-x-[210px] translate-y-12 w-[240px] h-[153.6px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                        <ul>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>Left
+                              Sidebar</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-3 hover:text-green-grn transition-colors duration-300'>Right
+                              Sidebar</a>
+                          </li>
+                          <li>
+                            <a href=''
+                              class='font-quicksand font-semibold text-gray-grey text-sm block py-3 hover:text-green-grn transition-colors duration-300'>No
+                              Sidebar</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class='cover group'>
+                <a href=''
+                  class='gsapt font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn pb-8'>Pages
+                  <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
+                </a>
+                <div
+                  class='gsapd absolute z-10 invisible group-hover:visible duration-100 w-[250px] h-[415.6px] bg-white rounded-lg border pt-5 pb-[27px] px-5 top-24 shadow-xls'>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block pb-2 hover:text-green-grn transition-colors duration-300'>About
+                    Us</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Contact</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>My
+                    Account</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Login</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Register</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Forgot
+                    Password</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Reset
+                    Password</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Purchase
+                    Guide</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Privacy
+                    Policy</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>Terms
+                    of Service</a>
+                  <a href=''
+                    class='font-quicksand font-semibold text-gray-grey text-sm block py-2 hover:text-green-grn transition-colors duration-300'>404
+                    Page</a>
+
+                </div>
+              </li>
+              <li>
+                <a href=''
+                  class='font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn'>Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div>
+        <div class='flex'>
+          <img src='/images/icon-headphone.svg' alt='' class='inline-block mr-3' />
+          <p class='text-green-grn font-bold font-quicksand text-2xl block'>1900 - 888
+            <span class='text-gray-grey text-xs font-lato font-light block leading-none'>24/7 Support Center</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- breadcrumb -->
+{{! <div class="w-full h-[67px] p-5 border-b border-gray-bggray flex items-center">
+  <a href=""
+    class="font-quicksand text-sm font-semibold text-green-grn hover:text-orange-orn transition-colors duration-200 ">
+    <i class="fas fa-home"></i>
+    Home
+  </a>
+  <span class="px-3 pt-1 text-[6px] text-gray-grey">
+    <i class="fas fa-chevron-right"></i>
+  </span>
+</div> }}
+
+<!-- mobile nav -->
+<nav class='sticky top-0 bg-white z-10 w-full h-[70px] py-5 px-3 drop-shadow-md xl:hidden'>
+  <div class='flex items-center justify-between h-[28px]'>
+    <div class='block md:hidden'>
+      <button>
+        <i class='openmenu fas fa-bars text-2xl'></i>
+      </button>
+    </div>
+    <div>
+      <a href=''>
+        <img src='/images/logo.svg' alt='' class='w-[150px] h-[46.04px] md:ml-[50px] md:w-[180px] md:h-[55.25px]' />
+      </a>
+    </div>
+    <div class='hidden md:block'>
+      <button>
+        <i class='openmenu2 fas fa-bars text-2xl'></i>
+      </button>
+    </div>
+    <div class='flex justify-between items-center relative md:mr-[50px]'>
+      <a href='' class='mr-4'>
+        <img src='/images/icon-heart.svg' alt='' />
+        <span
+          class='absolute -top-1.5 left-4 w-5 h-5 bg-green-grn inline-block font-lato text-[13px] text-center rounded-full text-white'>4</span>
+      </a>
+      <a href=''>
+        <img src='/images/icon-cart.svg' alt='' />
+        <span
+          class='absolute -top-1.5 -right-2 w-5 h-5 bg-green-grn inline-block text-[13px] text-center rounded-full text-white'>2</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Slide menu mobile -->
+<div id='slidemenu'
+  class='fixed transform -translate-x-full transition duration-300 left-0 top-0 bottom-0 w-[380px] h-full bg-white z-20 overflow-y-scroll'>
+  <div class='flex h-[79px] px-[30px] py-[15px] border-b border-gray-ligsoc justify-between items-center'>
+    <a href=''>
+      <img src='/images/logo.svg' alt='' class='inline-block w-[140px] h-[43px]' />
+    </a>
+    <button>
+      <i id='closemenu'
+        class='far fa-times-circle text-2xl text-green-grn hover:rotate-180 transition-all duration-200'></i>
+    </button>
+  </div>
+  <div class='p-[30px]'>
+    <form
+      class='w-80 h-[45px] mb-4 bg-gray-bgli flex items-center justify-between rounded-md hover:border hover:border-green-ligrn'>
+      <input type='text' name='' id='' placeholder='Search for items...'
+        class='outline-none bg-gray-bgli pl-5 h-full w-full py-[3px] placeholder:text-gray-blck placeholder:text-sm rounded-l-md' />
+      <button class='w-[44px] h-[45px] px-[14px]'>
+        <i class='fas fa-search'></i>
+      </button>
+    </form>
+    <div>
+      <!-- nav list -->
+      <nav>
+        <ul>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='hometitle' class='font-quicksand font-bold text-gray-blck text-sm'>Home</a>
+            <span id='homedrop' class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='homebtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='homelist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 1</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 2</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 3</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 4</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 5</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Home 6</a>
+              </li>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='shoptitle' class='font-quicksand font-bold text-gray-blck text-sm'>Shop</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='shopbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='shoplist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Grid -
+                  Right Sidebar</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Grid -
+                  Left Sidebar</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop List -
+                  Right Sidebar</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop List -
+                  Left Sidebar</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Wide</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='producttitle' class='font-quicksand text-sm text-gray-blck font-medium'>Single
+                  Product</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='productbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+              <ul id='productlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Product -
+                    Right Sidebar</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Product -
+                    Left Sidebar</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Product - No
+                    Sidebar</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Product -
+                    Vendor Infor</a>
+                </li>
+              </ul>
+
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop -
+                  Filter</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop -
+                  Wishlist</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop -
+                  Cart</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop -
+                  Checkout</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop -
+                  Compare</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='invtitle' class='font-quicksand text-sm text-gray-blck font-medium'>Shop Invoice</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='invbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+              <ul id='invlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    1</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    2</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    3</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    4</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    5</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Shop Invoice
+                    6</a>
+                </li>
+              </ul>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='ventitle' class='font-quicksand font-bold text-gray-blck text-sm'>Vendors</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='venbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='venlist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor
+                  Grid</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor
+                  List</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor Details
+                  01</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor Details
+                  02</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor
+                  Dashboard</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Vendor
+                  Guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='megatitle' class='font-quicksand font-bold text-gray-blck text-sm'>Mega Menu</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='megabtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+
+            <ul id='megalist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='wmtitle' class='font-quicksand text-sm text-gray-blck font-medium'>Women's Fashion</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='wmbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+              <!-- Women's fashion menu -->
+              <ul id='wmlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Dresses</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Blouses &
+                    Shirts</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Hoodies &
+                    Sweatshirts</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Women's
+                    Sets</a>
+                </li>
+              </ul>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='mtitle' class='font-quicksand text-sm text-gray-blck font-medium'>Men's Fashion</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='mbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+              <!-- Men's Fashion menu -->
+              <ul id='mlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Jackets</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Casual Faux
+                    Leather</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Genuine
+                    Leather</a>
+                </li>
+              </ul>
+
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='techtitle' class='font-quicksand text-sm text-gray-blck font-medium'>Technology</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='techbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+              <!-- technology menu -->
+              <ul id='techlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Gaming
+                    Laptops</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Ultraslim
+                    Laptops</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Tablets</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Laptop
+                    Accessories</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Tablet
+                    Accessories</a>
+                </li>
+              </ul>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='blogtitle' class='font-quicksand font-bold text-gray-blck text-sm'>Blog</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='blogbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='bloglist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Blog Category
+                  Grid
+                </a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Blog Category
+                  List</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Blog Category
+                  Big</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Blog Category
+                  Wide</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' id='layouttitle' class='font-quicksand text-sm text-gray-blck font-medium'>Single Product
+                  Layout</a>
+                <span class='w-[30px] h-[30px] text-center absolute right-0'>
+                  <i id='layoutbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+                </span>
+              </li>
+
+              <!-- single product layout menu -->
+              <ul id='layoutlist' class='ml-4 hidden'>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Left
+                    Sidebar</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Right
+                    Sidebar</a>
+                </li>
+                <li class='h-[24px] ml-4 py-[16px]'>
+                  <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>No
+                    Sidebar</a>
+                </li>
+              </ul>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative border-b border-gray-bggray'>
+            <a href='' id='pagetitle' class='font-quicksand font-bold text-gray-blck text-sm'>Pages</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='pagebtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='pagelist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>About Us</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Contact</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>My Account</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Login</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Register</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Forgot
+                  Password</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Reset
+                  Password</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Purchase
+                  Guide</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Privacy
+                  Policy</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>Terms Of
+                  Service</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium hover:text-green-grn'>404 Page</a>
+              </li>
+            </ul>
+          </li>
+          <li class='w-full py-[13px] relative'>
+            <a href='' id='lngtitle' class='font-quicksand font-bold text-gray-blck text-sm'>Language</a>
+            <span class='w-[30px] h-[30px] text-center absolute right-0'>
+              <i id='lngbtn' class='fas fa-chevron-down text-[10px] text-gray-blck'></i>
+            </span>
+            <ul id='lnglist' class='hidden'>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium focus:text-green-grn'>English</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium focus:text-green-grn'>French</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium focus:text-green-grn'>German</a>
+              </li>
+              <li class='h-[24px] ml-4 py-[16px]'>
+                <a href='' class='font-quicksand text-sm text-gray-blck font-medium focus:text-green-grn'>Spanish</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class='w-full h-[140px] mt-[17px] mb-[30px] p-5 border-2 border-gray-bggray rounded-lg flex items-center'>
+      <div>
+        <div class='mb-2'>
+          <a href='' class='font-lato text-sm text-gray-blck font-medium'>
+            <img src='/images/icon-location.svg' alt='' class='w-4 h-4 inline-block mb-2 mr-2' />
+            Our location
+          </a>
+        </div>
+        <div class='mb-2'>
+          <a href='' class='font-lato text-sm text-gray-blck font-medium'>
+            <!-- <img src="/images/icon-user.svg" alt="" class="w-4 h-4 inline-block mb-2 mr-2"> -->
+            <svg width='25' height='25' viewBox='0 0 25 25' fill='none' xmlns='http://www.w3.org/2000/svg'
+              class='w-4 h-4 inline-block mb-2 mr-2'>
+              <g clip-path='url(#clip0)'>
+                <path
+                  d='M21.4443 24.3665H19.4443V19.3235C19.4435 18.5395 19.1317 17.7879 18.5774 17.2335C18.023 16.6791 17.2713 16.3673 16.4873 16.3665H8.40134C7.61733 16.3673 6.86567 16.6791 6.3113 17.2335C5.75693 17.7879 5.44513 18.5395 5.44434 19.3235V24.3665H3.44434V19.3235C3.44592 18.0093 3.96869 16.7494 4.89796 15.8201C5.82723 14.8909 7.08714 14.3681 8.40134 14.3665H16.4873C17.8015 14.3681 19.0614 14.8909 19.9907 15.8201C20.92 16.7494 21.4427 18.0093 21.4443 19.3235V24.3665Z'
+                  fill='#3BB77E' />
+                <path
+                  d='M12.4443 12.3665C11.2577 12.3665 10.0976 12.0146 9.11092 11.3553C8.12422 10.696 7.35519 9.75898 6.90106 8.66262C6.44694 7.56626 6.32812 6.35986 6.55963 5.19598C6.79114 4.03209 7.36258 2.96299 8.2017 2.12388C9.04081 1.28476 10.1099 0.713318 11.2738 0.481807C12.4377 0.250296 13.6441 0.369116 14.7404 0.823242C15.8368 1.27737 16.7739 2.0464 17.4332 3.0331C18.0924 4.01979 18.4443 5.17983 18.4443 6.36652C18.4427 7.95733 17.8101 9.48253 16.6852 10.6074C15.5604 11.7323 14.0352 12.3649 12.4443 12.3665ZM12.4443 2.36652C11.6532 2.36652 10.8799 2.60111 10.2221 3.04064C9.56426 3.48017 9.05157 4.10488 8.74882 4.83579C8.44607 5.56669 8.36686 6.37096 8.5212 7.14688C8.67554 7.9228 9.0565 8.63554 9.61591 9.19495C10.1753 9.75436 10.8881 10.1353 11.664 10.2897C12.4399 10.444 13.2442 10.3648 13.9751 10.062C14.706 9.75929 15.3307 9.2466 15.7702 8.5888C16.2097 7.931 16.4443 7.15764 16.4443 6.36652C16.4443 5.30565 16.0229 4.28824 15.2728 3.53809C14.5226 2.78795 13.5052 2.36652 12.4443 2.36652Z'
+                  fill='#3BB77E' />
+              </g>
+              <defs>
+                <clipPath id='clip0'>
+                  <rect width='24' height='24' fill='white' transform='translate(0.444336 0.366516)' />
+                </clipPath>
+              </defs>
+            </svg>
+            Log in/Sign up
+          </a>
+        </div>
+        <div>
+          <a href='' class='font-lato text-sm text-gray-blck font-medium'>
+            <img src='/images/icon-contact.svg' alt='' class='w-4 h-4 inline-block mb-2 mr-2' />
+            (+01) - 2345 - 6789
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='font-lato mt-9'>
+      <div class=''>
+        <h6 class='font-bold font-quicksand text-gray-blck text-base mb-3'>Follow Us</h6>
+        <div>
+          <a href='#'
+            class='w-7 h-7 bg-green-grn rounded-full inline-block transform transition-all duration-700 ease-in-out hover:-translate-y-1'>
+            <svg class='w-3.5 h-7 m-auto fill-white transition duration-500 hover:fill-gray-ligsoc'
+              xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 124 124' viewBox='0 0 124 124'>
+              <path fill-rule='evenodd'
+                d='M50.1,62.4v44.4c0,0.6,0.5,1.2,1.2,1.2h16.5c0.6,0,1.2-0.5,1.2-1.2V61.6h11.9
+                          c0.6,0,1.1-0.5,1.2-1.1L83.1,47c0.1-0.7-0.5-1.3-1.2-1.3H68.9v-9.6c0-2.3,1.8-4.1,4.1-4.1h9.2c0.6,0,1.2-0.5,1.2-1.2V17.3
+                          c0-0.6-0.5-1.2-1.2-1.2H66.6c-9.1,0-16.5,7.4-16.5,16.5v13.1h-8.2c-0.6,0-1.2,0.5-1.2,1.2v13.6c0,0.6,0.5,1.2,1.2,1.2h8.2V62.4z'
+                clip-rule='evenodd' />
+            </svg>
+          </a>
+          <a href='#'
+            class='w-7 h-7 bg-green-grn rounded-full inline-block transform transition-all duration-700 ease-in-out hover:-translate-y-1'>
+            <svg class='w-3.5 h-7 m-auto fill-white transition duration-500 hover:fill-gray-ligsoc'
+              xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 124 124' viewBox='0 0 124 124'>
+              <path
+                d='M106.3,36.6c-2.8,1.3-6,2.1-9,2.6c1.5-0.2,3.6-2.9,4.5-3.9c1.3-1.6,2.4-3.5,3-5.5
+                          c0.1-0.2,0.1-0.4,0-0.5c-0.2-0.1-0.3,0-0.5,0c-3.4,1.8-6.9,3.2-10.7,4.1c-0.3,0.1-0.5,0-0.7-0.2c-0.3-0.4-0.6-0.7-0.9-1
+                          c-1.6-1.3-3.3-2.4-5.2-3.2c-2.5-1-5.3-1.5-8-1.3c-2.6,0.2-5.2,0.9-7.5,2.1c-2.3,1.2-4.4,2.9-6.1,5c-1.7,2.1-3,4.6-3.6,7.3
+                          c-0.6,2.6-0.6,5.1-0.2,7.7c0.1,0.4,0,0.5-0.4,0.4C46.2,48.1,34,42.9,24.1,31.6c-0.4-0.5-0.7-0.5-1,0c-4.3,6.5-2.2,16.9,3.2,22.1
+                          c0.7,0.7,1.5,1.4,2.3,2c-0.3,0.1-3.9-0.3-7.1-2c-0.4-0.3-0.6-0.1-0.7,0.4c0,0.7,0,1.3,0.1,2.1c0.8,6.6,5.4,12.7,11.6,15
+                          c0.7,0.3,1.6,0.6,2.4,0.7c-1.4,0.3-2.9,0.5-7,0.2c-0.5-0.1-0.7,0.2-0.5,0.6C30.4,81.1,37,83.6,42,85c0.7,0.1,1.3,0.1,2,0.3
+                          c0,0.1-0.1,0.1-0.1,0.1c-1.6,2.5-7.3,4.4-10,5.3c-4.8,1.7-10.1,2.4-15.2,1.9c-0.8-0.1-1-0.1-1.2,0c-0.2,0.1,0,0.3,0.2,0.5
+                          c1,0.7,2.1,1.3,3.2,1.9c3.2,1.7,6.6,3.1,10.1,4.1c18.2,5,38.8,1.3,52.5-12.3C94.2,76.2,98,61.5,98,46.7c0-0.6,0.7-0.9,1.1-1.2
+                          c2.8-2.1,5-4.6,7.1-7.4c0.5-0.6,0.4-1.2,0.4-1.4c0,0,0-0.1,0-0.1C106.6,36.4,106.7,36.4,106.3,36.6z' />
+              <path fill-rule='evenodd'
+                d='M43.9 101C51.4 101 44.2 101 43.9 101 44.9 101 43.8 101 43.9 101zM43.9 101C43.8 101 42.4 101 43.9 101 43.9 101 43.6 101 43.9 101zM46.9 101.1C46.9 100.9 48.5 101.1 46.9 101.1 46.9 101 47.1 101.1 46.9 101.1zM78.5 27.9c-.1.1-.2.1-.4 0C78.2 27.9 78.4 27.9 78.5 27.9z'
+                clip-rule='evenodd' />
+            </svg>
+          </a>
+          <a href='#'
+            class='w-7 h-7 bg-green-grn rounded-full inline-block transform transition-all duration-700 ease-in-out hover:-translate-y-1'>
+            <svg class='w-3.5 h-7 m-auto fill-white transition duration-500 hover:fill-gray-ligsoc'
+              xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 124 124' viewBox='0 0 124 124'>
+              <path d='M87.2,33.6c-3.1,0-5.6,2.5-5.6,5.6c0,3.1,2.5,5.6,5.6,5.6c3.1,0,5.6-2.5,5.6-5.6
+                          C92.8,36.1,90.3,33.6,87.2,33.6z M62.2,40.8c-13,0-23.6,10.6-23.6,23.6s10.6,23.6,23.6,23.6s23.6-10.6,23.6-23.6
+                          S75.2,40.8,62.2,40.8z M62.2,79.6c-8.4,0-15.1-6.8-15.1-15.1c0-8.4,6.8-15.1,15.1-15.1c8.4,0,15.1,6.8,15.1,15.1
+                          C77.3,72.8,70.5,79.6,62.2,79.6z M109.9,44.8c0-15.9-12.9-28.8-28.8-28.8H43c-15.9,0-28.8,12.9-28.8,28.8v38.1
+                          c0,15.9,12.9,28.8,28.8,28.8H81c15.9,0,28.8-12.9,28.8-28.8V44.8z M100.8,82.8c0,10.9-8.9,19.8-19.8,19.8H43
+                          c-10.9,0-19.8-8.9-19.8-19.8V44.8C23.2,33.8,32,25,43,25H81c10.9,0,19.8,8.9,19.8,19.8V82.8z' />
+            </svg>
+          </a>
+          <a href='#'
+            class='w-7 h-7 bg-green-grn rounded-full inline-block transform transition-all duration-700 ease-in-out hover:-translate-y-1'>
+            <svg class='w-3.5 h-7 m-auto fill-white transition duration-500 hover:fill-gray-ligsoc'
+              xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 124 124' viewBox='0 0 124 124'>
+              <path
+                d='M67.8,83.8c-5.5-0.4-7.8-3.1-12.1-5.7c-1.9,10-4.2,19.7-9.5,26.3c-1.6,1.9-4.7,1-4.8-1.5
+                          c-0.8-16,4.7-28.7,7.4-42c-5.1-8.7,0.6-26.1,11.5-21.8c13.4,5.3-11.6,32.2,5.2,35.6C83,78.1,90.2,44.3,79.3,33.3
+                          c-15.7-15.9-45.6-0.4-41.9,22.4c0.7,4.3,4.3,6.3,3.9,10.6c-0.3,2.7-3,4.2-5.4,3.1c-6.9-3.2-9.1-10.3-8.8-19.4
+                          c0.6-17.2,15.5-29.3,30.4-31c18.9-2.1,36.6,6.9,39,24.7C99.3,63.6,88,85.3,67.8,83.8L67.8,83.8z' />
+            </svg>
+          </a>
+          <a href='#'
+            class='w-7 h-7 bg-green-grn rounded-full inline-block transform transition-all duration-700 ease-in-out hover:-translate-y-1'>
+            <svg class='w-3.5 h-7 m-auto fill-white transition duration-500 hover:fill-gray-ligsoc'
+              xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 124 124' viewBox='0 0 124 124'>
+              <path d='M107.2,50c0-10.9-8.8-19.7-19.7-19.7h-51c-10.9,0-19.7,8.8-19.7,19.7V74
+                          c0,10.9,8.8,19.7,19.7,19.7h51c10.9,0,19.7-8.8,19.7-19.7V50z M75,63.2L54.7,74.4c-0.9,0.5-1.7-0.2-1.7-1.2V50.3
+                          c0-1,0.8-1.7,1.7-1.2l20.5,11.7C76.1,61.4,75.9,62.7,75,63.2z' />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='mt-9'>
+      <p class='text-gray-grey text-sm leading-7'>Copyright 2022 © Nest.All rights reserved. Powered by AliThemes</p>
+    </div>
+  </div>
+</div>
