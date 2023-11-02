@@ -27,6 +27,11 @@ export class ProductCategory extends Base {
   @Expose()
   slug: string;
 
+  @Column()
+  @ApiProperty({ example: faker.image.url(), description: '' })
+  @IsString()
+  image: string;
+
   @OneToMany(() => Product, (product) => product.productCategory)
   @IsArray()
   public products?: Product[];

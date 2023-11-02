@@ -11,7 +11,6 @@ export class AppController {
   @Render('pages/home/index')
   async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
     const cate = await this.categoryService.findAll(paginationQuery);
-
     return {
       title: 'Home Page',
       content: 'Home Page',
