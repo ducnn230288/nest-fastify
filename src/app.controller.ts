@@ -106,13 +106,17 @@ export class AppController {
   @Get('/en')
   @Render('pages/home')
  async root( @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
+  constructor(private categoryService: ProductCategoryService) {}
+  @Get('/')
+  @Render('pages/home/index')
+  async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
     const cate = await this.categoryService.findAll(paginationQuery);
- 
+
     return {
       title: 'Home Page',
       content: 'Home Page',
-      categories : cate[0] || []
-    }
+      categories: cate[0] || [],
+    };
   }
   */
 }

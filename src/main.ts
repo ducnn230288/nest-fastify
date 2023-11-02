@@ -59,8 +59,8 @@ async function bootstrap(): Promise<void> {
     return options.fn();
   });
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/partials'));
-  hbs.registerPartials(join(process.cwd(), './other', '/views/pages'));
 
   app.setViewEngine({
     engine: { handlebars: hbs },
