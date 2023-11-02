@@ -20,7 +20,7 @@ export class AppController {
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   ) {}
   @Get('')
-  @Render('home/home')
+  @Render('home/index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   root(): Promise<any | void> {
     return hbs.registerPartials(join(process.cwd(), './other', '/views/home'));
