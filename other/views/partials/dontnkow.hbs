@@ -1,0 +1,203 @@
+<div class='relative group overflow-hidden'>
+  <div class='absolute z-10 w-full h-0 top-[calc(50%-1.125rem)]'>
+    <div class='flex justify-between container mx-auto'>
+      <span
+        id='home-left'
+        class='transition-all duration-500 ease-in-out relative sm:-left-10 group-hover:sm:left-0 opacity-0 group-hover:opacity-100 bg-gray-300 hover:bg-blue-600 hover:text-white p-2 rounded-full cursor-pointer'
+      >a</span>
+      <span
+        id='home-right'
+        class='transition-all duration-500 ease-in-out relative sm:-right-10 group-hover:sm:right-0 opacity-0 group-hover:opacity-100 bg-gray-300 hover:bg-blue-600 hover:text-white p-2 rounded-full cursor-pointer'
+      >a</span>
+    </div>
+  </div>
+  <div class='swiper mySwiper w-full h-96'>
+    <div class='swiper-wrapper'>
+      <div class='swiper-slide'>
+        <div class='container mx-auto px-12'>
+          <h1 class='gsap left text-2xl xl:text-4xl text-blue-500 font-bold leading-none mt-8'>
+            Enhance Vietnam’s intellectual value
+          </h1>
+          <p class='gsap top text-gray-500 leading-none'> Choose the service you want us to help with </p>
+          <div class='gsap right mt-10 mb-3'>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>Digital Transformation </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              R&amp;D Services
+            </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              Outsourcing Services
+            </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              Product Development
+            </p>
+          </div>
+          <a class='handle-dialog gsap bottom bg-blue-500 text-white px-5 py-3 inline-block rounded-3xl'>
+            Get Started
+          </a>
+        </div>
+        <img
+          alt='Row 01, col 01'
+          class='lazy gsap zoom w-full h-96 object-cover absolute top-0 left-0 -z-10'
+          data-src='https://via.placeholder.com/440x560?text=slider1'
+        />
+      </div>
+      <div class='swiper-slide'>
+        <div class='container mx-auto px-12'>
+          <h1 class='gsap left text-2xl xl:text-4xl text-blue-500 font-bold leading-none mt-8'>
+            Enhance Vietnam’s intellectual value
+          </h1>
+          <p class='gsap top text-gray-500 leading-none'> Choose the service you want us to help with </p>
+          <div class='gsap right mt-10 mb-3'>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>Digital Transformation </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              R&amp;D Services
+            </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              Outsourcing Services
+            </p>
+            <p class='font-bold text-2xl xl:text-3xl text-blue-800'>
+              <i class='las la-check-circle'></i>
+              Product Development
+            </p>
+          </div>
+          <a class='handle-dialog gsap bottom bg-blue-500 text-white px-5 py-3 inline-block rounded-3xl'>
+            Get Started
+          </a>
+        </div>
+        <img
+          alt='Row 01, col 01'
+          class='lazy gsap zoom w-full h-96 object-cover absolute top-0 left-0 -z-10'
+          data-src='https://via.placeholder.com/440x560?text=slider2'
+        />
+      </div>
+    </div>
+    <div class='swiper-pagination'></div>
+  </div>
+  <template id='template-1'>
+    <div class='myClass'>I {{test}} like: {{test}} tes</div>
+  </template>
+</div>
+
+<select class='js-choice'>
+  <option value=''>444</option>
+  <option>111</option>
+  <option>222</option>
+  <option>333</option>
+</select>
+<script>
+  new Choices('.js-choice');
+</script>
+<div>
+  <button onmouseenter='popper(this)' onmouseleave='popper(this, false)'>My button</button>
+  <div
+    class='absolute max-w-max transition-opacity duration-300 ease-in-out popper bg-blue-500 text-white p-2 rounded'
+    style='opacity: 0'
+  >My tooltip</div>
+</div>
+
+<!--  glightbox 3  -->
+<ul class='grid grid-cols-3 gap-3 container mx-auto mt-3'>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm1.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm1.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm2.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm2.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm3.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm3.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm4.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm4.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm5.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm5.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+  <li class='relative group'>
+    <a
+      href='https://biati-digital.github.io/glightbox/demo/img/large/gm6.jpg'
+      class='glightbox w-full overflow-hidden block'
+    >
+      <span
+        class='absolute top-0 left-0 bg-black w-full h-full z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30'
+      ></span>
+      <img
+        class='w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0'
+        src='https://biati-digital.github.io/glightbox/demo/img/small/gm6.jpg'
+        alt='image'
+      />
+    </a>
+  </li>
+</ul>
+
+<div id='echarts' class='w-full h-52'></div>
+<div class='pl-5'>
+  <input
+    data-inputmask="'mask': '99-9999999'"
+    class='h-auto text-sm bg-white border border-solid border-gray-300 px-2 text-gray-600 rounded-md'
+  />
+</div>
