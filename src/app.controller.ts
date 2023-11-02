@@ -1,28 +1,37 @@
 import { Get, Controller, Render, ValidationPipe, Query } from '@nestjs/common';
 import hbs from 'hbs';
 import { join } from 'path';
-import { ProductCategoryService } from './module/product/service/product-category.service';
+import { ProductCategoryService, DataService, PostService, ParameterService, ProductService } from '@service';
 import { PaginationQueryDto } from './shared/base';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly dataService: DataServicee,
+    private readonly dataService: DataService,
     private readonly postService: PostService,
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
+    private readonly categoryService: ProductCategoryService,
+    private readonly productService: ProductService,
   ) {}
   @Get('')
-  @Render('home/index')
+  @Render('pages/home/index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  root(): Promise<any | void> {
-    return hbs.registerPartials(join(process.cwd(), './other', '/views/home'));
+  async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
+    const categorys = await this.categoryService.findAll(paginationQuery);
+    const products = await this.productService.findAll(paginationQuery);
+
+    return {
+      title: 'Home Page',
+      content: 'Home Page',
+      categories: categorys,
+      products: products,
+    };
   }
 
+  /*
   // @Get('auth/profile')
   // @Render('auth/profile')
   // profile(): void {}
-  /* */
-  /*
 
   @Get('')
   @Render('index')
