@@ -58,6 +58,12 @@ async function bootstrap(): Promise<void> {
   hbs.registerHelper('raw-helper', function (options) {
     return options.fn();
   });
+
+  hbs.registerHelper('priceOfDiscount', function (price, discount) {
+    // Define your logic to determine the class based on the index
+    return Math.round(price - (price * discount) / 100);
+  });
+
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/partials'));

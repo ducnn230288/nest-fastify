@@ -86,7 +86,7 @@ export class Product extends Base {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  @JoinColumn()
+  @JoinColumn({ name: 'product_category_id' })
   public productCategory?: ProductCategory;
 
   @Column({ name: 'product_store_id' })
@@ -98,7 +98,7 @@ export class Product extends Base {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  @JoinColumn()
+  @JoinColumn({ name: 'product_store_id' })
   public productStore?: ProductStore;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)

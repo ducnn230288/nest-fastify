@@ -17,13 +17,13 @@ export class AppController {
   @Render('pages/home/index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
-    const categorys = await this.categoryService.findAll(paginationQuery);
-    const products = await this.productService.findAll(paginationQuery);
+    const [categories, ...a] = await this.categoryService.findAll(paginationQuery);
+    const [products, ...b] = await this.productService.findAll(paginationQuery);
 
     return {
       title: 'Home Page',
       content: 'Home Page',
-      categories: categorys,
+      categories: categories,
       products: products,
     };
   }
