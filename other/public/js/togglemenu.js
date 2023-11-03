@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable prefer-const */
-export const toggleDropDown = (element: HTMLButtonElement) => {
+const toggleDropDown = (element) => {
   const arrow = document.getElementById('arrow');
   const dropdownMenu = document.getElementById('dropmenu');
   element.addEventListener('click', () =>
@@ -15,7 +15,7 @@ export const toggleDropDown = (element: HTMLButtonElement) => {
   );
 };
 
-export const toggleDropList = (element: HTMLButtonElement) => {
+const toggleDropList = (element) => {
   const dropList = document.getElementById('category');
   element.addEventListener('click', () =>
     dropList?.classList.contains('invisible')
@@ -24,13 +24,13 @@ export const toggleDropList = (element: HTMLButtonElement) => {
   );
 };
 
-export const chooseItem = (element: HTMLButtonElement) => {
+const chooseItem = (element) => {
   const items = document.querySelectorAll('.item');
   const dropList = document.getElementById('category');
   items?.forEach((item) => {
     item.addEventListener('click', () => {
-      let selectedItem = item.querySelector<HTMLElement>('.itemtext');
-      element.innerText = selectedItem?.innerText!;
+      let selectedItem = item.querySelecto>('.itemtext');
+      element.innerText = selectedItem?.innerText;
       dropList?.classList.contains('invisible')
         ? dropList.classList.remove('invisible')
         : dropList?.classList.add('invisible');
@@ -42,7 +42,7 @@ export const chooseItem = (element: HTMLButtonElement) => {
   });
 };
 
-export const searchItem = (element: HTMLInputElement) => {
+const searchItem = (element) => {
   const options = [
     'All Categories',
     'Milks and Dairies',
@@ -58,7 +58,7 @@ export const searchItem = (element: HTMLInputElement) => {
   ];
   const listitems = document.querySelector('#listitems');
   element.addEventListener('keyup', () => {
-    let arr: any = [];
+    let arr = [];
     let searchedVal = element.value;
     arr = options
       .filter((data) => {
@@ -80,7 +80,7 @@ export const searchItem = (element: HTMLInputElement) => {
   });
 };
 
-export const showMore = (element: HTMLButtonElement) => {
+const showMore = (element) => {
   const moreitem1 = document.querySelector('#moreitem1');
   const moreitem2 = document.querySelector('#moreitem2');
   const moreitem3 = document.querySelector('#moreitem3');
@@ -97,7 +97,7 @@ export const showMore = (element: HTMLButtonElement) => {
   });
 };
 
-export const dropHome = (element: HTMLElement) => {
+const dropHome = (element) => {
   const hometitle = document.querySelector('#hometitle');
   const homelist = document.querySelector('#homelist');
   element.addEventListener('click', () => {
@@ -111,7 +111,7 @@ export const dropHome = (element: HTMLElement) => {
   });
 };
 
-export const dropShop = (element: HTMLElement) => {
+const dropShop = (element) => {
   const shoptitle = document.querySelector('#shoptitle');
   const shoplist = document.querySelector('#shoplist');
   element.addEventListener('click', () => {
@@ -125,7 +125,7 @@ export const dropShop = (element: HTMLElement) => {
   });
 };
 
-export const dropProduct = (element: HTMLElement) => {
+const dropProduct = (element) => {
   const producttitle = document.querySelector('#producttitle');
   const productlist = document.querySelector('#productlist');
   element.addEventListener('click', () => {
@@ -139,7 +139,7 @@ export const dropProduct = (element: HTMLElement) => {
   });
 };
 
-export const dropInv = (element: HTMLElement) => {
+const dropInv = (element) => {
   const invtitle = document.querySelector('#invtitle');
   const invlist = document.querySelector('#invlist');
   element.addEventListener('click', () => {
@@ -153,7 +153,7 @@ export const dropInv = (element: HTMLElement) => {
   });
 };
 
-export const dropVen = (element: HTMLElement) => {
+const dropVen = (element) => {
   const ventitle = document.querySelector('#ventitle');
   const venlist = document.querySelector('#venlist');
   element.addEventListener('click', () => {
@@ -167,7 +167,7 @@ export const dropVen = (element: HTMLElement) => {
   });
 };
 
-export const dropMega = (element: HTMLElement) => {
+const dropMega = (element) => {
   const megatitle = document.querySelector('#megatitle');
   const megalist = document.querySelector('#megalist');
   element.addEventListener('click', () => {
@@ -181,7 +181,7 @@ export const dropMega = (element: HTMLElement) => {
   });
 };
 
-export const dropWomen = (element: HTMLElement) => {
+const dropWomen = (element) => {
   const wmtitle = document.querySelector('#wmtitle');
   const wmlist = document.querySelector('#wmlist');
   element.addEventListener('click', () => {
@@ -195,7 +195,7 @@ export const dropWomen = (element: HTMLElement) => {
   });
 };
 
-export const dropMen = (element: HTMLElement) => {
+const dropMen = (element) => {
   const mtitle = document.querySelector('#mtitle');
   const mlist = document.querySelector('#mlist');
   element.addEventListener('click', () => {
@@ -209,7 +209,7 @@ export const dropMen = (element: HTMLElement) => {
   });
 };
 
-export const dropTech = (element: HTMLElement) => {
+const dropTech = (element) => {
   const techtitle = document.querySelector('#techtitle');
   const techlist = document.querySelector('#techlist');
   element.addEventListener('click', () => {
@@ -223,7 +223,7 @@ export const dropTech = (element: HTMLElement) => {
   });
 };
 
-export const dropBlog = (element: HTMLElement) => {
+const dropBlog = (element) => {
   const blogtitle = document.querySelector('#blogtitle');
   const bloglist = document.querySelector('#bloglist');
   element.addEventListener('click', () => {
@@ -237,7 +237,7 @@ export const dropBlog = (element: HTMLElement) => {
   });
 };
 
-export const dropLayout = (element: HTMLElement) => {
+const dropLayout = (element) => {
   const layouttitle = document.querySelector('#layouttitle');
   const layoutlist = document.querySelector('#layoutlist');
   element.addEventListener('click', () => {
@@ -251,7 +251,7 @@ export const dropLayout = (element: HTMLElement) => {
   });
 };
 
-export const dropPage = (element: HTMLElement) => {
+const dropPage = (element) => {
   const pagetitle = document.querySelector('#pagetitle');
   const pagelist = document.querySelector('#pagelist');
   element.addEventListener('click', () => {
@@ -265,7 +265,7 @@ export const dropPage = (element: HTMLElement) => {
   });
 };
 
-export const dropLng = (element: HTMLElement) => {
+const dropLng = (element) => {
   const lngtitle = document.querySelector('#lngtitle');
   const lnglist = document.querySelector('#lnglist');
   element.addEventListener('click', () => {
@@ -279,14 +279,14 @@ export const dropLng = (element: HTMLElement) => {
   });
 };
 
-export const closeMenu = (element: HTMLElement) => {
+const closeMenu = (element) => {
   const slidemenu = document.querySelector('#slidemenu');
   element.addEventListener('click', () => {
     slidemenu?.classList.add('-translate-x-full');
   });
 };
 
-export const openMenu = (element: HTMLElement) => {
+const openMenu = (element) => {
   const slidemenu = document.querySelector('#slidemenu');
   element.addEventListener('click', () => {
     slidemenu?.classList.remove('-translate-x-full');

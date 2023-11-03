@@ -1,74 +1,74 @@
 <html lang='en'>
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>Vite + TS</title>
-    <!-- google font -->
-    <link rel='preconnect' href='https://fonts.googleapis.com' />
-    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' />
-    <link
-      href='https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap'
-      rel='stylesheet'
-    />
+
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Vite + TS</title>
+  <!-- google font -->
+  <link rel='preconnect' href='https://fonts.googleapis.com' />
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' />
+  <link
+    href='https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap'
+    rel='stylesheet' />
 
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3/dist/css/glightbox.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/glightbox@3/dist/js/glightbox.min.js"></script>
-    
-    
-    <link rel='stylesheet' href='css/style.css' />
-  </head>
-  <body class='overflow-x-hidden'>
-    {{> header}}
-    {{!-- context --}}
-    <main class="">
-      {{> body}}
-    </main>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3/dist/css/glightbox.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/glightbox@3/dist/js/glightbox.min.js"></script>
 
-    {{> footer}}
 
+  <link rel='stylesheet' href='css/style.css' />
+</head>
+
+<body class='overflow-x-hidden'>
+  {{> header}}
+  {{!-- context --}}
+  <main class="">
+    {{> body}}
+  </main>
+
+  {{> footer}}
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+    integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
   <!--  echarts 5  -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 
-    <!-- inputmask 5  -->
-    <script src="https://cdn.jsdelivr.net/npm/inputmask@5/dist/inputmask.min.js"></script>
+  <!-- inputmask 5  -->
+  <script src="https://cdn.jsdelivr.net/npm/inputmask@5/dist/inputmask.min.js"></script>
 
-    <!--  sweetalert2 11  -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <!--  sweetalert2 11  -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <!--  swiper 10  -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <!--  swiper 10  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-    <!--  gsap 3  -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <!--  gsap 3  -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
-    <!--  choices.js 10 [nice-select2]-->
-    <script src="https://cdn.jsdelivr.net/npm/choices.js@10//assets/scripts/choices.min.js"></script>
-    <!--  floating-ui.dom 1 -->
-    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1/dist/floating-ui.core.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1/dist/floating-ui.dom.umd.min.js"></script>
+  <!--  choices.js 10 [nice-select2]-->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <!--  floating-ui.dom 1 -->
+  <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1/dist/floating-ui.core.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1/dist/floating-ui.dom.umd.min.js"></script>
 
 
-    <!--  vanilla-lazyload 17 -->
-    <script src='https://cdn.jsdelivr.net/npm/vanilla-lazyload@17/dist/lazyload.min.js'></script>
+  <!--  vanilla-lazyload 17 -->
+  <script src='https://cdn.jsdelivr.net/npm/vanilla-lazyload@17/dist/lazyload.min.js'></script>
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>
-    <!--  line-awesome 1  -->
-    <link
-      href='https://cdn.jsdelivr.net/npm/line-awesome@1/dist/line-awesome/css/line-awesome.min.css'
-      rel='stylesheet'
-    />
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>
+  <!--  line-awesome 1  -->
+  <link href='https://cdn.jsdelivr.net/npm/line-awesome@1/dist/line-awesome/css/line-awesome.min.css'
+    rel='stylesheet' />
 
-  
+
   <script>
-    function popper (e, show = true,popper = '.popper') {
+    function popper(e, show = true, popper = '.popper') {
       const tooltip = e.parentElement.querySelector(popper);
       window.FloatingUIDOM.computePosition(e, tooltip, {
         placement: 'right',
-      }).then(({x, y}) => {
+      }).then(({ x, y }) => {
         Object.assign(tooltip.style, {
           left: show ? `${x}px` : '-1000px',
           top: show ? `${y}px` : '-1000px',
@@ -78,7 +78,8 @@
     }
   </script>
 
-  {{!-- <script>
+  {{!--
+  <script>
     const element = document.getElementById('menubtn')
     const arrow = document.getElementById('arrow');
     const dropdownMenu = document.getElementById('dropmenu');
@@ -94,7 +95,8 @@
     );
   </script> --}}
 
-  <script src="js/index2.js"></script>
+  {{!-- <script src="js/index2.js"></script> --}}
+  
+</body>
 
-  </body>
 </html>
