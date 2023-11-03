@@ -15,14 +15,14 @@ export class AppController {
   ) {}
   @Get('')
   @Render('pages/home/index')
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
-    const [categories, ...a] = await this.categoryService.findAll(paginationQuery);
+    // eslint-disable-next-line prefer-const
+    let [categories, ...a] = await this.categoryService.findAll(paginationQuery);
     const [products, ...b] = await this.productService.findAll(paginationQuery);
-
+    const featureCate = categories.slice(0, 3);
+    categories = categories.map((item) => Object.assign(item, { countProds: item.products?.length }));
     return {
-      title: 'Home Page',
-      content: 'Home Page',
+      categoriFilter: featureCate,
       categories: categories,
       products: products,
     };

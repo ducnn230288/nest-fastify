@@ -1,55 +1,7 @@
 <!-- home Featured Categories -->
-<section class='py-6'>
-  <div class='px-3'>
-    <div class='flex items-center justify-between gap-x-5 mb-11'>
-      <div class='sm:flex gap-x-7 items-end max-w-[850px]'>
-        <h3 class='text-3xl text-gray-blck font-bold font-quicksand'>Featured Categories</h3>
-        <ul class='flex flex-wrap gap-x-7'>
-          {{#each categories}}
-            <li
-              class='text-base font-semibold font-quicksand text-gray-blck hover:text-green-grn hover:-translate-y-1 transition-transform duration-300'
-            >
-              <a href='#'>{{name}}</a>
-            </li>
-          {{/each}}
-        </ul>
-      </div>
-      <div class='hidden sm:flex gap-5'>
-        <span
-          id='home-left'
-          class='btn-prev-cate transition-all w-10 h-10 !flex items-center justify-center duration-500 ease-in-out after:!content-none bg-gray-300 hover:bg-green-grn hover:text-white p-2 rounded-full cursor-pointer'
-        ><i class='fas fa-chevron-left'></i></span>
-        <span
-          id='home-right'
-          class='btn-next-cate transition-all w-10 h-10 !flex items-center justify-center duration-500 ease-in-out after:!content-none bg-gray-300 hover:bg-green-grn hover:text-white p-2 rounded-full cursor-pointer'
-        ><i class='fas fa-chevron-right'></i></span>
-      </div>
-    </div>
-    <div class='swiper mySwiper-cate mb-5 w-full h-[180px]'>
-      <div class='swiper-wrapper w-full'>
-        {{#each categories}}
-          <div class='swiper-slide'>
-            <div
-              class='w-full rounded-lg border hover:border-[#bce3c9] transition-transform duration-700 h-full mx-auto flex flex-col items-center justify-between py-4 bg-[#f2fce4]'
-            >
-              <figure class='w-20 h-20 mx-auto mb-2'>
-                <a href='#'><img
-                    src='{{image}}'
-                    alt=''
-                    class='object-cover hover:scale-110 transition-transform duration-700'
-                  /></a>
-              </figure>
-              <div class='flex flex-col items-center'>
-                <h6 class='text-gray-blck text-base font-quicksand font-bold hover:text-green-grn'>
-                  <a href=''>{{name}}</a>
-                </h6>
-                <span class='text-sm text-gray-7e'>26 item</span>
-              </div>
-            </div>
-          </div>
-        {{/each}}
 
-        {{! <div class='swiper-slide'>
+{{! 
+        <div class='swiper-slide'>
           <div
             class='w-full rounded-lg border hover:border-[#bce3c9] transition-transform duration-700 h-full mx-auto flex flex-col items-center justify-between py-4 bg-[#fffceb]'
           >
@@ -447,10 +399,5 @@
               <span class='text-sm text-gray-7e'>87 item</span>
             </div>
           </div>
-        </div> }}
-      </div>
-
-      <div class='swiper-pagination'></div>
-    </div>
-  </div>
-</section>
+        </div>
+      </div> }}

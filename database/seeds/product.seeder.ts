@@ -75,6 +75,8 @@ export class ProductSeeder implements Seeder {
         if (!storeExists) {
           const newStore = repoStore.create(item);
           resultStore = await repoStore.save(newStore);
+        } else {
+          resultStore = storeExists;
         }
       }
 
