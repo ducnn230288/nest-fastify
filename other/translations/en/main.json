@@ -25,45 +25,50 @@
       "Address": "Address",
       "CallUs": "Call us",
       "Email": "Email",
-      "Hour": "Hour",
-      "Install": "Install App",
-      "LinkInstall": "From App Store or Google Play",
-      "Payment": "Secured Payment Gateways",
-      "company": {
-        "Company": "Company",
-        "Careers": "Careers",
-        "TermsConditions": "Terms & Conditions",
-        "PrivacyPolicy": "Privacy Policy",
-        "DeliveryInformation": "Delivery Information",
-        "About": "About us",
-        "Contact": "Contact Us"
+      "Hour": "Hours",
+
+      "orther": {
+        "Company": {
+          "Company": "Company",
+          "Careers": "Careers",
+          "TermsConditions": "Terms & Conditions",
+          "PrivacyPolicy": "Privacy Policy",
+          "DeliveryInformation": "Delivery Information",
+          "About": "About us",
+          "Contact": "Contact Us"
+        },
+        "Account": {
+          "SignIn": "Sign In",
+          "ViewCart": "View Cart",
+          "MyWishlist": "My Wishlist",
+          "TrackMyOrder": "Track My Order",
+          "HelpTicket": "Help Ticket",
+          "ShippingDetails": "Shipping Details",
+          "CompareProducts": "Compare Products"
+        },
+        "Corporate": {
+          "BecomeVendor": "Become a Vendor",
+          "AffiliateProgram": "Affiliate Program",
+          "FarmBusiness": "Farm Business",
+          "FarmCareers": "Farm Careers",
+          "OurSuppliers": "Our Suppliers",
+          "Accessibility": "Accessibility",
+          "Promotions": "Promotions"
+        },
+        "Popular": {
+          "MilkAndFlavouredMilk": "Milk & Flavoured Milk",
+          "ButterAndMargarine": "Butter and Margarine",
+          "EggsSubstitutes": "Eggs Substitutes",
+          "Marmalades": "Marmalades",
+          "SourCreamandDips": "Sour Cream and Dips",
+          "TeaAndKombucha": "Tea & Kombucha",
+          "Cheese": "Cheese"
+        }
       },
-      "account": {
-        "SignIn": "Sign In",
-        "ViewCart": "View Cart",
-        "MyWishlist": "My Wishlist",
-        "TrackMyOrder": "Track My Order",
-        "HelpTicket": "Help Ticket",
-        "ShippingDetails": "Shipping Details",
-        "CompareProducts": "Compare Products"
-      },
-      "corporate": {
-        "BecomeVendor": "Become a Vendor",
-        "AffiliateProgram": "Affiliate Program",
-        "FarmBusiness": "Farm Business",
-        "FarmCareers": "Farm Careers",
-        "OurSuppliers": "Our Suppliers",
-        "Accessibility": "Accessibility",
-        "Promotions": "Promotions"
-      },
-      "popular": {
-        "MilkAndFlavouredMilk": "Milk & Flavoured Milk",
-        "ButterAndMargarine": "Butter and Margarine",
-        "EggsSubstitutes": "Eggs Substitutes",
-        "Marmalades": "Marmalades",
-        "SourCreamandDips": "Sour Cream and Dips",
-        "TeaAndKombucha": "Tea & Kombucha",
-        "Cheese": "Cheese"
+      "install": {
+        "Install": "Install App",
+        "LinkInstall": "From App Store or Google Play",
+        "Payment": "Secured Payment Gateways"
       }
     },
     "validation": {}
