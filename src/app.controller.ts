@@ -21,12 +21,12 @@ export class AppController {
     urlLang = '/vn',
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
   ): Promise<any> {
-    const [categories, ...a] = await this.categoryService.findAll(paginationQuery);
-    const [products, ...b] = await this.productService.findAll(paginationQuery);
-
     const { data } = await this.common(language);
 
-    console.log(data);
+    let [categories, ...a] = await this.categoryService.findAll(paginationQuery);
+    const [products, ...b] = await this.productService.findAll(paginationQuery);
+    const featureCate = categories.slice(0, 3);
+    categories = categories.map((item) => Object.assign(item, { countProds: item.products?.length }));
 
     return {
       urlLang,
@@ -34,6 +34,7 @@ export class AppController {
       language: {
         ...data.language,
       },
+      categoriFilter: featureCate,
       categories: categories,
       products: products,
     };

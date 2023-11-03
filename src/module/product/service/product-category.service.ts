@@ -15,7 +15,7 @@ export class ProductCategoryService extends BaseService<ProductCategory> {
   constructor(public repo: ProductCategoryRepository) {
     super(repo);
     this.listQuery = ['name', 'slug'];
-    // this.listJoin = ['products'];
+    this.listJoin = ['products'];
   }
 
   /**
