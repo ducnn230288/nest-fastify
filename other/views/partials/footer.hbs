@@ -1,126 +1,58 @@
 <footer>
   <section class='w-full py-6'>
-    <!-- <div class="px-3" style="background-image: url(/images/banner-9.png)">
+    <div class='px-3' style='background-image: url(/images/banner-9.png)'>
 
-          </div> -->
+    </div>
     <div class='px-3'>
       <div class='lg:grid lg:grid-cols-5 md:grid md:grid-cols-2 flex flex-wrap'>
+
         <div class='font-lato text-gray-blck'>
           <img src='/images/logo.svg' alt='logo' />
-          <h4 class='py-3'>Awesome grocery store website <br /> template</h4>
+          <h4 class='py-3'>{{language.layout.footer.WedStore}}</h4>
           <ul>
             <li class='flex py-2.5'>
               <div>
-                <p><img src='/images/icon-location.svg' class='pr-2 inline-block' alt='location' /><strong>Address:
-                  </strong>
+                <p><img src='/images/icon-location.svg' class='pr-2 inline-block' alt='location' />
+                  <strong>{{language.layout.footer.Address}}:</strong>
                   5171 W Campbell Ave undefined Kent, Utah 53127 United States</p>
               </div>
             </li>
+
             <li class='flex py-2'>
               <img src='/images/icon-contact.svg' class='pr-2' alt='phone' />
-              <p class=''><span class='font-semibold'>Call Us:</span>(+91) - 540-025-124553</p>
+              <p class=''><span class='font-semibold'>{{language.layout.footer.CallUs}}:</span>(+91) - 540-025-124553</p>
             </li>
             <li class='flex py-2.5'>
               <img src='/images/icon-email-2.svg' class='pr-2' alt='mail' />
-              <p class=''><span class='font-semibold'>Email:</span> sale@Nest.com</p>
+              <p class=''><span class='font-semibold'>{{language.layout.footer.Email}}:</span> sale@Nest.com</p>
             </li>
             <li class='flex py-2.5'>
               <img src='/images/icon-clock.svg' class='pr-2' alt='time' />
-              <p class=''><span class='font-semibold'>Hours:</span> 10:00 - 18:00, Mon - Sat</p>
+              <p class=''><span class='font-semibold'>{{language.layout.footer.Hour}}:</span>
+                10:00 - 18:00, Mon - Sat</p>
             </li>
           </ul>
         </div>
-        <div class='text-gray-blck px-3'>
-          <h4 class='font-quicksand font-bold text-2xl pb-3.5'>Company</h4>
-          <ul class='font-lato leading-10'>
-            {{#each language.layout.footer.company}}
-              <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-                <a href='#' class=''>{{this}}</a>
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-        <div class='text-gray-blck px-3'>
-          <h4 class='font-quicksand font-bold text-2xl pb-3.5'>Account</h4>
-          <ul class='font-lato leading-10'>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Sign In</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>View Cart</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>My Wishlist</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Track My Order</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Help Ticket</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Shipping Details</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Compare Products</a>
-            </li>
-          </ul>
-        </div>
-        <div class='text-gray-blck px-3'>
-          <h4 class='font-quicksand font-bold text-2xl pb-3.5'>Corporate</h4>
-          <ul class='font-lato leading-10'>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Become a Vendor</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Affiliate Program</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Farm Business</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Farm Careers</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Our Suppliers</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Accessibility</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Promotions</a>
-            </li>
-          </ul>
-        </div>
-        <div class='text-gray-blck px-3'>
-          <h4 class='font-quicksand font-bold text-2xl pb-3.5'>Popular</h4>
-          <ul class='font-lato leading-10'>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Milk & Flavoured Milk</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Butter and Margarine</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Eggs Substitutes</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Marmalades</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Sour Cream and Dips</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Tea & Kombucha</a>
-            </li>
-            <li class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'>
-              <a href='#' class=''>Cheese</a>
-            </li>
-          </ul>
-        </div>
+
+        {{#each language.layout.footer.orther}}
+          <div class='text-gray-blck px-3'>
+            <h4 class='font-quicksand font-bold text-2xl pb-3.5'>{{@key}}</h4>
+            <ul class='font-lato leading-10'>
+              {{#each this}}
+                <li
+                  class='transform transition-all duration-700 ease-in-out hover:translate-x-2 hover:text-green-grntxt'
+                >
+                  <a href='#' class=''>{{this}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/each}}
         <div class='mb-10'>
-          <h4 class='font-quicksand font-bold text-2xl text-gray-blck mb-4'>Install App</h4>
-          <p class='text-gray-blck'>From App Store or Google Play</p>
+          <h4
+            class='font-quicksand font-bold text-2xl text-gray-blck mb-4'
+          >{{language.layout.footer.install.Install}}</h4>
+          <p class='text-gray-blck'>{{language.layout.footer.install.LinkInstall}}</p>
           <div class='flex pt-6'>
             <a href='#' class='mr-3 transform transition duration-500 ease-in-out hover:-translate-y-2'>
               <img src='/images/app-store.jpg' class='w-32 h-10' alt='' />
@@ -129,7 +61,7 @@
               <img src='/images/google-play.jpg' class='w-32 h-10' alt='' />
             </a>
           </div>
-          <p class='mt-10 text-gray-blck'>Secured Payment Gateways</p>
+          <p class='mt-10 text-gray-blck'>{{language.layout.footer.install.Payment}}</p>
           <img class='mt-4' src='/images/payment-method.png' alt='' />
         </div>
       </div>
