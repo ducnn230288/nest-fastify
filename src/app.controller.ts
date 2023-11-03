@@ -23,6 +23,7 @@ export class AppController {
   ): Promise<any> {
     const { data } = await this.common(language);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, prefer-const
     let [categories, ...a] = await this.categoryService.findAll(paginationQuery);
     const [products, ...b] = await this.productService.findAll(paginationQuery);
     const featureCate = categories.slice(0, 3);
