@@ -22,19 +22,19 @@ export class District extends Base {
   @IsString()
   code: string;
 
-  @Column()
+  @Column({ name: 'code_province' })
   @ApiProperty({ example: faker.finance.bic(), description: '' })
   @Expose()
   @IsString()
   codeProvince: string;
 
+  @ManyToOne(() => Province, (province) => province.districtItem, { eager: false })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
+  public provinceItem?: Province;
+
   @OneToMany(() => Address, (address) => address.districtItem, { eager: false })
   @Expose({ groups: [MaxGroup] })
   item?: Address;
-
-  @ManyToOne(() => Province, (province) => province.districtItem, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
-  public provinceItem?: Province;
 
   @OneToMany(() => Ward, (ward) => ward.districtItem, { eager: false })
   @Expose({ groups: [MaxGroup] })

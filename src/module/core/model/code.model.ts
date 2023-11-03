@@ -37,7 +37,7 @@ export class Code extends Base {
   public item?: CodeType;
 
   @OneToMany(() => User, (user) => user.position)
-  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   @Type(() => User)
   users?: User[];
 }

@@ -9,47 +9,48 @@ import { IsOptional, IsString } from 'class-validator';
 
 @Entity()
 export class Address extends Base {
-  @Column()
+  @Column({ name: 'code_province' })
   @IsString()
   @ApiProperty({ example: faker.location.countryCode('alpha-2'), description: '' })
   codeProvince: string;
 
   @ManyToOne(() => Province, (province) => province.items, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public provinceItem: Province;
 
-  @Column()
+  @Column({ name: 'code_district' })
   @IsString()
   @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
   codeDistrict: string;
 
   @ManyToOne(() => District, (district) => district.item, { eager: true })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem: District;
 
-  @Column()
+  @Column({ name: 'code_ward' })
   @IsString()
   @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
   codeWard: string;
 
   @ManyToOne(() => Ward, (ward) => ward.item, { eager: true })
-  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public wardItem: Ward;
 
-  @Column()
+  @Column({ name: 'specific_address' })
   @Expose()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
   specificAddress: string;
 
-  @Column()
+  @Column({ name: 'user_id' })
   @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   userId?: string;
 
   @ManyToOne(() => User, (user) => user.address, { eager: true })
+  @JoinColumn({ name: 'user_id' })
   @Type(() => User)
   readonly user: User;
 }
