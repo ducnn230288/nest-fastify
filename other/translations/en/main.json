@@ -1,7 +1,7 @@
 {
   "layout": {
     "header": {
-      "About": "About us",
+      "AboutUs": "About us",
       "Me": "My Account",
       "Whistlist": "Whistlist",
       "OrderTracking": "Order Tracking",
@@ -12,13 +12,19 @@
       "Account": "Account",
       "Deals": "Deals",
       "Home": "Home",
+      "About": "About",
       "Shop": "Shop",
       "Vendor": "Vendor",
       "MegaMenu": "Mega Menu",
       "Blog": "Blog",
       "Pages": "Pages",
       "Contact": "Contact",
-      "Support": "Support Center"
+      "Support": "24/7 Support Center",
+      "MyVoucher": "My Voucher",
+      "MyWishlist": "My Wishlist",
+      "Settings": "Settings",
+      "SignOut": "Sign Out",
+      "AllCategory": "Browse All Categories"
     },
     "footer": {
       "WedStore": "Awesome grocery store website template",
@@ -69,6 +75,15 @@
     "validation": {}
   },
   "page": {
-    "home": {}
+    "home": {
+      "FeaturedCategories": "Featured Categories",
+      "PopularProducts": "Popular Products",
+      "DailyBestSells": "Daily Best Sells",
+      "DealsOfTheDay": "Deals Of The Day",
+      "TopSelling": "Top Selling",
+      "TrendingProducts": "Trending Products",
+      "Recentlyadded": "Recently added",
+      "TopRated": "Top Rated"
+    }
   }
 }

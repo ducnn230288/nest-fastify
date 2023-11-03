@@ -145,7 +145,7 @@
 
       </a>
       <a href='' class='mt-[19px]'>
-        <span class='text-gray-grey'>Compare</span>
+        <span class='text-gray-grey'>{{language.layout.header.Whistlist}}</span>
       </a>
 
     </div>
@@ -157,7 +157,7 @@
         >6</span>
       </a>
       <a href='' class='mt-[19px]'>
-        <span class='text-gray-grey'>Wishlist</span>
+        <span class='text-gray-grey'>{{language.layout.header.Compare}}</span>
       </a>
     </div>
     <div class='w-fit px-2.5 flex group'>
@@ -168,7 +168,7 @@
         >2</span>
       </a>
       <a href='' class='mt-[19px]'>
-        <span class='text-gray-grey'>Cart</span>
+        <span class='text-gray-grey'>{{language.layout.header.Cart}}</span>
       </a>
       <div
         class='absolute z-50 invisible group-hover:visible -translate-x-64 w-80 h-[378px] bg-white rounded-lg border pt-[30px] pb-[27px] px-5 top-32 shadow-xls'
@@ -228,7 +228,7 @@
         <img src='/images/icon-user.svg' alt='' class='inline-block pt-3' />
       </a>
       <a href='' class='mt-[19px]'>
-        <span class='text-gray-grey'>Account</span>
+        <span class='text-gray-grey'>{{language.layout.header.Account}}</span>
       </a>
       <div
         class='absolute invisible z-50 group-hover:visible -translate-x-28 w-48 h-[254px] bg-white rounded-lg border pt-[30px] pb-[27px] px-5 top-32 shadow-xls'
@@ -239,30 +239,42 @@
             alt=''
             class='w-4 h-5 inline-block mb-1.5 mr-2 hover:stroke-green-grn'
           />
-          My Account
+          {{language.layout.header.Me}}
         </a>
         <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
           <img
             src='/images/location-information-svgrepo-com.svg'
             alt=''
             class='w-4 h-5 inline-block mb-1.5 mr-2'
-          />Order Tracking
+          />{{language.layout.header.OrderTracking}}
         </a>
         <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
           <img
             src='/images/bag-business-tools-basket-6-svgrepo-com.svg'
             alt=''
             class='w-4 h-5 inline-block mb-1.5 mr-2'
-          />My Voucher
+          />{{language.layout.header.MyVoucher}}
         </a>
         <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
-          <img src='/images/heart-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />My Wishlist
+          <img
+            src='/images/heart-svgrepo-com.svg'
+            alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2'
+          />{{language.layout.header.MyWishlist}}
         </a>
         <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
-          <img src='/images/setting-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />Settings
+          <img
+            src='/images/setting-svgrepo-com.svg'
+            alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2'
+          />{{language.layout.header.Settings}}
         </a>
         <a href='' class='font-lato block py-1 hover:text-green-grn transition-colors duration-500'>
-          <img src='/images/sign-out-svgrepo-com.svg' alt='' class='w-4 h-5 inline-block mb-1.5 mr-2' />Sign out
+          <img
+            src='/images/sign-out-svgrepo-com.svg'
+            alt=''
+            class='w-4 h-5 inline-block mb-1.5 mr-2'
+          />{{language.layout.header.SignOut}}
         </a>
       </div>
     </div>
@@ -293,7 +305,7 @@
               class='w-4 h-4 inline-block stroke-white mb-0.5'
               alt=''
             />
-            Browse All Categories
+            {{language.layout.header.AllCategory}}
             <i class='fas fa-chevron-down text-[12px] text-white pl-3' id='arrow'></i>
           </button>
           <div
@@ -473,11 +485,11 @@
                 <a
                   href=''
                   class='font-quicksand font-bold text-gray-blck transition-colors duration-300 hover:text-green-grn pr-4'
-                >Deals</a>
+                >{{language.layout.header.Deals}}</a>
               </li>
               <li class='cover group'>
                 <a href='' class='gsapt font-quicksand font-bold text-green-grn px-5 pb-8'>
-                  Home
+                  {{language.layout.header.Home}}
                   <i class='fas fa-chevron-down text-[9px] align-middle text-green-grn pl-1'></i>
                 </a>
                 <div
@@ -514,13 +526,13 @@
                 <a
                   href=''
                   class='font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn'
-                >About</a>
+                >{{language.layout.header.About}}</a>
               </li>
               <li class='cover group'>
                 <a
                   href=''
                   class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'
-                >Shop
+                >{{language.layout.header.Shop}}
                   <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
                 </a>
                 <div
@@ -684,7 +696,7 @@
                 <a
                   href=''
                   class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'
-                >Vendors
+                >{{language.layout.header.Vendor}}
                   <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
                 </a>
                 <div
@@ -720,7 +732,7 @@
                 <a
                   href=''
                   class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'
-                >Mega Menu
+                >{{language.layout.header.MegaMenu}}
                   <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
                 </a>
                 <div
@@ -893,7 +905,7 @@
                 <a
                   href=''
                   class='gsapt font-quicksand font-bold text-gray-blck px-5 pb-8 transition-colors duration-300 hover:text-green-grn'
-                >Blog
+                >{{language.layout.header.Blog}}
                   <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
                 </a>
                 <div
@@ -963,7 +975,7 @@
                 <a
                   href=''
                   class='gsapt font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn pb-8'
-                >Pages
+                >{{language.layout.header.Pages}}
                   <i class='fas fa-chevron-down text-[9px] align-middle pl-1'></i>
                 </a>
                 <div
@@ -1020,7 +1032,7 @@
                 <a
                   href=''
                   class='font-quicksand font-bold text-gray-blck px-5 transition-colors duration-300 hover:text-green-grn'
-                >Contact</a>
+                >{{language.layout.header.Contact}}</a>
               </li>
             </ul>
           </nav>
@@ -1030,7 +1042,9 @@
         <div class='flex'>
           <img src='/images/icon-headphone.svg' alt='' class='inline-block mr-3' />
           <p class='text-green-grn font-bold font-quicksand text-2xl block'>1900 - 888
-            <span class='text-gray-grey text-xs font-lato font-light block leading-none'>24/7 Support Center</span>
+            <span
+              class='text-gray-grey text-xs font-lato font-light block leading-none'
+            >{{language.layout.header.Support}}</span>
           </p>
         </div>
       </div>

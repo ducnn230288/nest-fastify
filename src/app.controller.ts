@@ -41,6 +41,17 @@ export class AppController {
     };
   }
 
+  @Get('/vn')
+  @Render('pages/home/index')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async rootEn(
+    language: string = 'vn',
+    urlLang = '/en',
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+  ): Promise<any> {
+    return await this.root(language, urlLang, paginationQuery);
+  }
+
   async common(language: string): Promise<any> {
     const i18n = I18nContext.current()!;
 
@@ -53,7 +64,7 @@ export class AppController {
         language: {
           layout: {
             header: {
-              About: i18n.t('main.layout.header.About', { lang: language }),
+              AboutUs: i18n.t('main.layout.header.About', { lang: language }),
               Me: i18n.t('main.layout.header.Me', { lang: language }),
               Whistlist: i18n.t('main.layout.header.Whistlist', { lang: language }),
               OrderTracking: i18n.t('main.layout.header.OrderTracking', { lang: language }),
@@ -64,6 +75,7 @@ export class AppController {
               Account: i18n.t('main.layout.header.Account', { lang: language }),
               Deals: i18n.t('main.layout.header.Deals', { lang: language }),
               Home: i18n.t('main.layout.header.Home', { lang: language }),
+              About: i18n.t('main.layout.header.About', { lang: language }),
               Shop: i18n.t('main.layout.header.Shop', { lang: language }),
               Vendor: i18n.t('main.layout.header.Vendor', { lang: language }),
               MegaMenu: i18n.t('main.layout.header.MegaMenu', { lang: language }),
@@ -71,6 +83,11 @@ export class AppController {
               Pages: i18n.t('main.layout.header.Pages', { lang: language }),
               Contact: i18n.t('main.layout.header.Contact', { lang: language }),
               Support: i18n.t('main.layout.header.Support', { lang: language }),
+              MyVoucher: i18n.t('main.layout.header.MyVoucher', { lang: language }),
+              MyWishlist: i18n.t('main.layout.header.MyWishlist', { lang: language }),
+              Settings: i18n.t('main.layout.header.Settings', { lang: language }),
+              SignOut: i18n.t('main.layout.header.SignOut', { lang: language }),
+              AllCategory: i18n.t('main.layout.header.AllCategory', { lang: language }),
             },
             footer: {
               WedStore: i18n.t('main.layout.footer.WedStore', { lang: language }),
@@ -216,12 +233,19 @@ export class AppController {
   */
 }
 
+interface ICommon {
+  title: string;
+  content: string;
+  lang: string;
+  isEnglish: boolean;
+  language: object;
+}
 interface Category {
   category: ProductCategoryDto;
   countProds: number;
 }
 
-interface Ihome {
+interface Ihome extends ICommon {
   urlLang: string;
   categories: Array<object>;
   products: ProductDto[];
