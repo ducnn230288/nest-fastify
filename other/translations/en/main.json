@@ -1,0 +1,74 @@
+{
+  "layout": {
+    "header": {
+      "About": "About us",
+      "Me": "My Account",
+      "Whistlist": "Whistlist",
+      "OrderTracking": "Order Tracking",
+      "NeedHelp": "Need Help",
+      "CallUs": "Call us",
+      "Compare": "Compare",
+      "Cart": "Cart",
+      "Account": "Account",
+      "Deals": "Deals",
+      "Home": "Home",
+      "Shop": "Shop",
+      "Vendor": "Vendor",
+      "MegaMenu": "Mega Menu",
+      "Blog": "Blog",
+      "Pages": "Pages",
+      "Contact": "Contact",
+      "Support": "Support Center"
+    },
+    "footer": {
+      "WedStore": "Awesome grocery store website template",
+      "Address": "Address",
+      "CallUs": "Call us",
+      "Email": "Email",
+      "Hour": "Hour",
+      "Install": "Install App",
+      "LinkInstall": "From App Store or Google Play",
+      "Payment": "Secured Payment Gateways",
+      "company": {
+        "Company": "Company",
+        "Careers": "Careers",
+        "TermsConditions": "Terms & Conditions",
+        "PrivacyPolicy": "Privacy Policy",
+        "DeliveryInformation": "Delivery Information",
+        "About": "About us",
+        "Contact": "Contact Us"
+      },
+      "account": {
+        "SignIn": "Sign In",
+        "ViewCart": "View Cart",
+        "MyWishlist": "My Wishlist",
+        "TrackMyOrder": "Track My Order",
+        "HelpTicket": "Help Ticket",
+        "ShippingDetails": "Shipping Details",
+        "CompareProducts": "Compare Products"
+      },
+      "corporate": {
+        "BecomeVendor": "Become a Vendor",
+        "AffiliateProgram": "Affiliate Program",
+        "FarmBusiness": "Farm Business",
+        "FarmCareers": "Farm Careers",
+        "OurSuppliers": "Our Suppliers",
+        "Accessibility": "Accessibility",
+        "Promotions": "Promotions"
+      },
+      "popular": {
+        "MilkAndFlavouredMilk": "Milk & Flavoured Milk",
+        "ButterAndMargarine": "Butter and Margarine",
+        "EggsSubstitutes": "Eggs Substitutes",
+        "Marmalades": "Marmalades",
+        "SourCreamandDips": "Sour Cream and Dips",
+        "TeaAndKombucha": "Tea & Kombucha",
+        "Cheese": "Cheese"
+      }
+    },
+    "validation": {}
+  },
+  "page": {
+    "home": {}
+  }
+}

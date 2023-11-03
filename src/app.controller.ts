@@ -1,8 +1,8 @@
 import { Get, Controller, Render, ValidationPipe, Query } from '@nestjs/common';
-import hbs from 'hbs';
-import { join } from 'path';
 import { ProductCategoryService, DataService, PostService, ParameterService, ProductService } from '@service';
 import { PaginationQueryDto } from './shared/base';
+import { ProductCategoryDto, ProductDto } from '@dto';
+import { I18nContext } from 'nestjs-i18n';
 
 @Controller()
 export class AppController {
@@ -16,15 +16,109 @@ export class AppController {
   @Get('')
   @Render('pages/home/index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
+  async root(
+    language: string = 'en',
+    urlLang = '/vn',
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+  ): Promise<any> {
     const [categories, ...a] = await this.categoryService.findAll(paginationQuery);
     const [products, ...b] = await this.productService.findAll(paginationQuery);
 
+    const { data } = await this.common(language);
+
+    console.log(data);
+
     return {
-      title: 'Home Page',
-      content: 'Home Page',
+      urlLang,
+      ...data,
+      language: {
+        ...data.language,
+      },
       categories: categories,
       products: products,
+    };
+  }
+
+  async common(language: string): Promise<any> {
+    const i18n = I18nContext.current()!;
+
+    return {
+      data: {
+        title: 'Web Store',
+        content: 'Web Store',
+        lang: language,
+        isEnglish: language == 'en',
+        language: {
+          layout: {
+            header: {
+              About: i18n.t('main.layout.header.About', { lang: language }),
+              Me: i18n.t('main.layout.header.Me', { lang: language }),
+              Whistlist: i18n.t('main.layout.header.Whistlist', { lang: language }),
+              OrderTracking: i18n.t('main.layout.header.OrderTracking', { lang: language }),
+              NeedHelp: i18n.t('main.layout.header.NeedHelp', { lang: language }),
+              CallUs: i18n.t('main.layout.header.CallUs', { lang: language }),
+              Compare: i18n.t('main.layout.header.Compare', { lang: language }),
+              Cart: i18n.t('main.layout.header.Cart', { lang: language }),
+              Account: i18n.t('main.layout.header.Account', { lang: language }),
+              Deals: i18n.t('main.layout.header.Deals', { lang: language }),
+              Home: i18n.t('main.layout.header.Home', { lang: language }),
+              Shop: i18n.t('main.layout.header.Shop', { lang: language }),
+              Vendor: i18n.t('main.layout.header.Vendor', { lang: language }),
+              MegaMenu: i18n.t('main.layout.header.MegaMenu', { lang: language }),
+              Blog: i18n.t('main.layout.header.Blog', { lang: language }),
+              Pages: i18n.t('main.layout.header.Pages', { lang: language }),
+              Contact: i18n.t('main.layout.header.Contact', { lang: language }),
+              Support: i18n.t('main.layout.header.Support', { lang: language }),
+            },
+            footer: {
+              WedStore: i18n.t('main.layout.footer.WedStore', { lang: language }),
+              Address: i18n.t('main.layout.footer.Address', { lang: language }),
+              CallUs: i18n.t('main.layout.footer.CallUs', { lang: language }),
+              Email: i18n.t('main.layout.footer.Email', { lang: language }),
+              Hour: i18n.t('main.layout.footer.Hour', { lang: language }),
+              Install: i18n.t('main.layout.footer.Install', { lang: language }),
+              LinkInstall: i18n.t('main.layout.footer.LinkInstall', { lang: language }),
+              Payment: i18n.t('main.layout.footer.Payment', { lang: language }),
+              company: {
+                Company: i18n.t('main.layout.footer.company.Company', { lang: language }),
+                Careers: i18n.t('main.layout.footer.company.Careers', { lang: language }),
+                TermsConditions: i18n.t('main.layout.footer.company.TermsConditions', { lang: language }),
+                PrivacyPolicy: i18n.t('main.layout.footer.company.PrivacyPolicy', { lang: language }),
+                DeliveryInformation: i18n.t('main.layout.footer.company.DeliveryInformation', { lang: language }),
+                About: i18n.t('main.layout.footer.company.About', { lang: language }),
+                Contact: i18n.t('main.layout.footer.company.Contact', { lang: language }),
+              },
+              account: {
+                SignIn: i18n.t('main.layout.footer.account.SignIn', { lang: language }),
+                ViewCart: i18n.t('main.layout.footer.account.ViewCart', { lang: language }),
+                MyWishlist: i18n.t('main.layout.footer.account.MyWishlist', { lang: language }),
+                TrackMyOrder: i18n.t('main.layout.footer.account.TrackMyOrder', { lang: language }),
+                HelpTicket: i18n.t('main.layout.footer.account.HelpTicket', { lang: language }),
+                ShippingDetails: i18n.t('main.layout.footer.account.ShippingDetails', { lang: language }),
+                CompareProducts: i18n.t('main.layout.footer.account.CompareProducts', { lang: language }),
+              },
+              corporate: {
+                BecomeVendor: i18n.t('main.layout.footer.corporate.BecomeVendor', { lang: language }),
+                AffiliateProgram: i18n.t('main.layout.footer.corporate.AffiliateProgram', { lang: language }),
+                FarmBusiness: i18n.t('main.layout.footer.corporate.FarmBusiness', { lang: language }),
+                FarmCareers: i18n.t('main.layout.footer.corporate.FarmCareers', { lang: language }),
+                OurSuppliers: i18n.t('main.layout.footer.corporate.OurSuppliers', { lang: language }),
+                Accessibility: i18n.t('main.layout.footer.corporate.Accessibility', { lang: language }),
+              },
+              popular: {
+                MilkAndFlavouredMilk: i18n.t('main.layout.footer.popular.MilkAndFlavouredMilk', { lang: language }),
+                ButterAndMargarine: i18n.t('main.layout.footer.popular.ButterAndMargarine', { lang: language }),
+                EggsSubstitutes: i18n.t('main.layout.footer.popular.EggsSubstitutes', { lang: language }),
+                Marmalades: i18n.t('main.layout.footer.popular.Marmalades', { lang: language }),
+                SourCreamandDips: i18n.t('main.layout.footer.popular.SourCreamandDips', { lang: language }),
+                TeaAndKombucha: i18n.t('main.layout.footer.popular.TeaAndKombucha', { lang: language }),
+                Cheese: i18n.t('main.layout.footer.popular.Cheese', { lang: language }),
+              },
+            },
+            validation: {},
+          },
+        },
+      },
     };
   }
 
@@ -118,4 +212,15 @@ export class AppController {
     };
   }
   */
+}
+
+interface Category {
+  category: ProductCategoryDto;
+  countProds: number;
+}
+
+interface Ihome {
+  urlLang: string;
+  categories: Array<object>;
+  products: ProductDto[];
 }
