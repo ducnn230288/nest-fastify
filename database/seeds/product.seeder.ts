@@ -28,7 +28,7 @@ export class ProductSeeder implements Seeder {
       //seed category
       const dataCategories: ProductCategory[] = [
         await factoryManager.get(ProductCategory).make({ name: 'Thiết bị điện tử', children: [] }),
-        await factoryManager.get(ProductCategory).make(),
+        ...(await factoryManager.get(ProductCategory).saveMany(10)),
       ];
       // const newCategory = repoCategory.create(dataCategory);
       for (let i = 0; i < 1; i++) {
@@ -64,34 +64,36 @@ export class ProductSeeder implements Seeder {
       }
 
       //seed store
-      const dataStore: ProductStore = await factoryManager.get(ProductStore).make({
-        name: 'Cửa hàng điện tử',
-      });
-      dataStore.userId = user?.id;
+      const dataStores: ProductStore[] = await factoryManager.get(ProductStore).saveMany(1, { userId: user?.id });
 
-      const storeExists = await repoStore
-        .createQueryBuilder('base')
-        .andWhere(`base.name=:name`, { name: dataStore.name })
-        .getOne();
+      for (const item of dataStores) {
+        const storeExists = await repoStore
+          .createQueryBuilder('base')
+          .andWhere(`base.name=:name`, { name: item.name })
+          .getOne();
 
-      if (!storeExists) {
-        const newStore = repoStore.create(dataStore);
-        resultStore = await repoStore.save(newStore);
+        if (!storeExists) {
+          const newStore = repoStore.create(item);
+          resultStore = await repoStore.save(newStore);
+        }
       }
 
       //seed product
-      const dataProduct: Product = await factoryManager.get(Product).make();
-      dataProduct.productCategoryId = resultCategory!.id || '';
-      dataProduct.productStoreId = resultStore!.id || '';
+      const dataProducts: Product[] = await factoryManager.get(Product).saveMany(10, {
+        productCategoryId: resultCategory!.id,
+        productStoreId: resultStore!.id,
+      });
 
-      const productExists = await repoProduct
-        .createQueryBuilder('base')
-        .andWhere(`base.name=:name`, { name: dataProduct.name })
-        .getOne();
+      for (const item of dataProducts) {
+        const productExists = await repoProduct
+          .createQueryBuilder('base')
+          .andWhere(`base.name=:name`, { name: item.name })
+          .getOne();
 
-      if (!productExists) {
-        const newStore = repoProduct.create(dataProduct);
-        resultProduct = await repoProduct.save(newStore);
+        if (!productExists) {
+          const newStore = repoProduct.create(item);
+          resultProduct = await repoProduct.save(newStore);
+        }
       }
     }
   }
