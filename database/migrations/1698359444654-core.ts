@@ -20,6 +20,9 @@ export class Core1698359444654 implements MigrationInterface {
       `CREATE TABLE "data_type" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" character varying NOT NULL, "is_primary" boolean NOT NULL DEFAULT false, CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE ("code"), CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "file" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "type" integer NOT NULL, "url" character varying NOT NULL, "description" character varying, "data" character varying, "status" integer NOT NULL DEFAULT '0', "user_id" character varying NOT NULL, CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE ("url"), CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `CREATE TABLE "parameter" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "code" character varying NOT NULL, "vn" character varying, "en" character varying, CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
@@ -118,6 +121,7 @@ export class Core1698359444654 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "post_translation"`);
     await queryRunner.query(`DROP TABLE "post"`);
     await queryRunner.query(`DROP TABLE "parameter"`);
+    await queryRunner.query(`DROP TABLE "file"`);
     await queryRunner.query(`DROP TABLE "data_type"`);
     await queryRunner.query(`DROP TABLE "data_translation"`);
     await queryRunner.query(`DROP TABLE "data"`);
