@@ -22,17 +22,17 @@ export class Ward extends Base {
   @IsString()
   code: string;
 
-  @Column()
+  @Column({ name: 'code_district' })
   @ApiProperty({ example: faker.finance.bic(), description: '' })
   @Expose()
   @IsString()
   codeDistrict: string;
 
+  @ManyToOne(() => District, (district) => district.wardItem, { eager: false })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
+  public districtItem?: District;
+
   @OneToMany(() => Address, (address) => address.wardItem, { eager: false })
   @Expose({ groups: [MaxGroup] })
   item?: Address;
-
-  @ManyToOne(() => District, (district) => district.wardItem, { eager: false })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
-  public districtItem?: District;
 }
