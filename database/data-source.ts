@@ -25,6 +25,11 @@ import {
   User,
   UserRole,
   UserTeam,
+  Question,
+  QuestionTest,
+  Task,
+  TaskTimesheet,
+  TaskWork,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -54,6 +59,11 @@ const options: DataSourceOptions & SeederOptions = {
     UserTeam,
     DayOff,
     Booking,
+    Question,
+    QuestionTest,
+    Task,
+    TaskTimesheet,
+    TaskWork,
   ],
   migrations: [Core1698359444654, Member1698359719624],
   seeds: [MainSeeder],

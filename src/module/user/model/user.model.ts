@@ -26,8 +26,9 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, Booking, UserTeam } from '@model';
+import { UserRole, Code, Address, Booking, UserTeam, QuestionTest, Task } from '@model';
 import { Example, MaxGroup, OnlyUpdateGroup, Base, setImage } from '@shared';
+import { TaskTimesheet } from '../../member/model/task-timesheet.model';
 
 @Entity()
 export class User extends Base {
@@ -182,4 +183,27 @@ export class User extends Base {
   @OneToMany(() => User, (user) => user.manager)
   @Type(() => User)
   readonly members?: User[];
+
+  @OneToMany(() => QuestionTest, (data) => data.userId)
+  @Type(() => QuestionTest)
+  readonly tests?: QuestionTest[];
+
+  @OneToMany(() => TaskTimesheet, (data) => data.userId)
+  @Type(() => TaskTimesheet)
+  readonly timesheet?: TaskTimesheet[];
+
+  @ManyToMany(() => Task, (team) => team.assignees, { eager: true })
+  @Type(() => Task)
+  @IsOptional()
+  @JoinTable({
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_task_id',
+      referencedColumnName: 'id',
+    },
+  })
+  tasks?: Task[];
 }
