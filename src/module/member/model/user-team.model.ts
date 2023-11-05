@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
@@ -22,9 +22,10 @@ export class UserTeam extends Base {
 
   @ManyToOne(() => User, (user) => user.managers, { eager: true }) //
   @Type(() => User)
+  @JoinColumn({ name: 'manager_id' })
   manager: User;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'manager_id' })
   @IsUUID()
   @IsOptional()
   managerId?: string;

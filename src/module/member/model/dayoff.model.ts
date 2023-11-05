@@ -41,7 +41,7 @@ export class DayOff extends Base {
   @Max(2)
   time: number;
 
-  @Column({ nullable: true, type: 'real' })
+  @Column({ nullable: true, type: 'real', name: 'time_number' })
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 1 }), description: '' })
   @IsDecimal()
   @Min(0.5)
@@ -55,50 +55,50 @@ export class DayOff extends Base {
   @IsOptional()
   image: string;
 
-  @Column()
+  @Column({ name: 'date_leave_start' })
   @ApiProperty({ example: faker.date.soon({ days: 1 }), description: '' })
   @IsDateString()
   dateLeaveStart: Date;
 
-  @Column()
+  @Column({ name: 'date_leave_end' })
   @ApiProperty({ example: faker.date.soon({ days: 10 }), description: '' })
   @IsDateString()
   dateLeaveEnd: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'approved_at' })
   @ApiProperty({ example: faker.date.soon({ days: 10 }), description: '' })
   @IsDateString()
   approvedAt: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'approved_by_id' })
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   approvedById: string;
 
   @ManyToOne(() => User, (user) => user.id, { eager: true })
-  @JoinColumn({ name: 'approvedById', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'approved_by_id', referencedColumnName: 'id' })
   @Type(() => User)
   @Expose({ groups: [MaxGroup] })
   approvedBy: User;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'reason_reject' })
   @IsString()
   @IsOptional()
   reasonReject: string;
 
-  @Column()
+  @Column({ name: 'staff_id' })
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()
   staffId: string;
 
   @ManyToOne(() => User, (user) => user.id, { eager: true })
-  @JoinColumn({ name: 'staffId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'staff_id', referencedColumnName: 'id' })
   @Type(() => User)
   @Expose({ groups: [MaxGroup] })
   staff: User;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'manager_id' })
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   @IsUUID()
@@ -106,6 +106,7 @@ export class DayOff extends Base {
 
   @ManyToOne(() => User, (user) => user.members, { eager: true })
   @Type(() => User)
+  @JoinColumn({ name: 'manager_id' })
   @Expose({ groups: [MaxGroup] })
   readonly manager?: User;
 }

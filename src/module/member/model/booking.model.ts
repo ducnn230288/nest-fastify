@@ -19,28 +19,29 @@ export class Booking extends Base {
   @IsString()
   description: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'start_time' })
   @ApiProperty({ example: faker.date.soon(), description: '' })
   @IsString()
   @IsOptional()
   startTime: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'end_time' })
   @ApiProperty({ example: faker.date.soon(), description: '' })
   @IsString()
   @IsOptional()
   endTime: Date;
 
-  @Column()
+  @Column({ name: 'user_id' })
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsString()
   userId: string;
 
   @ManyToOne(() => User, (user) => user.bookingRoom, { eager: true })
   @Type(() => User)
+  @JoinColumn({ name: 'user_id' })
   readonly user: User;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'type_code' })
   @Expose()
   @ApiProperty({ example: 'room', description: '' })
   @IsString()
@@ -48,10 +49,10 @@ export class Booking extends Base {
   readonly typeCode?: string;
 
   @ManyToOne(() => CodeType)
-  @JoinColumn({ name: 'type', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'type_code', referencedColumnName: 'code' })
   readonly type?: CodeType;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'item_code' })
   @Expose()
   @ApiProperty({ example: 'ROOM', description: '' })
   @IsString()
@@ -59,6 +60,6 @@ export class Booking extends Base {
   readonly itemCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'itemCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'item_code', referencedColumnName: 'code' })
   readonly item?: Code;
 }

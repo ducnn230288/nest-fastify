@@ -1,20 +1,19 @@
-import { faker } from '@faker-js/faker';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import '@factories';
 import { BaseTest } from '@test';
-import { CreateDayoffRequestDto, CreateUserRequestDto, StatusDayoffRequestDto, UpdateDayoffRequestDto } from '@dto';
-import { DayOff, User, UserRole } from '@model';
-import { P_DAYOFF_CREATE, UserRoleService, UserService } from '@service';
-import { Example } from '@shared';
+import { CreateDayoffRequestDto } from '@dto';
+import { DayOff, User } from '@model';
+import { UserService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
   const factoryManager = useSeederFactoryManager();
   let dataDayoff: CreateDayoffRequestDto;
-  let dataUpdate: UpdateDayoffRequestDto;
   let dataUser;
   let dataUpdateSlug;
 
@@ -79,6 +78,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(resultDayoff));
     }
   });
+
   it('Update data status [PUT /api/dayoff/{id}/status]', async () => {
     dataUpdateSlug = {
       status: 1,
@@ -105,5 +105,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
+
   return afterAll(BaseTest.initAfterAll);
 };

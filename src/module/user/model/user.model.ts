@@ -156,10 +156,19 @@ export class User extends Base {
   @ManyToMany(() => UserTeam, (team) => team.users, { eager: true })
   @Type(() => UserTeam)
   @IsOptional()
-  @JoinTable()
+  @JoinTable({
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_team_id',
+      referencedColumnName: 'id',
+    },
+  })
   teams?: UserTeam[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'manager_id' })
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   @IsUUID()
@@ -167,6 +176,7 @@ export class User extends Base {
 
   @ManyToOne(() => User, (user) => user.members, { eager: true })
   @Type(() => User)
+  @JoinColumn({ name: 'manager_id' })
   readonly manager?: User;
 
   @OneToMany(() => User, (user) => user.manager)
