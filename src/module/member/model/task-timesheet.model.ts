@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Exclude, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsDateString, IsString } from 'class-validator';
+import { IsDateString, IsString, IsUUID } from 'class-validator';
 
 import { TaskWork, User } from '@model';
 import { Base } from '@shared';
@@ -20,7 +20,7 @@ export class TaskTimesheet extends Base {
   finish?: Date;
 
   @Column({ name: 'user_id' })
-  @IsString()
+  @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   userId?: string;
