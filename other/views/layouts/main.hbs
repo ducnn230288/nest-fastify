@@ -1,16 +1,16 @@
 <html lang='en'>
-
-<head>
-  <meta charset='UTF-8' />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>Vite + TS</title>
-  <!-- google font -->
-  <link rel='preconnect' href='https://fonts.googleapis.com' />
-  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' />
-  <link
-    href='https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap'
-    rel='stylesheet' />
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{{#if title}}{{title}}{{else}} Vite + TS{{/if}}</title>
+    <!-- google font -->
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' />
+    <link
+      href='https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap'
+      rel='stylesheet'
+    />
 
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3/dist/css/glightbox.min.css" />
@@ -47,11 +47,11 @@
   <!--  gsap 3  -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
-  <!--  choices.js 10 [nice-select2]-->
-  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-  <!--  floating-ui.dom 1 -->
-  <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1/dist/floating-ui.core.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1/dist/floating-ui.dom.umd.min.js"></script>
+    <!--  choices.js 10 [nice-select2]-->
+    {{!-- <script src="https://cdn.jsdelivr.net/npm/choices.js@10//assets/scripts/choices.min.js"></script> --}}
+    <!--  floating-ui.dom 1 -->
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1/dist/floating-ui.core.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1/dist/floating-ui.dom.umd.min.js"></script>
 
 
   <!--  vanilla-lazyload 17 -->
@@ -95,8 +95,7 @@
     );
   </script> --}}
 
-  {{!-- <script src="js/index2.js"></script> --}}
-  
-</body>
+  {{!-- <script src="/js/index.js"></script> --}}
+  <script src="/js/index2.js"></script>
 
 </html>
