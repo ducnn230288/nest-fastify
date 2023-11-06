@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BookingController, DayoffController, UserTeamController } from '@controller';
-import { Booking, DayOff, Question, QuestionTest, UserTeam, Task, TaskTimesheet, TaskWork } from '@model';
+import { Booking, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
 import { BookingService, DayoffService, FileService, UserService, UserTeamService } from '@service';
 import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking, UserTeam, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork]),
+    TypeOrmModule.forFeature([Booking, UserTeam, DayOff, Question, QuestionTest, TaskTimesheet, TaskWork, Task]),
   ],
   controllers: [BookingController, UserTeamController, DayoffController],
   providers: [
