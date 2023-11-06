@@ -20,3 +20,5 @@ export * from './module/user/service/user-role.service';
 export * from './module/member/service/booking.service';
 export * from './module/member/service/dayoff.service';
 export * from './module/member/service/user-team.service';
+
+export * from './module/member/service/task.service';

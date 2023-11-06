@@ -20,3 +20,5 @@ export * from './module/user/controller/user-role.controller';
 export * from './module/member/controller/booking.controller';
 export * from './module/member/controller/dayoff.controller';
 export * from './module/member/controller/user-team.controller';
+
+export * from './module/member/controller/task.controller';
