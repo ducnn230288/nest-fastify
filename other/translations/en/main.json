@@ -1,0 +1,94 @@
+{
+  "layout": {
+    "header": {
+      "AboutUs": "About us",
+      "Me": "My Account",
+      "Whistlist": "Whistlist",
+      "OrderTracking": "Order Tracking",
+      "NeedHelp": "Need Help",
+      "CallUs": "Call Us",
+      "Compare": "Compare",
+      "Cart": "Cart",
+      "Account": "Account",
+      "Deals": "Deals",
+      "Home": "Home",
+      "About": "About",
+      "Shop": "Shop",
+      "Vendor": "Vendor",
+      "MegaMenu": "Mega Menu",
+      "Blog": "Blog",
+      "Pages": "Pages",
+      "Contact": "Contact",
+      "Support": "24/7 Support Center",
+      "MyVoucher": "My Voucher",
+      "MyWishlist": "My Wishlist",
+      "Settings": "Settings",
+      "SignOut": "Sign Out",
+      "AllCategory": "Browse All Categories"
+    },
+    "footer": {
+      "WedStore": "Awesome grocery store website template",
+      "Address": "Address",
+      "CallUs": "Call us",
+      "Email": "Email",
+      "Hour": "Hours",
+
+      "orther": {
+        "Company": {
+          "Company": "Company",
+          "Careers": "Careers",
+          "TermsConditions": "Terms & Conditions",
+          "PrivacyPolicy": "Privacy Policy",
+          "DeliveryInformation": "Delivery Information",
+          "About": "About us",
+          "Contact": "Contact Us"
+        },
+        "Account": {
+          "SignIn": "Sign In",
+          "ViewCart": "View Cart",
+          "MyWishlist": "My Wishlist",
+          "TrackMyOrder": "Track My Order",
+          "HelpTicket": "Help Ticket",
+          "ShippingDetails": "Shipping Details",
+          "CompareProducts": "Compare Products"
+        },
+        "Corporate": {
+          "BecomeVendor": "Become a Vendor",
+          "AffiliateProgram": "Affiliate Program",
+          "FarmBusiness": "Farm Business",
+          "FarmCareers": "Farm Careers",
+          "OurSuppliers": "Our Suppliers",
+          "Accessibility": "Accessibility",
+          "Promotions": "Promotions"
+        },
+        "Popular": {
+          "MilkAndFlavouredMilk": "Milk & Flavoured Milk",
+          "ButterAndMargarine": "Butter and Margarine",
+          "EggsSubstitutes": "Eggs Substitutes",
+          "Marmalades": "Marmalades",
+          "SourCreamandDips": "Sour Cream and Dips",
+          "TeaAndKombucha": "Tea & Kombucha",
+          "Cheese": "Cheese"
+        }
+      },
+      "install": {
+        "Install": "Install App",
+        "LinkInstall": "From App Store or Google Play",
+        "Payment": "Secured Payment Gateways"
+      }
+    },
+    "validation": {}
+  },
+  "page": {
+    "home": {
+      "FeaturedCategories": "Featured Categories",
+      "PopularProducts": "Popular Products",
+      "DailyBestSells": "Daily Best Sells",
+      "DealsOfTheDay": "Deals Of The Day",
+      "TopSelling": "Top Selling",
+      "TrendingProducts": "Trending Products",
+      "Recentlyadded": "Recently added",
+      "TopRated": "Top Rated"
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "layout": {
+    "header": {
+      "AboutUs": "Về chúng tôi",
+      "Me": "Tài khoản của bạn",
+      "Whistlist": "Danh sách yêu thích",
+      "OrderTracking": "Theo dõi đơn hàng",
+      "NeedHelp": "Cần trợ giúp",
+      "CallUs": "Gọi cho chúng tôi",
+      "Compare": "So sánh",
+      "Cart": "Giỏ hàng",
+      "Account": "tài khoản",
+      "Deals": "Ưu đãi",
+      "Home": "Trang chủ",
+      "About": "Giới thiệu",
+      "Shop": "Cửa hàng",
+      "Vendor": "Nhà cung cấp",
+      "MegaMenu": "Thực đơn",
+      "Blog": "Blog",
+      "Pages": "Trang",
+      "Contact": "Liên hệ",
+      "Support": "24/7 Trung tâm hỗ trợ",
+      "MyVoucher": "My Voucher",
+      "MyWishlist": "Sản phẩm yêu thích",
+      "Settings": "Cài đặt",
+      "SignOut": "Đăng xuất",
+      "AllCategory": "Tất cả danh mục "
+    },
+    "footer": {
+      "WedStore": "Mẫu trang web cửa hàng tạp hóa tuyệt vời",
+      "Address": "Địa chỉ",
+      "CallUs": "Gọi cho chúng tôi",
+      "Email": "Email",
+      "Hour": "Thời gian hoạt động",
+      "Install": "Cài đặt ứng dụng",
+      "LinkInstall": "Từ App Store hoặc Google Play",
+      "Payment": "Cổng thanh toán được bảo đảm",
+      "orther": {
+        "Company": {
+          "Company": "Công ty",
+          "Careers": "Định hướng",
+          "TermsConditions": "Điều khoản và điều kiện",
+          "PrivacyPolicy": "Chính sách bảo mật",
+          "DeliveryInformation": "Thông tin giao hàng",
+          "About": "Về chúng tôi",
+          "Contact": "Liên hệ chúng tôi"
+        },
+        "Account": {
+          "SignIn": "Đăng nhập",
+          "ViewCart": "Xem giỏ hàng",
+          "MyWishlist": "Sản phẩm yêu thích",
+          "TrackMyOrder": "Theo dõi đơn hàng của tôi",
+          "HelpTicket": "Trợ giúp vé",
+          "ShippingDetails": "Chi tiết vận chuyển",
+          "CompareProducts": "So sánh sản phẩm"
+        },
+        "Corporate": {
+          "BecomeVendor": "Trở thành một nhà cung cấp",
+          "AffiliateProgram": "Chương trình liên kết",
+          "FarmBusiness": "Kinh doanh trang trại",
+          "FarmCareers": "Nghề nghiệp nông trại",
+          "OurSuppliers": "Nhà cung cấp của chúng tôi",
+          "Accessibility": "Khả năng tiếp cận",
+          "Promotions": "Khuyến mãi"
+        },
+        "Popular": {
+          "MilkAndFlavouredMilk": "Sữa và sữa có hương vị",
+          "ButterAndMargarine": "Bơ và bơ thực vật",
+          "EggsSubstitutes": "Sản phẩm thay thế trứng",
+          "Marmalades": "Mứt cam",
+          "SourCreamandDips": "Kem chua và nước chấm",
+          "TeaAndKombucha": "Trà & Kombucha",
+          "Cheese": "Phô mai"
+        }
+      },
+      "install": {
+        "Install": "Cài đặt ứng dụng",
+        "LinkInstall": "Từ App Store hoặc Google Play",
+        "Payment": "Cổng thanh toán được bảo đảm"
+      }
+    },
+    "validation": {}
+  },
+  "page": {
+    "home": {
+      "FeaturedCategories": "Danh mục đặc sắc",
+      "PopularProducts": "Sản phẩm phổ biến",
+      "DailyBestSells": "Daily Best Sells",
+      "DealsOfTheDay": "Deals Of The Day",
+      "TopSelling": "Ban chạy nhât",
+      "TrendingProducts": "Xu hướng sản phẩm",
+      "Recentlyadded": "Gần đây được thêm vào",
+      "TopRated": "Xếp hạng hàng đầu"
+    }
+  }
+}
