@@ -11,3 +11,7 @@ export * from './module/user/repository/user.repository';
 
 export * from './module/member/repository/dayoff.repository';
 export * from './module/member/repository/user-team.repository';
+
+export * from './module/member/repository/task-timesheet.reposity';
+export * from './module/member/repository/task-work.repository';
+export * from './module/member/repository/task.repository';

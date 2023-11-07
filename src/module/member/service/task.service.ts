@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '@model';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+
 import { BaseService } from '@shared';
+import { TaskRepository } from '@repository';
 
 @Injectable()
 export class TaskService extends BaseService<Task> {
-  constructor(
-    @InjectRepository(Task)
-    public repo: Repository<Task>,
-  ) {
+  constructor(public repo: TaskRepository) {
     super(repo);
-    // this.listQuery = ['name', 'description'];
-    // this.listJoin = ['manager'];
-    // this.listJoinCount = [{ name: 'countUser', key: 'users' }];
+    this.listQuery = [];
+    this.listJoin = [];
+    this.listJoinCount = [];
   }
 }

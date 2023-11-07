@@ -22,3 +22,5 @@ export * from './module/member/service/dayoff.service';
 export * from './module/member/service/user-team.service';
 
 export * from './module/member/service/task.service';
+export * from './module/member/service/task-timesheet.service';
+export * from './module/member/service/task-work.service';
