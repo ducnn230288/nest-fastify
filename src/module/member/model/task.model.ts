@@ -8,6 +8,12 @@ import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
 import { IEditor } from '@dto';
 
+export enum Priority {
+  Newspaper = -1,
+  Newsletter = 0,
+  Magazine = 1,
+}
+
 @Entity()
 export class Task extends Base {
   @Column({ nullable: true, name: 'project_code' })
@@ -56,7 +62,7 @@ export class Task extends Base {
   @IsDateString()
   deadline?: Date;
 
-  @Column({ default: 0 })
+  @Column({ type: 'enum', enum: Priority, default: 0 })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)

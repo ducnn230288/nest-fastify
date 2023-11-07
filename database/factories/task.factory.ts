@@ -16,7 +16,5 @@ export default setSeederFactory(Task, (faker) => {
   data.predecessors = 'T3,T4';
   data.hours = faker.number.int();
 
-  data.name = faker.location.city();
-
   return data;
 });

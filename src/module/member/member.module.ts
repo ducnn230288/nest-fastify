@@ -5,10 +5,21 @@ import { BookingController, DayoffController, UserTeamController, TaskController
 import { Booking, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
 import { BookingService, DayoffService, FileService, TaskService, UserService, UserTeamService } from '@service';
 import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
+import { Comment } from './model/comment';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking, UserTeam, DayOff, Question, QuestionTest, TaskTimesheet, TaskWork, Task]),
+    TypeOrmModule.forFeature([
+      Booking,
+      UserTeam,
+      DayOff,
+      Question,
+      QuestionTest,
+      TaskTimesheet,
+      TaskWork,
+      Task,
+      Comment,
+    ]),
   ],
   controllers: [BookingController, UserTeamController, DayoffController, TaskController],
   providers: [
