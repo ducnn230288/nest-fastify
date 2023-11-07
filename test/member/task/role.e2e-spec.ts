@@ -6,6 +6,11 @@ import {
   P_TASKTIMESHEET_UPDATE,
   P_TASKTIMESHEET_DELETE,
   P_TASKTIMESHEET_DETAIL,
+  P_TASK_CREATE,
+  P_TASK_DELETE,
+  P_TASK_DETAIL,
+  P_TASK_LISTED,
+  P_TASK_UPDATE,
 } from '@service';
 
 describe('Role - /api/task', () =>
@@ -15,4 +20,9 @@ describe('Role - /api/task', () =>
     P_TASKTIMESHEET_UPDATE,
     P_TASKTIMESHEET_DELETE,
     P_TASKTIMESHEET_DETAIL,
+    P_TASK_LISTED,
+    P_TASK_DETAIL,
+    P_TASK_CREATE,
+    P_TASK_UPDATE,
+    P_TASK_DELETE,
   ]));

@@ -7,8 +7,6 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { BaseTest } from '@test';
 import { CreateDayoffRequestDto, TaskRequest, UpdateTaskTimesheetRequestDto } from '@dto';
-import { DayOff, User, Task, TaskTimesheet, TaskWork } from '@model';
-import { TaskService, UserService } from '@service';
 import {
   CreateTaskRequestDto,
   CreateTaskTimesheetRequestDto,
@@ -18,6 +16,8 @@ import {
 } from '@dto';
 import '@factories';
 import dayjs from 'dayjs';
+import { DayOff, User, Task, CodeType, Code, TaskTimesheet, TaskWork } from '@model';
+import { TaskService, CodeService, CodeTypeService, UserService } from '@service';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -34,20 +34,47 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataTaskWorks: CreateTaskWorkRequestDto[];
   let resultTaskWork: TaskWork;
   let updateTaskWork: UpdateTaskWorkRequestDto;
+  let codeType: CodeType | null;
+  let code: Code | null;
 
   it('Create [POST /api/task]', async () => {
-    dataTask = await factoryManager.get(Task).make();
+    codeType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());
+
+    code = await BaseTest.moduleFixture!.get(CodeService).create(
+      await factoryManager.get(Code).make({
+        type: codeType?.code,
+      }),
+    );
+
+    dataTask = await factoryManager.get(Task).make({
+      projectCode: code?.code,
+    });
 
     const { body } = await request(BaseTest.server)
       .post('/api/task')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataTask);
-
+      .send(dataTask)
+      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     if (type) {
-      // console.log(body.data);
+      const { start, finish, deadline } = dataTask;
+      expect(body.data).toEqual(
+        jasmine.objectContaining({
+          start: start?.toISOString(),
+          finish: finish?.toISOString(),
+          deadline: deadline?.toISOString(),
+        }),
+      );
       resultTask = body.data;
     }
   });
+
+  // it('Get list [GET /api/task]', async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .get('/api/task')
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //   console.log(body);
+  // });
 
   // it('Create [POST /api/task-work]', async () => {
   //   dataTaskWork = await factoryManager.get(TaskWork).make({
@@ -133,5 +160,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   /* */
+
   return afterAll(BaseTest.initAfterAll);
 };

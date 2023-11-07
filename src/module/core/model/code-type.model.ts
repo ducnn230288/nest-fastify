@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsBoolean, IsString, MaxLength } from 'class-validator';
@@ -6,6 +6,7 @@ import { Expose } from 'class-transformer';
 
 import { Code } from '@model';
 import { MaxGroup, Base } from '@shared';
+import { Comment } from 'src/module/member/model/comment';
 
 @Entity()
 @Unique(['code'])
@@ -29,4 +30,8 @@ export class CodeType extends Base {
   @OneToMany(() => Code, (category) => category.item, { eager: true, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @Expose({ groups: [MaxGroup] })
   items?: Code[];
+
+  @OneToOne(() => Comment, (coment) => coment.itemComent)
+  @Expose({ groups: [MaxGroup] })
+  item?: Comment;
 }

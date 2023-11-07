@@ -66,6 +66,11 @@ import {
   P_BOOKING_DETAIL,
   P_BOOKING_LISTED,
   P_BOOKING_UPDATE,
+  P_TASK_LISTED,
+  P_TASK_DETAIL,
+  P_TASK_CREATE,
+  P_TASK_UPDATE,
+  P_TASK_DELETE,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -148,6 +153,12 @@ export class UserSeeder implements Seeder {
         P_BOOKING_DETAIL,
         P_BOOKING_LISTED,
         P_BOOKING_UPDATE,
+
+        P_TASK_LISTED,
+        P_TASK_DETAIL,
+        P_TASK_CREATE,
+        P_TASK_UPDATE,
+        P_TASK_DELETE,
       ],
       isSystemAdmin: false,
     };

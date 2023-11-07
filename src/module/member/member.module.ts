@@ -31,7 +31,17 @@ import {
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking, UserTeam, DayOff, Question, QuestionTest, TaskTimesheet, TaskWork, Task]),
+    TypeOrmModule.forFeature([
+      Booking,
+      UserTeam,
+      DayOff,
+      Question,
+      QuestionTest,
+      TaskTimesheet,
+      TaskWork,
+      Task,
+      Comment,
+    ]),
   ],
   controllers: [
     BookingController,
