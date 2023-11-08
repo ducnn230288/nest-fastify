@@ -2,10 +2,10 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { Task, TaskTimesheet } from '@model';
-import { Base } from '@shared';
+import { Base, MaxGroup } from '@shared';
 
 @Entity()
 export class TaskWork extends Base {
@@ -17,9 +17,9 @@ export class TaskWork extends Base {
   hours?: number;
 
   @Column({ name: 'task_id' })
-  @IsString()
+  @IsUUID()
+  @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @Exclude()
   taskId?: string;
 
   @ManyToOne(() => Task, (data) => data.works, { eager: true })
@@ -28,9 +28,9 @@ export class TaskWork extends Base {
   readonly task?: Task;
 
   @Column({ name: 'timesheet_id' })
-  @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @Exclude()
+  @Expose()
+  @IsUUID()
   timesheetId?: string;
 
   @ManyToOne(() => TaskTimesheet, (data) => data.works, { eager: true })

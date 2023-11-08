@@ -1,8 +1,10 @@
 import { PartialType, PickType } from '@nestjs/swagger';
-import { DefaultResponsesDto } from '@shared';
+import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Task } from '@model';
 
-export class TaskRequesDto extends PartialType(DefaultResponsesDto) {}
+export class TaskResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: Task | null;
+}
 
 export class CreateTaskRequestDto extends PickType(Task, [
   'projectCode',
@@ -19,3 +21,7 @@ export class CreateTaskRequestDto extends PickType(Task, [
   'predecessors',
   'hours',
 ]) {}
+
+export class ListTaskResponseDto extends PartialType(PaginationResponsesDto) {
+  readonly data: Task[];
+}

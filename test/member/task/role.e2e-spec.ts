@@ -1,5 +1,28 @@
 import { testCase } from './index';
 
-import {} from '@service';
+import {
+  P_TASKTIMESHEET_LISTED,
+  P_TASKTIMESHEET_CREAETE,
+  P_TASKTIMESHEET_UPDATE,
+  P_TASKTIMESHEET_DELETE,
+  P_TASKTIMESHEET_DETAIL,
+  P_TASK_CREATE,
+  P_TASK_DELETE,
+  P_TASK_DETAIL,
+  P_TASK_LISTED,
+  P_TASK_UPDATE,
+} from '@service';
 
-describe('Role - /api/task', () => testCase('Role', []));
+describe('Role - /api/task', () =>
+  testCase('Role', [
+    P_TASKTIMESHEET_LISTED,
+    P_TASKTIMESHEET_CREAETE,
+    P_TASKTIMESHEET_UPDATE,
+    P_TASKTIMESHEET_DELETE,
+    P_TASKTIMESHEET_DETAIL,
+    P_TASK_LISTED,
+    P_TASK_DETAIL,
+    P_TASK_CREATE,
+    P_TASK_UPDATE,
+    P_TASK_DELETE,
+  ]));

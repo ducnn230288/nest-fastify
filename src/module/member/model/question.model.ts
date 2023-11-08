@@ -36,7 +36,7 @@ export class Question extends Base {
   options: string;
 
   @Column()
-  @Exclude()
+  // @Exclude()
   @ApiProperty({ example: 'D', description: '' })
   @IsString()
   correct: string;

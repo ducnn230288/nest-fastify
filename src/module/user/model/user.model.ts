@@ -26,7 +26,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address, Booking, UserTeam, QuestionTest, Task } from '@model';
+import { UserRole, Code, Address, Booking, UserTeam, QuestionTest, Task, Comment } from '@model';
 import { Example, MaxGroup, OnlyUpdateGroup, Base, setImage } from '@shared';
 import { TaskTimesheet } from '../../member/model/task-timesheet.model';
 
@@ -89,7 +89,7 @@ export class User extends Base {
   @IsString()
   @MinLength(8)
   @MaxLength(12)
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @Column()
   @ApiProperty({ example: faker.date.birthdate(), description: '' })

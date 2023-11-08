@@ -21,10 +21,10 @@ export class QuestionTest extends Base {
     array: false,
     default: {},
   })
-  @Expose({ groups: [MaxGroup] })
+  // @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: {}, description: '' })
   @IsOptional()
-  answer?: object;
+  answer?: object | any;
 
   @Column({ name: 'user_id' })
   @IsString()
