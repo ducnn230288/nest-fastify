@@ -9,9 +9,15 @@ import { Base, MaxGroup } from '@shared';
 import { IEditor } from '@dto';
 
 export enum Priority {
-  Newspaper = -1,
-  Newsletter = 0,
-  Magazine = 1,
+  Normal = -1,
+  Hard = 0,
+  Urgent = 1,
+}
+
+export enum Status {
+  Cancel = -1,
+  Processing = 0,
+  Complete = 1,
 }
 
 @Entity()
@@ -62,12 +68,19 @@ export class Task extends Base {
   @IsDateString()
   deadline?: Date;
 
-  @Column({ type: 'enum', enum: Priority, default: 0 })
+  @Column({ type: 'enum', enum: Priority, default: Priority.Hard })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)
   @Max(1)
   priority: number;
+
+  @Column({ type: 'enum', enum: Status, default: Status.Processing })
+  @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
+  @IsInt()
+  @Min(-1)
+  @Max(1)
+  status: number;
 
   @Column({ nullable: true, type: 'real' })
   @Expose()

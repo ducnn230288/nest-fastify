@@ -23,3 +23,4 @@ export * from './module/member/model/question-test.model';
 export * from './module/member/model/task.model';
 export * from './module/member/model/task-timesheet.model';
 export * from './module/member/model/task-work.model';
+export * from './module/member/model/comment.model';

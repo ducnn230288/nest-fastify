@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Code } from '@model';
 import { MaxGroup, Base } from '@shared';
-import { Comment } from 'src/module/member/model/comment';
 
 @Entity()
 @Unique(['code'])
@@ -30,8 +29,4 @@ export class CodeType extends Base {
   @OneToMany(() => Code, (category) => category.item, { eager: true, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @Expose({ groups: [MaxGroup] })
   items?: Code[];
-
-  @OneToOne(() => Comment, (coment) => coment.itemComent)
-  @Expose({ groups: [MaxGroup] })
-  item?: Comment;
 }

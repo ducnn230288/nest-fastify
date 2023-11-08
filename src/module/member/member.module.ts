@@ -9,7 +9,7 @@ import {
   TaskTimesheetController,
   TaskWorkController,
 } from '@controller';
-import { Booking, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
+import { Booking, Comment, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
 import {
   BookingService,
   DayoffService,
