@@ -37,14 +37,14 @@ export class QuestionTest extends Base {
   @Type(() => User)
   readonly user: User;
 
-  @Column({ name: 'question_id' })
-  @IsString()
-  @ApiProperty({ example: faker.string.uuid(), description: '' })
-  @Exclude()
-  questionId?: string;
+  // @Column({ name: 'question_id' })
+  // @IsString()
+  // @ApiProperty({ example: faker.string.uuid(), description: '' })
+  // @Exclude()
+  // questionId?: string;
 
-  @ManyToOne(() => Question, (question) => question.tests, { eager: true })
-  @JoinColumn({ name: 'question_id' })
-  @Type(() => Question)
-  readonly question?: Question;
+  // @ManyToOne(() => Question, (question) => question.tests, { eager: true })
+  // @JoinColumn({ name: 'question_id' })
+  // @Type(() => Question)
+  // readonly question?: Question;
 }

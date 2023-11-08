@@ -19,3 +19,5 @@ export * from './module/member/dto/dayoff.dto';
 export * from './module/member/dto/user-team.dto';
 
 export * from './module/member/dto/task.dto';
+
+export * from './module/member/dto/question.dto';
