@@ -8,6 +8,7 @@ import { BaseService } from '@shared';
 // import { TaskWorkRepository } from '@repository';
 import {} from '@dto';
 import dayjs from 'dayjs';
+import { TaskWorkRepository } from '../repository/task-work.repository';
 
 export const P_TASKWORK_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f68';
 export const P_TASKWORK_CREAETE = '80668128-7e1d-46ef-95d1-bb4cff742f65';
@@ -17,10 +18,7 @@ export const P_TASKWORK_DETAIL = '80668128-7e1d-46ef-95d1-bb4cff742f70';
 
 @Injectable()
 export class TaskWorkService extends BaseService<TaskWork> {
-  constructor(
-    @InjectRepository(TaskWork)
-    public repo: Repository<TaskWork>,
-  ) {
+  constructor(public repo: TaskWorkRepository) {
     super(repo);
     this.listQuery = [];
     this.listJoin = ['task'];

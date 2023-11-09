@@ -10,4 +10,9 @@ export class TaskWorkRepository extends BaseRepository<TaskWork> {
   constructor(private readonly dataSource: DataSource) {
     super(TaskWork, dataSource.createEntityManager());
   }
+
+  async getManyByArrayId(ids: string[] | any): Promise<TaskWork[]> {
+    const datas = await this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
+    return datas;
+  }
 }

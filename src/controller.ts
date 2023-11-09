@@ -23,4 +23,3 @@ export * from './module/member/controller/user-team.controller';
 
 export * from './module/member/controller/task.controller';
 export * from './module/member/controller/task-timesheet.controller';
-export * from './module/member/controller/task-work.controller';

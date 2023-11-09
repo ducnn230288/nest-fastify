@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,8 +7,8 @@ import { I18nContext } from 'nestjs-i18n';
 
 import { TaskTimesheet, TaskWork, User } from '@model';
 import { BaseService } from '@shared';
-import { TaskRepository, TaskTimesheetRepository } from '@repository';
-import { CreateTaskTimesheetRequestDto } from '@dto';
+import { TaskRepository, TaskTimesheetRepository, TaskWorkRepository } from '@repository';
+import { CheckOutRequestDto, CreateTaskTimesheetRequestDto } from '@dto';
 import dayjs from 'dayjs';
 
 export const P_TASKTIMESHEET_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f68';
@@ -21,11 +22,12 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
   constructor(
     public repo: TaskTimesheetRepository,
     private repoTask: TaskRepository,
+    private repoTaskWork: TaskWorkRepository,
     private dataSource: DataSource,
   ) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['user'];
+    this.listJoin = ['user', 'works'];
   }
 
   async checkHaveTaskTimesheet(user: User): Promise<void> {
@@ -39,34 +41,28 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     const i18n = I18nContext.current()!;
     let dataTaskTimesheet: TaskTimesheet | null;
 
-    await this.dataSource.transaction(async (entityManager) => {
-      if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
-      // // kiểm tra nếu trong đã có timesheet thì ko dc check in
-      await this.checkHaveTaskTimesheet(user);
-      const start = new Date();
+    if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
+    // // kiểm tra nếu trong đã có timesheet thì ko dc check in
+    await this.checkHaveTaskTimesheet(user);
+    const start = new Date();
 
-      // check list id Task
-      const ids = body.listTask.map((item) => item.id);
+    // check list id Task
+    const ids = body.listTask.map((item) => item.id);
 
-      const listTask = await this.repoTask.getManyByArrayId(ids);
-      if (listTask.length !== body.listTask.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
+    const listTask = await this.repoTask.getManyByArrayId(ids);
+    if (listTask.length !== body.listTask.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
 
-      const task_timesheet = {
-        start: start,
-        userId: user.id,
-      };
-      dataTaskTimesheet = await this.create(task_timesheet);
-
-      const taskWorks = listTask.map((item) => {
-        return entityManager.create(TaskWork, {
-          taskId: item.id,
-          timesheetId: dataTaskTimesheet?.id,
-        });
-      });
-
-      const dataTaskWorks = await entityManager.save(taskWorks);
-    });
+    dataTaskTimesheet = await this.repo.createWithTaskWorks(start, user.id, listTask);
 
     return dataTaskTimesheet!;
+  }
+
+  async checkout(id: string, user: User, body: CheckOutRequestDto): Promise<TaskTimesheet | null> {
+    const i18n = I18nContext.current()!;
+    if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
+
+    const finish = new Date();
+    const data = await this.repo.checkout(id, body, finish);
+    return data;
   }
 }
