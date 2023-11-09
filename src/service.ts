@@ -24,3 +24,6 @@ export * from './module/member/service/user-team.service';
 export * from './module/member/service/task.service';
 export * from './module/member/service/task-timesheet.service';
 export * from './module/member/service/task-work.service';
+
+export * from './module/member/service/question.service';
+export * from './module/member/service/question-test.service';

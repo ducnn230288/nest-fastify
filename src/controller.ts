@@ -23,3 +23,6 @@ export * from './module/member/controller/user-team.controller';
 
 export * from './module/member/controller/task.controller';
 export * from './module/member/controller/task-timesheet.controller';
+
+export * from './module/member/controller/question.controller';
+export * from './module/member/controller/question-test.controller';

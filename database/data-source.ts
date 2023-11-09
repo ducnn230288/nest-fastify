@@ -65,6 +65,7 @@ const options: DataSourceOptions & SeederOptions = {
     Task,
     TaskTimesheet,
     TaskWork,
+    Question,
     Comment,
   ],
   migrations: [Core1698359444654, Member1698359719624],

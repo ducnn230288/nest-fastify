@@ -15,3 +15,6 @@ export * from './module/member/repository/user-team.repository';
 export * from './module/member/repository/task-timesheet.repository';
 export * from './module/member/repository/task-work.repository';
 export * from './module/member/repository/task.repository';
+
+export * from './module/member/repository/question.repository';
+export * from './module/member/repository/question-test.repository';

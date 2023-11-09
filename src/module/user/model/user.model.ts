@@ -89,7 +89,7 @@ export class User extends Base {
   @IsString()
   @MinLength(8)
   @MaxLength(12)
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @Column()
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
