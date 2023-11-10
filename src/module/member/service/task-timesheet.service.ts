@@ -8,7 +8,7 @@ import { I18nContext } from 'nestjs-i18n';
 import { TaskTimesheet, TaskWork, User } from '@model';
 import { BaseService } from '@shared';
 import { TaskRepository, TaskTimesheetRepository, TaskWorkRepository } from '@repository';
-import { CheckOutRequestDto, CreateTaskTimesheetRequestDto } from '@dto';
+import { CheckInOrOutRequestDto, CreateTaskTimesheetRequestDto } from '@dto';
 import dayjs from 'dayjs';
 
 export const P_TASKTIMESHEET_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f68';
@@ -37,32 +37,40 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     if (data) throw new BadRequestException(i18n.t('common.TaskTimesheet has been created'));
   }
 
-  async createTaskTimesheet(user: User, body: CreateTaskTimesheetRequestDto): Promise<TaskTimesheet | null> {
+  async checkInOrOut(id: string, user: User, body: CheckInOrOutRequestDto): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let dataTaskTimesheet: TaskTimesheet | null;
 
-    if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
-    // // kiểm tra nếu trong đã có timesheet thì ko dc check in
-    await this.checkHaveTaskTimesheet(user);
-    const start = new Date();
+    if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
+    // Check In
 
-    // check list id Task
-    const ids = body.listTask.map((item) => item.id);
+    // kiểm tra nếu trong đã có timesheet thì ko dc check in
+    if (!id) {
+      await this.checkHaveTaskTimesheet(user);
+      const start = new Date();
 
-    const listTask = await this.repoTask.getManyByArrayId(ids);
-    if (listTask.length !== body.listTask.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
+      // check list id Task
+      const ids = body.listTask!.map((item) => item.id);
 
-    dataTaskTimesheet = await this.repo.createWithTaskWorks(start, user.id, listTask);
+      const listTask = await this.repoTask.getManyByArrayId(ids);
+      if (listTask.length !== body.listTask!.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
 
+      dataTaskTimesheet = await this.repo.createWithTaskWorks(start, user.id, listTask);
+    } else {
+      // Check Out
+      const finish = new Date();
+      dataTaskTimesheet = await this.repo.checkoutWithArrayTaskWork(id, body.listTaskWord!, finish);
+    }
+    /* */
     return dataTaskTimesheet!;
   }
 
-  async checkout(id: string, user: User, body: CheckOutRequestDto): Promise<TaskTimesheet | null> {
-    const i18n = I18nContext.current()!;
-    if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
+  // async checkout(id: string, user: User, body: CheckInOrOutRequestDto): Promise<TaskTimesheet | null> {
+  //   const i18n = I18nContext.current()!;
+  //   if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
 
-    const finish = new Date();
-    const data = await this.repo.checkout(id, body, finish);
-    return data;
-  }
+  //   const finish = new Date();
+  //   const data = await this.repo.checkoutWithArrayTaskWork(id, body, finish);
+  //   return data;
+  // }
 }

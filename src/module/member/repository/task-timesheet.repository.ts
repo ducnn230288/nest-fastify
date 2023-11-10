@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { BaseRepository } from '@shared';
 import { Task, TaskTimesheet, TaskWork, User } from '@model';
 import { I18nContext } from 'nestjs-i18n';
-import { CheckOutRequestDto, CreateTaskTimesheetRequestDto } from '../dto/task-timesheet.dto';
+import { CheckInOrOutRequestDto, CreateTaskTimesheetRequestDto, TaskWorkRequest } from '../dto/task-timesheet.dto';
 
 @Injectable()
 export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
@@ -62,9 +62,9 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return result;
   }
 
-  async checkout(
+  async checkoutWithArrayTaskWork(
     id: string,
-    { listTaskWord, ...test }: CheckOutRequestDto,
+    listTaskWord: TaskWorkRequest[],
     finish: Date,
   ): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
@@ -73,13 +73,14 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     await this.dataSource.transaction(async (entityManager) => {
       const data = await entityManager.preload(TaskTimesheet, {
         id: id,
-        finish: finish,
       });
 
-      if (!data) {
-        throw new BadRequestException(i18n.t('common.TaskTimesheet id not found', { args: { id } }));
-      }
+      if (!data) throw new BadRequestException(i18n.t('common.TaskTimesheet id not found', { args: { id } }));
+
+      if (data.finish) throw new BadRequestException(i18n.t('common.TaskTimesheet had been finished'));
+      data.finish = finish;
       result = await this.save(data);
+      // console.log(result);
 
       if (listTaskWord) {
         result.works = [];

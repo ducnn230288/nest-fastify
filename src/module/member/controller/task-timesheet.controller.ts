@@ -4,7 +4,7 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, SerializerBody, PaginationQueryDto } from '@shared';
 import {
-  CheckOutRequestDto,
+  CheckInOrOutRequestDto,
   CreateTaskTimesheetRequestDto,
   ListTaskTimesheetResponseDto,
   TaskTimesheetResponseDto,
@@ -28,15 +28,16 @@ export class TaskTimesheetController {
     summary: 'Create data',
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Post('')
+  @Post(':id')
   async create(
     @I18n() i18n: I18nContext,
-    @Body(new SerializerBody([MaxGroup])) body: CreateTaskTimesheetRequestDto,
+    @Body(new SerializerBody([MaxGroup])) body: CheckInOrOutRequestDto,
+    @Param('id') id: string,
     @AuthUser() user: User,
   ): Promise<TaskTimesheetResponseDto> {
-    const data = await this.service.createTaskTimesheet(user, body);
+    const data = await this.service.checkInOrOut(id, user, body);
     return {
-      message: i18n.t('common.Create Success'),
+      message: i18n.t(!id ? 'common.Create Success' : 'common.CheckOut Success'),
       data: data,
     };
   }
@@ -72,22 +73,22 @@ export class TaskTimesheetController {
     };
   }
 
-  @Auth({
-    summary: 'Update Data',
-  })
-  @Put(':id/checkout')
-  async checkout(
-    @I18n() i18n: I18nContext,
-    @Param('id') id: string,
-    @Body(new SerializerBody()) body: CheckOutRequestDto,
-    @AuthUser() user: User,
-  ): Promise<TaskTimesheetResponseDto> {
-    const data = await this.service.checkout(id, user, body);
-    return {
-      message: i18n.t('common.Checkout Success'),
-      data: {},
-    };
-  }
+  // @Auth({
+  //   summary: 'Update Data',
+  // })
+  // @Put(':id/checkout')
+  // async checkout(
+  //   @I18n() i18n: I18nContext,
+  //   @Param('id') id: string,
+  //   @Body(new SerializerBody()) body: CheckOutRequestDto,
+  //   @AuthUser() user: User,
+  // ): Promise<TaskTimesheetResponseDto> {
+  //   const data = await this.service.checkout(id, user, body);
+  //   return {
+  //     message: i18n.t('common.Checkout Success'),
+  //     data: {},
+  //   };
+  // }
 
   @Auth({
     summary: 'Update Data',

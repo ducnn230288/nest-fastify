@@ -6,7 +6,7 @@ import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { BaseTest } from '@test';
-import { CheckOutRequestDto, CreateDayoffRequestDto, TaskRequest, UpdateTaskTimesheetRequestDto } from '@dto';
+import { CheckInOrOutRequestDto, CreateDayoffRequestDto, TaskRequest, UpdateTaskTimesheetRequestDto } from '@dto';
 import {
   CreateTaskRequestDto,
   CreateTaskTimesheetRequestDto,
@@ -26,10 +26,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataTask: CreateTaskRequestDto;
   let resultTask: Task | null;
 
-  let dataTaskTimesheet: CreateTaskTimesheetRequestDto;
+  let dataRequestDto: CheckInOrOutRequestDto;
   let resultTaskTimesheet: TaskTimesheet;
   let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
-  let dataCheckout: CheckOutRequestDto;
+  let dataCheckout: CheckInOrOutRequestDto;
 
   let resultTaskWork: TaskWork;
 
@@ -100,14 +100,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const data: TaskRequest = {
       id: resultTask?.id,
     };
-    dataTaskTimesheet = {
+    dataRequestDto = {
       listTask: [{ id: resultTask?.id }],
+      listTaskWord: [],
     };
 
     const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet')
+      .post('/api/task-timesheet/')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataTaskTimesheet)
+      .send(dataRequestDto)
       .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
 
     const test = dayjs(body.data.start).isSame(new Date(), 'day');
@@ -134,7 +135,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
     expect(body.data).toEqual(jasmine.objectContaining(resultTaskTimesheet));
-    resultTaskTimesheet = body.data;
+    // resultTaskTimesheet = body.data;
   });
 
   it('Update [PUT /api/task-timesheet/:id]', async () => {
@@ -158,21 +159,29 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     });
   });
 
-  it('Update [PUT /api/task-timesheet/:id/checkout]', async () => {
+  it('Check Out [POST /api/task-timesheet/:id]', async () => {
     const taskWord = await factoryManager.get(TaskWork).make({
       id: resultTaskTimesheet.works![0].id,
       taskId: resultTask?.id,
     });
 
-    dataCheckout = {
+    dataRequestDto = {
       listTaskWord: [taskWord],
     };
 
+    const { listTask, ...data } = dataRequestDto!;
+
     const { body } = await request(BaseTest.server)
-      .put('/api/task-timesheet/' + resultTaskTimesheet?.id + '/checkout')
+      .post('/api/task-timesheet/' + resultTaskTimesheet?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataCheckout)
-      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+      .send(data)
+      .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
+
+    const { updatedAt, finish, works, ...testTimesheet } = resultTaskTimesheet!;
+    expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
+    // console.log(body.data);
+    // console.log(dataRequestDto.listTaskWord);
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(dataRequestDto.listTaskWord![0]));
   });
 
   // Test API delete Task, Task-Timesheet
