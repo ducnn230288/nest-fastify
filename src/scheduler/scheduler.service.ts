@@ -25,6 +25,11 @@ export class SchedulerService {
     await this.userService.updateAllDaysOff();
   }
 
+  @Cron('45 * * * * *')
+  async handleUpdateHours(): Promise<void> {
+    console.log('Test Auto');
+  }
+
   // getCrons() {
   //   const jobs = this.schedulerRegistry.getCronJobs();
   //   jobs.forEach((value, key, map) => {
