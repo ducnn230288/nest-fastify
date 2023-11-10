@@ -192,6 +192,10 @@ export class User extends Base {
   @Type(() => TaskTimesheet)
   readonly timesheet?: TaskTimesheet[];
 
+  @OneToMany(() => Task, (data) => data.manager)
+  @Type(() => Task)
+  readonly task?: Task[];
+
   @ManyToMany(() => Task, (team) => team.assignees, { eager: true })
   @Type(() => Task)
   @IsOptional()
