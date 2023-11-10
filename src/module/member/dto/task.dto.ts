@@ -10,18 +10,29 @@ export class CreateTaskRequestDto extends PickType(Task, [
   'projectCode',
   'code',
   'name',
-  'content',
   'start',
-  'finish',
   'deadline',
   'priority',
   'level',
   'complete',
   'successors',
   'predecessors',
-  'hours',
-]) {}
+] as const) {}
 
 export class ListTaskResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: Task[];
 }
+
+export class UpdateTaskRequestDto extends PickType(Task, [
+  'projectCode',
+  'name',
+  'start',
+  'deadline',
+  'priority',
+  'level',
+  'complete',
+  'successors',
+  'predecessors',
+] as const) {}
+
+export class UpdateTaskFinishDto extends PickType(Task, ['finish'] as const) {}

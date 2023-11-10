@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from '@model';
+import { Task, User } from '@model';
 
 import { BaseService } from '@shared';
 import { TaskRepository } from '@repository';
+import { CreateTaskRequestDto } from '../dto/task.dto';
 
 export const P_TASK_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f10';
 export const P_TASK_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac57710';
@@ -15,7 +16,12 @@ export class TaskService extends BaseService<Task> {
   constructor(public repo: TaskRepository) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = [];
+    this.listJoin = ['manager'];
     this.listJoinCount = [];
   }
+
+  // async createTask(body: CreateTaskRequestDto, user: User): Promise<Task | null> {
+  //   const data = await super.create(body);
+  //   return data;
+  // }
 }
