@@ -7,7 +7,6 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Code, QuestionTest } from '@model';
 import { Base, setImage } from '@shared';
 
-
 @Entity()
 export class Question extends Base {
   @Column({ nullable: true, name: 'type_code' })
@@ -17,7 +16,6 @@ export class Question extends Base {
   @IsOptional()
   readonly typeCode?: string;
 
-  
   @ManyToOne(() => Code)
   @JoinColumn({ name: 'type_code', referencedColumnName: 'code' })
   readonly type?: Code;

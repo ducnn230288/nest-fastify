@@ -24,7 +24,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataQuestionTest;
   let resultQuestionTest;
 
-
   it('Create [POST /api/question]', async () => {
     codeType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());
 
@@ -34,7 +33,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       }),
     );
     dataQuestion = await factoryManager.get(Question).make({
-      typeCode: code?.code
+      typeCode: code?.code,
     });
 
     const { body } = await request(BaseTest.server)
@@ -50,14 +49,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Create [POST /api/question-test]', async () => {
-    let answerObj = {}
-    answerObj[resultQuestion?.id] = "D";
+    let answerObj = {};
+    answerObj[resultQuestion?.id] = 'D';
     dataQuestionTest = await factoryManager.get(QuestionTest).make({
-      answer: answerObj
-    })
+      answer: answerObj,
+    });
 
-    const { point, ...data } = dataQuestionTest
-
+    const { point, ...data } = dataQuestionTest;
 
     const { body } = await request(BaseTest.server)
       .post('/api/question-test')
@@ -91,7 +89,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data[0]).toEqual(jasmine.objectContaining(resultQuestionTest));
       resultQuestion = body.data;
     }
-  })
+  });
 
   // it('Get one [GET /api/question:id]', async () => {
   //   const { body } = await request(BaseTest.server)
@@ -124,7 +122,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //     console.log(body);
 
   // })
-
 
   return afterAll(BaseTest.initAfterAll);
 };

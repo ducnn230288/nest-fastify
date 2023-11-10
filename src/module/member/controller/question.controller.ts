@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { Auth, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from "@shared";
 import { I18n, I18nContext } from "nestjs-i18n";
 import { CreateQuestionRequestDto, ListQuestionResponseDto, QuestionResponseDto, UpdateQuestionRequestDto } from "@dto";
 import { P_QUESTION_CREATE, P_QUESTION_DELETE, P_QUESTION_DETAIL, P_QUESTION_LISTED, P_QUESTION_UPDATE, QuestionService } from "@service";
+=======
+import { Body, Post } from '@nestjs/common';
+import { Auth, Headers, MaxGroup, SerializerBody } from '@shared';
+import { I18n, I18nContext } from 'nestjs-i18n';
+import { CreateQuestionRequestDto } from '@dto';
+import { P_QUESTION_CREATE, QuestionService } from '@service';
+>>>>>>> 0e8ab6fd370cf79da91d0dec3aca31e7f23e7d43
 
 @Headers('question')
 export class QuestionController {
+  constructor(private readonly service: QuestionService) {}
 
+<<<<<<< HEAD
     constructor(
         private readonly service: QuestionService
     ) { }
@@ -85,3 +95,18 @@ export class QuestionController {
     }
 
 }
+=======
+  @Auth({
+    summary: 'Create question',
+    permission: P_QUESTION_CREATE,
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Post('')
+  async create(@I18n() i18n: I18nContext, @Body(new SerializerBody()) body: CreateQuestionRequestDto): Promise<any> {
+    return {
+      message: i18n.t('common.Create Success'),
+      data: await this.service.create(body),
+    };
+  }
+}
+>>>>>>> 0e8ab6fd370cf79da91d0dec3aca31e7f23e7d43

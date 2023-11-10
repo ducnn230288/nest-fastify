@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
-import { Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID } from 'class-validator';
 
 import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
@@ -36,6 +36,7 @@ export class Task extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
   @IsString()
+  @IsOptional()
   code: string;
 
   @Column()
@@ -58,7 +59,7 @@ export class Task extends Base {
   @IsDateString()
   start?: Date;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.date.future(), description: '' })
   @IsDateString()
   finish?: Date;
@@ -75,7 +76,7 @@ export class Task extends Base {
   @Max(1)
   priority: number;
 
-  @Column({ type: 'enum', enum: Status, default: Status.Processing })
+  @Column({ type: 'enum', enum: Status, default: Status.Cancel })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)
@@ -120,4 +121,14 @@ export class Task extends Base {
   @ManyToMany(() => User, (user) => user.tasks)
   @Type(() => User)
   assignees: User[];
+
+  @Column({ nullable: true, name: 'manager_id' })
+  @IsUUID()
+  @Expose()
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  managerId?: string;
+
+  @ManyToOne(() => User, (user) => user.tasks)
+  @JoinColumn({ name: 'manager_id' })
+  readonly manager?: User;
 }

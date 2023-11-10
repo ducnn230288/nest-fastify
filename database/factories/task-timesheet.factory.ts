@@ -5,7 +5,7 @@ export default setSeederFactory(TaskTimesheet, (faker) => {
   const data = new TaskTimesheet();
 
   data.start = faker.date.past();
-  data.finish = faker.date.future();
+  data.note = faker.lorem.paragraph();
 
   return data;
 });

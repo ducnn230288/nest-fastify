@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Brackets, DataSource } from 'typeorm';
 
 import { BaseRepository } from '@shared';
-import { Question} from '@model';
+import { Question } from '@model';
 
 @Injectable()
 export class QuestionRepository extends BaseRepository<Question> {

@@ -16,9 +16,10 @@ export const P_QUESTION_TEST_DELETE = 'cdece61b-f159-4dec-8b27-b7de50c9b810';
 
 @Injectable()
 export class QuestionTestService extends BaseService<QuestionTest> {
-  constructor(public repo: QuestionTestRepository,
+  constructor(
+    public repo: QuestionTestRepository,
     private dataSource: DataSource,
-    private questionServive: QuestionService
+    private questionServive: QuestionService,
   ) {
     super(repo);
     this.listQuery = [];
@@ -27,16 +28,16 @@ export class QuestionTestService extends BaseService<QuestionTest> {
   }
 
   async saveAnswer(body: CreateQuestionTestRequestDto, user: User): Promise<QuestionTest | number | any> {
-    const { answer } = body
+    const { answer } = body;
     let point: number = 0;
 
     // Lặp qua câu trả lời, mỗi câu đúng được 10đ
     for (const [key, value] of Object.entries(answer)) {
-      const question = await this.questionServive.findOne(key)
-      if (question && question?.correct === value) point += 10
+      const question = await this.questionServive.findOne(key);
+      if (question && question?.correct === value) point += 10;
     }
     // Lưu đáp án
-    
-    return await this.create({ userId: user.id, answer, point })
+
+    return await this.create({ userId: user.id, answer, point });
   }
 }
