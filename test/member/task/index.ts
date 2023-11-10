@@ -7,6 +7,7 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { BaseTest } from '@test';
 import {
+  CheckInOrOutRequestDto,
   CreateDayoffRequestDto,
   CreateUserRequestDto,
   TaskRequest,
@@ -44,9 +45,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataTaskUpdate: UpdateTaskRequestDto;
   let resultUser: User | null;
 
-  let dataTaskTimesheet: CreateTaskTimesheetRequestDto;
+  let dataRequestDto: CheckInOrOutRequestDto;
   let resultTaskTimesheet: TaskTimesheet;
   let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
+  let dataCheckout: CheckInOrOutRequestDto;
 
   let dataTaskWork: CreateTaskWorkRequestDto;
   let dataTaskWorks: CreateTaskWorkRequestDto[];
@@ -119,16 +121,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Update finish [/api/task/finish/{id}]', async () => {
-    const date = new Date();
-
-    const { body } = await request(BaseTest.server)
-      .put('/api/task/finish/' + resultTask?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send({ finish: date });
-    console.log(body);
-  });
-
   it('Update [PUT /api/task/{id}]', async () => {
     const fakeData = await factoryManager.get(Task).make();
     const { code, ...dataTaskUpdate } = fakeData;
@@ -149,6 +141,111 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
+  // API Task-Timesheet
+
+  it('Create [POST /api/task-timesheet]', async () => {
+    if (!type) {
+      resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
+    }
+    // const data: TaskRequest = {
+    //   id: resultTask?.id,
+    // };
+
+    dataRequestDto = {
+      listTask: [{ id: resultTask?.id }],
+    };
+
+    const { body } = await request(BaseTest.server)
+      .post('/api/task-timesheet/')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataRequestDto)
+      .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
+
+    const test = dayjs(body.data.start).isSame(new Date(), 'day');
+    expect(test).toBeTruthy();
+    expect(body.data.finish).toBeNull();
+    resultTaskTimesheet = body.data;
+    resultTaskWork = resultTaskTimesheet.works![0];
+  });
+
+  it('Get all [GET /api/task-timesheet]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/task-timesheet')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    expect(body.data[0]).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+  });
+
+  it('Get one [GET /api/task-timesheet/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    expect(body.data).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+  });
+
+  it('Update [PUT /api/task-timesheet/:id]', async () => {
+    const dataUpdate = await factoryManager.get(TaskTimesheet).make();
+    const dataNote = dataUpdate.note;
+    updateTaskTimesheet = {
+      note: dataNote,
+    };
+
+    const { body } = await request(BaseTest.server)
+      .put('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(updateTaskTimesheet)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    const { updatedAt, note, works, user, ...test } = resultTaskTimesheet!;
+    expect(body.data).toEqual(jasmine.objectContaining(test));
+
+    Object.keys(updateTaskTimesheet).forEach((key) => {
+      resultTaskTimesheet[key] = updateTaskTimesheet[key];
+    });
+  });
+
+  it('Check Out [POST /api/task-timesheet/:id]', async () => {
+    const taskWord = await factoryManager.get(TaskWork).make({
+      id: resultTaskTimesheet.works![0].id,
+      taskId: resultTask?.id,
+    });
+
+    dataRequestDto = {
+      listTaskWord: [taskWord],
+    };
+
+    const { listTask, ...data } = dataRequestDto!;
+
+    const { body } = await request(BaseTest.server)
+      .post('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(data)
+      .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
+
+    const { updatedAt, finish, works, ...testTimesheet } = resultTaskTimesheet!;
+    expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
+    // console.log(body.data);
+    // console.log(dataRequestDto.listTaskWord);
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(dataRequestDto.listTaskWord![0]));
+  });
+
+  // Test API delete Task, Task-Timesheet, TaskWork
+
+  it('Delete [DELETE /api/task-timesheet/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+    if (type) {
+      const { updatedAt, works, user, isDeleted, finish, ...test } = resultTaskTimesheet!;
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+    }
+  });
+
   it('Delete [DELETE /api/task/{id}]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/task/' + resultTask?.id)
@@ -159,89 +256,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
-
-  // it('Create [POST /api/task-work]', async () => {
-  //   dataTaskWork = await factoryManager.get(TaskWork).make({
-  //     taskId: resultTask?.id,
-  //   });
-
-  //   const { body } = await request(BaseTest.server)
-  //     .post('/api/task-work')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataTaskWork)
-  //     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-
-  //   if (type) {
-  //     console.log(body.data);
-  //   }
-  // });
-
-  // API Task-Timesheet
-
-  // it('Create [POST /api/task-timesheet]', async () => {
-  //   if (!type) {
-  //     resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
-  //   }
-
-  //   const data: TaskRequest = {
-  //     id: resultTask?.id,
-  //   };
-
-  //   dataTaskTimesheet = {
-  //     listTask: [{ id: resultTask?.id }],
-  //   };
-
-  //   const { body } = await request(BaseTest.server)
-  //     .post('/api/task-timesheet')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataTaskTimesheet)
-  //     .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
-
-  //   const test = dayjs(body.data.start).isSame(new Date(), 'day');
-  //   expect(test).toBeTruthy();
-  //   expect(body.data.finish).toBeNull();
-  //   resultTaskTimesheet = body.data;
-  // });
-
-  // it('Get all [GET /api/task-timesheet]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/task-timesheet')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-  //   expect(body.data[0]).toEqual(jasmine.objectContaining(resultTaskTimesheet));
-  // });
-
-  // it('Get one [GET /api/task-timesheet/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/task-timesheet/' + resultTaskTimesheet?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-  //   expect(body.data).toEqual(jasmine.objectContaining(resultTaskTimesheet));
-  // });
-
-  // it('Update [PUT /api/task-timesheet/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/task-timesheet/' + resultTaskTimesheet?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(updateTaskTimesheet)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  // });
-
-  // Test API delete Task, Task-Timesheet, TaskWork
-
-  // it('Delete [DELETE /api/task-timesheet/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .delete('/api/task-timesheet/' + resultTaskTimesheet?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-
-  //   if (type) {
-  //     const { isDeleted, updatedAt, ...test } = resultTaskTimesheet!;
-  //     expect(body.data).toEqual(jasmine.objectContaining(test));
-  //   }
-  // });
 
   /* */
 

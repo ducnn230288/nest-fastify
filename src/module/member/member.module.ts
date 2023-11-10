@@ -7,7 +7,8 @@ import {
   UserTeamController,
   TaskController,
   TaskTimesheetController,
-  TaskWorkController,
+  QuestionController,
+  QuestionTestController,
 } from '@controller';
 import { Booking, Comment, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
 import {
@@ -19,6 +20,8 @@ import {
   UserService,
   UserTeamService,
   TaskWorkService,
+  QuestionService,
+  QuestionTestService,
 } from '@service';
 import {
   DayoffRepository,
@@ -27,6 +30,9 @@ import {
   UserTeamRepository,
   TaskTimesheetRepository,
   TaskRepository,
+  TaskWorkRepository,
+  QuestionRepository,
+  QuestionTestRepository,
 } from '@repository';
 
 @Module({
@@ -48,8 +54,9 @@ import {
     UserTeamController,
     DayoffController,
     TaskController,
-    TaskWorkController,
     TaskTimesheetController,
+    QuestionController,
+    QuestionTestController,
   ],
   providers: [
     BookingService,
@@ -63,9 +70,14 @@ import {
     UserRepository,
     TaskService,
     TaskRepository,
-    TaskWorkService,
     TaskTimesheetService,
     TaskTimesheetRepository,
+    TaskWorkService,
+    TaskWorkRepository,
+    QuestionRepository,
+    QuestionService,
+    QuestionTestService,
+    QuestionTestRepository,
   ],
   exports: [UserTeamRepository, DayoffRepository],
 })

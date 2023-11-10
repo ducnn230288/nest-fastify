@@ -34,7 +34,7 @@ export class Question extends Base {
   options: string;
 
   @Column()
-  @Exclude()
+  // @Exclude()
   @ApiProperty({ example: 'D', description: '' })
   @IsString()
   correct: string;
@@ -62,6 +62,6 @@ export class Question extends Base {
   @IsOptional()
   level?: number;
 
-  @OneToMany(() => QuestionTest, (questionTest) => questionTest.questionId)
-  tests?: QuestionTest[];
+  // @OneToMany(() => QuestionTest, (questionTest) => questionTest.questionId)
+  // tests?: QuestionTest[];
 }

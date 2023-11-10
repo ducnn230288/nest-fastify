@@ -45,9 +45,9 @@ export class TaskTimesheet extends Base {
   @ManyToOne(() => User, (user) => user.timesheet, { eager: true })
   @JoinColumn({ name: 'user_id' })
   @Type(() => User)
-  readonly user?: User;
+  user?: User;
 
-  @OneToMany(() => TaskWork, (data) => data.taskId)
+  @OneToMany(() => TaskWork, (data) => data.timesheet)
   @Type(() => TaskWork)
-  readonly works?: TaskWork[];
+  works?: TaskWork[];
 }
