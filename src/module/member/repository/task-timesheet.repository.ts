@@ -63,7 +63,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
   }
 
   async checkoutWithArrayTaskWork(
-    id: string,
+    timesheet: TaskTimesheet,
     listTaskWork: TaskWorkRequest[],
     finish: Date,
   ): Promise<TaskTimesheet | null> {
@@ -71,16 +71,8 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     let result: TaskTimesheet | null;
 
     await this.dataSource.transaction(async (entityManager) => {
-      const data = await entityManager.preload(TaskTimesheet, {
-        id: id,
-      });
-
-      if (!data) throw new BadRequestException(i18n.t('common.TaskTimesheet id not found', { args: { id } }));
-
-      if (data.finish) throw new BadRequestException(i18n.t('common.TaskTimesheet had been finished'));
-      data.finish = finish;
-      result = await this.save(data);
-      // console.log(result);
+      timesheet.finish = finish;
+      result = await this.save(timesheet);
 
       if (listTaskWork) {
         result.works = [];
@@ -88,7 +80,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
           const exist = await entityManager
             .createQueryBuilder(TaskWork, 'base')
             .andWhere(`base.taskId=:taskId`, { taskId: item.taskId })
-            .andWhere(`base.timesheetId=:timesheetId`, { timesheetId: id })
+            .andWhere(`base.timesheetId=:timesheetId`, { timesheetId: timesheet.id })
             .andWhere(`base.id=:id`, { id: item.id })
             .withDeleted()
             .getOne();
@@ -106,7 +98,6 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
           });
           task!.hours! += data!.hours!;
           task = await entityManager.save(task);
-          console.log(task);
 
           if (data) result.works.push(data);
         }

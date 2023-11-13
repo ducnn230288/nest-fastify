@@ -2,9 +2,9 @@
 import {
   Body,
   Delete,
-  ForbiddenException,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -46,13 +46,15 @@ export class TaskTimesheetController {
     @Body(new SerializerBody([MaxGroup])) body: CheckInOrOutRequestDto,
     @AuthUser() user: User,
     @Res({ passthrough: true }) res: Response,
-    @Param('checkin') checkIn: boolean = true,
+    @Param('checkin') checkIn: string,
   ): Promise<TaskTimesheetResponseDto> {
-    // const id = null;
-    const data = await this.service.checkInOrOut(checkIn, user, body);
-    res.status(checkIn ? HttpStatus.CREATED : HttpStatus.OK);
+    if (checkIn !== 'true' && checkIn !== 'false') throw new NotFoundException(i18n.t('Page not found'));
+    const check: boolean = checkIn === 'true' ? true : false;
+
+    const data = await this.service.checkInOrOut(check, user, body);
+    res.status(check ? HttpStatus.CREATED : HttpStatus.OK);
     return {
-      message: i18n.t(checkIn ? 'common.Create Success' : 'common.CheckOut Success'),
+      message: i18n.t(check ? 'common.Create Success' : 'common.Checkout Success'),
       data: data,
     };
   }
