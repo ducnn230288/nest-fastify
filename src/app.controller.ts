@@ -126,6 +126,8 @@ export class AppController {
       }),
     };
   }
+
+  // test git action
   @Get('/en/news')
   @Render('post/list')
   async newsEn(): Promise<IListPost> {
