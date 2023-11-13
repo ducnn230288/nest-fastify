@@ -126,6 +126,7 @@ export class AppController {
       }),
     };
   }
+  // dsadasdasd
   @Get('/en/news')
   @Render('post/list')
   async newsEn(): Promise<IListPost> {
