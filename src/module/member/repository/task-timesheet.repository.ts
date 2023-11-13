@@ -23,7 +23,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return data;
   }
 
-  async createWithTaskWorks(start: Date, userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
+  async createWithArrayTaskWorks(start: Date, userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null = null;
 
@@ -64,7 +64,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
 
   async checkoutWithArrayTaskWork(
     id: string,
-    listTaskWord: TaskWorkRequest[],
+    listTaskWork: TaskWorkRequest[],
     finish: Date,
   ): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
@@ -82,9 +82,9 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
       result = await this.save(data);
       // console.log(result);
 
-      if (listTaskWord) {
+      if (listTaskWork) {
         result.works = [];
-        for (const item of listTaskWord) {
+        for (const item of listTaskWork) {
           const exist = await entityManager
             .createQueryBuilder(TaskWork, 'base')
             .andWhere(`base.taskId=:taskId`, { taskId: item.taskId })
@@ -92,7 +92,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
             .andWhere(`base.id=:id`, { id: item.id })
             .withDeleted()
             .getOne();
-          if (!exist) throw new BadRequestException(i18n.t('common.Post.id was not found'));
+          if (!exist) throw new BadRequestException(i18n.t('common.TaskWork.id was not found'));
 
           const data = await entityManager.save(
             await entityManager.preload(TaskWork, {
@@ -100,6 +100,14 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
               hours: item.hours,
             }),
           );
+
+          let task = await entityManager.preload(Task, {
+            id: data?.taskId,
+          });
+          task!.hours! += data!.hours!;
+          task = await entityManager.save(task);
+          console.log(task);
+
           if (data) result.works.push(data);
         }
       }

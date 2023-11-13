@@ -1,7 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Body, Delete, ForbiddenException, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  ForbiddenException,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+  ValidationPipe,
+} from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
-
+import { Response } from 'express';
 import { Auth, AuthUser, Headers, MaxGroup, SerializerBody, PaginationQueryDto } from '@shared';
 import {
   CheckInOrOutRequestDto,
@@ -28,16 +40,19 @@ export class TaskTimesheetController {
     summary: 'Create data',
     serializeOptions: { groups: [MaxGroup] },
   })
-  @Post(':id')
+  @Post(':checkin')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CheckInOrOutRequestDto,
-    @Param('id') id: string,
     @AuthUser() user: User,
+    @Res({ passthrough: true }) res: Response,
+    @Param('checkin') checkIn: boolean = true,
   ): Promise<TaskTimesheetResponseDto> {
-    const data = await this.service.checkInOrOut(id, user, body);
+    // const id = null;
+    const data = await this.service.checkInOrOut(checkIn, user, body);
+    res.status(checkIn ? HttpStatus.CREATED : HttpStatus.OK);
     return {
-      message: i18n.t(!id ? 'common.Create Success' : 'common.CheckOut Success'),
+      message: i18n.t(checkIn ? 'common.Create Success' : 'common.CheckOut Success'),
       data: data,
     };
   }

@@ -18,7 +18,7 @@ export class UpdateTaskTimesheetRequestDto extends PickType(TaskTimesheet, ['not
 export class CheckInOrOutRequestDto extends PickType(TaskTimesheet, [] as const) {
   @IsArray()
   @IsOptional()
-  readonly listTaskWord?: TaskWorkRequest[];
+  readonly listTaskWork?: TaskWorkRequest[];
 
   @IsArray()
   @IsOptional()
