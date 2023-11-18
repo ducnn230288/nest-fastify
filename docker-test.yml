@@ -45,7 +45,10 @@ services:
       - database
       - cache
     volumes:
-      - server:/app
+      - .\test:/app/test
+      - .\other:/app/other
+      - .\database:/app/database
+      - .\config:/app/config
     networks:
       - network
 
@@ -57,4 +60,3 @@ networks:
 volumes:
   database:
   cache:
-  server:
