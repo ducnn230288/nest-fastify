@@ -119,6 +119,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //   }
   // });
 
+  it('Update finish', async () => {
+    const date = new Date();
+    const { body } = await request(BaseTest.server)
+      .put('/api/task/finish/' + resultTask?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send({ finish: date });
+    console.log(body);
+  });
+
   // it('Update [PUT /api/task/{id}]', async () => {
   //   const fakeData = await factoryManager.get(Task).make();
   //   const { code, ...dataTaskUpdate } = fakeData;
