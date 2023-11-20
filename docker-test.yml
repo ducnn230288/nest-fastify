@@ -13,7 +13,7 @@ services:
       - 5432:5432
     restart: always
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready', '-q', '-d', '{YOUR_DATABASE_NAME}', '-U', '{YOUR_DATABASE_USERNAME}']
+      test: [ "CMD-SHELL", "pg_isready", "-q", "-d", "{YOUR_DATABASE_NAME}", "-U", "{YOUR_DATABASE_USERNAME}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -29,25 +29,28 @@ services:
     networks:
       - network
 
-  # server:
-  #   build:
-  #     context: .
-  #     args:
-  #       - PROD=true
-  #     dockerfile: Dockerfile
-  #   container_name: nest-fastify
-  #   environment:
-  #     REDIS_HOST: 'cache'
-  #     DATABASE_HOST: 'database'
-  #   ports:
-  #     - '3000:3000'
-  #   depends_on:
-  #     - database
-  #     - cache
-  #   volumes:
-  #     - server:/app
-  #   networks:
-  #     - network
+  server:
+    build:
+      context: .
+      args:
+        - PROD=true
+      dockerfile: Dockerfile
+    container_name: nest-fastify
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - cache
+    volumes:
+      - .\test:/app/test
+      - .\other:/app/other
+      - .\database:/app/database
+      - .\config:/app/config
+    networks:
+      - network
 
 networks:
   network:
@@ -57,4 +60,3 @@ networks:
 volumes:
   database:
   cache:
-  server:
