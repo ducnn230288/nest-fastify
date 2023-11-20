@@ -101,7 +101,7 @@ export class TaskController {
   ): Promise<TaskResponseDto> {
     return {
       message: i18n.t('common.Update data finish success'),
-      data: await this.service.update(id, updateFinish),
+      data: await this.service.updateFinishTime(id, updateFinish),
     };
   }
 
