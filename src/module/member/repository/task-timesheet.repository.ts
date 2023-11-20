@@ -23,14 +23,14 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return data;
   }
 
-  async createWithArrayTaskWorks(start: Date, userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
+  async createWithArrayTaskWorks(userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null = null;
 
     await this.dataSource.transaction(async (entityManager) => {
       result = await entityManager.save(
         entityManager.create(TaskTimesheet, {
-          start: start,
+          start: new Date(),
           userId: userId,
         }),
       );
@@ -65,13 +65,12 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
   async checkoutWithArrayTaskWork(
     timesheet: TaskTimesheet,
     listTaskWork: TaskWorkRequest[],
-    finish: Date,
   ): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null;
 
     await this.dataSource.transaction(async (entityManager) => {
-      timesheet.finish = finish;
+      timesheet.finish = new Date();
       // result = await this.save(timesheet);
 
       if (listTaskWork) {

@@ -78,13 +78,13 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
       const ids = body.listTask!.map((item) => item.id);
       const listTask = await this.repoTask.getManyByArrayId(ids);
       if (listTask.length !== body.listTask!.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
-      dataTaskTimesheet = await this.repo.createWithArrayTaskWorks(start, user.id, listTask);
+      dataTaskTimesheet = await this.repo.createWithArrayTaskWorks(user.id, listTask);
     } else {
       if (!timesheet) throw new BadRequestException(i18n.t('common.TaskTimesheet not found'));
       if (timesheet.finish) throw new BadRequestException(i18n.t('common.TaskTimesheet has been finished'));
       // Check Out
       const finish = new Date();
-      dataTaskTimesheet = await this.repo.checkoutWithArrayTaskWork(timesheet!, body.listTaskWork!, finish);
+      dataTaskTimesheet = await this.repo.checkoutWithArrayTaskWork(timesheet!, body.listTaskWork!);
     }
     // dataTaskTimesheet = await this.findOneTaskTimesheet(dataTaskTimesheet!.id! as string);
     return dataTaskTimesheet!;
