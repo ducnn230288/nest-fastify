@@ -60,7 +60,7 @@ export class Task extends Base {
   start?: Date;
 
   @Column({ nullable: true })
-  @ApiProperty({ example: faker.date.future(), description: '' })
+  @ApiProperty({ example: faker.date.anytime(), description: '' })
   @IsDateString()
   finish?: Date;
 

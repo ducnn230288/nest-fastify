@@ -16,7 +16,7 @@ export class TaskService extends BaseService<Task> {
   constructor(public repo: TaskRepository) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['manager', 'works'];
+    this.listJoin = ['manager'];
     this.listJoinCount = [];
   }
 
@@ -26,15 +26,14 @@ export class TaskService extends BaseService<Task> {
   // }
 
   async updateFinishTime(id: string, body: UpdateTaskFinishDto): Promise<Task | null> {
-    const task = await this.findOne(id, []);
-    console.log(task);
+    const task = await this.findOne(id, ['works']);
     // Lấy data hours của taskWork
-
+    console.log(task?.works?.hours);
     // Kiểm tra nếu status = 1 thì mới cho cập nhật finishTime
 
     // Sau đó tính tổng thời gian mà khi kết thúc task đó
     const listTask = await this.repo.getManyIn30Day();
-    console.log(listTask);
+
     const data = await this.update(id, body);
     return data;
   }

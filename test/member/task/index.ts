@@ -76,7 +76,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataTask)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-
+    console.log(body);
     if (type) {
       const { start, deadline } = dataTask;
       expect(body.data).toEqual(
@@ -118,14 +118,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //   }
   // });
 
-  it('Update finish', async () => {
-    const date = new Date();
-    const { body } = await request(BaseTest.server)
-      .put('/api/task/finish/' + resultTask?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send({ finish: date });
-    console.log(body);
-  });
+  // it('Update finish', async () => {
+  //   const date = new Date();
+  //   const { body } = await request(BaseTest.server)
+  //     .put('/api/task/finish/' + resultTask?.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .send({ finish: date });
+  // });
 
   // it('Update [PUT /api/task/{id}]', async () => {
   //   const fakeData = await factoryManager.get(Task).make();
