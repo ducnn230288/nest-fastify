@@ -21,7 +21,6 @@ import {
   UserTeamService,
   QuestionService,
   QuestionTestService,
-  CodeService,
   TaskWorkService,
 } from '@service';
 import {
@@ -31,7 +30,6 @@ import {
   UserTeamRepository,
   TaskTimesheetRepository,
   TaskRepository,
-  TaskWorkRepository,
   QuestionRepository,
   QuestionTestRepository,
 } from '@repository';
@@ -73,7 +71,6 @@ import {
     TaskRepository,
     TaskTimesheetService,
     TaskTimesheetRepository,
-    TaskWorkRepository,
     TaskWorkService,
     QuestionRepository,
     QuestionService,

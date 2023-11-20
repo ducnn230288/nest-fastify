@@ -44,21 +44,17 @@ export class TaskTimesheetController {
   @Auth({
     summary: 'Create data',
   })
-  @Post(':checkin')
+  @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CheckInOrOutRequestDto,
     @AuthUser() user: User,
     @Res({ passthrough: true }) res: Response,
-    @Param('checkin') checkIn: string,
   ): Promise<TaskTimesheetResponseDto> {
-    if (checkIn !== 'true' && checkIn !== 'false') throw new NotFoundException(i18n.t('Page not found'));
-    const check: boolean = checkIn === 'true' ? true : false;
-
-    const data = await this.service.checkInOrOut(check, user, body);
-    res.status(check ? HttpStatus.CREATED : HttpStatus.OK);
+    const data = await this.service.checkInOrOut(user, body);
+    res.status(data?.finish ? HttpStatus.OK : HttpStatus.CREATED);
     return {
-      message: i18n.t(check ? 'common.Create Success' : 'common.Checkout Success'),
+      message: i18n.t(data?.finish ? 'common.Checkout Success' : 'common.Create Success'),
       data: data,
     };
   }
@@ -75,7 +71,7 @@ export class TaskTimesheetController {
   ): Promise<ListTaskTimesheetResponseDto> {
     if (user.roleCode !== 'supper_admin' || !user.role?.permissions?.includes(P_TASKTIMESHEET_LISTED))
       paginationQuery.where = [{ userId: user.id }];
-    const [result, total] = await this.service.findAllTaskTimesheet(paginationQuery);
+    const [result, total] = await this.service.findAll(paginationQuery);
 
     return {
       message: i18n.t('common.Get List success'),
@@ -89,8 +85,7 @@ export class TaskTimesheetController {
   })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TaskTimesheetResponseDto> {
-    const timesheet = await this.service.findOneTaskTimesheet(id);
-    // console.log(timesheet?.works[0].task);
+    const timesheet = await this.service.findOne(id);
     return {
       message: i18n.t('common.Get Detail success'),
       data: timesheet,
@@ -106,11 +101,9 @@ export class TaskTimesheetController {
     @Param('id') id: string,
     @Body(new SerializerBody()) dataUpdate: UpdateTaskTimesheetRequestDto,
   ): Promise<TaskTimesheetResponseDto> {
-    let data = await this.service.update(id, dataUpdate);
-    data = await this.service.findOneTaskTimesheet(data!.id!);
     return {
       message: i18n.t('common.Update Success'),
-      data: data,
+      data: await this.service.update(id, dataUpdate),
     };
   }
 
