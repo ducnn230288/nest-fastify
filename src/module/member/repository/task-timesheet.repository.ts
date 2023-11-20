@@ -72,10 +72,10 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
 
     await this.dataSource.transaction(async (entityManager) => {
       timesheet.finish = finish;
-      result = await this.save(timesheet);
+      // result = await this.save(timesheet);
 
       if (listTaskWork) {
-        result.works = [];
+        timesheet.works = [];
         for (const item of listTaskWork) {
           const exist = await entityManager
             .createQueryBuilder(TaskWork, 'base')
@@ -99,9 +99,10 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
           task!.hours! += data!.hours!;
           task = await entityManager.save(task);
 
-          if (data) result.works.push(data);
+          if (data) timesheet.works.push(data);
         }
       }
+      result = await this.save(timesheet);
     });
 
     return result!;

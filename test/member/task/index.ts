@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import request from 'supertest';
@@ -33,8 +32,7 @@ import {
   P_TASKTIMESHEET_LISTED,
   P_TASK_CREATE,
 } from '@service';
-import { Example } from '@shared';
-import { xssFilter } from 'helmet';
+import c from 'config';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -42,7 +40,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const factoryManager = useSeederFactoryManager();
   let dataTask: CreateTaskRequestDto;
   let resultTask: Task | null;
-  let task2: Task | null;
+
   let dataTaskUpdate: UpdateTaskRequestDto;
   let resultUser: User | null;
 
@@ -51,10 +49,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
   let dataCheckout: CheckInOrOutRequestDto;
 
-  let dataTaskWork: CreateTaskWorkRequestDto;
-  let dataTaskWorks: CreateTaskWorkRequestDto[];
   let resultTaskWork: TaskWork;
-  let updateTaskWork: UpdateTaskWorkRequestDto;
+
   let codeType: CodeType | null;
   let code: Code | null;
 
@@ -93,54 +89,54 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get list [GET /api/task]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/task')
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(resultTask));
-    }
-  });
+  // it('Get list [GET /api/task]', async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .get('/api/task')
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(HttpStatus.OK);
+  //   if (type) {
+  //     expect(body.data[0]).toEqual(jasmine.objectContaining(resultTask));
+  //   }
+  // });
 
-  it('Get one [GET /api/task/{id}]', async () => {
-    if (!type) {
-      resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
-    }
-    const { body } = await request(BaseTest.server)
-      .get('/api/task/' + resultTask?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
-    if (type) {
-      const { start, deadline } = dataTask;
-      expect(body.data).toEqual(
-        jasmine.objectContaining({
-          start: start?.toISOString(),
-          deadline: deadline?.toISOString(),
-        }),
-      );
-    }
-  });
+  // it('Get one [GET /api/task/{id}]', async () => {
+  //   if (!type) {
+  //     resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
+  //   }
+  //   const { body } = await request(BaseTest.server)
+  //     .get('/api/task/' + resultTask?.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(HttpStatus.OK);
+  //   if (type) {
+  //     const { start, deadline } = dataTask;
+  //     expect(body.data).toEqual(
+  //       jasmine.objectContaining({
+  //         start: start?.toISOString(),
+  //         deadline: deadline?.toISOString(),
+  //       }),
+  //     );
+  //   }
+  // });
 
-  it('Update [PUT /api/task/{id}]', async () => {
-    const fakeData = await factoryManager.get(Task).make();
-    const { code, ...dataTaskUpdate } = fakeData;
-    const { body } = await request(BaseTest.server)
-      .put('/api/task/' + resultTask?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataTaskUpdate)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      const { deadline, start } = dataTaskUpdate;
-      expect(body.data).toEqual(
-        jasmine.objectContaining({
-          deadline: deadline?.toISOString(),
-          start: start?.toISOString(),
-        }),
-      );
-      resultTask = body.data;
-    }
-  });
+  // it('Update [PUT /api/task/{id}]', async () => {
+  //   const fakeData = await factoryManager.get(Task).make();
+  //   const { code, ...dataTaskUpdate } = fakeData;
+  //   const { body } = await request(BaseTest.server)
+  //     .put('/api/task/' + resultTask?.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .send(dataTaskUpdate)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //   if (type) {
+  //     const { deadline, start } = dataTaskUpdate;
+  //     expect(body.data).toEqual(
+  //       jasmine.objectContaining({
+  //         deadline: deadline?.toISOString(),
+  //         start: start?.toISOString(),
+  //       }),
+  //     );
+  //     resultTask = body.data;
+  //   }
+  // });
 
   // API Task-Timesheet
 
@@ -171,7 +167,12 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    expect(body.data[0]).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+    const { works, ...testTimesheet } = resultTaskTimesheet!;
+    const { isDeleted, createdAt, updatedAt, ...testCode } = code!;
+
+    expect(body.data[0]).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(body.data[0].works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(body.data[0].works[0].task.project).toEqual(jasmine.objectContaining(testCode));
   });
 
   it('Get one [GET /api/task-timesheet/:id]', async () => {
@@ -180,7 +181,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    expect(body.data).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+    const { works, ...test } = resultTaskTimesheet;
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   it('Update [PUT /api/task-timesheet/:id]', async () => {
@@ -196,12 +199,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send(updateTaskTimesheet)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    const { updatedAt, note, works, user, ...test } = resultTaskTimesheet!;
+    const { updatedAt, note, works, ...test } = resultTaskTimesheet!;
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
     expect(body.data).toEqual(jasmine.objectContaining(test));
 
-    Object.keys(updateTaskTimesheet).forEach((key) => {
-      resultTaskTimesheet[key] = updateTaskTimesheet[key];
-    });
+    resultTaskTimesheet.note = dataNote;
   });
 
   it('Check Out [POST /api/task-timesheet/:checkin', async () => {

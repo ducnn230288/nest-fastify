@@ -18,9 +18,12 @@ export const P_TASKWORK_DETAIL = '80668128-7e1d-46ef-95d1-bb4cff742f70';
 
 @Injectable()
 export class TaskWorkService extends BaseService<TaskWork> {
-  constructor(public repo: TaskWorkRepository) {
+  constructor(
+    @InjectRepository(TaskWork)
+    public repo: Repository<TaskWork>,
+  ) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['task'];
+    this.listJoin = ['task', 'task.project'];
   }
 }

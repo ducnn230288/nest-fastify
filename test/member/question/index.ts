@@ -49,7 +49,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Create [POST /api/question-test]', async () => {
-    let answerObj = {};
+    const answerObj = {};
     answerObj[resultQuestion?.id] = 'D';
     dataQuestionTest = await factoryManager.get(QuestionTest).make({
       answer: answerObj,

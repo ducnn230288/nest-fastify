@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, IsNull, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
@@ -114,7 +114,7 @@ export class Task extends Base {
   @IsOptional()
   hours?: number;
 
-  @OneToMany(() => TaskWork, (data) => data.taskId)
+  @OneToMany(() => TaskWork, (data) => data.task)
   @Type(() => TaskWork)
   readonly works?: TaskWork[];
 

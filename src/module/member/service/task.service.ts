@@ -16,7 +16,7 @@ export class TaskService extends BaseService<Task> {
   constructor(public repo: TaskRepository) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['manager'];
+    this.listJoin = ['manager', 'works'];
     this.listJoinCount = [];
   }
 
@@ -24,4 +24,14 @@ export class TaskService extends BaseService<Task> {
   //   const data = await super.create(body);
   //   return data;
   // }
+
+  async getManyIn30Day(): Promise<Task[]> {
+    const listTask = await this.repo.getManyIn30Day();
+    const resultList = listTask.map((task) => {
+      task.hours = task.works?.reduce((init, curr) => init! + curr!.hours! + 1, 0);
+      return task;
+    });
+
+    return this.repo.save(resultList);
+  }
 }

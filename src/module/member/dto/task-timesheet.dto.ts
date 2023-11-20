@@ -1,7 +1,7 @@
 import { PartialType, PickType } from '@nestjs/swagger';
 import { IsArray, IsOptional } from 'class-validator';
 
-import { Task, TaskTimesheet, TaskWork } from '@model';
+import { Code, Task, TaskTimesheet, TaskWork } from '@model';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 
 export class TaskRequest extends PickType(Task, ['id'] as const) {}
@@ -31,4 +31,5 @@ export class TaskTimesheetResponseDto extends PartialType(DefaultResponsesDto) {
 
 export class ListTaskTimesheetResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: TaskTimesheet[];
+  // readonly project: Code;
 }

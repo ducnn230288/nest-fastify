@@ -11,7 +11,7 @@ import { Base, MaxGroup } from '@shared';
 export class TaskWork extends Base {
   @Column({ nullable: true, type: 'real' })
   @Expose()
-  @ApiProperty({ example: faker.number.int(), description: '' })
+  @ApiProperty({ example: faker.number.int({ max: 12 * 60 * 60 }), description: '' })
   @IsNumber()
   @IsOptional()
   hours?: number;

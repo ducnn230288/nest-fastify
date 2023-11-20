@@ -22,7 +22,7 @@ import {
   TaskTimesheetResponseDto,
   UpdateTaskTimesheetRequestDto,
 } from '@dto';
-import { User } from '@model';
+import { User, Code } from '@model';
 import {
   TaskTimesheetService,
   P_TASKTIMESHEET_LISTED,
@@ -30,15 +30,19 @@ import {
   P_TASKTIMESHEET_UPDATE,
   P_TASKTIMESHEET_DELETE,
   P_TASKTIMESHEET_DETAIL,
+  CodeService,
+  TaskService,
 } from '@service';
 
 @Headers('task-timesheet')
 export class TaskTimesheetController {
-  constructor(private readonly service: TaskTimesheetService) {}
+  constructor(
+    private readonly service: TaskTimesheetService,
+    private readonly taskService: TaskService,
+  ) {}
 
   @Auth({
     summary: 'Create data',
-    serializeOptions: { groups: [MaxGroup] },
   })
   @Post(':checkin')
   async create(
@@ -61,6 +65,7 @@ export class TaskTimesheetController {
 
   @Auth({
     summary: 'Get List data',
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get('')
   async findAll(
@@ -70,7 +75,7 @@ export class TaskTimesheetController {
   ): Promise<ListTaskTimesheetResponseDto> {
     if (user.roleCode !== 'supper_admin' || !user.role?.permissions?.includes(P_TASKTIMESHEET_LISTED))
       paginationQuery.where = [{ userId: user.id }];
-    const [result, total] = await this.service.findAll(paginationQuery);
+    const [result, total] = await this.service.findAllTaskTimesheet(paginationQuery);
 
     return {
       message: i18n.t('common.Get List success'),
@@ -84,28 +89,13 @@ export class TaskTimesheetController {
   })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TaskTimesheetResponseDto> {
+    const timesheet = await this.service.findOneTaskTimesheet(id);
+    // console.log(timesheet?.works[0].task);
     return {
       message: i18n.t('common.Get Detail success'),
-      data: await this.service.findOne(id, []),
+      data: timesheet,
     };
   }
-
-  // @Auth({
-  //   summary: 'Update Data',
-  // })
-  // @Put(':id/checkout')
-  // async checkout(
-  //   @I18n() i18n: I18nContext,
-  //   @Param('id') id: string,
-  //   @Body(new SerializerBody()) body: CheckOutRequestDto,
-  //   @AuthUser() user: User,
-  // ): Promise<TaskTimesheetResponseDto> {
-  //   const data = await this.service.checkout(id, user, body);
-  //   return {
-  //     message: i18n.t('common.Checkout Success'),
-  //     data: {},
-  //   };
-  // }
 
   @Auth({
     summary: 'Update Data',
@@ -116,9 +106,11 @@ export class TaskTimesheetController {
     @Param('id') id: string,
     @Body(new SerializerBody()) dataUpdate: UpdateTaskTimesheetRequestDto,
   ): Promise<TaskTimesheetResponseDto> {
+    let data = await this.service.update(id, dataUpdate);
+    data = await this.service.findOneTaskTimesheet(data!.id!);
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, dataUpdate),
+      data: data,
     };
   }
 

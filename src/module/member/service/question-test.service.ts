@@ -29,7 +29,7 @@ export class QuestionTestService extends BaseService<QuestionTest> {
 
   async saveAnswer(body: CreateQuestionTestRequestDto, user: User): Promise<QuestionTest | number | any> {
     const { answer } = body;
-    let point: number = 0;
+    let point = 0;
 
     // Lặp qua câu trả lời, mỗi câu đúng được 10đ
     for (const [key, value] of Object.entries(answer)) {
