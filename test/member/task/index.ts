@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import request from 'supertest';
@@ -147,8 +148,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   // });
 
   // API Task-Timesheet
-  /*
-  it('Check In [POST /api/task-timesheet/:checkin]', async () => {
+
+  it('Check In [POST /api/task-timesheet]', async () => {
     if (!type) {
       resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
     }
@@ -157,11 +158,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     };
 
     const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet/' + true)
+      .post('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRequestDto)
       .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
-
+    // console.log(body);
     const test = dayjs(body.data.start).isSame(new Date(), 'day');
     expect(test).toBeTruthy();
     expect(body.data.finish).toBeNull();
@@ -208,32 +209,35 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
     const { updatedAt, note, works, ...test } = resultTaskTimesheet!;
-    expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
     expect(body.data).toEqual(jasmine.objectContaining(test));
+    expect(body.data.note).toEqual(dataNote);
 
     resultTaskTimesheet.note = dataNote;
   });
 
-  it('Check Out [POST /api/task-timesheet/:checkin', async () => {
+  it('Check Out [POST /api/task-timesheet', async () => {
     const taskWork = await factoryManager.get(TaskWork).make({
       id: resultTaskTimesheet.works![0].id,
       taskId: resultTaskWork.taskId,
+      hours: 1000,
     });
 
     dataRequestDto = {
       listTaskWork: [taskWork],
+      note: faker.lorem.paragraph(),
     };
     const { listTask, ...data } = dataRequestDto!;
-
     const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet/' + false)
+      .post('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRequestDto)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    const { updatedAt, finish, works, ...testTimesheet } = resultTaskTimesheet!;
+    const { updatedAt, finish, works, note, ...testTimesheet } = resultTaskTimesheet!;
     expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(body.data.note).toEqual(dataRequestDto.note);
     expect(body.data.works[0]).toEqual(jasmine.objectContaining(dataRequestDto.listTaskWork![0]));
+    resultTaskTimesheet.note = dataRequestDto.note;
   });
 
   // Test API delete Task, Task-Timesheet, TaskWork
@@ -249,6 +253,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
+
   /*
   it('Delete [DELETE /api/task/{id}]', async () => {
     const { body } = await request(BaseTest.server)

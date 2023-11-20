@@ -12,16 +12,8 @@ export class TaskRepository extends BaseRepository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  async getManyByArrayId(ids: string[] | any, listJoin: string[] = []): Promise<Task[]> {
-    // const datas = this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
-    const request = this.createQueryBuilder('base');
-    if (listJoin.length) {
-      listJoin.forEach((key) => {
-        const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
-      });
-    }
-    const datas = await request.where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
+  async getManyByArrayId(ids: string[] | any): Promise<Task[]> {
+    const datas = await this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
     return datas;
   }
 

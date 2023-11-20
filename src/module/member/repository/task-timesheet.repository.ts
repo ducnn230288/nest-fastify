@@ -23,7 +23,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return data;
   }
 
-  async createWithArrayTaskWorks(userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
+  async checkIn(userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null = null;
 
@@ -62,12 +62,18 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return result;
   }
 
-  async checkoutWithArrayTaskWork(
+  async checkOut(
     timesheet: TaskTimesheet,
     listTaskWork: TaskWorkRequest[],
+    note: string = '',
   ): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null;
+    let task: Task;
+    // eslint-disable-next-line prefer-const
+    const sumHours = listTaskWork.reduce((init, curr) => init + curr!.hours!, 0);
+    if (sumHours < 7 * 60 * 60 && !note)
+      throw new BadRequestException(i18n.t('common.TaskTimesheet note was not found'));
 
     await this.dataSource.transaction(async (entityManager) => {
       timesheet.finish = new Date();
@@ -92,14 +98,16 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
             }),
           );
 
-          let task = await entityManager.preload(Task, {
+          task = (await entityManager.preload(Task, {
             id: data?.taskId,
-          });
-          task!.hours! += data!.hours!;
-          task = await entityManager.save(task);
+          })) as Task;
 
           if (data) timesheet.works.push(data);
+          task!.hours! += data!.hours!;
+          task = await entityManager.save(task);
         }
+
+        timesheet.note = note;
       }
       result = await this.save(timesheet);
     });

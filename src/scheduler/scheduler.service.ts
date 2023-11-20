@@ -26,7 +26,7 @@ export class SchedulerService {
     await this.userService.updateAllDaysOff();
   }
 
-  @Cron('0 0 0 * * *')
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleUpdateHours(): Promise<void> {
     await this.taskSeivice.getManyIn30Day();
   }

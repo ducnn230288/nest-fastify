@@ -15,6 +15,13 @@ export abstract class BaseService<T extends ObjectLiteral> {
     public repo: BaseRepository<T>, // public repoHistory?: Repository<T>,
   ) {}
 
+  getPropertyOfLeftJoin(checkKey: string[]): string {
+    return checkKey.length === 1
+      ? 'base.' + checkKey[0]
+      : checkKey.reduce((init, currKey, indexKey) => {
+          return indexKey < checkKey.length - 1 ? init + currKey : `${init}.${currKey}`;
+        }, '');
+  }
   /**
    * Decorator that marks a class as a [provider](https://docs.nestjs.com/providers).
    * Providers can be injected into other classes via constructor parameter injection
@@ -51,7 +58,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
       });
     }
 
@@ -179,13 +186,13 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
       });
     }
     if (listJoin.length) {
       listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
       });
     }
 
