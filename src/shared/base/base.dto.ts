@@ -40,10 +40,6 @@ export class PaginationQueryDto {
   fullTextSearch?: string;
 
   where?: object[];
-
-  @IsOptional()
-  @Transform(({ value }) => JSON.parse(value))
-  array?: string[];
 }
 
 export class PaginationResponsesDto extends PartialType(DefaultResponsesDto) {
