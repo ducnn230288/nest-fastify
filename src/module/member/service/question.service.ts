@@ -4,6 +4,9 @@ import { Question, Task } from '@model';
 import { BaseService } from '@shared';
 import { TaskRepository } from '@repository';
 import { QuestionRepository } from '../repository/question.repository';
+import { Code, DataSource } from 'typeorm';
+import '@factories';
+import { useSeederFactoryManager } from 'typeorm-extension';
 
 export const P_QUESTION_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f10';
 export const P_QUESTION_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac57710';
@@ -18,5 +21,31 @@ export class QuestionService extends BaseService<Question> {
     this.listQuery = [];
     this.listJoin = [];
     this.listJoinCount = [];
+  }
+
+  // async createMany(code: Code): Promise<Question[]> {
+  //   const datas: Question[] = [];
+  //   const factoryManager = useSeederFactoryManager();
+
+  //   for (let i = 0; i < 19; i++) {
+  //     const data = await factoryManager.get(Question).make({
+  //       level: 1,
+  //       typeCode: code?.code,
+  //     });
+  //     datas.push((await this.create(data)) as Question);
+  //   }
+  //   return datas;
+  // }
+
+  async getManyQuestionForTest(level: number, typeCode: string): Promise<[Question[], number]> {
+    const [questions, total] = await this.findAll({ where: [{ level: level }, { typeCode: typeCode }] });
+
+    for (let i = questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+
+    const ramdom: Question[] = questions.slice(0, questions.length <= 20 ? questions.length : 20);
+    return [ramdom, ramdom.length];
   }
 }

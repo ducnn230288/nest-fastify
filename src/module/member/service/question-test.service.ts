@@ -34,10 +34,10 @@ export class QuestionTestService extends BaseService<QuestionTest> {
     // Lặp qua câu trả lời, mỗi câu đúng được 10đ
     for (const [key, value] of Object.entries(answer)) {
       const question = await this.questionServive.findOne(key);
-      if (question && question?.correct === value) point += 10;
+      if (question && question?.correct === value) point += 1;
     }
     // Lưu đáp án
-
-    return await this.create({ userId: user.id, answer, point });
+    const data = await this.create({ userId: user.id, answer, point });
+    return data;
   }
 }
