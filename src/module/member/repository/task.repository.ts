@@ -17,6 +17,14 @@ export class TaskRepository extends BaseRepository<Task> {
     return datas;
   }
 
+  async getOneTask(id: string): Promise<Task | null> {
+    const data = await this.createQueryBuilder('base')
+      .where(`base.id=:id`, { id })
+      .leftJoinAndSelect('base.works', 'works')
+      .getOne();
+    return data;
+  }
+
   async getManyIn30Day(): Promise<Task[]> {
     const now = dayjs(new Date());
     const datas = await this.createQueryBuilder('base')

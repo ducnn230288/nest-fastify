@@ -77,7 +77,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataTask)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    console.log(body);
     if (type) {
       const { start, deadline } = dataTask;
       expect(body.data).toEqual(
@@ -90,62 +89,54 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  // it('Get list [GET /api/task]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/task')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(HttpStatus.OK);
-  //   if (type) {
-  //     expect(body.data[0]).toEqual(jasmine.objectContaining(resultTask));
-  //   }
-  // });
+  it('Get list [GET /api/task]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/task')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    if (type) {
+      expect(body.data[0]).toEqual(jasmine.objectContaining(resultTask));
+    }
+  });
 
-  // it('Get one [GET /api/task/{id}]', async () => {
-  //   if (!type) {
-  //     resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
-  //   }
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/task/' + resultTask?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(HttpStatus.OK);
-  //   if (type) {
-  //     const { start, deadline } = dataTask;
-  //     expect(body.data).toEqual(
-  //       jasmine.objectContaining({
-  //         start: start?.toISOString(),
-  //         deadline: deadline?.toISOString(),
-  //       }),
-  //     );
-  //   }
-  // });
+  it('Get one [GET /api/task/{id}]', async () => {
+    if (!type) {
+      resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
+    }
+    const { body } = await request(BaseTest.server)
+      .get('/api/task/' + resultTask?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+    if (type) {
+      const { start, deadline } = dataTask;
+      expect(body.data).toEqual(
+        jasmine.objectContaining({
+          start: start?.toISOString(),
+          deadline: deadline?.toISOString(),
+        }),
+      );
+    }
+  });
 
-  // it('Update finish', async () => {
-  //   const date = new Date();
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/task/finish/' + resultTask?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send({ finish: date });
-  // });
-
-  // it('Update [PUT /api/task/{id}]', async () => {
-  //   const fakeData = await factoryManager.get(Task).make();
-  //   const { code, ...dataTaskUpdate } = fakeData;
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/task/' + resultTask?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataTaskUpdate)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     const { deadline, start } = dataTaskUpdate;
-  //     expect(body.data).toEqual(
-  //       jasmine.objectContaining({
-  //         deadline: deadline?.toISOString(),
-  //         start: start?.toISOString(),
-  //       }),
-  //     );
-  //     resultTask = body.data;
-  //   }
-  // });
+  it('Update [PUT /api/task/{id}]', async () => {
+    const fakeData = await factoryManager.get(Task).make();
+    const { code, ...dataTaskUpdate } = fakeData;
+    const { body } = await request(BaseTest.server)
+      .put('/api/task/' + resultTask?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataTaskUpdate)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      const { deadline, start } = dataTaskUpdate;
+      expect(body.data).toEqual(
+        jasmine.objectContaining({
+          deadline: deadline?.toISOString(),
+          start: start?.toISOString(),
+        }),
+      );
+      resultTask = body.data;
+    }
+  });
 
   // API Task-Timesheet
 
@@ -240,6 +231,15 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     resultTaskTimesheet.note = dataRequestDto.note;
   });
 
+  it('Update finish', async () => {
+    const date = new Date();
+    const { body } = await request(BaseTest.server)
+      .put('/api/task/finish/' + resultTask?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send({ finish: date });
+    console.log(body);
+  });
+
   // Test API delete Task, Task-Timesheet, TaskWork
 
   it('Delete [DELETE /api/task-timesheet/:id]', async () => {
@@ -254,18 +254,17 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  /*
   it('Delete [DELETE /api/task/{id}]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/task/' + resultTask?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    console.log(body);
     if (type) {
-      const { updatedAt, ...test } = resultTask!;
+      const { updatedAt, finish, hours, ...test } = resultTask!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
-
   /* */
 
   return afterAll(BaseTest.initAfterAll);
