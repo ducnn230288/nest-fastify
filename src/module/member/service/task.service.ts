@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Task, User } from '@model';
+import { Task } from '@model';
 
 import { BaseService } from '@shared';
 import { TaskRepository } from '@repository';
-import { CreateTaskRequestDto, UpdateTaskFinishDto } from '@dto';
+import { UpdateTaskFinishDto } from '@dto';
 
 export const P_TASK_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f10';
 export const P_TASK_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac57710';
@@ -26,15 +26,10 @@ export class TaskService extends BaseService<Task> {
   // }
 
   async updateFinishTime(id: string, body: UpdateTaskFinishDto): Promise<Task | null> {
-    const task = await this.findOne(id, []);
-    console.log(task);
-    // Lấy data hours của taskWork
+    const taskData = await this.repo.getOneTask(id);
 
-    // Kiểm tra nếu status = 1 thì mới cho cập nhật finishTime
+    const newData = taskData?.works![0].hours;
 
-    // Sau đó tính tổng thời gian mà khi kết thúc task đó
-    const listTask = await this.repo.getManyIn30Day();
-    console.log(listTask);
     const data = await this.update(id, body);
     return data;
   }

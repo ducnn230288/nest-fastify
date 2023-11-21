@@ -97,11 +97,11 @@ export class TaskController {
   async finishTime(
     @I18n() i18n: I18nContext,
     @Param('id') id: string,
-    @Body(new SerializerBody()) updateFinish: UpdateTaskFinishDto,
+    @Body(new SerializerBody()) body: UpdateTaskFinishDto,
   ): Promise<TaskResponseDto> {
     return {
       message: i18n.t('common.Update data finish success'),
-      data: await this.service.updateFinishTime(id, updateFinish),
+      data: await this.service.updateFinishTime(id, body),
     };
   }
 
