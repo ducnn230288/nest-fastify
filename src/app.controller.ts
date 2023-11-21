@@ -1,7 +1,7 @@
-import { Get, Controller, Render, ValidationPipe, Query } from '@nestjs/common';
+import { Get, Controller, Render, ValidationPipe, Query, Param } from '@nestjs/common';
 import { ProductCategoryService, DataService, PostService, ParameterService, ProductService } from '@service';
 import { PaginationQueryDto } from './shared/base';
-import { ProductCategoryDto, ProductDto } from '@dto';
+import { ProductCategoryDto, ProductDto, ProductCategoryResponseDto } from '@dto';
 import { I18nContext } from 'nestjs-i18n';
 
 @Controller()
@@ -39,6 +39,21 @@ export class AppController {
       categories: categories,
       products: products,
     };
+  }
+
+  @Get('/:slugCategory')
+  @Render('pages/categoryDetail/index')
+  async findOneBySlug(
+    language: string = 'en',
+    urlLang = '/vn',
+    @Param('slugCategory') slugCategory: string,
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+  ): Promise<ProductCategoryResponseDto> {
+    const { data } = await this.common(language);
+    const products = await this.categoryService.findSlug(slugCategory);
+    const [categories] = await this.categoryService.findAll(paginationQuery);
+
+    return { urlLang, ...data, products, categories };
   }
 
   @Get('/vn')

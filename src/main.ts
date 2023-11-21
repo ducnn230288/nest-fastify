@@ -64,6 +64,11 @@ async function bootstrap(): Promise<void> {
     return Math.round(price - (price * discount) / 100);
   });
 
+  // format currency
+  hbs.registerHelper('formatCurrency', function (price, currency) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency }).format(price);
+  });
+
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/partials'));
