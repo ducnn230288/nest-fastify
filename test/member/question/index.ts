@@ -58,6 +58,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/question?level=1&typeCode=' + code.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
     if (type) {
       const index = body.data.findIndex((item) => item.id === resultQuestion?.id);
       expect(body.data[index]).toEqual(jasmine.objectContaining(resultQuestion));

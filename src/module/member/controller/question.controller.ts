@@ -50,12 +50,14 @@ export class QuestionController {
     @Query() query: RequestFindQuestion,
     @AuthUser() user: User,
   ): Promise<ListQuestionResponseDto> {
+    const where: object[] = [];
+    if (query.level) where.push({ level: Number(query.level) });
+    if (query.typeCode) where.push({ typeCode: query.typeCode?.toString() });
+
     const [result, total] =
       user.roleCode === 'supper_admin' || user.role?.permissions?.includes(P_QUESTION_LISTED)
-        ? await this.service.findAll({
-            where: [{ level: Number(query.level) }, { typeCode: query.typeCode?.toString() }],
-          })
-        : await this.service.getManyQuestionForTest(Number(query.level), query!.typeCode!.toString());
+        ? await this.service.findAll(where.length === 0 ? {} : { where })
+        : await this.service.getManyQuestionForTest(where);
     return {
       message: i18n.t('common.Get List success'),
       count: total,
