@@ -15,14 +15,16 @@ export class CreateTaskTimesheetRequestDto extends PickType(TaskTimesheet, [] as
 
 export class UpdateTaskTimesheetRequestDto extends PickType(TaskTimesheet, ['note'] as const) {}
 
-export class CheckInOrOutRequestDto extends PickType(TaskTimesheet, ['note'] as const) {
-  @IsArray()
-  @IsOptional()
-  readonly listTaskWork?: TaskWorkRequest[];
-
+export class CheckInRequestDto extends PickType(TaskTimesheet, [] as const) {
   @IsArray()
   @IsOptional()
   readonly listTask?: TaskRequest[];
+}
+
+export class CheckOutRequestDto extends PickType(TaskTimesheet, ['note'] as const) {
+  @IsArray()
+  @IsOptional()
+  readonly listTaskWork?: TaskWorkRequest[];
 }
 
 export class TaskTimesheetResponseDto extends PartialType(DefaultResponsesDto) {
@@ -31,5 +33,4 @@ export class TaskTimesheetResponseDto extends PartialType(DefaultResponsesDto) {
 
 export class ListTaskTimesheetResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: TaskTimesheet[];
-  // readonly project: Code;
 }
