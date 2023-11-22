@@ -1,8 +1,6 @@
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
-import { IsOptional } from 'class-validator';
-import { Transform } from 'class-transformer';
 
 import {
   PostResponseDto,
@@ -12,13 +10,8 @@ import {
   ArrayPostResponseDto,
 } from '@dto';
 import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, findArrayCode } from '@shared';
 
-class findArrayCode {
-  @IsOptional()
-  @Transform(({ value }) => JSON.parse(value))
-  array?: string[];
-}
 @Headers('post')
 export class PostController {
   constructor(private readonly service: PostService) {}
