@@ -13,7 +13,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     super(TaskTimesheet, dataSource.createEntityManager());
   }
 
-  async checkHaveTaskTimesheet(userId: string): Promise<TaskTimesheet | null> {
+  async checkHaveTaskTimesheetInDay(userId: string): Promise<TaskTimesheet | null> {
     const currentDate = dayjs().format('YYYY-MM-DD');
     const data = await this.createQueryBuilder('base')
       .andWhere(`base.userId=:userId`, { userId })

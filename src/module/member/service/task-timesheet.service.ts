@@ -27,7 +27,7 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
 
-    const timesheet = await this.repo.checkHaveTaskTimesheet(user.id);
+    const timesheet = await this.repo.checkHaveTaskTimesheetInDay(user.id);
     if (timesheet) throw new BadRequestException(i18n.t('common.User has been checked in'));
 
     const ids = body.listTask!.map((item) => item.id);
@@ -42,7 +42,7 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
 
-    const timesheet = await this.repo.checkHaveTaskTimesheet(user.id);
+    const timesheet = await this.repo.checkHaveTaskTimesheetInDay(user.id);
     if (!timesheet) throw new BadRequestException(i18n.t('common.User not check in'));
     if (timesheet.finish) throw new BadRequestException(i18n.t('common.User has been checked out'));
 
