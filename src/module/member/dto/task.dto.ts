@@ -13,6 +13,7 @@ export class CreateTaskRequestDto extends PickType(Task, [
   'start',
   'deadline',
   'priority',
+  'status',
   'level',
   'complete',
   'successors',
@@ -27,12 +28,12 @@ export class UpdateTaskRequestDto extends PickType(Task, [
   'projectCode',
   'name',
   'start',
+  'finish',
   'deadline',
   'priority',
+  'status',
   'level',
   'complete',
   'successors',
   'predecessors',
 ] as const) {}
-
-export class UpdateTaskFinishDto extends PickType(Task, ['finish'] as const) {}

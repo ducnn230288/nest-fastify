@@ -14,7 +14,7 @@ export enum Priority {
   Urgent = 1,
 }
 
-export enum Status {
+export enum EStatus {
   Cancel = -1,
   Processing = 0,
   Complete = 1,
@@ -76,7 +76,7 @@ export class Task extends Base {
   @Max(1)
   priority: number;
 
-  @Column({ type: 'enum', enum: Status, default: Status.Cancel })
+  @Column({ type: 'enum', enum: EStatus, default: EStatus.Processing })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)

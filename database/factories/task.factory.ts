@@ -9,6 +9,7 @@ export default setSeederFactory(Task, (faker) => {
   data.start = faker.date.past();
   data.deadline = faker.date.future();
   data.priority = faker.number.int({ min: -1, max: 1 });
+  data.status = 0;
   data.level = faker.number.int({ min: 1, max: 12 });
   data.complete = faker.number.int({ min: 1, max: 100 });
   data.successors = 'T1,T2';
