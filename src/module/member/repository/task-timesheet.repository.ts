@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Brackets, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import dayjs from 'dayjs';
 
 import { BaseRepository } from '@shared';
-import { Task, TaskTimesheet, TaskWork, User } from '@model';
+import { Task, TaskTimesheet, TaskWork } from '@model';
 import { I18nContext } from 'nestjs-i18n';
-import { CheckInOrOutRequestDto, CreateTaskTimesheetRequestDto, TaskWorkRequest } from '../dto/task-timesheet.dto';
+import { TaskWorkRequest } from '../dto/task-timesheet.dto';
 
 @Injectable()
 export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
@@ -14,7 +13,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     super(TaskTimesheet, dataSource.createEntityManager());
   }
 
-  async checkHaveTaskTimesheet(userId: string): Promise<TaskTimesheet | null> {
+  async checkHaveTaskTimesheetInDay(userId: string): Promise<TaskTimesheet | null> {
     const currentDate = dayjs().format('YYYY-MM-DD');
     const data = await this.createQueryBuilder('base')
       .andWhere(`base.userId=:userId`, { userId })
@@ -58,7 +57,6 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
         }
       }
     });
-
     return result;
   }
 
@@ -70,7 +68,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null;
     let task: Task;
-    // eslint-disable-next-line prefer-const
+
     const sumHours = listTaskWork.reduce((init, curr) => init + curr!.hours!, 0);
     if (sumHours < 7 * 60 * 60 && !note)
       throw new BadRequestException(i18n.t('common.TaskTimesheet note was not found'));

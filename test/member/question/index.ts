@@ -6,11 +6,10 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 
 import '@factories';
 import { BaseTest } from '@test';
-import { CreateDayoffRequestDto, UpdateQuestionRequestDto } from '@dto';
+import { CreateDayoffRequestDto, GetAllQuestionRequestDto, UpdateQuestionRequestDto } from '@dto';
 import { DayOff, User, Task, Question, CodeType, Code, QuestionTest } from '@model';
-import { CodeService, CodeTypeService, UserService } from '@service';
+import { CodeService, CodeTypeService, QuestionService, QuestionTestService, UserService } from '@service';
 import { CreateTaskRequestDto, CreateQuestionRequestDto } from '@dto';
-// import { CreateQuestionRequestDto } from 'src/module/member/dto/question.dto';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -20,20 +19,21 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataQuestionUpdate: UpdateQuestionRequestDto;
   let codeType;
   let code;
-  let resultQuestion;
+  let resultQuestion: Question | null;
   let dataQuestionTest;
-  let resultQuestionTest;
+  let resultQuestionTest: QuestionTest | null;
 
   it('Create [POST /api/question]', async () => {
     codeType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());
 
     code = await BaseTest.moduleFixture!.get(CodeService).create(
       await factoryManager.get(Code).make({
-        type: codeType?.code,
+        type: codeType.code,
       }),
     );
     dataQuestion = await factoryManager.get(Question).make({
       typeCode: code?.code,
+      level: 1,
     });
 
     const { body } = await request(BaseTest.server)
@@ -48,9 +48,58 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
+  it('Get all [GET /api/question]', async () => {
+    // const datas = await BaseTest.moduleFixture!.get(QuestionService).createMany(code);
+    for (let i = 0; i < 19; i++) {
+      await BaseTest.moduleFixture!.get(QuestionService).create(dataQuestion);
+    }
+
+    const { body } = await request(BaseTest.server)
+      .get('/api/question?level=1&typeCode=' + code.code)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    if (type) {
+      const index = body.data.findIndex((item) => item.id === resultQuestion?.id);
+      expect(body.data[index]).toEqual(jasmine.objectContaining(resultQuestion));
+    } else {
+      expect(body.count).toBeGreaterThan(0);
+    }
+  });
+
+  it('Get one [GET /api/question:id]', async () => {
+    if (!type) {
+      resultQuestion = await BaseTest.moduleFixture!.get(QuestionService).create(dataQuestion);
+    }
+
+    const { body } = await request(BaseTest.server)
+      .get('/api/question/' + resultQuestion?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(resultQuestion));
+    }
+  });
+
+  it('Update [PUT /api/question/:id]', async () => {
+    dataQuestion = await factoryManager.get(Question).make({
+      typeCode: code?.code,
+    });
+    const { question, ...dataUpdate } = dataQuestion;
+    const { body } = await request(BaseTest.server)
+      .put('/api/question/' + resultQuestion?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataUpdate)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+      resultQuestion = body.data;
+    }
+  });
+
   it('Create [POST /api/question-test]', async () => {
     const answerObj = {};
-    answerObj[resultQuestion?.id] = 'D';
+    answerObj[resultQuestion!.id!] = 'D';
     dataQuestionTest = await factoryManager.get(QuestionTest).make({
       answer: answerObj,
     });
@@ -61,67 +110,51 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/question-test')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
-      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
 
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(data));
-      resultQuestionTest = body.data;
-    }
+    expect(body.data).toEqual(jasmine.objectContaining(data));
+    resultQuestionTest = body.data;
   });
-
-  // it('Get all [GET /api/question]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/question')
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data[0]).toEqual(jasmine.objectContaining(resultQuestion));
-  //     resultQuestion = body.data;
-  //   }
-  // })
 
   it('Get all [GET /api/question-test]', async () => {
     const { body } = await request(BaseTest.server)
       .get('/api/question-test')
       .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    expect(body.data[0]).toEqual(jasmine.objectContaining(resultQuestionTest));
+  });
+
+  it('Get One [GET /api/question-test/:id', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/question-test/' + resultQuestionTest?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    expect(body.data).toEqual(jasmine.objectContaining(resultQuestionTest));
+  });
+
+  it('Delete [DELETE /api/question-test/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/question-test/' + resultQuestionTest?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(resultQuestionTest));
-      resultQuestion = body.data;
+      const { updatedAt, ...test } = resultQuestionTest!;
+      expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
-  // it('Get one [GET /api/question:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .get('/api/question/' + resultQuestion?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(resultQuestion));
-  //   }
-  // })
-
-  // it('Update [PUT /api/question/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .put('/api/question/' + resultQuestion?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send({
-  //       ...dataQuestion
-  //     })
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataQuestion));
-  //   }
-  // })
-
-  // it('Delete [DELETE /api/question/:id]', async () => {
-  //   const { body } = await request(BaseTest.server)
-  //     .delete('/api/question/' + resultQuestion?.id)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-  //     console.log(body);
-
-  // })
-
+  it('Delete [DELETE /api/question/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .delete('/api/question/' + resultQuestion?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    if (type) {
+      const { updatedAt, ...test } = resultQuestion!;
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+    }
+  });
+  /* */
   return afterAll(BaseTest.initAfterAll);
 };

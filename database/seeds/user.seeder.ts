@@ -71,6 +71,16 @@ import {
   P_TASK_CREATE,
   P_TASK_UPDATE,
   P_TASK_DELETE,
+  P_QUESTION_TEST_LISTED,
+  P_QUESTION_TEST_DETAIL,
+  P_QUESTION_TEST_CREATE,
+  P_QUESTION_TEST_UPDATE,
+  P_QUESTION_TEST_DELETE,
+  P_QUESTION_LISTED,
+  P_QUESTION_DETAIL,
+  P_QUESTION_CREATE,
+  P_QUESTION_UPDATE,
+  P_QUESTION_DELETE,
 } from '@service';
 
 export class UserSeeder implements Seeder {
@@ -159,6 +169,18 @@ export class UserSeeder implements Seeder {
         P_TASK_CREATE,
         P_TASK_UPDATE,
         P_TASK_DELETE,
+
+        P_QUESTION_TEST_LISTED,
+        P_QUESTION_TEST_DETAIL,
+        P_QUESTION_TEST_CREATE,
+        P_QUESTION_TEST_UPDATE,
+        P_QUESTION_TEST_DELETE,
+
+        P_QUESTION_LISTED,
+        P_QUESTION_DETAIL,
+        P_QUESTION_CREATE,
+        P_QUESTION_UPDATE,
+        P_QUESTION_DELETE,
       ],
       isSystemAdmin: false,
     };

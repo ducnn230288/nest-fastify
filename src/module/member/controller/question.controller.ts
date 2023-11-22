@@ -1,7 +1,15 @@
-import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { Auth, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { IsOptional, IsPositive, IsNumber, IsString } from 'class-validator';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { CreateQuestionRequestDto, ListQuestionResponseDto, QuestionResponseDto, UpdateQuestionRequestDto } from '@dto';
+import {
+  CreateQuestionRequestDto,
+  GetAllQuestionRequestDto,
+  ListQuestionResponseDto,
+  QuestionResponseDto,
+  RequestFindQuestion,
+  UpdateQuestionRequestDto,
+} from '@dto';
 import {
   P_QUESTION_CREATE,
   P_QUESTION_DELETE,
@@ -10,6 +18,7 @@ import {
   P_QUESTION_UPDATE,
   QuestionService,
 } from '@service';
+import { User } from '@model';
 
 @Headers('question')
 export class QuestionController {
@@ -21,7 +30,10 @@ export class QuestionController {
     serializeOptions: { groups: [MaxGroup] },
   })
   @Post('')
-  async create(@I18n() i18n: I18nContext, @Body(new SerializerBody()) body: CreateQuestionRequestDto): Promise<any> {
+  async create(
+    @I18n() i18n: I18nContext,
+    @Body(new SerializerBody()) body: CreateQuestionRequestDto,
+  ): Promise<QuestionResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.create(body),
@@ -29,15 +41,23 @@ export class QuestionController {
   }
 
   @Auth({
-    summary: 'Get List Team',
-    permission: P_QUESTION_LISTED,
+    summary: 'Get List data',
+    serializeOptions: { groups: [MaxGroup] },
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
-    @Query() paginationQuery: PaginationQueryDto,
+    @Query() query: RequestFindQuestion,
+    @AuthUser() user: User,
   ): Promise<ListQuestionResponseDto> {
-    const [result, total] = await this.service.findAll(paginationQuery);
+    const where: object[] = [];
+    if (query.level) where.push({ level: Number(query.level) });
+    if (query.typeCode) where.push({ typeCode: query.typeCode?.toString() });
+
+    const [result, total] =
+      user.roleCode === 'supper_admin' || user.role?.permissions?.includes(P_QUESTION_LISTED)
+        ? await this.service.findAll(where.length === 0 ? {} : { where })
+        : await this.service.getManyQuestionForTest(where);
     return {
       message: i18n.t('common.Get List success'),
       count: total,
@@ -46,19 +66,19 @@ export class QuestionController {
   }
 
   @Auth({
-    summary: 'Get List Team',
+    summary: 'Get Detail data',
     permission: P_QUESTION_DETAIL,
   })
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionResponseDto> {
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get Detail success'),
       data: await this.service.findOne(id, []),
     };
   }
 
   @Auth({
-    summary: 'Update question',
+    summary: 'Update data',
     permission: P_QUESTION_UPDATE,
     serializeOptions: { groups: [MaxGroup] },
   })
@@ -67,7 +87,7 @@ export class QuestionController {
     @I18n() i18n: I18nContext,
     @Param('id') id: string,
     @Body(new SerializerBody()) body: UpdateQuestionRequestDto,
-  ): Promise<QuestionResponseDto | any> {
+  ): Promise<QuestionResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
       data: await this.service.update(id, body),
@@ -75,12 +95,12 @@ export class QuestionController {
   }
 
   @Auth({
-    summary: 'Delete question',
+    summary: 'Delete data',
     permission: P_QUESTION_DELETE,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Delete(':id')
-  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<any> {
+  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionResponseDto> {
     return {
       message: i18n.t('common.Delete Success'),
       data: await this.service.remove(id),

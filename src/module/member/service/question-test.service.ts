@@ -8,11 +8,11 @@ import { CreateQuestionTestRequestDto } from '@dto';
 import { DataSource } from 'typeorm';
 import { QuestionService } from './question.service';
 
-export const P_QUESTION_TEST_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f10';
-export const P_QUESTION_TEST_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac57710';
-export const P_QUESTION_TEST_CREATE = 'becacb61-46c5-445e-bce4-0f3a2cfed510';
-export const P_QUESTION_TEST_UPDATE = '972e4159-e3ce-416e-a526-ffd83039e010';
-export const P_QUESTION_TEST_DELETE = 'cdece61b-f159-4dec-8b27-b7de50c9b810';
+export const P_QUESTION_TEST_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f20';
+export const P_QUESTION_TEST_DETAIL = 'bd11ca07-2cf4-473f-ac43-50b0eac57721';
+export const P_QUESTION_TEST_CREATE = 'becacb61-46c5-445e-bce4-0f3a2cfed522';
+export const P_QUESTION_TEST_UPDATE = '972e4159-e3ce-416e-a526-ffd83039e023';
+export const P_QUESTION_TEST_DELETE = 'cdece61b-f159-4dec-8b27-b7de50c9b824';
 
 @Injectable()
 export class QuestionTestService extends BaseService<QuestionTest> {
@@ -34,10 +34,10 @@ export class QuestionTestService extends BaseService<QuestionTest> {
     // Lặp qua câu trả lời, mỗi câu đúng được 10đ
     for (const [key, value] of Object.entries(answer)) {
       const question = await this.questionServive.findOne(key);
-      if (question && question?.correct === value) point += 10;
+      if (question && question?.correct === value) point += 1;
     }
     // Lưu đáp án
-
-    return await this.create({ userId: user.id, answer, point });
+    const data = await this.create({ userId: user.id, answer, point });
+    return data;
   }
 }

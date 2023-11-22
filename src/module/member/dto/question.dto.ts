@@ -1,6 +1,7 @@
 import { PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Question, QuestionTest } from '@model';
+import { IsNumber, IsOptional, IsString, Min, Max } from 'class-validator';
 
 export class QuestionRequestDto extends PartialType(DefaultResponsesDto) {}
 
@@ -12,6 +13,9 @@ export class CreateQuestionRequestDto extends PickType(Question, [
   'typeCode',
   'image',
 ]) {}
+
+export class GetAllQuestionRequestDto extends PickType(Question, ['level', 'typeCode']) {}
+
 export class UpdateQuestionRequestDto extends PartialType(CreateQuestionRequestDto) {}
 
 export class ListQuestionResponseDto extends PartialType(PaginationResponsesDto) {
@@ -22,7 +26,22 @@ export class QuestionResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: Question | null;
 }
 
+export class CreateQuestionTestRequestDto extends PickType(QuestionTest, ['answer']) {}
+
 export class ListQuestionTestResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: QuestionTest[];
 }
-export class CreateQuestionTestRequestDto extends PickType(QuestionTest, ['answer']) {}
+
+export class QuestionTestResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: QuestionTest | null;
+}
+
+export class RequestFindQuestion {
+  @IsOptional()
+  @IsNumber()
+  level?: number;
+
+  @IsString()
+  @IsOptional()
+  typeCode?: string;
+}

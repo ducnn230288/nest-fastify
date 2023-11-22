@@ -7,12 +7,13 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { BaseTest } from '@test';
 import {
-  CheckInOrOutRequestDto,
   CreateDayoffRequestDto,
   CreateUserRequestDto,
   TaskRequest,
   UpdateTaskRequestDto,
   UpdateTaskTimesheetRequestDto,
+  CheckInRequestDto,
+  CheckOutRequestDto,
 } from '@dto';
 import {
   CreateTaskRequestDto,
@@ -45,10 +46,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataTaskUpdate: UpdateTaskRequestDto;
   let resultUser: User | null;
 
-  let dataRequestDto: CheckInOrOutRequestDto;
+  let checkInRequestDto: CheckInRequestDto;
+  let checkOutRequestDto: CheckOutRequestDto;
+
   let resultTaskTimesheet: TaskTimesheet;
   let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
-  let dataCheckout: CheckInOrOutRequestDto;
 
   let resultTaskWork: TaskWork;
 
@@ -124,16 +126,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     if (!type) {
       resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
     }
-    dataRequestDto = {
+    checkInRequestDto = {
       listTask: [{ id: resultTask?.id }],
     };
 
     const { body } = await request(BaseTest.server)
       .post('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataRequestDto)
+      .send(checkInRequestDto)
       .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
-    // console.log(body);
+
     const test = dayjs(body.data.start).isSame(new Date(), 'day');
     expect(test).toBeTruthy();
     expect(body.data.finish).toBeNull();
@@ -193,21 +195,21 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       hours: 1000,
     });
 
-    dataRequestDto = {
+    checkOutRequestDto = {
       listTaskWork: [taskWork],
       note: faker.lorem.paragraph(),
     };
-    const { listTask, ...data } = dataRequestDto!;
+
     const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet')
+      .put('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataRequestDto)
+      .send(checkOutRequestDto)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
     const { updatedAt, finish, works, note, ...testTimesheet } = resultTaskTimesheet!;
     expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
-    expect(body.data.note).toEqual(dataRequestDto.note);
-    expect(body.data.works[0]).toEqual(jasmine.objectContaining(dataRequestDto.listTaskWork![0]));
-    resultTaskTimesheet.note = dataRequestDto.note;
+    expect(body.data.note).toEqual(checkOutRequestDto.note);
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(checkOutRequestDto.listTaskWork![0]));
+    resultTaskTimesheet.note = checkOutRequestDto.note;
   });
 
   it('Update [PUT /api/task/{id}]', async () => {

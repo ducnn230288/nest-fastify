@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsDateString, IsString, IsUUID, IsOptional } from 'class-validator';
 
 import { DayOff, TaskWork, User } from '@model';
-import { Base, MaxGroup } from '@shared';
+import { Base } from '@shared';
 
 @Entity()
 export class TaskTimesheet extends Base {

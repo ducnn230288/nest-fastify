@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsPositive } from 'class-validator';
+import { IsOptional, IsPositive, IsNumber, IsString } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 export class DefaultResponsesDto {
@@ -40,11 +40,8 @@ export class PaginationQueryDto {
   fullTextSearch?: string;
 
   where?: object[];
-
-  @IsOptional()
-  @Transform(({ value }) => JSON.parse(value))
-  array?: string[];
 }
+
 export class PaginationResponsesDto extends PartialType(DefaultResponsesDto) {
   @ApiProperty({ example: faker.string.numeric(), description: '' })
   count: number;
