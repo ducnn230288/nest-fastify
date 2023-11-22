@@ -29,10 +29,14 @@ export class CodeTypeSeeder implements Seeder {
           { name: 'Tester', code: 'TEST', type: 'position' },
         ],
       },
-      { name: 'Room', code: 'room', isPrimary: true, items: [
-          { name: 'Room', code: 'ROOM', type: 'room' },
-        ]
+      { name: 'Room', code: 'room', isPrimary: true, items: [{ name: 'Room', code: 'ROOM', type: 'room' }] },
+      {
+        name: 'Project',
+        code: 'project',
+        isPrimary: true,
+        items: [{ name: 'Project', code: 'PROJECT', type: 'project' }],
       },
+      { name: 'Test', code: 'test', isPrimary: true, items: [{ name: 'Test', code: 'TEST', type: 'test' }] },
     ];
 
     for (const data of listData) {
