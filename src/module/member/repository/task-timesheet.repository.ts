@@ -101,7 +101,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
           })) as Task;
 
           if (data) timesheet.works.push(data);
-          task!.hours! += data!.hours!;
+          task!.hours! += data?.hours ? data!.hours! : 0;
           task = await entityManager.save(task);
         }
 

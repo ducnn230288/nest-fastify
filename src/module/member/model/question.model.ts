@@ -1,10 +1,10 @@
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Exclude, Expose } from 'class-transformer';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-import { Code, QuestionTest } from '@model';
+import { Code } from '@model';
 import { Base, setImage } from '@shared';
 
 @Entity()

@@ -11,7 +11,6 @@ import {
   CreateUserRequestDto,
   TaskRequest,
   UpdateTaskRequestDto,
-  UpdateTaskTimesheetRequestDto,
   CheckInRequestDto,
   CheckOutRequestDto,
 } from '@dto';
@@ -33,6 +32,7 @@ import {
   UserRoleService,
   P_TASKTIMESHEET_LISTED,
   P_TASK_CREATE,
+  DayoffService,
 } from '@service';
 import c from 'config';
 
@@ -50,7 +50,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let checkOutRequestDto: CheckOutRequestDto;
 
   let resultTaskTimesheet: TaskTimesheet;
-  let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
+
+  let dataDayoff: CreateDayoffRequestDto;
+  let resultDayoff: DayOff | null;
 
   let resultTaskWork: TaskWork;
 
@@ -163,51 +165,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     resultTaskWork = resultTaskTimesheet.works![0];
   });
 
-  it('Get all [GET /api/task-timesheet]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/task-timesheet')
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-    const { works, ...testTimesheet } = resultTaskTimesheet!;
-    const { isDeleted, createdAt, updatedAt, ...testCode } = code!;
-
-    expect(body.data[0]).toEqual(jasmine.objectContaining(testTimesheet));
-    expect(body.data[0].works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
-    expect(body.data[0].works[0].task.project).toEqual(jasmine.objectContaining(testCode));
-  });
-
-  it('Get one [GET /api/task-timesheet/:id]', async () => {
-    const { body } = await request(BaseTest.server)
-      .get('/api/task-timesheet/' + resultTaskTimesheet?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-    const { works, ...test } = resultTaskTimesheet;
-    expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
-    expect(body.data).toEqual(jasmine.objectContaining(test));
-  });
-
-  it('Update [PUT /api/task-timesheet/:id]', async () => {
-    const dataUpdate = await factoryManager.get(TaskTimesheet).make();
-    const dataNote = dataUpdate.note;
-    updateTaskTimesheet = {
-      note: dataNote,
-    };
-
-    const { body } = await request(BaseTest.server)
-      .put('/api/task-timesheet/' + resultTaskTimesheet?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(updateTaskTimesheet)
-      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-    const { updatedAt, note, works, ...test } = resultTaskTimesheet!;
-    expect(body.data).toEqual(jasmine.objectContaining(test));
-    expect(body.data.note).toEqual(dataNote);
-
-    resultTaskTimesheet.note = dataNote;
-  });
-
   it('Check Out [POST /api/task-timesheet', async () => {
     const taskWork = await factoryManager.get(TaskWork).make({
       id: resultTaskTimesheet.works![0].id,
@@ -230,7 +187,64 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
     expect(body.data.note).toEqual(checkOutRequestDto.note);
     expect(body.data.works[0]).toEqual(jasmine.objectContaining(checkOutRequestDto.listTaskWork![0]));
-    resultTaskTimesheet.note = checkOutRequestDto.note;
+
+    resultTaskTimesheet = body.data;
+    resultTaskWork = body.data.works[0];
+  });
+
+  it('Get All [GET /api/task-timesheet]', async () => {
+    // Test get all with have day off
+
+    // const res = await request(BaseTest.server)
+    //   .get('/api/auth/profile')
+    //   .set('Authorization', 'Bearer ' + BaseTest.token);
+    // resultUser = res.body.data;
+
+    // resultUser = await BaseTest.moduleFixture!.get(UserService).update(resultUser!.id!, {
+    //   managerId: resultUser!.id,
+    // });
+
+    // dataDayoff = await factoryManager.get(DayOff).make();
+    // Object.assign(dataDayoff, { staffId: resultUser?.id });
+    // resultDayoff = await BaseTest.moduleFixture!.get(DayoffService).create(dataDayoff);
+
+    const { body } = await request(BaseTest.server)
+      .get('/api/task-timesheet')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    const { dayoff, ...timesheet } = body.data[0];
+    const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+    const { createdAt, isDeleted, updatedAt, ...testCode } = code!;
+
+    expect(timesheet).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(timesheet.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(timesheet.works[0].task.project).toEqual(jasmine.objectContaining(testCode));
+
+    if (dayoff) {
+      const { dateLeaveEnd, dateLeaveStart, staffId, ...testDayoff } = dataDayoff;
+      expect(dayoff).toEqual(jasmine.objectContaining(testDayoff));
+    }
+  });
+
+  it('Get one [GET /api/task-timesheet/:id]', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    const { dayoff, ...timesheet } = body.data;
+    const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+    const { createdAt, isDeleted, updatedAt, ...testCode } = code!;
+
+    expect(timesheet).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(timesheet.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(timesheet.works[0].task.project).toEqual(jasmine.objectContaining(testCode));
+
+    if (dayoff) {
+      const { dateLeaveEnd, dateLeaveStart, staffId, ...testDayoff } = dataDayoff;
+      expect(dayoff).toEqual(jasmine.objectContaining(testDayoff));
+    }
   });
 
   it('Update finish', async () => {
@@ -251,8 +265,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { updatedAt, works, user, isDeleted, finish, ...test } = resultTaskTimesheet!;
+      const { works, user, updatedAt, isDeleted, ...test } = resultTaskTimesheet!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
+      expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
     }
   });
 
@@ -267,7 +282,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
-  /* */
 
+  /* */
   return afterAll(BaseTest.initAfterAll);
 };

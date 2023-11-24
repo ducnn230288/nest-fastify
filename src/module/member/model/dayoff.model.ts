@@ -16,10 +16,6 @@ export class DayOff extends Base {
   @IsOptional()
   code: string;
 
-  @OneToOne(() => TaskTimesheet, (data) => data.dayOff)
-  @Type(() => TaskTimesheet)
-  readonly taskTimesheet?: TaskTimesheet;
-
   @Column()
   @ApiProperty({ example: faker.number.int({ min: 1, max: 3 }), description: '' })
   @IsInt()

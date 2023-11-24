@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Question, QuestionTest, Task, User } from '@model';
+import { QuestionTest, User } from '@model';
 
 import { BaseService } from '@shared';
-import { QuestionTestRepository, TaskRepository } from '@repository';
-import { QuestionRepository } from '../repository/question.repository';
+import { QuestionTestRepository } from '@repository';
 import { CreateQuestionTestRequestDto } from '@dto';
 import { DataSource } from 'typeorm';
 import { QuestionService } from './question.service';

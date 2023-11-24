@@ -1,12 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Question, Task } from '@model';
+import { Question } from '@model';
 
 import { BaseService } from '@shared';
-import { TaskRepository } from '@repository';
 import { QuestionRepository } from '../repository/question.repository';
-import { Code, DataSource } from 'typeorm';
 import '@factories';
-import { useSeederFactoryManager } from 'typeorm-extension';
 import { I18nContext } from 'nestjs-i18n';
 
 export const P_QUESTION_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f31';
@@ -38,10 +35,11 @@ export class QuestionService extends BaseService<Question> {
   //   return datas;
   // }
 
-  async getManyQuestionForTest(where: object[]): Promise<[Question[], number]> {
+  async getManyQuestionForTest(level: number, typeCode: string): Promise<[Question[], number]> {
     const i18n = I18nContext.current()!;
-    if (where.length !== 2) throw new BadRequestException(i18n.t('Common.Data level or typeCode not found'));
-    const [questions, total] = await this.findAll({ where });
+    if (!level || !typeCode) throw new BadRequestException(i18n.t('Common.Data level or typeCode not found'));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [questions, total] = await this.findAll({ where: [{ level }, { typeCode }] });
 
     for (let i = questions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
