@@ -10,7 +10,7 @@ ${BROWSER_TIMEOUT}  60 seconds
 ${SHOULD_TIMEOUT}   0.1 seconds
 
 
-${URL_DEFAULT}      %{HOST_ADDRESS=http://localhost:4000}
+${URL_DEFAULT}      %{HOST_ADDRESS=http://localhost:3000/administrator}
 ${STATE}            Evaluate  json.loads('''{}''')  json
 
 *** Keywords ***
