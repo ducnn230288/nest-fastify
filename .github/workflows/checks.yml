@@ -41,7 +41,7 @@ jobs:
       - name: Lint
         run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run lint"
       - name: Run Migration and Seed Database
-        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run seed"
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run migration && npm run seed"
       - name: Run Test Backend
         run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run test:e2e"
       - name: Run copy 1
