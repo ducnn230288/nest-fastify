@@ -38,7 +38,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.DATABASE_NAME,
         autoLoadEntities: true,
-        synchronize: appConfig.NODE_ENV === 'development',
+        synchronize: appConfig.NODE_ENV !== 'prod',
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
       }),

@@ -43,7 +43,7 @@ services:
     depends_on:
       - database
       - cache
-#    command: npm run start:prod
+    command: npm run start:prod
     networks:
       - network
 
