@@ -12,6 +12,8 @@ services:
     ports:
       - 5432:5432
     restart: always
+    networks:
+      - network
 
   cache:
     image: redis:latest
@@ -19,6 +21,8 @@ services:
       - 6379:6379
     volumes:
       - cache:/data
+    networks:
+      - network
 
   backend:
     build:
@@ -35,6 +39,9 @@ services:
       - database
       - cache
     command: npm run start:prod
+    networks:
+      - network
+
   frontend:
     build:
       context: .
@@ -42,6 +49,13 @@ services:
     ports:
       - "4000:4000"
     command: npm run serve
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+    name: network
 
 volumes:
   database:
