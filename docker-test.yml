@@ -19,8 +19,6 @@ services:
   backend:
     build:
       context: .
-      args:
-        - PROD=true
       dockerfile: Dockerfile
     environment:
       REDIS_HOST: 'cache'
@@ -36,6 +34,3 @@ services:
     build:
       context: .
       dockerfile: DockerfileFrontend
-    ports:
-      - "4000:4000"
-    command: npm run serve
