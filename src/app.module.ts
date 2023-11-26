@@ -38,9 +38,9 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.DATABASE_NAME,
         autoLoadEntities: true,
-        synchronize: appConfig.NODE_ENV !== 'prod',
+        synchronize: appConfig.NODE_ENV === 'development',
         logging: ['error'],
-        logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
+        logger: appConfig.NODE_ENV === 'development' ? 'advanced-console' : new DbCustomLogger(),
       }),
     }),
     CacheModule.registerAsync({
