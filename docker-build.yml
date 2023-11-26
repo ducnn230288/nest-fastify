@@ -20,7 +20,7 @@ services:
     volumes:
       - cache:/data
 
-  server:
+  backend:
     build:
       context: .
       args:
@@ -35,16 +35,15 @@ services:
     depends_on:
       - database
       - cache
-    volumes:
-      - .\test:/app/test
-      - .\other:/app/other
-      - .\database:/app/database
-      - .\config:/app/config
     command: npm run start:prod
 
-networks:
-  database:
-    driver: bridge
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
+    ports:
+      - "4000:4000"
+    command: npm run serve
 
 volumes:
   database:

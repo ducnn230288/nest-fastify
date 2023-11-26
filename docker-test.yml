@@ -7,35 +7,20 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
-    volumes:
-      - database:/database
     ports:
       - 5432:5432
     restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-q", "-d", "{YOUR_DATABASE_NAME}", "-U", "{YOUR_DATABASE_USERNAME}" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - network
 
   cache:
     image: redis:latest
     ports:
       - 6379:6379
-    volumes:
-      - cache:/data
-    networks:
-      - network
 
-  server:
+
+  backend:
     build:
       context: .
-      args:
-        - PROD=true
       dockerfile: Dockerfile
-    container_name: nest-fastify
     environment:
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
@@ -44,19 +29,12 @@ services:
     depends_on:
       - database
       - cache
-    volumes:
-      - .\test:/app/test
-      - .\other:/app/other
-      - .\database:/app/database
-      - .\config:/app/config
-    networks:
-      - network
+    command: npm run start:prod
 
-networks:
-  network:
-    driver: bridge
-    name: network
-
-volumes:
-  database:
-  cache:
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
+    ports:
+      - "4000:4000"
+    command: npm run serve

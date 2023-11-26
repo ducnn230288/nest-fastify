@@ -42,3 +42,8 @@ package-lock.json
 other/public/assets
 other/public/locales
 other/upload
+
+frontend/test/result
+frontend/build
+frontend/node_modules
+
