@@ -28,13 +28,12 @@ services:
     environment:
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
-      NODE_ENV: 'prod'
     ports:
       - '3000:3000'
     depends_on:
       - database
       - cache
-    command: npm run migration
+    command: npm run start:prod
 
   frontend:
     build:
