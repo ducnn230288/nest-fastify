@@ -12,6 +12,11 @@ services:
     ports:
       - 5432:5432
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-q", "-d", "{YOUR_DATABASE_NAME}", "-U", "{YOUR_DATABASE_USERNAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - network
 
