@@ -16,7 +16,6 @@ export class AppController {
     private readonly postService: PostService,
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   ) {}
-
   @Get('')
   @Render('index')
   @UseInterceptors(CacheInterceptor)
