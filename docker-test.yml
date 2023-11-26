@@ -7,9 +7,16 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - database:/database
     ports:
       - 5432:5432
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-q", "-d", "{YOUR_DATABASE_NAME}", "-U", "{YOUR_DATABASE_USERNAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - network
 
@@ -18,6 +25,8 @@ services:
     image: redis:latest
     ports:
       - 6379:6379
+    volumes:
+      - cache:/data
     networks:
       - network
 
@@ -52,3 +61,7 @@ networks:
   network:
     driver: bridge
     name: network
+
+volumes:
+  database:
+  cache:
