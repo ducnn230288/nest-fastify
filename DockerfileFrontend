@@ -11,13 +11,12 @@ npm install -f && \
 npm run build:prod
 
 RUN chmod 777 /frontend
-
-ARG PROD=false
-RUN  if [ "$PROD" = "false" ] ; then install_packages python3; fi
-RUN  if [ "$PROD" = "false" ] ; then ln -sf python3 /usr/bin/python && \
-pip3 install --no-cache -r test/requirements.txt && \
-npx playwright install-deps; fi
-RUN  if [ "$PROD" = "false" ] ; then rfbrowser init; fi
-
-
+#
+#ARG PROD=false
+#RUN  if [ "$PROD" = "false" ] ; then install_packages python3; fi
+#RUN  if [ "$PROD" = "false" ] ; then ln -sf python3 /usr/bin/python && \
+#pip3 install --no-cache -r test/requirements.txt && \
+#npx playwright install-deps; fi
+#RUN  if [ "$PROD" = "false" ] ; then rfbrowser init; fi
+#
 USER root
