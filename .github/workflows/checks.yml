@@ -51,6 +51,6 @@ jobs:
       - name: Run copy 3
         run: docker cp ./build/. nest-fastify_backend_1:./backend/other/public/.
       - name: Run Test Frontend
-        run: docker-compose -f docker-test.yml exec -T backend robot -d robot/result robot/testcases/login.robot
+        run: docker-compose -f docker-test.yml exec -T frontend robot -d test/result test/testcases/login.robot
       - name: Run Remove Frontend
         run: docker rm nest-fastify_frontend_1 -f
