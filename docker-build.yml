@@ -41,9 +41,6 @@ services:
     build:
       context: .
       dockerfile: DockerfileFrontend
-    ports:
-      - "4000:4000"
-    command: npm run serve
 
 volumes:
   database:
