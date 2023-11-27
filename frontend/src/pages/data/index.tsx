@@ -7,12 +7,12 @@ import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import { Button } from '@core/button';
+import { Avatar } from '@core/avatar';
 import { DataTable } from '@core/data-table';
 import { keyRole, lang, routerLinks } from '@utils';
 import { DataFacade, DataTypeFacade, GlobalFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { Avatar } from '@core/avatar';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -57,6 +57,8 @@ const Page = () => {
         break;
     }
   }, [dataFacade.status]);
+
+
 
   const request = JSON.parse(dataFacade.queryParams || '{}');
   if (!request.filter || typeof request?.filter === 'string') request.filter = JSON.parse(request?.filter || '{}');

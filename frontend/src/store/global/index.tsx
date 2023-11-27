@@ -6,7 +6,7 @@ import i18n from 'i18next';
 
 import { API, keyRefreshToken, keyToken, keyUser, lang, routerLinks } from '@utils';
 import { Message } from '@core/message';
-import { useAppDispatch, useTypedSelector, UserRole } from '@store';
+import { useAppDispatch, useTypedSelector, UserRole, Code, UserTeam } from '@store';
 import { CommonEntity } from '@models';
 
 const name = 'Auth';
@@ -84,10 +84,20 @@ export class User extends CommonEntity {
     public phoneNumber?: string,
     public dob?: string,
     public description?: string,
-    public positionCode?: string,
-    public retypedPassword?: string,
     public roleCode?: string,
     public role?: UserRole,
+    public managers?: UserTeam[],
+    public teams?: UserTeam[],
+    public teamsId?: string[],
+    public managerId?: string,
+    public manager?: User,
+    public members?: User[],
+    public positionCode?: string,
+    public position?: Code,
+    public startDate?: Date,
+    public dateLeave?: number,
+    public dateOff?: number,
+    public retypedPassword?: string,
     public createdAt?: string,
     public updatedAt?: string,
   ) {

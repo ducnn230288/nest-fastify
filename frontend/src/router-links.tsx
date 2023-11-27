@@ -16,6 +16,15 @@ export const routerLinks = (name: string, type?: string) => {
     PostType: '/setting/post/type',
     Code: '/setting/code',
     Parameter: '/setting/parameter',
+    'Code/Add': '/setting/code/add',
+    Team: '/setting/team',
+    Question: '/setting/question',
+    'Team/Add': '/setting/team/add',
+    DayOff: '/dayoff/list',
+    'DayOff/List': '/dayoff/list',
+    'DayOff/Add': '/dayoff/add',
+    'DayOff/Detail': '/dayoff/detail',
+    Booking: '/booking',
   }; // 💬 generate link to here
 
   const apis: {
@@ -26,11 +35,16 @@ export const routerLinks = (name: string, type?: string) => {
     Code: '/code',
     UserRole: '/user-role',
     User: '/user',
-    Data: '/data',
     DataType: '/data-type',
-    Post: '/post',
+    Data: '/data',
     Parameter: '/parameter',
+    Post: '/post',
     PostType: '/post-type',
+    UserTeam: '/user-team',
+    DayOff: '/dayoff',
+    UserManager: '/user',
+    Booking: '/booking',
+    Question: '/question',
   }; // 💬 generate api to here
 
   switch (type) {

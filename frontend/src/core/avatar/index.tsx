@@ -285,7 +285,7 @@ export const Avatar = ({
   }
 };
 type Type = {
-  src: string;
+  src?: string;
   text?: string | { [selector: string]: string }[];
   onClick?: MouseEventHandler<HTMLDivElement>;
   size?: number;

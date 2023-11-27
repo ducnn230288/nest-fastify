@@ -1,4 +1,4 @@
-import { keyRefreshToken, keyToken, keyUser, linkApi, routerLinks } from '@utils';
+import { keyRefreshToken, keyToken, linkApi, routerLinks } from '@utils';
 import { Message } from '@core/message';
 import { Responses } from '@models';
 

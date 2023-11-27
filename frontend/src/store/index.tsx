@@ -22,6 +22,11 @@ export * from './data/type';
 export * from './parameter';
 export * from './post';
 export * from './post/type';
+export * from './user/team';
+export * from './dayoff';
+export * from './user/manager';
+export * from './booking';
+export * from './question';
 import {
   globalSlice,
   userSlice,
@@ -30,9 +35,14 @@ import {
   codeTypeSlice,
   dataSlice,
   dataTypeSlice,
+  parameterSlice,
   postSlice,
   postTypeSlice,
-  parameterSlice,
+  userTeamSlice,
+  dayoffSlice,
+  managerSlice,
+  bookingSlice,
+  questionSlice,
 } from './';
 const rootReducer = combineReducers({
   [globalSlice.name]: globalSlice.reducer,
@@ -45,4 +55,9 @@ const rootReducer = combineReducers({
   [parameterSlice.name]: parameterSlice.reducer,
   [postSlice.name]: postSlice.reducer,
   [postTypeSlice.name]: postTypeSlice.reducer,
+  [userTeamSlice.name]: userTeamSlice.reducer,
+  [dayoffSlice.name]: dayoffSlice.reducer,
+  [managerSlice.name]: managerSlice.reducer,
+  [bookingSlice.name]: bookingSlice.reducer,
+  [questionSlice.name]: questionSlice.reducer,
 });

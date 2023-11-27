@@ -3,14 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
-import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { Avatar } from '@core/avatar';
+import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade } from '@store';
 import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
+import { EStatusState, EFormRuleType, EFormType, EFormModeSelect } from '@models';
 
 const Page = () => {
   const { id, roleCode } = useParams();
+  const data: any = useRef();
   const userFacade = UserFacade();
   const param = JSON.parse(userFacade.queryParams || `{"filter":"{\\"roleCode\\":\\"${roleCode}\\"}"}`);
   const { set } = GlobalFacade();
@@ -67,6 +69,7 @@ const Page = () => {
       }
     }
   }, [userRoleFacade.result]);
+  data.current = userFacade.data;
   const { t } = useTranslation();
   return (
     <div className={'max-w-4xl mx-auto bg-white p-4 shadow rounded-xl'}>
@@ -134,7 +137,10 @@ const Page = () => {
               name: 'phoneNumber',
               formItem: {
                 col: 6,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.phone, min: 10, max: 15 }
+                ],
               },
             },
             {
@@ -179,21 +185,92 @@ const Page = () => {
               },
             },
             {
-              title: 'routes.admin.user.Description',
-              name: 'description',
+              title: 'routes.admin.user.Team',
+              name: 'teams',
               formItem: {
-                col: 8,
-                type: EFormType.textarea,
+                col: 6,
+                type: EFormType.select,
+                mode: EFormModeSelect.multiple,
+                get: {
+                  facade: UserTeamFacade,
+                  format: (item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                  }),
+                  params: (fullTextSearch: string, getFieldValue: any) => ({
+                    fullTextSearch,
+                    extend: { id: getFieldValue('teamId') || undefined },
+                  }),
+                  data: () => data.current?.teams,
+                },
               },
             },
             {
-              name: 'avatar',
-              title: 'routes.admin.user.Upload avatar',
+              title: 'routes.admin.team.Manager',
+              name: 'managerId',
               formItem: {
-                col: 4,
-                type: EFormType.upload,
+                col: 6,
+                type: EFormType.select,
+                get: {
+                  facade: ManagerFacade,
+                  format: (item: any) => ({
+                    label: <Avatar size={5} src={item?.avatar} text={item.name} />,
+                    value: item.id,
+                  }),
+                  params: (fullTextSearch: string, getFieldValue: any) => ({
+                    fullTextSearch,
+                    filter: { roleCode: 'manager' },
+                    skip: { id: getFieldValue('id') || undefined },
+                  }),
+                  data: () => data.current?.manager,
+                },
               },
             },
+            {
+              name: 'dateLeave',
+              title: 'routes.admin.dayoff.Leave Date',
+              formItem: {
+                condition: (value) => value !== undefined,
+                type: EFormType.number,
+                col: 6,
+                mask: {
+                  mask: '9{1,2}[.V{0,1}]',
+                  definitions: {
+                    V: {
+                      validator: '[05]',
+                    },
+                  },
+                },
+                rules: [
+                  { type: EFormRuleType.required },
+                  {
+                    type: EFormRuleType.custom,
+                    validator: () => ({
+                      validator(rule, value: string) {
+                        if (parseFloat(value) < 17) return Promise.resolve();
+                        else return Promise.reject(t('user.Leave date cannot exceed', { day: 17 }));
+                      },
+                    }),
+                  },
+                ],
+              },
+            },
+            {
+              title: 'routes.admin.user.Description',
+              name: 'description',
+              formItem: {
+                // col: 8,
+                type: EFormType.textarea,
+              },
+            },
+            // {
+            //   name: 'avatar',
+            //   title: 'routes.admin.user.Upload avatar',
+            //   formItem: {
+            //     col: 4,
+            //     type: EFormType.upload,
+            //   },
+            // },
           ]}
           extendButton={(form) => (
             <Button

@@ -8,7 +8,7 @@ import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
+import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';
@@ -197,6 +197,52 @@ const Page = () => {
                     width: 110,
                     sorter: true,
                     render: (item) => item?.name,
+                  },
+                },
+                {
+                  title: 'routes.admin.team.Manager',
+                  name: 'manager',
+                  tableItem: {
+                    filter: {
+                      type: ETableFilterType.checkbox,
+                      name: 'positionCode',
+                      get: {
+                        facade: ManagerFacade,
+                        format: (item: any) => ({
+                          label: item.name,
+                          value: item.id,
+                        }),
+                        params: (fullTextSearch: string, value) => ({
+                          fullTextSearch,
+                          filter: { roleCode: 'manager' },
+                          extend: { id: value },
+                        }),
+                      },
+                    },
+                    sorter: true,
+                    render: (item) => item?.name,
+                  },
+                },
+                {
+                  title: 'routes.admin.user.Team',
+                  name: 'teams.id',
+                  tableItem: {
+                    filter: {
+                      type: ETableFilterType.checkbox,
+                      name: 'teams.id',
+                      get: {
+                        facade: UserTeamFacade,
+                        format: (item: any) => ({
+                          label: item.name,
+                          value: item.id,
+                        }),
+                        params: (fullTextSearch: string, value) => ({
+                          fullTextSearch,
+                          extend: { id: value },
+                        }),
+                      },
+                    },
+                    render: (data, item) => item.teams?.map((i: any) => i.name).join(','),
                   },
                 },
                 {

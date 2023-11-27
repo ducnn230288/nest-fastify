@@ -41,9 +41,9 @@ const Page = () => {
                 title: 'routes.auth.reset-password.Code OTP',
                 formItem: {
                   rules: [
-                    { type: EFormRuleType.required },
-                    { type: EFormRuleType.min, value: 6 },
-                    { type: EFormRuleType.max, value: 6 },
+                    { type: EFormRuleType.required }, 
+                    { type: EFormRuleType.min, value: 6 }, 
+                    { type: EFormRuleType.max, value: 6 }
                   ],
                 },
               },

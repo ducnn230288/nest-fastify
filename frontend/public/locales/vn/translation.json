@@ -63,12 +63,20 @@
     "User": "Người Dùng",
     "User/List": "Danh sách",
     "User/Add": "Tạo mới",
+    "DayOff/List": "Danh sách",
+    "DayOff/Add": "Tạo mới",
     "MyProfile": "Thông tin cá nhân",
     "Setting": "Thiết lập",
+    "Team": "Nhóm",
     "Code": "Mã",
     "Data": "Dữ liệu",
+    "Parameter": "Tham số",
     "Post": "Post",
-    "Parameter": "Tham số"
+    "DayOff": "Nghỉ phép",
+    "Booking": "Đặt trước",
+    "Booking/List": "Danh sách",
+    "Booking/Add": "Tạo mới",
+    "Question": "Câu hỏi"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -79,6 +87,11 @@
     "User/List": "Danh sách Người dùng",
     "User/Add": "Tạo mới người dùng {{roleCode}}",
     "User/Edit": "Chỉnh sửa người dùng {{roleCode}}",
+    "DayOff": "Nghỉ phép",
+    "DayOff/List": "Danh sách nghỉ phép",
+    "DayOff/Add": "Tạo mới ngày nghỉ",
+    "DayOff/Edit": "Chỉnh sửa ngày nghỉ",
+    "DayOff/Detail": "Chi tiết ngày nghỉ",
     "MyProfile": "Thông tin cá nhân",
     "Setting": "Thiết lập",
     "Code": "Danh sách Mã",
@@ -87,11 +100,18 @@
     "Data": "Danh sách Dữ liệu",
     "Data/Add": "Tạo mới dữ liệu {{type}}",
     "Data/Edit": "Chỉnh sửa dữ liệu {{type}}",
+    "Parameter": "Danh sách tham số",
+    "Parameter/Edit": "Chỉnh sửa tham số {{type}}",
     "Post": "Danh sách post",
     "Post/Add": "Tạo mới post {{type}}",
     "Post/Edit": "Chỉnh sửa post {{type}}",
-    "Parameter": "Danh sách tham số",
-    "Parameter/Edit": "Chỉnh sửa tham số {{type}}"
+    "Team": "Nhóm",
+    "Team/Add": "Thêm mới nhóm",
+    "Team/Edit": "Chỉnh sửa nhóm",
+    "Booking": "Đặt trước",
+    "Booking/Detail": "Đặt trước {{date}}",
+    "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}",
+    "Question": "Danh sách câu hỏi"
   },
   "columns": {
     "auth": {
@@ -166,6 +186,7 @@
         "Delete": "Xóa",
         "My Profile": "Thông tin cá nhân",
         "No Data": "Trống",
+        "Apply for leave": "Ngày phép còn lại ",
         "Pagination": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} danh mục",
         "DayOff": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} yêu cầu",
         "User": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} người dùng",
@@ -247,6 +268,52 @@
         "Oct":"Th10",
         "Nov":"Th11",
         "Dev":"Th12"
+      },
+      "dayoff": {
+        "Fullname": "Họ và tên",
+        "Team": "Nhóm",
+        "Manager": "Quản lý",
+        "Type": "Loại phép",
+        "Time": "Thời gian",
+        "Leave Date": "Ngày nghỉ",
+        "Status": "Trạng thái",
+        "Approved Date": "Ngày phê duyệt",
+        "Approved At": "Ngày phê duyệt",
+        "Approved By": "Phê duyệt bởi",
+        "Reason": "Lý do",
+        "Approve": "Duyệt",
+        "Reject": " Từ chối ",
+        "Reason Reject": "Lý do từ chối",
+        "register": {
+          "Leave Type": "Loại phép",
+          "Annual Leave": "Nghỉ phép có lương",
+          "Leave without Pay": "Nghỉ phép không lương",
+          "Remote": "Làm remote",
+          "Time": "Thời gian",
+          "All day": "Cả ngày",
+          "Morning": "Sáng",
+          "Afternoon": "Chiều",
+          "Date": "Ngày",
+          "Start Date": "Ngày bắt đầu",
+          "End Date": "Ngày kết thúc",
+          "Upload screenshot": "Tải ảnh lên"
+        },
+        "Export dayoff": "Xuất ngày nghỉ",
+        "Set date leave": "Đặt ngày nghỉ phép",
+        "Reset date leave": "Đặt lại ngày nghỉ",
+        "Reset date leave for all users on the system": "Đặt lại ngày nghỉ cho toàn bộ người dùng trên hệ thống"
+      },
+      "team": {
+        "Name": "Tên Nhóm",
+        "Manager": "Quản lý",
+        "Pagination": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} nhóm"
+      },
+      "question": {
+        "question": "Câu hỏi",
+        "level": "Cấp độ",
+        "options": "Các lựa chọn",
+        "correct": "Đáp án",
+        "createdAt": "Ngày tạo"
       }
     }
   }

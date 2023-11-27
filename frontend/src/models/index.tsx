@@ -21,4 +21,7 @@ export enum EStatusState {
   deletePending = 'delete.pending',
   deleteFulfilled = 'delete.fulfilled',
   deleteRejected = 'delete.rejected',
+  putStatusPending = 'putStatus.pending',
+  putStatusFulfilled = 'putStatus.fulfilled',
+  putStatusRejected = 'putStatus.rejected',
 }
