@@ -67,12 +67,12 @@ export class User extends Base {
   otp?: string | null;
 
   @Column()
-  @ApiProperty({ example: 'admin@admin.com', description: 'admin@admin.com' })
+  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
   @IsEmail()
   email?: string;
 
-  @Column()
-  @ApiProperty({ example: faker.phone.number(), description: '', name: 'phone_number' })
+  @Column({ name: 'phone_number' })
+  @ApiProperty({ example: faker.phone.number(), description: '' })
   @IsString()
   @MinLength(8)
   @MaxLength(12)
@@ -97,7 +97,7 @@ export class User extends Base {
   roleCode?: string;
 
   @ManyToOne(() => UserRole, (role) => role.users, { eager: true }) //
-  @JoinColumn({ name: 'roleCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'role_code', referencedColumnName: 'code' })
   @Type(() => UserRole)
   readonly role?: UserRole;
 
@@ -109,7 +109,7 @@ export class User extends Base {
   readonly positionCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   readonly position?: Code;
 
   @Column({ name: 'start_date' })

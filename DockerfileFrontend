@@ -1,0 +1,14 @@
+FROM bitnami/node:18
+
+WORKDIR /frontend
+ENV NODE_OPTIONS=--max_old_space_size=4048
+
+COPY --chown=root:root ./frontend .
+RUN chmod 777 /frontend
+
+RUN npm install -g npm serve && \
+npm install -f && \
+npm run build:prod
+
+RUN chmod 777 /frontend
+USER root

@@ -1,4 +1,4 @@
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString } from 'class-validator';
@@ -41,5 +41,6 @@ export class File extends Base {
 
   // @ManyToOne(() => User, (data) => data.files, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   // @Exclude()
+  // @JoinColumn({ name: 'user_id' })
   // public user?: User;
 }

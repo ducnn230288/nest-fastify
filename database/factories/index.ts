@@ -1,8 +1,5 @@
 export * from './code-type.factory';
 export * from './code.factory';
-export * from './product-category.factory';
-export * from './product-store.factory';
-export * from './product.factory';
 export * from './data-type.factory';
 export * from './data.factory';
 export * from './parameter.factory';
@@ -15,5 +12,8 @@ export * from './province.factory';
 export * from './district.factory';
 export * from './ward.factory';
 
+export * from './product-category.factory';
+export * from './product-store.factory';
+export * from './product.factory';
 export * from './order.factory';
 export * from './order-product.factory';
