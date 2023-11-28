@@ -2,6 +2,7 @@ import { PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Question, QuestionTest } from '@model';
 import { IsNumber, IsOptional, IsString, Min, Max } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class QuestionRequestDto extends PartialType(DefaultResponsesDto) {}
 
@@ -36,9 +37,12 @@ export class QuestionTestResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: QuestionTest | null;
 }
 
-export class RequestFindQuestion {
+export class QueryFindQuestionDto {
   @IsOptional()
   @IsNumber()
+  @Min(1)
+  @Max(12)
+  @Type(() => Number)
   level?: number;
 
   @IsString()

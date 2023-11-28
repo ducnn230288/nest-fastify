@@ -58,7 +58,10 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
       });
     }
 
@@ -186,13 +189,19 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
       });
     }
     if (listJoin.length) {
       listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(this.getPropertyOfLeftJoin(checkKey), key.replaceAll('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
       });
     }
 

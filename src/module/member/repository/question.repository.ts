@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Brackets, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import { BaseRepository } from '@shared';
 import { Question } from '@model';

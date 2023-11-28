@@ -12,24 +12,6 @@ jobs:
   test-lint:
     name: Test and Lint
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
-      DOMAIN_FE: 'http://localhost:5173'
-      DOMAIN: 'http://localhost:3000'
-      SERVER_PORT: 3000
-      DATABASE_HOST: 'database'
-      DATABASE_PORT: 5432
-      DATABASE_USER: 'root'
-      DATABASE_PASSWORD: 'admin'
-      DATABASE_NAME: 'postgres'
-      REDIS_HOST: 'cache'
-      SMTP_HOST: 'email-smtp.ap-southeast-1.amazonaws.com'
-      SMTP_PORT: 587
-      SMTP_USER: 'AKIAWV6EY3UJOGGGRKGB'
-      SMTP_PASSWORD: 'BDMHA0ch6kEUQDRofGfaxGVCf+rVnj/NQIGqgd8l52GV'
-      MAIL_SENDER: 'no-reply@ari.com.vn'
-      ID_TOKEN_PUBLIC_KEY_AS_BASE64: '37d1efb6-969c-4f3a-a178-af96a05ca578'
-      ID_TOKEN_PRIVATE_KEY_AS_BASE64: '28edb7f4-2464-4be2-8e06-fafb3d10ef32'
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -41,8 +23,18 @@ jobs:
       - name: Build the docker-compose stack
         run: docker-compose -f docker-test.yml up -d
       - name: Lint
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
-      - name: Run Migration Database
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
-      - name: Run Test
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run test:e2e"
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run lint"
+      - name: Run Test Backend
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run test:e2e"
+      - name: Run Migration && Seed Database
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run migration && npm run seed"
+      - name: Run copy 1
+        run: docker cp nest-fastify_frontend_1:./frontend/build .
+      - name: Run copy 2
+        run: docker cp ./build/index.html nest-fastify_backend_1:./backend/other/views/administrator.hbs
+      - name: Run copy 3
+        run: docker cp ./build/. nest-fastify_backend_1:./backend/other/public/.
+      - name: Run Test Frontend
+        run: docker-compose -f docker-test.yml exec -T backend robot -d robot/result robot/testcases/login.robot
+      - name: Run Remove Frontend
+        run: docker rm nest-fastify_frontend_1 -f

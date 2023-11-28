@@ -1,18 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
+import { CreateQuestionTestRequestDto, ListQuestionTestResponseDto, QuestionTestResponseDto } from '@dto';
 import {
-  CreateQuestionRequestDto,
-  CreateQuestionTestRequestDto,
-  ListQuestionTestResponseDto,
-  QuestionTestResponseDto,
-} from '@dto';
-import {
-  P_QUESTION_CREATE,
   P_QUESTION_TEST_CREATE,
   P_QUESTION_TEST_DETAIL,
   P_QUESTION_TEST_LISTED,
-  QuestionService,
+  P_QUESTION_TEST_DELETE,
   QuestionTestService,
 } from '@service';
 import { User } from '@model';
@@ -72,7 +67,7 @@ export class QuestionTestController {
 
   @Auth({
     summary: 'Delete data',
-    permission: P_QUESTION_TEST_DETAIL,
+    permission: P_QUESTION_TEST_DELETE,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Delete(':id')

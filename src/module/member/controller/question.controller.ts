@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
-import { IsOptional, IsPositive, IsNumber, IsString } from 'class-validator';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import {
   CreateQuestionRequestDto,
-  GetAllQuestionRequestDto,
   ListQuestionResponseDto,
+  QueryFindQuestionDto,
   QuestionResponseDto,
-  RequestFindQuestion,
   UpdateQuestionRequestDto,
 } from '@dto';
 import {
@@ -18,7 +17,7 @@ import {
   P_QUESTION_UPDATE,
   QuestionService,
 } from '@service';
-import { User } from '@model';
+import { Question, User } from '@model';
 
 @Headers('question')
 export class QuestionController {
@@ -47,17 +46,21 @@ export class QuestionController {
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
-    @Query() query: RequestFindQuestion,
+    @Query(new ValidationPipe({ transform: true })) query: QueryFindQuestionDto,
+    @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
     @AuthUser() user: User,
   ): Promise<ListQuestionResponseDto> {
-    const where: object[] = [];
-    if (query.level) where.push({ level: Number(query.level) });
-    if (query.typeCode) where.push({ typeCode: query.typeCode?.toString() });
+    let [result, total]: [Question[], number] = [[], 0];
 
-    const [result, total] =
-      user.roleCode === 'supper_admin' || user.role?.permissions?.includes(P_QUESTION_LISTED)
-        ? await this.service.findAll(where.length === 0 ? {} : { where })
-        : await this.service.getManyQuestionForTest(where);
+    if (user.roleCode === 'supper_admin' || user.role?.permissions?.includes(P_QUESTION_LISTED)) {
+      paginationQuery.where = [];
+      if (query.level) paginationQuery.where = [{ level: query.level }, ...paginationQuery.where];
+      if (query.typeCode) paginationQuery.where = [{ typeCode: query.typeCode }, ...paginationQuery.where];
+      [result, total] = await this.service.findAll(paginationQuery);
+    } else {
+      [result, total] = await this.service.getManyQuestionForTest(query.level!, query.typeCode!);
+    }
+
     return {
       message: i18n.t('common.Get List success'),
       count: total,

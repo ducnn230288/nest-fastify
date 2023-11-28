@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 
 import { TaskTimesheet, User } from '@model';
-import { BaseService } from '@shared';
-import { TaskRepository, TaskTimesheetRepository } from '@repository';
-import { CheckInRequestDto, CheckOutRequestDto } from '@dto';
+import { BaseService, PaginationQueryDto } from '@shared';
+import { DayoffRepository, TaskRepository, TaskTimesheetRepository } from '@repository';
+import { CheckInRequestDto, CheckOutRequestDto, FindTaskTimesheet } from '@dto';
 
 export const P_TASKTIMESHEET_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f68';
 export const P_TASKTIMESHEET_CREAETE = '80668128-7e1d-46ef-95d1-bb4cff742f65';
@@ -17,10 +17,11 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
   constructor(
     public repo: TaskTimesheetRepository,
     private repoTask: TaskRepository,
+    private repoDayoff: DayoffRepository,
   ) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['user', 'works', 'works.task', 'works.task.project'];
+    this.listJoin = ['user', 'works', 'works.task', 'task.project'];
   }
 
   async checkIn(user: User, body: CheckInRequestDto): Promise<TaskTimesheet | null> {
@@ -48,5 +49,26 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
 
     const dataTaskTimesheet = await this.repo.checkOut(timesheet!, body.listTaskWork!, body.note);
     return dataTaskTimesheet;
+  }
+
+  async findAllWithDayOff(paginationQuery: PaginationQueryDto): Promise<[FindTaskTimesheet[], number]> {
+    const [timesheets, total] = await this.findAll(paginationQuery);
+    const datas: Array<FindTaskTimesheet> = [];
+
+    await Promise.all(
+      timesheets.map(async (timesheet) => {
+        const data = await this.repoDayoff.findDayoffWithTaskTimesheet(timesheet, []);
+        datas.push(Object.assign(timesheet, { dayoff: data }));
+      }),
+    );
+    return [datas, total];
+  }
+
+  async findOneWithDayOff(id: string): Promise<FindTaskTimesheet> {
+    const timesheet = await this.findOne(id, []);
+    const dayoff = await this.repoDayoff.findDayoffWithTaskTimesheet(timesheet!);
+
+    const data = Object.assign(timesheet!, { dayoff: dayoff });
+    return data;
   }
 }
