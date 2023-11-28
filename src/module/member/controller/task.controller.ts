@@ -46,7 +46,12 @@ export class TaskController {
   async getList(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @AuthUser() user: User,
   ): Promise<ListTaskResponseDto> {
+    // Kiểm tra điều kiện tk nào không phải admin không cho getAll
+    if (user.roleCode !== 'supper_admin') paginationQuery.where = [{ managerId: user.id }];
+    // Kiểm tra điều kiện nếu User nào có những task chuyển nhượng thì cho getAll những task đó ra
+
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List success'),
@@ -91,7 +96,7 @@ export class TaskController {
   async delete(@I18n() i18n: I18nContext, @Param('id') id: string, @AuthUser() user: User): Promise<TaskResponseDto> {
     const task = await this.service.findOne(id, []);
     if (task?.managerId !== user.id) throw ForbiddenException;
-    if (task?.status === 0) throw new BadRequestException(i18n.t('common.Task status is processing. Cannot delete.'));
+    if (task?.status === 1) throw new BadRequestException(i18n.t('common.Task status is processing. Cannot delete.'));
     return {
       message: i18n.t('common.Delete data success'),
       data: await this.service.remove(id),

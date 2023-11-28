@@ -118,9 +118,9 @@ export class Task extends Base {
   @Type(() => TaskWork)
   readonly works?: TaskWork[];
 
-  @ManyToMany(() => User, (user) => user.tasks)
+  @ManyToMany(() => User, (user) => user.tasksAssignees)
   @Type(() => User)
-  assignees: User[];
+  assignees?: User[];
 
   @Column({ nullable: true, name: 'manager_id' })
   @IsUUID()
@@ -128,7 +128,7 @@ export class Task extends Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   managerId?: string;
 
-  @ManyToOne(() => User, (user) => user.tasks)
+  @ManyToOne(() => User, (user) => user.task)
   @JoinColumn({ name: 'manager_id' })
   readonly manager?: User;
 }
