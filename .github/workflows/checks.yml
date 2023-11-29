@@ -41,8 +41,18 @@ jobs:
       - name: Build the docker-compose stack
         run: docker-compose -f docker-test.yml up -d
       - name: Lint
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
-      - name: Run Migration Database
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration"
-      - name: Run Test
-        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run test:e2e"
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run lint"
+      - name: Run Test Backend
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run test:e2e"
+      - name: Run Migration && Seed Database
+        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run migration && npm run seed"
+      - name: Run copy 1
+        run: docker cp nest-fastify_frontend_1:./frontend/build .
+      - name: Run copy 2
+        run: docker cp ./build/index.html nest-fastify_backend_1:./backend/other/views/administrator.hbs
+      - name: Run copy 3
+        run: docker cp ./build/. nest-fastify_backend_1:./backend/other/public/.
+      - name: Run Test Frontend
+        run: docker-compose -f docker-test.yml exec -T backend robot -d robot/result robot/testcases/login.robot
+      - name: Run Remove Frontend
+        run: docker rm nest-fastify_frontend_1 -f

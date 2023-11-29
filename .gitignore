@@ -1,7 +1,7 @@
 # compiled output
 /dist
 /node_modules
-
+/build
 # Logs
 logs
 *.log
@@ -42,3 +42,8 @@ package-lock.json
 other/public/assets
 other/public/locales
 other/upload
+
+frontend/test/result
+frontend/build
+frontend/node_modules
+
