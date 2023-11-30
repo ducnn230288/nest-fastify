@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Brackets, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import dayjs from 'dayjs';
 
 import { BaseRepository } from '@shared';
-import { Task, TaskTimesheet, TaskWork, User } from '@model';
+import { Task, TaskTimesheet, TaskWork } from '@model';
 import { I18nContext } from 'nestjs-i18n';
-import { CheckInOrOutRequestDto, CreateTaskTimesheetRequestDto, TaskWorkRequest } from '../dto/task-timesheet.dto';
+import { TaskWorkRequest } from '../dto/task-timesheet.dto';
 
 @Injectable()
 export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
@@ -14,7 +13,7 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     super(TaskTimesheet, dataSource.createEntityManager());
   }
 
-  async checkHaveTaskTimesheet(userId: string): Promise<TaskTimesheet | null> {
+  async checkHaveTaskTimesheetInDay(userId: string): Promise<TaskTimesheet | null> {
     const currentDate = dayjs().format('YYYY-MM-DD');
     const data = await this.createQueryBuilder('base')
       .andWhere(`base.userId=:userId`, { userId })
@@ -23,14 +22,14 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     return data;
   }
 
-  async createWithTaskWorks(start: Date, userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
+  async checkIn(userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null = null;
 
     await this.dataSource.transaction(async (entityManager) => {
       result = await entityManager.save(
         entityManager.create(TaskTimesheet, {
-          start: start,
+          start: new Date(),
           userId: userId,
         }),
       );
@@ -58,41 +57,37 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
         }
       }
     });
-
     return result;
   }
 
-  async checkoutWithArrayTaskWork(
-    id: string,
-    listTaskWord: TaskWorkRequest[],
-    finish: Date,
+  async checkOut(
+    timesheet: TaskTimesheet,
+    listTaskWork: TaskWorkRequest[],
+    note: string = '',
   ): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     let result: TaskTimesheet | null;
+    let task: Task;
+
+    const sumHours = listTaskWork.reduce((init, curr) => init + curr!.hours!, 0);
+    if (sumHours < 7 * 60 * 60 && !note)
+      throw new BadRequestException(i18n.t('common.TaskTimesheet note was not found'));
 
     await this.dataSource.transaction(async (entityManager) => {
-      const data = await entityManager.preload(TaskTimesheet, {
-        id: id,
-      });
+      timesheet.finish = new Date();
+      // result = await this.save(timesheet);
 
-      if (!data) throw new BadRequestException(i18n.t('common.TaskTimesheet id not found', { args: { id } }));
-
-      if (data.finish) throw new BadRequestException(i18n.t('common.TaskTimesheet had been finished'));
-      data.finish = finish;
-      result = await this.save(data);
-      // console.log(result);
-
-      if (listTaskWord) {
-        result.works = [];
-        for (const item of listTaskWord) {
+      if (listTaskWork) {
+        timesheet.works = [];
+        for (const item of listTaskWork) {
           const exist = await entityManager
             .createQueryBuilder(TaskWork, 'base')
             .andWhere(`base.taskId=:taskId`, { taskId: item.taskId })
-            .andWhere(`base.timesheetId=:timesheetId`, { timesheetId: id })
+            .andWhere(`base.timesheetId=:timesheetId`, { timesheetId: timesheet.id })
             .andWhere(`base.id=:id`, { id: item.id })
             .withDeleted()
             .getOne();
-          if (!exist) throw new BadRequestException(i18n.t('common.Post.id was not found'));
+          if (!exist) throw new BadRequestException(i18n.t('common.TaskWork.id was not found'));
 
           const data = await entityManager.save(
             await entityManager.preload(TaskWork, {
@@ -100,9 +95,19 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
               hours: item.hours,
             }),
           );
-          if (data) result.works.push(data);
+
+          task = (await entityManager.preload(Task, {
+            id: data?.taskId,
+          })) as Task;
+
+          if (data) timesheet.works.push(data);
+          task!.hours! += data?.hours ? data!.hours! : 0;
+          task = await entityManager.save(task);
         }
+
+        timesheet.note = note;
       }
+      result = await this.save(timesheet);
     });
 
     return result!;

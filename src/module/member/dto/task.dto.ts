@@ -1,4 +1,5 @@
 import { PartialType, PickType } from '@nestjs/swagger';
+import { IsArray } from 'class-validator';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Task } from '@model';
 
@@ -13,26 +14,30 @@ export class CreateTaskRequestDto extends PickType(Task, [
   'start',
   'deadline',
   'priority',
+  'status',
   'level',
   'complete',
   'successors',
   'predecessors',
-] as const) {}
+  'order',
+] as const) {
+  @IsArray()
+  readonly assigneeIds: string[];
+}
 
 export class ListTaskResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: Task[];
 }
 
 export class UpdateTaskRequestDto extends PickType(Task, [
-  'projectCode',
+  'level',
   'name',
-  'start',
+  'code',
+  'content',
   'deadline',
   'priority',
-  'level',
-  'complete',
+  'order',
   'successors',
   'predecessors',
+  'complete',
 ] as const) {}
-
-export class UpdateTaskFinishDto extends PickType(Task, ['finish'] as const) {}

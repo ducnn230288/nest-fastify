@@ -10,7 +10,7 @@ import {
   ArrayDataResponseDto,
 } from '@dto';
 import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, findArrayCode } from '@shared';
 
 @Headers('data')
 export class DataController {
@@ -41,7 +41,7 @@ export class DataController {
   @Get('/array')
   async findOneByArray(
     @I18n() i18n: I18nContext,
-    @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
+    @Query(new ValidationPipe({ transform: true })) query: findArrayCode,
   ): Promise<ArrayDataResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),

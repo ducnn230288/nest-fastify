@@ -20,13 +20,12 @@ services:
     volumes:
       - cache:/data
 
-  server:
+  backend:
     build:
       context: .
       args:
         - PROD=true
       dockerfile: Dockerfile
-    container_name: nest-fastify
     environment:
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
@@ -36,15 +35,13 @@ services:
     depends_on:
       - database
       - cache
-    volumes:
-      - server:/app
     command: npm run start:prod
 
-networks:
-  database:
-    driver: bridge
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
 
 volumes:
   database:
   cache:
-  server:

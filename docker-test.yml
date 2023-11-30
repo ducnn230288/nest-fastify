@@ -4,57 +4,49 @@ services:
   database:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-    volumes:
-      - database:/database
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "postgres"
     ports:
       - 5432:5432
     restart: always
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready', '-q', '-d', '{YOUR_DATABASE_NAME}', '-U', '{YOUR_DATABASE_USERNAME}']
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - network
 
   cache:
     image: redis:latest
     ports:
       - 6379:6379
-    volumes:
-      - cache:/data
-    networks:
-      - network
 
-  # server:
-  #   build:
-  #     context: .
-  #     args:
-  #       - PROD=true
-  #     dockerfile: Dockerfile
-  #   container_name: nest-fastify
-  #   environment:
-  #     REDIS_HOST: 'cache'
-  #     DATABASE_HOST: 'database'
-  #   ports:
-  #     - '3000:3000'
-  #   depends_on:
-  #     - database
-  #     - cache
-  #   volumes:
-  #     - server:/app
-  #   networks:
-  #     - network
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: test
+      DOMAIN_FE: "http://localhost:5173"
+      DOMAIN: "http://localhost:3000"
+      SERVER_PORT: 3000
+      DATABASE_HOST: 'database'
+      DATABASE_PORT: 5432
+      DATABASE_USER: "root"
+      DATABASE_PASSWORD: "admin"
+      DATABASE_NAME: "postgres"
+      REDIS_HOST: 'cache'
+      SMTP_HOST: "email-smtp.ap-southeast-1.amazonaws.com"
+      SMTP_PORT: 587
+      SMTP_USER: "AKIAWV6EY3UJOGGGRKGB"
+      SMTP_PASSWORD: "BDMHA0ch6kEUQDRofGfaxGVCf+rVnj/NQIGqgd8l52GV"
+      MAIL_SENDER: "no-reply@ari.com.vn"
+      ID_TOKEN_PUBLIC_KEY_AS_BASE64: "37d1efb6-969c-4f3a-a178-af96a05ca578"
+      ID_TOKEN_PRIVATE_KEY_AS_BASE64: "28edb7f4-2464-4be2-8e06-fafb3d10ef32"
+      HOST_ADDRESS: 'http://localhost:3000/administrator'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - cache
+    command: npm run start:prod
 
-networks:
-  network:
-    driver: bridge
-    name: network
-
-volumes:
-  database:
-  cache:
-  server:
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend

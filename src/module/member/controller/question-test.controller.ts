@@ -1,12 +1,13 @@
-import { Body, Get, Post, Query } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { CreateQuestionRequestDto, CreateQuestionTestRequestDto } from '@dto';
+import { CreateQuestionTestRequestDto, ListQuestionTestResponseDto, QuestionTestResponseDto } from '@dto';
 import {
-  P_QUESTION_CREATE,
   P_QUESTION_TEST_CREATE,
+  P_QUESTION_TEST_DETAIL,
   P_QUESTION_TEST_LISTED,
-  QuestionService,
+  P_QUESTION_TEST_DELETE,
   QuestionTestService,
 } from '@service';
 import { User } from '@model';
@@ -17,7 +18,6 @@ export class QuestionTestController {
 
   @Auth({
     summary: 'Create question test',
-    permission: P_QUESTION_TEST_CREATE,
     serializeOptions: { groups: [MaxGroup] },
   })
   @Post('')
@@ -25,7 +25,7 @@ export class QuestionTestController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateQuestionTestRequestDto,
     @AuthUser() user: User,
-  ): Promise<any> {
+  ): Promise<QuestionTestResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.saveAnswer(body, user),
@@ -33,8 +33,7 @@ export class QuestionTestController {
   }
 
   @Auth({
-    summary: 'Get list data',
-    permission: P_QUESTION_TEST_LISTED,
+    summary: 'Get List data',
     serializeOptions: { groups: [MaxGroup] },
   })
   @Get('')
@@ -42,7 +41,7 @@ export class QuestionTestController {
     @I18n() i18n: I18nContext,
     @Query() paginationQuery: PaginationQueryDto,
     @AuthUser() user: User,
-  ): Promise<any> {
+  ): Promise<ListQuestionTestResponseDto> {
     if (!user?.role?.permissions?.includes(P_QUESTION_TEST_LISTED)) {
       paginationQuery.where = [{ userId: user?.id }];
     }
@@ -51,6 +50,31 @@ export class QuestionTestController {
       message: i18n.t('common.Get List success'),
       count: total,
       data: result,
+    };
+  }
+
+  @Auth({
+    summary: 'Get Detail data',
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Get(':id')
+  async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionTestResponseDto> {
+    return {
+      message: i18n.t('common.Get Detail success'),
+      data: await this.service.findOne(id, []),
+    };
+  }
+
+  @Auth({
+    summary: 'Delete data',
+    permission: P_QUESTION_TEST_DELETE,
+    serializeOptions: { groups: [MaxGroup] },
+  })
+  @Delete(':id')
+  async delete(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionTestResponseDto> {
+    return {
+      message: i18n.t('common.Delete success'),
+      data: await this.service.remove(id),
     };
   }
 }

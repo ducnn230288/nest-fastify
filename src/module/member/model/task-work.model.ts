@@ -1,17 +1,17 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsUUID } from 'class-validator';
 
 import { Task, TaskTimesheet } from '@model';
-import { Base, MaxGroup } from '@shared';
+import { Base } from '@shared';
 
 @Entity()
 export class TaskWork extends Base {
   @Column({ nullable: true, type: 'real' })
   @Expose()
-  @ApiProperty({ example: faker.number.int(), description: '' })
+  @ApiProperty({ example: faker.number.int({ max: 12 * 60 * 60 }), description: '' })
   @IsNumber()
   @IsOptional()
   hours?: number;

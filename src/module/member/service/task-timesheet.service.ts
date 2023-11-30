@@ -1,15 +1,10 @@
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
 import { I18nContext } from 'nestjs-i18n';
 
-import { TaskTimesheet, TaskWork, User } from '@model';
-import { BaseService } from '@shared';
-import { TaskRepository, TaskTimesheetRepository, TaskWorkRepository } from '@repository';
-import { CheckInOrOutRequestDto, CreateTaskTimesheetRequestDto } from '@dto';
-import dayjs from 'dayjs';
+import { TaskTimesheet, User } from '@model';
+import { BaseService, PaginationQueryDto } from '@shared';
+import { DayoffRepository, TaskRepository, TaskTimesheetRepository } from '@repository';
+import { CheckInRequestDto, CheckOutRequestDto, FindTaskTimesheet } from '@dto';
 
 export const P_TASKTIMESHEET_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f68';
 export const P_TASKTIMESHEET_CREAETE = '80668128-7e1d-46ef-95d1-bb4cff742f65';
@@ -22,55 +17,58 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
   constructor(
     public repo: TaskTimesheetRepository,
     private repoTask: TaskRepository,
-    private repoTaskWork: TaskWorkRepository,
-    private dataSource: DataSource,
+    private repoDayoff: DayoffRepository,
   ) {
     super(repo);
     this.listQuery = [];
-    this.listJoin = ['user', 'works'];
+    this.listJoin = ['user', 'works', 'works.task', 'task.project'];
   }
 
-  async checkHaveTaskTimesheet(user: User): Promise<void> {
+  async checkIn(user: User, body: CheckInRequestDto): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
-    if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
-    const data = await this.repo.checkHaveTaskTimesheet(user.id);
-    if (data) throw new BadRequestException(i18n.t('common.TaskTimesheet has been created'));
-  }
-
-  async checkInOrOut(id: string, user: User, body: CheckInOrOutRequestDto): Promise<TaskTimesheet | null> {
-    const i18n = I18nContext.current()!;
-    let dataTaskTimesheet: TaskTimesheet | null;
-
     if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
-    // Check In
 
-    // kiểm tra nếu trong đã có timesheet thì ko dc check in
-    if (!id) {
-      await this.checkHaveTaskTimesheet(user);
-      const start = new Date();
+    const timesheet = await this.repo.checkHaveTaskTimesheetInDay(user.id);
+    if (timesheet) throw new BadRequestException(i18n.t('common.User has been checked in'));
 
-      // check list id Task
-      const ids = body.listTask!.map((item) => item.id);
+    const ids = body.listTask!.map((item) => item.id as string);
+    const listTask = await this.repoTask.getManyByArrayId(ids);
+    if (listTask.length !== body.listTask!.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
 
-      const listTask = await this.repoTask.getManyByArrayId(ids);
-      if (listTask.length !== body.listTask!.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
-
-      dataTaskTimesheet = await this.repo.createWithTaskWorks(start, user.id, listTask);
-    } else {
-      // Check Out
-      const finish = new Date();
-      dataTaskTimesheet = await this.repo.checkoutWithArrayTaskWork(id, body.listTaskWord!, finish);
-    }
-    /* */
+    const dataTaskTimesheet = await this.repo.checkIn(user.id, listTask);
     return dataTaskTimesheet!;
   }
 
-  // async checkout(id: string, user: User, body: CheckInOrOutRequestDto): Promise<TaskTimesheet | null> {
-  //   const i18n = I18nContext.current()!;
-  //   if (!user.id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id: user.id } }));
+  async checkOut(user: User, body: CheckOutRequestDto): Promise<TaskTimesheet | null> {
+    const i18n = I18nContext.current()!;
+    if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
 
-  //   const finish = new Date();
-  //   const data = await this.repo.checkoutWithArrayTaskWork(id, body, finish);
-  //   return data;
-  // }
+    const timesheet = await this.repo.checkHaveTaskTimesheetInDay(user.id);
+    if (!timesheet) throw new BadRequestException(i18n.t('common.User not check in'));
+    if (timesheet.finish) throw new BadRequestException(i18n.t('common.User has been checked out'));
+
+    const dataTaskTimesheet = await this.repo.checkOut(timesheet!, body.listTaskWork!, body.note);
+    return dataTaskTimesheet;
+  }
+
+  async findAllWithDayOff(paginationQuery: PaginationQueryDto): Promise<[FindTaskTimesheet[], number]> {
+    const [timesheets, total] = await this.findAll(paginationQuery);
+    const datas: Array<FindTaskTimesheet> = [];
+
+    await Promise.all(
+      timesheets.map(async (timesheet) => {
+        const data = await this.repoDayoff.findDayoffWithTaskTimesheet(timesheet, []);
+        datas.push(Object.assign(timesheet, { dayoff: data }));
+      }),
+    );
+    return [datas, total];
+  }
+
+  async findOneWithDayOff(id: string): Promise<FindTaskTimesheet> {
+    const timesheet = await this.findOne(id, []);
+    const dayoff = await this.repoDayoff.findDayoffWithTaskTimesheet(timesheet!);
+
+    const data = Object.assign(timesheet!, { dayoff: dayoff });
+    return data;
+  }
 }

@@ -26,13 +26,17 @@ export class CodeTypeSeeder implements Seeder {
           { name: 'Developer', code: 'DEV', type: 'position' },
           { name: 'Engineer', code: 'ENG', type: 'position' },
           { name: 'Business Analyst', code: 'BA', type: 'position' },
-          { name: 'Tester', code: 'TEST', type: 'position' },
+          { name: 'Tester', code: 'TESTER', type: 'position' },
         ],
       },
-      { name: 'Room', code: 'room', isPrimary: true, items: [
-          { name: 'Room', code: 'ROOM', type: 'room' },
-        ]
+      { name: 'Room', code: 'room', isPrimary: true, items: [{ name: 'Room', code: 'ROOM', type: 'room' }] },
+      {
+        name: 'Project',
+        code: 'project',
+        isPrimary: true,
+        items: [{ name: 'Project', code: 'PROJECT', type: 'project' }],
       },
+      { name: 'Test', code: 'test', isPrimary: true, items: [{ name: 'Test', code: 'TEST', type: 'test' }] },
     ];
 
     for (const data of listData) {

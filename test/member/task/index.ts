@@ -7,12 +7,12 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { BaseTest } from '@test';
 import {
-  CheckInOrOutRequestDto,
   CreateDayoffRequestDto,
   CreateUserRequestDto,
   TaskRequest,
   UpdateTaskRequestDto,
-  UpdateTaskTimesheetRequestDto,
+  CheckInRequestDto,
+  CheckOutRequestDto,
 } from '@dto';
 import {
   CreateTaskRequestDto,
@@ -23,7 +23,7 @@ import {
 } from '@dto';
 import '@factories';
 import dayjs from 'dayjs';
-import { DayOff, User, Task, CodeType, Code, TaskTimesheet, TaskWork, UserRole } from '@model';
+import { DayOff, User, Task, CodeType, Code, TaskTimesheet, TaskWork, UserRole, ETaskStatus } from '@model';
 import {
   TaskService,
   CodeService,
@@ -32,9 +32,10 @@ import {
   UserRoleService,
   P_TASKTIMESHEET_LISTED,
   P_TASK_CREATE,
+  DayoffService,
 } from '@service';
+import c from 'config';
 import { Example } from '@shared';
-import { xssFilter } from 'helmet';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
@@ -43,36 +44,57 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataTask: CreateTaskRequestDto;
   let resultTask: Task | null;
   let dataTaskUpdate: UpdateTaskRequestDto;
+
   let resultUser: User | null;
+  let user: User;
 
-  let dataRequestDto: CheckInOrOutRequestDto;
+  let checkInRequestDto: CheckInRequestDto;
+  let checkOutRequestDto: CheckOutRequestDto;
+
   let resultTaskTimesheet: TaskTimesheet;
-  let updateTaskTimesheet: UpdateTaskTimesheetRequestDto;
-  let dataCheckout: CheckInOrOutRequestDto;
 
-  let dataTaskWork: CreateTaskWorkRequestDto;
-  let dataTaskWorks: CreateTaskWorkRequestDto[];
+  let dataDayoff: CreateDayoffRequestDto;
+  let resultDayoff: DayOff | null;
+
   let resultTaskWork: TaskWork;
-  let updateTaskWork: UpdateTaskWorkRequestDto;
+
   let codeType: CodeType | null;
   let code: Code | null;
 
   it('Create [POST /api/task]', async () => {
     codeType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());
-
     code = await BaseTest.moduleFixture!.get(CodeService).create(
       await factoryManager.get(Code).make({
         type: codeType?.code,
       }),
     );
+
     const res = await request(BaseTest.server)
-      .get('/api/user')
+      .get('/api/auth/profile')
       .set('Authorization', 'Bearer ' + BaseTest.token);
     resultUser = res.body.data;
 
-    dataTask = await factoryManager.get(Task).make({
-      projectCode: code?.code,
-    });
+    if (type) {
+      const dataUser = await factoryManager.get(User).make({
+        managerId: resultUser?.id,
+      });
+
+      user = (await BaseTest.moduleFixture!.get(UserService).create({
+        ...(await factoryManager.get(User).make({
+          managerId: resultUser?.id,
+        })),
+        retypedPassword: Example.password,
+      })) as User;
+    } else {
+      user = resultUser as User;
+    }
+
+    dataTask = {
+      ...(await factoryManager.get(Task).make({
+        projectCode: code?.code,
+      })),
+      assigneeIds: [user.id!],
+    };
 
     const { body } = await request(BaseTest.server)
       .post('/api/task')
@@ -81,84 +103,58 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { start, deadline } = dataTask;
+      const { start, deadline, assigneeIds, ...test } = dataTask;
       expect(body.data).toEqual(
         jasmine.objectContaining({
           start: start?.toISOString(),
           deadline: deadline?.toISOString(),
         }),
       );
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+      expect(body.data.assignees[0].id).toEqual(assigneeIds[0]);
       resultTask = body.data;
     }
   });
 
   it('Get list [GET /api/task]', async () => {
+    if (!type) {
+      resultTask = await BaseTest.moduleFixture!.get(TaskService).createTask(dataTask, user);
+    }
     const { body } = await request(BaseTest.server)
       .get('/api/task')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
-    if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(resultTask));
-    }
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+    const { assignees, start, deadline, createdAt, updatedAt, isDeleted, ...test } = resultTask!;
+
+    expect(body.data[0]).toEqual(jasmine.objectContaining(test));
+    resultTask = body.data[0];
   });
 
   it('Get one [GET /api/task/{id}]', async () => {
-    if (!type) {
-      resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
-    }
     const { body } = await request(BaseTest.server)
       .get('/api/task/' + resultTask?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
-    if (type) {
-      const { start, deadline } = dataTask;
-      expect(body.data).toEqual(
-        jasmine.objectContaining({
-          start: start?.toISOString(),
-          deadline: deadline?.toISOString(),
-        }),
-      );
-    }
-  });
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-  it('Update [PUT /api/task/{id}]', async () => {
-    const fakeData = await factoryManager.get(Task).make();
-    const { code, ...dataTaskUpdate } = fakeData;
-    const { body } = await request(BaseTest.server)
-      .put('/api/task/' + resultTask?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataTaskUpdate)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      const { deadline, start } = dataTaskUpdate;
-      expect(body.data).toEqual(
-        jasmine.objectContaining({
-          deadline: deadline?.toISOString(),
-          start: start?.toISOString(),
-        }),
-      );
-      resultTask = body.data;
-    }
+    const { assignees, manager, content, ...test } = resultTask!;
+
+    expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   // API Task-Timesheet
 
-  it('Create [POST /api/task-timesheet]', async () => {
+  it('Check In [POST /api/task-timesheet]', async () => {
     if (!type) {
       resultTask = await BaseTest.moduleFixture!.get(TaskService).create(dataTask);
     }
-    // const data: TaskRequest = {
-    //   id: resultTask?.id,
-    // };
-
-    dataRequestDto = {
+    checkInRequestDto = {
       listTask: [{ id: resultTask?.id }],
     };
 
     const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet/')
+      .post('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataRequestDto)
+      .send(checkInRequestDto)
       .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
 
     const test = dayjs(body.data.start).isSame(new Date(), 'day');
@@ -168,13 +164,65 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     resultTaskWork = resultTaskTimesheet.works![0];
   });
 
-  it('Get all [GET /api/task-timesheet]', async () => {
+  it('Check Out [POST /api/task-timesheet', async () => {
+    const taskWork = await factoryManager.get(TaskWork).make({
+      id: resultTaskTimesheet.works![0].id,
+      taskId: resultTaskWork.taskId,
+      hours: 1000,
+    });
+
+    checkOutRequestDto = {
+      listTaskWork: [taskWork],
+      note: faker.lorem.paragraph(),
+    };
+
+    const { body } = await request(BaseTest.server)
+      .put('/api/task-timesheet')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(checkOutRequestDto)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+    const { updatedAt, finish, works, note, ...testTimesheet } = resultTaskTimesheet!;
+    expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(body.data.note).toEqual(checkOutRequestDto.note);
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(checkOutRequestDto.listTaskWork![0]));
+
+    resultTaskTimesheet = body.data;
+    resultTaskWork = body.data.works[0];
+  });
+
+  it('Get All [GET /api/task-timesheet]', async () => {
+    // Test get all with have day off
+
+    // const res = await request(BaseTest.server)
+    //   .get('/api/auth/profile')
+    //   .set('Authorization', 'Bearer ' + BaseTest.token);
+    // resultUser = res.body.data;
+
+    // resultUser = await BaseTest.moduleFixture!.get(UserService).update(resultUser!.id!, {
+    //   managerId: resultUser!.id,
+    // });
+
+    // dataDayoff = await factoryManager.get(DayOff).make();
+    // Object.assign(dataDayoff, { staffId: resultUser?.id });
+    // resultDayoff = await BaseTest.moduleFixture!.get(DayoffService).create(dataDayoff);
+
     const { body } = await request(BaseTest.server)
       .get('/api/task-timesheet')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    expect(body.data[0]).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+    const { dayoff, ...timesheet } = body.data[0];
+    const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+    const { createdAt, isDeleted, updatedAt, ...testCode } = code!;
+
+    expect(timesheet).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(timesheet.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(timesheet.works[0].task.project).toEqual(jasmine.objectContaining(testCode));
+
+    if (dayoff) {
+      const { dateLeaveEnd, dateLeaveStart, staffId, ...testDayoff } = dataDayoff;
+      expect(dayoff).toEqual(jasmine.objectContaining(testDayoff));
+    }
   });
 
   it('Get one [GET /api/task-timesheet/:id]', async () => {
@@ -183,57 +231,41 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    expect(body.data).toEqual(jasmine.objectContaining(resultTaskTimesheet));
+    const { dayoff, ...timesheet } = body.data;
+    const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+    const { createdAt, isDeleted, updatedAt, ...testCode } = code!;
+
+    expect(timesheet).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(timesheet.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
+    expect(timesheet.works[0].task.project).toEqual(jasmine.objectContaining(testCode));
+
+    if (dayoff) {
+      const { dateLeaveEnd, dateLeaveStart, staffId, ...testDayoff } = dataDayoff;
+      expect(dayoff).toEqual(jasmine.objectContaining(testDayoff));
+    }
   });
 
-  it('Update [PUT /api/task-timesheet/:id]', async () => {
-    const dataUpdate = await factoryManager.get(TaskTimesheet).make();
-    const dataNote = dataUpdate.note;
-    updateTaskTimesheet = {
-      note: dataNote,
-    };
+  it('Update [PUT /api/task/{id}/{status}]', async () => {
+    const fakeData = await factoryManager.get(Task).make();
+
+    const { code, start, status, ...dataTaskUpdate } = fakeData;
 
     const { body } = await request(BaseTest.server)
-      .put('/api/task-timesheet/' + resultTaskTimesheet?.id)
+      .put('/api/task/' + resultTask?.id + '/' + ETaskStatus.Cancel)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(updateTaskTimesheet)
-      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
-
-    const { updatedAt, note, works, user, ...test } = resultTaskTimesheet!;
-    expect(body.data).toEqual(jasmine.objectContaining(test));
-
-    Object.keys(updateTaskTimesheet).forEach((key) => {
-      resultTaskTimesheet[key] = updateTaskTimesheet[key];
-    });
-  });
-
-  it('Check Out [POST /api/task-timesheet/:id]', async () => {
-    const taskWord = await factoryManager.get(TaskWork).make({
-      id: resultTaskTimesheet.works![0].id,
-      taskId: resultTask?.id,
-    });
-
-    dataRequestDto = {
-      listTaskWord: [taskWord],
-    };
-
-    const { listTask, ...data } = dataRequestDto!;
-
-    const { body } = await request(BaseTest.server)
-      .post('/api/task-timesheet/' + resultTaskTimesheet?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(data)
-      .expect(HttpStatus.CREATED || HttpStatus.FORBIDDEN);
-
-    const { updatedAt, finish, works, ...testTimesheet } = resultTaskTimesheet!;
-    expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
-    // console.log(body.data);
-    // console.log(dataRequestDto.listTaskWord);
-    expect(body.data.works[0]).toEqual(jasmine.objectContaining(dataRequestDto.listTaskWord![0]));
+      .send(dataTaskUpdate)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    // console.log(body);
+    if (type) {
+      const { manager, works, updatedAt, hours, status, complete, finish, ...test } = resultTask!;
+      expect(body.data).toEqual(jasmine.objectContaining(test));
+      if (body.data.status === ETaskStatus.Processing)
+        expect(body.data).toEqual(jasmine.objectContaining(dataTaskUpdate));
+      resultTask = body.data;
+    }
   });
 
   // Test API delete Task, Task-Timesheet, TaskWork
-
   it('Delete [DELETE /api/task-timesheet/:id]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/task-timesheet/' + resultTaskTimesheet?.id)
@@ -241,8 +273,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
-      const { updatedAt, works, user, isDeleted, finish, ...test } = resultTaskTimesheet!;
+      const { works, user, updatedAt, isDeleted, ...test } = resultTaskTimesheet!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
+      expect(body.data.works[0]).toEqual(jasmine.objectContaining(resultTaskWork));
     }
   });
 
@@ -251,13 +284,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .delete('/api/task/' + resultTask?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
     if (type) {
-      const { updatedAt, ...test } = resultTask!;
+      const { manager, works, updatedAt, ...test } = resultTask!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
 
   /* */
-
   return afterAll(BaseTest.initAfterAll);
 };

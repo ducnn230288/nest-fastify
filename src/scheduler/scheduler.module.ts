@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulerService } from './scheduler.service';
-import { FileService, UserService } from '@service';
-import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } from '@repository';
+import { FileService, TaskService, UserService } from '@service';
+import { DayoffRepository, FileRepository, TaskRepository, UserRepository, UserTeamRepository } from '@repository';
 
 @Module({
   providers: [
@@ -13,6 +13,8 @@ import { DayoffRepository, FileRepository, UserRepository, UserTeamRepository } 
     UserRepository,
     DayoffRepository,
     UserTeamRepository,
+    TaskService,
+    TaskRepository,
   ],
   imports: [ScheduleModule.forRoot()],
 })

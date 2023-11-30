@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { FileService, UserService } from '@service';
+import { FileService, UserService, TaskService } from '@service';
 // import { CronJob } from 'cron';
 
 @Injectable()
@@ -9,6 +9,7 @@ export class SchedulerService {
   constructor(
     public fileService: FileService,
     public userService: UserService,
+    public taskSeivice: TaskService,
     private schedulerRegistry: SchedulerRegistry,
   ) {}
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
@@ -23,6 +24,11 @@ export class SchedulerService {
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async updateAllDaysOff(): Promise<void> {
     await this.userService.updateAllDaysOff();
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async handleUpdateHours(): Promise<void> {
+    await this.taskSeivice.getManyIn30Day();
   }
 
   // getCrons() {

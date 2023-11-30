@@ -3,7 +3,7 @@ import { Brackets, DataSource } from 'typeorm';
 import dayjs from 'dayjs';
 
 import { BaseRepository } from '@shared';
-import { DayOff } from '@model';
+import { DayOff, TaskTimesheet } from '@model';
 
 @Injectable()
 export class DayoffRepository extends BaseRepository<DayOff> {
@@ -181,5 +181,26 @@ export class DayoffRepository extends BaseRepository<DayOff> {
         endDate: dayjs().endOf('days').toDate(),
       })
       .getCount();
+  }
+
+  async findDayoffWithTaskTimesheet(timesheets: TaskTimesheet, listJoin: string[] = []): Promise<DayOff | null> {
+    const request = this.createQueryBuilder('base');
+    listJoin.forEach((key) => {
+      const checkKey = key.split('.');
+      request.leftJoinAndSelect(
+        `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+        checkKey[checkKey.length - 1],
+      );
+    });
+    const data = await request
+      .innerJoin(TaskTimesheet, 'timesheet')
+      .andWhere(`base.createdAt BETWEEN :startDate AND :endDate`, {
+        startDate: dayjs(timesheets.start).startOf('days').toDate(),
+        endDate: dayjs(timesheets.start).endOf('days').toDate(),
+      })
+      .andWhere(`base.staffId=:userId`, { userId: timesheets.userId })
+      .withDeleted()
+      .getOne();
+    return data;
   }
 }

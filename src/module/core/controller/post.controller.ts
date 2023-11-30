@@ -10,7 +10,7 @@ import {
   ArrayPostResponseDto,
 } from '@dto';
 import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, findArrayCode } from '@shared';
 
 @Headers('post')
 export class PostController {
@@ -41,7 +41,7 @@ export class PostController {
   @Get('/array')
   async findOneByArray(
     @I18n() i18n: I18nContext,
-    @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
+    @Query(new ValidationPipe({ transform: true })) query: findArrayCode,
   ): Promise<ArrayPostResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),

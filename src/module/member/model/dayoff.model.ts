@@ -1,11 +1,11 @@
-import { Entity, Column, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from 'typeorm';
+import { Entity, Column, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsString, IsInt, IsDateString, Min, Max, IsDecimal, IsOptional, IsUUID } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 import { MaxGroup, Base } from '@shared';
-import { TaskTimesheet, User } from '@model';
+import { User } from '@model';
 
 @Entity()
 @Unique(['code'])
@@ -15,10 +15,6 @@ export class DayOff extends Base {
   @IsString()
   @IsOptional()
   code: string;
-
-  @OneToOne(() => TaskTimesheet, (data) => data.dayOff)
-  @Type(() => TaskTimesheet)
-  readonly taskTimesheet?: TaskTimesheet;
 
   @Column()
   @ApiProperty({ example: faker.number.int({ min: 1, max: 3 }), description: '' })
