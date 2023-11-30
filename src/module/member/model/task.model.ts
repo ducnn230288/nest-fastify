@@ -1,5 +1,5 @@
-import { Column, Entity, IsNull, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID } from 'class-validator';
@@ -8,13 +8,13 @@ import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
 import { IEditor } from '@dto';
 
-export enum Priority {
+export enum ETaskPriority {
   Normal = -1,
   Hard = 0,
   Urgent = 1,
 }
 
-export enum EStatus {
+export enum ETaskStatus {
   Cancel = -1,
   Processing = 0,
   Complete = 1,
@@ -69,14 +69,14 @@ export class Task extends Base {
   @IsDateString()
   deadline?: Date;
 
-  @Column({ type: 'enum', enum: Priority, default: Priority.Hard })
+  @Column({ type: 'enum', enum: ETaskPriority, default: ETaskPriority.Hard })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)
   @Max(1)
   priority: number;
 
-  @Column({ type: 'enum', enum: EStatus, default: EStatus.Processing })
+  @Column({ type: 'enum', enum: ETaskStatus, default: ETaskStatus.Processing })
   @ApiProperty({ example: faker.number.int({ min: -1, max: 1 }), description: '' })
   @IsInt()
   @Min(-1)
@@ -89,6 +89,13 @@ export class Task extends Base {
   @IsNumber()
   @IsOptional()
   level?: number;
+
+  @Column({ nullable: true, type: 'real', default: 0 })
+  @Expose()
+  @ApiProperty({ example: faker.number.int({ min: 1, max: 12 }), description: '' })
+  @IsNumber()
+  @IsOptional()
+  order?: number;
 
   @Column({ nullable: true, type: 'real' })
   @Expose()

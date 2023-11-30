@@ -86,4 +86,14 @@ export class UserRepository extends BaseRepository<User> {
   async getCountByManagerId(managerId: string): Promise<number> {
     return await this.createQueryBuilder('base').andWhere(`base.managerId = :managerId`, { managerId }).getCount();
   }
+
+  /**
+   *
+   * @returns User
+   *
+   * @param managerId
+   */
+  async getManyByArrayId(ids: string[]): Promise<User[]> {
+    return await this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
+  }
 }

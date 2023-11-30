@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';

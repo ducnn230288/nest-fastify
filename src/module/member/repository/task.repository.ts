@@ -11,7 +11,7 @@ export class TaskRepository extends BaseRepository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  async getManyByArrayId(ids: string[] | any): Promise<Task[]> {
+  async getManyByArrayId(ids: string[]): Promise<Task[]> {
     const datas = await this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();
     return datas;
   }

@@ -10,7 +10,18 @@ import {
   QuestionController,
   QuestionTestController,
 } from '@controller';
-import { Booking, Comment, DayOff, Question, QuestionTest, Task, TaskTimesheet, TaskWork, UserTeam } from '@model';
+import {
+  Booking,
+  Code,
+  Comment,
+  DayOff,
+  Question,
+  QuestionTest,
+  Task,
+  TaskTimesheet,
+  TaskWork,
+  UserTeam,
+} from '@model';
 import {
   BookingService,
   DayoffService,
@@ -22,6 +33,7 @@ import {
   QuestionService,
   QuestionTestService,
   TaskWorkService,
+  CodeService,
 } from '@service';
 import {
   DayoffRepository,
@@ -46,6 +58,7 @@ import {
       TaskWork,
       Task,
       Comment,
+      Code,
     ]),
   ],
   controllers: [
@@ -76,6 +89,7 @@ import {
     QuestionService,
     QuestionTestService,
     QuestionTestRepository,
+    CodeService,
   ],
   exports: [UserTeamRepository, DayoffRepository],
 })

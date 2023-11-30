@@ -31,7 +31,7 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     const timesheet = await this.repo.checkHaveTaskTimesheetInDay(user.id);
     if (timesheet) throw new BadRequestException(i18n.t('common.User has been checked in'));
 
-    const ids = body.listTask!.map((item) => item.id);
+    const ids = body.listTask!.map((item) => item.id as string);
     const listTask = await this.repoTask.getManyByArrayId(ids);
     if (listTask.length !== body.listTask!.length) throw new BadRequestException(i18n.t('common.Data ids not found'));
 
