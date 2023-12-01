@@ -11,6 +11,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
   public listJoin: string[] = [];
   public listJoinCount: { name: string; key: string }[] = [];
   public listHistoryKey = [];
+  public joinColumn: string[] = [];
   protected constructor(
     public repo: BaseRepository<T>, // public repoHistory?: Repository<T>,
   ) {}
@@ -51,17 +52,32 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
+      });
+    }
+
+    if (this.joinColumn.length) {
+      this.joinColumn.forEach((key) => {
+        const checkKey = key.split('.');
+        request.leftJoin(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, checkKey[checkKey.length - 1]);
       });
     }
 
     if (where) {
       where.forEach((item) => {
         Object.keys(item).forEach((key) => {
-          request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
+          const checkKey = key.split('.');
+          // request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
+          request = request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
+            [key]: item[key],
+          });
         });
       });
     }
+    // console.log(request.getQuery());
     if (filter && Object.keys(filter).length) {
       request = request.andWhere(
         new Brackets((qb) => {
@@ -179,13 +195,19 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
       });
     }
     if (listJoin.length) {
       listJoin.forEach((key) => {
         const checkKey = key.split('.');
-        request.leftJoinAndSelect(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, key.replace('.', ''));
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
       });
     }
 
