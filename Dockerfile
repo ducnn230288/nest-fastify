@@ -38,4 +38,3 @@ npx playwright install-deps; fi
 RUN  if [ "$PROD" = "false" ] ; then rfbrowser init; fi
 
 USER root
-
