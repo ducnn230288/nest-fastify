@@ -1,0 +1,38 @@
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+
+import { ApiProperty } from '@nestjs/swagger';
+import { faker } from '@faker-js/faker';
+import { Base } from '@shared';
+import { Task } from './task.model';
+
+@Entity()
+export class TaskSub extends Base {
+  @Column()
+  @ApiProperty({ example: faker.person.jobType(), description: '' })
+  @IsString()
+  name: string;
+
+  @Column({ default: null, nullable: true })
+  @ApiProperty({ example: faker.date.soon(), description: '' })
+  @IsDateString()
+  completed: Date;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: faker.image.url(), description: '' })
+  @IsString()
+  @IsOptional()
+  image: string;
+
+  @Column({ name: 'task_id' })
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  @Expose()
+  @IsUUID()
+  taskId: string;
+
+  @ManyToOne(() => Task, (task) => task.taskSubs, { eager: true })
+  @JoinColumn({ name: 'task_id' })
+  @Type(() => Task)
+  task: Task;
+}

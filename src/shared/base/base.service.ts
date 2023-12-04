@@ -1,5 +1,5 @@
-import { Brackets, ObjectLiteral } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+import { Brackets, ObjectLiteral, Repository } from 'typeorm';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
@@ -35,6 +35,9 @@ export abstract class BaseService<T extends ObjectLiteral> {
    * @param paginationQuery string or object describing the error condition.
    */
   async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
+    // eslint-disable-next-line prefer-const
+    // let cache = await this.managerCache.get<T>('findAll');
+
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 
@@ -185,6 +188,12 @@ export abstract class BaseService<T extends ObjectLiteral> {
         res[1] = res[0].length;
       }
     }
+
+    // if (!cache) {
+    //   await this.managerCache.set('findAll', [res[0], res[1]]);
+    // }
+    // console.log(cache);
+
     return [res[0], res[1]];
   }
 

@@ -18,7 +18,7 @@ export class BookingService extends BaseService<Booking> {
     public repo: Repository<Booking>,
   ) {
     super(repo);
-    this.listJoin = ['item'];
+    this.listJoin = ['item', 'user'];
   }
 
   /**

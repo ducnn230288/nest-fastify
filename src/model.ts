@@ -24,3 +24,4 @@ export * from './module/member/model/task.model';
 export * from './module/member/model/task-timesheet.model';
 export * from './module/member/model/task-work.model';
 export * from './module/member/model/comment.model';
+export * from './module/member/model/task-sub.model';

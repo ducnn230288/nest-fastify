@@ -31,6 +31,7 @@ import {
   TaskTimesheet,
   TaskWork,
   Comment,
+  TaskSub,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -65,6 +66,7 @@ const options: DataSourceOptions & SeederOptions = {
     Task,
     TaskTimesheet,
     TaskWork,
+    TaskSub,
     Question,
     Comment,
   ],

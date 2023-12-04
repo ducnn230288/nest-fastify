@@ -26,3 +26,4 @@ export * from './module/member/controller/task-timesheet.controller';
 
 export * from './module/member/controller/question.controller';
 export * from './module/member/controller/question-test.controller';
+export * from './module/member/controller/task-sub.controller';

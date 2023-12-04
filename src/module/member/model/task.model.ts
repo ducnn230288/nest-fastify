@@ -7,6 +7,7 @@ import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID }
 import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
 import { IEditor } from '@dto';
+import { TaskSub } from '@model';
 
 export enum ETaskPriority {
   Normal = -1,
@@ -138,4 +139,8 @@ export class Task extends Base {
   @ManyToOne(() => User, (user) => user.task)
   @JoinColumn({ name: 'manager_id' })
   readonly manager?: User;
+
+  @OneToMany(() => TaskSub, (taskSub) => taskSub.task)
+  @JoinColumn()
+  readonly taskSubs?: TaskSub[];
 }
