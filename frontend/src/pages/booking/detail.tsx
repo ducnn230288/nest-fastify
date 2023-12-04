@@ -19,15 +19,19 @@ const Page = () => {
   const bookingFacade = BookingFacade();
   const isReload = useRef(false);
   const param = JSON.parse(bookingFacade.queryParams || '{}');
+  
+  
   useEffect(() => {
     // if (id) bookingFacade.getById({ id });
     // else bookingFacade.set({ data: undefined });
     bookingFacade.get({
       perPage: 1000,
-      filter: JSON.stringify({
-        startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
-      }),
+      // filter: 
+      // JSON.stringify({
+      //   startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
+      // }),
     });
+        
     set({
       breadcrumbs: [
         { title: 'titles.Booking', link: '' },
@@ -48,9 +52,9 @@ const Page = () => {
       case EStatusState.deleteFulfilled:
         bookingFacade.get({
           perPage: 1000,
-          filter: JSON.stringify({
-            startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
-          }),
+          // filter: JSON.stringify({
+          //   startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
+          // }),
         });
         break;
     }
@@ -88,6 +92,12 @@ const Page = () => {
                     {t('Name')}
                   </th>
                   <th scope="row" className="py-4 px-6 font-medium bg-gray-100">
+                    {t('User Name')}
+                  </th>
+                  <th scope="row" className="py-4 px-6 font-medium bg-gray-100">
+                    {t('User Avatar')}
+                  </th>
+                  <th scope="row" className="py-4 px-6 font-medium bg-gray-100">
                     {t('Description')}
                   </th>
                   <th scope="row" className="py-4 font-medium bg-gray-100"></th>
@@ -96,14 +106,20 @@ const Page = () => {
 
               <tbody>
                 {bookingFacade.result?.data
-                  ?.filter((item) => item.typeCode === 'room')
+                  ?.filter((item) => item.typeCode === 'room' && item?.startTime && item?.startTime.slice(0,10) == date)
+                  // item.typeCode === 'room' && item?.startTime && items?.endTime && item?.startTime < dayjs(date).startOf('date').toISOString() && item?.endTime < dayjs(date).endOf('date').toISOString()
                   .map((data, index) => (
+                    
                     <tr className={'border-b'} key={index}>
                       <td className="py-4 px-6">
                         {dayjs(data?.startTime).format('HH:mm')} - {dayjs(data?.endTime).format('HH:mm')}
                       </td>
                       <td className="py-4 px-6">{data?.item?.name}</td>
                       <td className="py-4 px-6">{data?.name}</td>
+                      <td className="py-4 px-6">{data?.user?.name}</td>
+                      <td className="py-4 px-6">
+                        <img src={data?.user?.avatar} alt="avataruser" className='w-10 h-10 rounded-full object-cover' />
+                      </td>
                       <td className="py-4 px-6">{data?.description}</td>
                       <td>
                         {user?.role?.permissions?.includes(keyRole.P_BOOKING_DELETE) && (

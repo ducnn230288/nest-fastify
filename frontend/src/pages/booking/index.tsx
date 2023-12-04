@@ -10,6 +10,7 @@ const Page = () => {
   const { set, user } = GlobalFacade();
   const bookingFacade = BookingFacade();
 
+  
   useEffect(() => {
     // if (!parameterFacade.result?.data) parameterFacade.get({});
     set({
@@ -20,14 +21,15 @@ const Page = () => {
     });
     bookingFacade.get({
       perPage: 1000,
-      filter: JSON.stringify({
-        startTime: [dayjs().startOf('month').toISOString(), dayjs().endOf('month').toISOString()],
-      }),
+      // filter: JSON.stringify({
+      //   startTime: [dayjs().startOf('month').toISOString(), dayjs().endOf('month').toISOString()],
+      // }),
     });
   }, []);
   const monthCellRender = (date: Dayjs) => {
     const startDate = dayjs(date).startOf('month');
     const endDate = dayjs(date).endOf('month');
+    
     const listData = bookingFacade.result?.data?.filter(
       (item) => dayjs(item.startTime) > startDate && dayjs(item.startTime) < endDate,
     );
@@ -71,9 +73,9 @@ const Page = () => {
             set_mode(mode);
             bookingFacade.get({
               perPage: 1000,
-              filter: JSON.stringify({
-                startTime: [dayjs(date).startOf(mode).toISOString(), dayjs(date).endOf(mode).toISOString()],
-              }),
+              // filter: JSON.stringify({
+              //   startTime: [dayjs(date).startOf(mode).toISOString(), dayjs(date).endOf(mode).toISOString()],
+              // }),
             });
           }}
           mode={mode}
@@ -87,9 +89,9 @@ const Page = () => {
               set_mode('month');
               bookingFacade.get({
                 perPage: 1000,
-                filter: JSON.stringify({
-                  startTime: [dayjs(date).startOf('month').toISOString(), dayjs(date).endOf('month').toISOString()],
-                }),
+                // filter: JSON.stringify({
+                //   startTime: [dayjs(date).startOf('month').toISOString(), dayjs(date).endOf('month').toISOString()],
+                // }),
               });
             }
           }}
