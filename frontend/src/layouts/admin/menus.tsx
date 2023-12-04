@@ -53,7 +53,7 @@ const Layout: IMenu[] = [
       {
         name: 'Question',
         permission: keyRole.P_QUESTION_LISTED,
-        queryParams: { typeCode: "TEST_IQ" },
+        queryParams: { typeCode: 'TEST_IQ' },
       },
     ],
   },

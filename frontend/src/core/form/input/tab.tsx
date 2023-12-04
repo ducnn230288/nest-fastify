@@ -34,8 +34,8 @@ const Component = ({
                           (col?.formItem?.colTablet
                             ? col?.formItem?.colTablet
                             : col?.formItem?.col
-                            ? col?.formItem?.col
-                            : 12)) +
+                              ? col?.formItem?.col
+                              : 12)) +
                         (' lg:col-span-' + (col?.formItem?.col ? col?.formItem?.col : 12)),
                     )}
                     key={index}

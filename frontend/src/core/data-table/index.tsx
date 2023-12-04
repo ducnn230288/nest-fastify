@@ -395,8 +395,8 @@ export const DataTable = forwardRef(
               [sorts.field as string]: sorts.order === 'ascend' ? 'ASC' : sorts.order === 'descend' ? 'DESC' : '',
             }
           : sorts?.field
-          ? null
-          : sorts;
+            ? null
+            : sorts;
 
       if (tempFullTextSearch !== params.fullTextSearch) tempPageIndex = 1;
       const tempParams = cleanObjectKeyNull({

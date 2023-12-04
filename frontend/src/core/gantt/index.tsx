@@ -160,8 +160,9 @@ export const Gantt = ({
       (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
         document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
       document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
-        (document.querySelector(`#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`) as any)!.style.width =
-          e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
+        (document.querySelector(
+          `#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`,
+        ) as any)!.style.width = e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
       });
       document
         .querySelectorAll(`#${id.current} .overflow-scroll`)
@@ -281,7 +282,9 @@ export const Gantt = ({
                 tabIndex={-1}
               ></path>
               <path
-                d={`M ${endLeft + 4.2} ${endTop - 4.5} L ${endLeft - 4.5} ${endTop - 4.5} L ${endLeft + 0.2} ${endTop} Z`}
+                d={`M ${endLeft + 4.2} ${endTop - 4.5} L ${endLeft - 4.5} ${endTop - 4.5} L ${
+                  endLeft + 0.2
+                } ${endTop} Z`}
                 aria-label={item.name}
                 fill={!item.endDate ? 'black' : '#2563eb'}
               ></path>
@@ -351,28 +354,21 @@ export const Gantt = ({
     );
   };
 
-  const widthGantt = (year: string, month: string) => (dayjs()
+  const widthGantt = (year: string, month: string) =>
+    (dayjs()
       .year(parseInt(year))
       .month(parseInt(month))
       .endOf('month')
       .diff(date.obj[year][month][date.obj[year][month].length - 1], 'days') < perRow
-      ? dayjs()
-        .year(parseInt(year))
-        .month(parseInt(month))
-        .endOf('month')
-        .diff(date.obj[year][month][0], 'days') >
-      date.obj[year][month][0].daysInMonth() - (widthMonthYear / widthColumnDay) * perRow
+      ? dayjs().year(parseInt(year)).month(parseInt(month)).endOf('month').diff(date.obj[year][month][0], 'days') >
+        date.obj[year][month][0].daysInMonth() - (widthMonthYear / widthColumnDay) * perRow
         ? date.obj[year][month][0].daysInMonth()
-        : dayjs()
-        .year(parseInt(year))
-        .month(parseInt(month))
-        .endOf('month')
-        .diff(date.obj[year][month][0], 'days') + 1
+        : dayjs().year(parseInt(year)).month(parseInt(month)).endOf('month').diff(date.obj[year][month][0], 'days') + 1
       : date.obj[year][month][date.obj[year][month].length - 1].diff(
-      date.obj[year][month][0].startOf('month'),
-      'days',
-    ) + perRow) *
-    (widthColumnDay / perRow) +
+          date.obj[year][month][0].startOf('month'),
+          'days',
+        ) + perRow) *
+      (widthColumnDay / perRow) +
     'px';
   return (
     <div id={id.current} className="relative">
@@ -461,7 +457,7 @@ export const Gantt = ({
                           key={index}
                           align={'left'}
                           className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
-                          style={{width: widthGantt(year, month)}}
+                          style={{ width: widthGantt(year, month) }}
                         >
                           {date.obj[year][month][0].format('MMMM')} {year}
                         </th>

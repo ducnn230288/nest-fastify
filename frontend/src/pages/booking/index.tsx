@@ -10,7 +10,6 @@ const Page = () => {
   const { set, user } = GlobalFacade();
   const bookingFacade = BookingFacade();
 
-  
   useEffect(() => {
     // if (!parameterFacade.result?.data) parameterFacade.get({});
     set({
@@ -29,7 +28,7 @@ const Page = () => {
   const monthCellRender = (date: Dayjs) => {
     const startDate = dayjs(date).startOf('month');
     const endDate = dayjs(date).endOf('month');
-    
+
     const listData = bookingFacade.result?.data?.filter(
       (item) => dayjs(item.startTime) > startDate && dayjs(item.startTime) < endDate,
     );

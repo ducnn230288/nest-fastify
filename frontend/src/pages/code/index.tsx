@@ -26,7 +26,6 @@ const Page = () => {
     });
   }, []);
 
-  
   const navigate = useNavigate();
   useEffect(() => {
     if (
@@ -57,7 +56,6 @@ const Page = () => {
   const request = JSON.parse(codeFacade.queryParams || '{}');
   if (!request.filter || typeof request?.filter === 'string') request.filter = JSON.parse(request?.filter || '{}');
 
-  
   const { t } = useTranslation();
   const dataTableRef = useRef<TableRefObject>(null);
   return (

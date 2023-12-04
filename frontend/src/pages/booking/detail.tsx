@@ -19,19 +19,18 @@ const Page = () => {
   const bookingFacade = BookingFacade();
   const isReload = useRef(false);
   const param = JSON.parse(bookingFacade.queryParams || '{}');
-  
-  
+
   useEffect(() => {
     // if (id) bookingFacade.getById({ id });
     // else bookingFacade.set({ data: undefined });
     bookingFacade.get({
       perPage: 1000,
-      // filter: 
+      // filter:
       // JSON.stringify({
       //   startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
       // }),
     });
-        
+
     set({
       breadcrumbs: [
         { title: 'titles.Booking', link: '' },
@@ -106,10 +105,11 @@ const Page = () => {
 
               <tbody>
                 {bookingFacade.result?.data
-                  ?.filter((item) => item.typeCode === 'room' && item?.startTime && item?.startTime.slice(0,10) == date)
+                  ?.filter(
+                    (item) => item.typeCode === 'room' && item?.startTime && item?.startTime.slice(0, 10) == date,
+                  )
                   // item.typeCode === 'room' && item?.startTime && items?.endTime && item?.startTime < dayjs(date).startOf('date').toISOString() && item?.endTime < dayjs(date).endOf('date').toISOString()
                   .map((data, index) => (
-                    
                     <tr className={'border-b'} key={index}>
                       <td className="py-4 px-6">
                         {dayjs(data?.startTime).format('HH:mm')} - {dayjs(data?.endTime).format('HH:mm')}
@@ -118,7 +118,11 @@ const Page = () => {
                       <td className="py-4 px-6">{data?.name}</td>
                       <td className="py-4 px-6">{data?.user?.name}</td>
                       <td className="py-4 px-6">
-                        <img src={data?.user?.avatar} alt="avataruser" className='w-10 h-10 rounded-full object-cover' />
+                        <img
+                          src={data?.user?.avatar}
+                          alt="avataruser"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
                       </td>
                       <td className="py-4 px-6">{data?.description}</td>
                       <td>

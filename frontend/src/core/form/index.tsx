@@ -656,8 +656,8 @@ export const Form = ({
                         (column?.formItem?.colTablet
                           ? column?.formItem?.colTablet
                           : column?.formItem?.col
-                          ? column?.formItem?.col
-                          : 12)) +
+                            ? column?.formItem?.col
+                            : 12)) +
                       (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
                   )}
                   key={index}

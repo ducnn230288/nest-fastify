@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade,  QuestionFacade, CodeFacade } from '@store';
+import { GlobalFacade, QuestionFacade, CodeFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useNavigate } from 'react-router';
@@ -13,11 +13,10 @@ import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 
-
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
 
-  const codeFacade = CodeFacade()
+  const codeFacade = CodeFacade();
 
   useEffect(() => {
     if (!codeFacade.result?.data) codeFacade.get({});
@@ -29,47 +28,37 @@ const Page = () => {
     });
   }, [codeFacade.result?.data]);
 
-
-
   const navigate = useNavigate();
   useEffect(() => {
-        if (
-          codeFacade?.result?.data?.length &&
-          !codeFacade?.result?.data?.filter((item) => item.code === request.filter.typeCode).length
-        ) {
-        navigate({
-            pathname: `/${lang}${routerLinks('Question')}`,
-            search: `?${createSearchParams({ typeCode: "TEST_IQ" })}`,
-        });
-        request.filter.typeCode = 'TEST_IQ';
-        dataTableRef?.current?.onChange(request);
-        }
-
+    if (
+      codeFacade?.result?.data?.length &&
+      !codeFacade?.result?.data?.filter((item) => item.code === request.filter.typeCode).length
+    ) {
+      navigate({
+        pathname: `/${lang}${routerLinks('Question')}`,
+        search: `?${createSearchParams({ typeCode: 'TEST_IQ' })}`,
+      });
+      request.filter.typeCode = 'TEST_IQ';
+      dataTableRef?.current?.onChange(request);
+    }
   }, [codeFacade?.result]);
-
-
 
   const questionFacade = QuestionFacade();
 
   useEffect(() => {
     switch (questionFacade.status) {
-        case EStatusState.putFulfilled:
-        case EStatusState.putDisableFulfilled:
-        case EStatusState.postFulfilled:
-        case EStatusState.deleteFulfilled:
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }
   }, [questionFacade.status]);
 
-
-
   const request = JSON.parse(questionFacade.queryParams || '{}');
 
   if (!request.filter || typeof request?.filter === 'string') request.filter = JSON.parse(request?.filter || '{}');
-
-
-
 
   const { t } = useTranslation();
   const dataTableRef = useRef<TableRefObject>(null);
@@ -222,7 +211,9 @@ const Page = () => {
                           <Tooltip title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
-                              onClick={() => navigate(`/${lang}${routerLinks('Question')}/${data.typeCode}/${data.id}/edit`)}
+                              onClick={() =>
+                                navigate(`/${lang}${routerLinks('Question')}/${data.typeCode}/${data.id}/edit`)
+                              }
                             >
                               <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                             </button>

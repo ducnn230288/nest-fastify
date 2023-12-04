@@ -54,8 +54,8 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
                 a[item!.formItem!.tab!] < b[item!.formItem!.tab!]
                   ? -1
                   : a[item!.formItem!.tab!] > b[item!.formItem!.tab!]
-                  ? 1
-                  : 0,
+                    ? 1
+                    : 0,
               );
               values[item.name] = item?.formItem?.list?.map((subItem, i) => {
                 const result: { [selector: string]: any } = {
@@ -85,8 +85,8 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
                   a[item!.formItem!.tab!] < b[item!.formItem!.tab!]
                     ? -1
                     : a[item!.formItem!.tab!] > b[item!.formItem!.tab!]
-                    ? 1
-                    : 0,
+                      ? 1
+                      : 0,
                 );
               }
             }
