@@ -4,8 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-import { Question, User } from '@model';
-import { Base, MaxGroup } from '@shared';
+import { User } from '@model';
+import { Base } from '@shared';
 
 @Entity()
 export class QuestionTest extends Base {

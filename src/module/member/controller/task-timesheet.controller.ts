@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Body, Delete, Get, Param, Post, Put, Query, Res, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, Res, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 // import { Response } from 'express';
 import {
@@ -20,10 +20,10 @@ export class TaskTimesheetController {
   ) {}
 
   @Auth({
-    summary: 'Create data',
+    summary: 'Check In',
   })
   @Post('')
-  async create(
+  async checkin(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CheckInRequestDto,
     @AuthUser() user: User,
@@ -38,7 +38,7 @@ export class TaskTimesheetController {
   }
 
   @Auth({
-    summary: 'Update Data',
+    summary: 'Check Out',
   })
   @Put('')
   async checkout(
@@ -54,7 +54,7 @@ export class TaskTimesheetController {
   }
 
   @Auth({
-    summary: 'Get Detail',
+    summary: 'Get All',
   })
   @Get('')
   async findAll(
@@ -69,6 +69,24 @@ export class TaskTimesheetController {
       message: i18n.t('common.Get Detail success'),
       data: data,
       count: count,
+    };
+  }
+
+  @Auth({
+    summary: 'Get Detail Check In',
+  })
+  @Get('checkin')
+  async getCheckIn(
+    @I18n() i18n: I18nContext,
+    @AuthUser() user: User,
+    // @Res({ passthrough: true }) res: Response,
+  ): Promise<TaskTimesheetResponseDto> {
+    if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));
+    const timesheet = await this.service.getCheckIn(user);
+    if (!timesheet) throw new BadRequestException(i18n.t('common.User not check in'));
+    return {
+      message: i18n.t('Get Check In success'),
+      data: timesheet,
     };
   }
 

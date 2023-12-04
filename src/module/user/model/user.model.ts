@@ -209,5 +209,5 @@ export class User extends Base {
       referencedColumnName: 'id',
     },
   })
-  tasks?: Task[];
+  tasksAssignees?: Task[];
 }

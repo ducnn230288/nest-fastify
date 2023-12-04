@@ -1,11 +1,11 @@
-import { Entity, Column, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from 'typeorm';
+import { Entity, Column, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsString, IsInt, IsDateString, Min, Max, IsDecimal, IsOptional, IsUUID } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 import { MaxGroup, Base } from '@shared';
-import { TaskTimesheet, User } from '@model';
+import { User } from '@model';
 
 @Entity()
 @Unique(['code'])

@@ -21,5 +21,6 @@ export * from './module/member/dto/user-team.dto';
 export * from './module/member/dto/task.dto';
 export * from './module/member/dto/task-timesheet.dto';
 export * from './module/member/dto/tast-work.dto';
+export * from './module/member/dto/task-sub.dto';
 
 export * from './module/member/dto/question.dto';

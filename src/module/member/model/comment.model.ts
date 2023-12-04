@@ -1,10 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { IsString, MaxLength, IsUUID, IsOptional } from 'class-validator';
+import { IsString, MaxLength, IsUUID } from 'class-validator';
 import { Base } from '@shared';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Code, CodeType, User } from '@model';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 @Entity()
 export class Comment extends Base {

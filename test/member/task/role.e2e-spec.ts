@@ -11,6 +11,11 @@ import {
   P_TASK_DETAIL,
   P_TASK_LISTED,
   P_TASK_UPDATE,
+  P_TASKSUB_LISTED,
+  P_TASKSUB_CREATE,
+  P_TASKSUB_UPDATE,
+  P_TASKSUB_DELETE,
+  P_TASKSUB_DETAIL,
 } from '@service';
 
 describe('Role - /api/task', () =>
@@ -25,4 +30,9 @@ describe('Role - /api/task', () =>
     P_TASK_CREATE,
     P_TASK_UPDATE,
     P_TASK_DELETE,
+    P_TASKSUB_LISTED,
+    P_TASKSUB_CREATE,
+    P_TASKSUB_UPDATE,
+    P_TASKSUB_DELETE,
+    P_TASKSUB_DETAIL,
   ]));

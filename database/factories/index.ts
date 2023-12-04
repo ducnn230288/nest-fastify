@@ -17,5 +17,6 @@ export * from './booking.factory';
 export * from './task.factory';
 export * from './task-work.factory';
 export * from './task-timesheet.factory';
+export * from './task-sub.factory';
 export * from './question.factory';
 export * from './question-test.factory';

@@ -1,5 +1,5 @@
-import { Brackets, ObjectLiteral } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+import { Brackets, ObjectLiteral, Repository } from 'typeorm';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
@@ -11,17 +11,11 @@ export abstract class BaseService<T extends ObjectLiteral> {
   public listJoin: string[] = [];
   public listJoinCount: { name: string; key: string }[] = [];
   public listHistoryKey = [];
+  public joinColumn: string[] = [];
   protected constructor(
     public repo: BaseRepository<T>, // public repoHistory?: Repository<T>,
   ) {}
 
-  getPropertyOfLeftJoin(checkKey: string[]): string {
-    return checkKey.length === 1
-      ? 'base.' + checkKey[0]
-      : checkKey.reduce((init, currKey, indexKey) => {
-          return indexKey < checkKey.length - 1 ? init + currKey : `${init}.${currKey}`;
-        }, '');
-  }
   /**
    * Decorator that marks a class as a [provider](https://docs.nestjs.com/providers).
    * Providers can be injected into other classes via constructor parameter injection
@@ -41,6 +35,9 @@ export abstract class BaseService<T extends ObjectLiteral> {
    * @param paginationQuery string or object describing the error condition.
    */
   async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
+    // eslint-disable-next-line prefer-const
+    // let cache = await this.managerCache.get<T>('findAll');
+
     const { where, perPage, page, fullTextSearch } = paginationQuery;
     let { sorts } = paginationQuery;
 
@@ -65,13 +62,25 @@ export abstract class BaseService<T extends ObjectLiteral> {
       });
     }
 
+    if (this.joinColumn.length) {
+      this.joinColumn.forEach((key) => {
+        const checkKey = key.split('.');
+        request.leftJoin(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, checkKey[checkKey.length - 1]);
+      });
+    }
+
     if (where) {
       where.forEach((item) => {
         Object.keys(item).forEach((key) => {
-          request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
+          const checkKey = key.split('.');
+          // request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
+          request = request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
+            [key]: item[key],
+          });
         });
       });
     }
+    // console.log(request.getQuery());
     if (filter && Object.keys(filter).length) {
       request = request.andWhere(
         new Brackets((qb) => {
@@ -179,6 +188,12 @@ export abstract class BaseService<T extends ObjectLiteral> {
         res[1] = res[0].length;
       }
     }
+
+    // if (!cache) {
+    //   await this.managerCache.set('findAll', [res[0], res[1]]);
+    // }
+    // console.log(cache);
+
     return [res[0], res[1]];
   }
 
