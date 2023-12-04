@@ -315,6 +315,17 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
+  it('Get Detail Check In [GET /api/task-timesheet/checkin', async () => {
+    const { body } = await request(BaseTest.server)
+      .get('/api/task-timesheet/checkin')
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+    expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
+    expect(body.data.works).toEqual(jasmine.objectContaining(works));
+  });
+
   it('Update [PUT /api/task/{id}/{status}]', async () => {
     const fakeData = await factoryManager.get(Task).make();
 

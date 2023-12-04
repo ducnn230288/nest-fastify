@@ -24,6 +24,10 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
     this.listJoin = ['user', 'works', 'works.task', 'task.project'];
   }
 
+  async getCheckIn(user: User): Promise<TaskTimesheet | null> {
+    return await this.repo.checkHaveTaskTimesheetInDay(user.id!, ['works', 'user']);
+  }
+
   async checkIn(user: User, body: CheckInRequestDto): Promise<TaskTimesheet | null> {
     const i18n = I18nContext.current()!;
     if (!user.id) throw new BadRequestException(i18n.t('common.User id not found', { args: { id: user.id } }));

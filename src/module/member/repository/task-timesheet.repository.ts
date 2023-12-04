@@ -13,13 +13,22 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
     super(TaskTimesheet, dataSource.createEntityManager());
   }
 
-  async checkHaveTaskTimesheetInDay(userId: string): Promise<TaskTimesheet | null> {
+  async checkHaveTaskTimesheetInDay(userId: string, listJoin: string[] = []): Promise<TaskTimesheet | null> {
     const currentDate = dayjs().format('YYYY-MM-DD');
-    const data = await this.createQueryBuilder('base')
+    const request = this.createQueryBuilder('base')
       .andWhere(`base.userId=:userId`, { userId })
-      .andWhere(`DATE(base.start) = DATE(:currentDate)`, { currentDate })
-      .getOne();
-    return data;
+      .andWhere(`DATE(base.start) = DATE(:currentDate)`, { currentDate });
+
+    if (listJoin.length) {
+      listJoin.forEach((key) => {
+        const checkKey = key.split('.');
+        request.leftJoinAndSelect(
+          `${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`,
+          checkKey[checkKey.length - 1],
+        );
+      });
+    }
+    return await request.getOne();
   }
 
   async checkIn(userId: string, listTask: Task[]): Promise<TaskTimesheet | null> {
