@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Get, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Get, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Headers, PaginationQueryDto } from '@shared';

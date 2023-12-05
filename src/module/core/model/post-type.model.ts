@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, Unique, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { Entity, Column, OneToMany, Unique, Tree, TreeChildren, TreeParent, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsBoolean, IsString, MaxLength } from 'class-validator';
@@ -38,5 +38,6 @@ export class PostType extends Base {
   children?: PostType[];
 
   @TreeParent()
+  @JoinColumn({ name: 'parent_id' })
   parent?: PostType;
 }

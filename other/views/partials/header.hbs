@@ -312,15 +312,13 @@
             id='dropmenu'
             class='absolute z-10 invisible w-[486.6px] h-auto bg-white rounded-lg border border-green-ligrn py-[30px] px-5 top-20 shadow-xls'
           >
-            <div class='flex'>
-              <ul>
-                <li
-                  class='w-[215px] h-[50px] py-[9px] px-[18px] mr-[15px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'
-                >
-                  <a
-                    href=''
-                    class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'
+            <div>
+              <ul class='flex flex-wrap'>
+                {{#each categories}}
+                  <li
+                    class='w-1/2 h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'
                   >
+<<<<<<< HEAD
                     <img src='/images/category-1.svg' alt='' class='inline-block w-[30px] h-[30px] mr-3' />
                     Milks and Dairies
                   </a>
@@ -393,8 +391,19 @@
                     Clothing & beauty
                   </a>
                 </li>
+=======
+                    <a
+                      href={{slug}}
+                      class='font-quicksand font-bold text-gray-blck text-[15px] hover:text-green-grn transition duration-300'
+                    >
+                      <img src={{image}} alt='' class='inline-block w-[30px] h-[30px] mr-3' />
+                      {{name}}
+                    </a>
+                  </li>
+                {{/each}}
+>>>>>>> aed50c21d316bfa7f4fc1e848c7ef183472d2ba1
               </ul>
-              <ul>
+              {{! <ul>
                 <li
                   class='w-[215px] h-[50px] py-[9px] px-[18px] mb-[15px] border border-gray-200 rounded-md hover:border-green-ligrn hover:shadow-xls transition duration-300'
                 >
@@ -465,7 +474,7 @@
                     Fresh Seafood
                   </a>
                 </li>
-              </ul>
+              </ul> }}
             </div>
             <button
               id='plusbtn'

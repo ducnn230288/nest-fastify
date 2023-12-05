@@ -274,9 +274,7 @@ const y = {
   w = (e, r) => e && r.forEach((t) => e.classList.toggle(t)),
   h = (e, r) => {
     const t = gsap.timeline({ delay: r, defaults: { duration: 1, ease: 'power1.inOut' } }),
-      i = e.querySelectorAll('.gsap'),
-      n = gsap.getTweensOf(i);
-    if (n.length > 0) return n.forEach((o) => o.kill()), !0;
+      i = e.querySelectorAll('.gsap');
     i.forEach((o) => {
       o.classList.contains('left') && t.from(o, { x: '-=10%', scale: '+=0.15', opacity: '-=1' }, '<0.25'),
         o.classList.contains('right') && t.from(o, { x: '+=10%', scale: '+=0.15', opacity: '-=1' }, '<0.5'),

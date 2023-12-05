@@ -10,15 +10,7 @@ import {
   CreateAddressRequestDto,
   UpdateAddressRequestDto,
 } from '@dto';
-import {
-  AddressService,
-  DistrictService,
-  P_USER_CREATE,
-  ProvinceService,
-  UserRoleService,
-  UserService,
-  WardService,
-} from '@service';
+import { DistrictService, P_USER_CREATE, ProvinceService, UserRoleService, UserService, WardService } from '@service';
 import { Example } from '@shared';
 import '@factories';
 import { BaseTest } from '@test';
@@ -192,7 +184,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   // test address
-  it('Create [CREATE /api/adress]', async () => {
+  it('Create [CREATE /api/address]', async () => {
     province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
 
     district = await BaseTest.moduleFixture!.get(DistrictService).create(

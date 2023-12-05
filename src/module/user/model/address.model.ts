@@ -1,9 +1,9 @@
-import { District, OrderAddress, Province, User } from '@model';
+import { District, Province, User } from '@model';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
-import { Base, MaxGroup } from '@shared';
+import { Base } from '@shared';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Ward } from '@model';
 import { IsOptional, IsString } from 'class-validator';
 
@@ -11,11 +11,11 @@ import { IsOptional, IsString } from 'class-validator';
 export class Address extends Base {
   @Column({ name: 'code_province' })
   @IsString()
-  @ApiProperty({ example: faker.location.countryCode('numeric'), description: '' })
+  @ApiProperty({ example: faker.location.countryCode('alpha-2'), description: '' })
   codeProvince: string;
 
   @ManyToOne(() => Province, (province) => province.items, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public provinceItem: Province;
 
   @Column({ name: 'code_district' })
@@ -24,7 +24,7 @@ export class Address extends Base {
   codeDistrict: string;
 
   @ManyToOne(() => District, (district) => district.item, { eager: true })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem: District;
 
   @Column({ name: 'code_ward' })
@@ -33,7 +33,7 @@ export class Address extends Base {
   codeWard: string;
 
   @ManyToOne(() => Ward, (ward) => ward.item, { eager: true })
-  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public wardItem: Ward;
 
   @Column({ name: 'specific_address' })
@@ -50,9 +50,7 @@ export class Address extends Base {
   userId?: string;
 
   @ManyToOne(() => User, (user) => user.address, { eager: true })
+  @JoinColumn({ name: 'user_id' })
   @Type(() => User)
   readonly user: User;
-
-  @OneToMany(() => OrderAddress, (orderAddress) => orderAddress.address)
-  readonly orderAddress: OrderAddress;
 }
