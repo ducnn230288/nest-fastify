@@ -27,6 +27,7 @@ export * from './dayoff';
 export * from './user/manager';
 export * from './booking';
 export * from './question';
+export * from './timesheet';
 import {
   globalSlice,
   userSlice,
@@ -42,6 +43,7 @@ import {
   dayoffSlice,
   managerSlice,
   bookingSlice,
+  TimeSheetSlice,
   questionSlice,
 } from './';
 const rootReducer = combineReducers({
@@ -59,5 +61,6 @@ const rootReducer = combineReducers({
   [dayoffSlice.name]: dayoffSlice.reducer,
   [managerSlice.name]: managerSlice.reducer,
   [bookingSlice.name]: bookingSlice.reducer,
+  [TimeSheetSlice.name]: TimeSheetSlice.reducer,
   [questionSlice.name]: questionSlice.reducer,
 });
