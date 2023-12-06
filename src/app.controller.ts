@@ -3,6 +3,7 @@ import { ProductCategoryService, DataService, PostService, ParameterService, Pro
 import { PaginationQueryDto } from './shared/base';
 import { ProductCategoryDto, ProductDto, ProductCategoryResponseDto } from '@dto';
 import { I18nContext } from 'nestjs-i18n';
+import { FastifyReply } from 'fastify';
 
 @Controller()
 export class AppController {
@@ -12,7 +13,7 @@ export class AppController {
     private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
     private readonly categoryService: ProductCategoryService,
     private readonly productService: ProductService,
-  ) {}
+  ) { }
   @Get('')
   @Render('pages/home/index')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -242,8 +243,8 @@ export class AppController {
 
    private categoryService : ProductCategoryService
   ) { }
-  @Get('/en')
-  @Render('pages/home')
+  @Get()
+  @Render('pages/home/index')
  async root( @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
   constructor(private categoryService: ProductCategoryService) {}
   @Get('/')
