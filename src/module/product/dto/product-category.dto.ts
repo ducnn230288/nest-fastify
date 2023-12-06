@@ -16,6 +16,7 @@ export class CreateProductCategoryRequestDto extends PickType(ProductCategory, [
   'name',
   'description',
   'slug',
+  'image',
 ] as const) {}
 
 export class UpdateProductCategoryRequestDto extends PartialType(CreateProductCategoryRequestDto) {}

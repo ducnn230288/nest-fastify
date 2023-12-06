@@ -1,10 +1,10 @@
 import { District, Province, User } from '@model';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
-import { Base } from '@shared';
+import { Base, MaxGroup } from '@shared';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { Ward } from '@model';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Ward, OrderAddress } from '@model';
 import { IsOptional, IsString } from 'class-validator';
 
 @Entity()
@@ -53,4 +53,8 @@ export class Address extends Base {
   @JoinColumn({ name: 'user_id' })
   @Type(() => User)
   readonly user: User;
+
+  @OneToMany(() => OrderAddress, (od) => od.codeWard, { eager: false })
+  @Expose({ groups: [MaxGroup] })
+  orderAddress?: OrderAddress[];
 }

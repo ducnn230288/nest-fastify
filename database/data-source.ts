@@ -5,7 +5,6 @@ import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
 import { Core1698359444654 } from './migrations/1698359444654-core';
 import {
-  Address,
   Code,
   CodeType,
   Data,
