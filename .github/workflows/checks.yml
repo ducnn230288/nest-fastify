@@ -48,6 +48,6 @@ jobs:
         run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run migration && npm run seed"
       - name: Run Test Frontend
         run: docker-compose -f docker-test.yml exec -T backend robot -d robot/result robot/testcases/login.robot
-#       docker-compose -f docker-build.yml up -d
+#       docker-compose -f docker-build.yml up -d --build
 #       docker-compose -f docker-build.yml run --rm backend sh -c "npm run migration && npm run seed"
 
