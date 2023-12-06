@@ -9,7 +9,7 @@ export function Headers(
   descriptor?: TypedPropertyDescriptor<Y> | undefined,
 ) => void {
   return applyDecorators(
-    Controller('/api/' + name),
+    Controller('/api/v1/supermarket/' + name),
     ApiTags(name),
     ApiHeader({ name: 'Accept-Language' }),
     UseInterceptors(ClassSerializerInterceptor),

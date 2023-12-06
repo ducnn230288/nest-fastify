@@ -50,7 +50,7 @@ Routes is following REST standard (Richardson level 3)
   documentBuilder.setVersion('1.0');
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build());
-  SwaggerModule.setup('documentation', app, document, {
+  SwaggerModule.setup('api/v1/supermarket', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
@@ -58,5 +58,5 @@ Routes is following REST standard (Richardson level 3)
       'div.swagger-ui > div:last-child > .wrapper:last-child, .swagger-ui > div:nth-child(2) > .wrapper > section > div > span:nth-child(1){display: none}',
   });
   const logger = new Logger('___DevLog___');
-  logger.log(`Documentation: http://localhost:${appConfig.SERVER_PORT}/documentation`);
+  logger.log(`Documentation: http://localhost:${appConfig.SERVER_PORT}/api/v1/supermarket`);
 }
