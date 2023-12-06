@@ -76,7 +76,8 @@
     "Booking": "Đặt trước",
     "Booking/List": "Danh sách",
     "Booking/Add": "Tạo mới",
-    "Question": "Câu hỏi"
+    "Question": "Câu hỏi",
+    "Task": "Công việc"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -111,7 +112,8 @@
     "Booking": "Đặt trước",
     "Booking/Detail": "Đặt trước {{date}}",
     "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}",
-    "Question": "Danh sách câu hỏi"
+    "Question": "Danh sách câu hỏi",
+    "Task":"Công việc"
   },
   "columns": {
     "auth": {

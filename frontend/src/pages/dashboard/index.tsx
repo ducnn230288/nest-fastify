@@ -1,10 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { t } from 'i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import { Gantt } from '@core/gantt';
 
+
 const Page = () => {
+
   const task = [
     {
       id: '1',
