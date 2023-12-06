@@ -221,7 +221,7 @@ const Page = ({
   component: Comp,
 }: {
   title: string;
-  component: React.LazyExoticComponent<() => JSX.Element>;
+  component: React.LazyExoticComponent<() => JSX.Element | undefined>;
 }) => {
   const { t } = useTranslation();
   const globalFacade = GlobalFacade();
