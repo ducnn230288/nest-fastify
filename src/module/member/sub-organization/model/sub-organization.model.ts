@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Base } from "@shared"
 import { Column, Entity } from "typeorm"
 import { faker } from '@faker-js/faker';
-import { IsString, IsUUID, IsBoolean } from 'class-validator';
+import { IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 import { SUPPLIER_TYPE, SubOrgType } from "../enum";
 
 
@@ -87,21 +87,28 @@ export class SubOrganization extends Base {
 
     @Column()
     @ApiProperty({
-        
+        example: faker.person.jobTitle(),
+        description: '',
     })
+    @IsString()
+    @IsOptional()
     note: string;
 
     @Column()
     type: SubOrgType;
 
     @Column()
+    @ApiProperty({
+        example: faker.finance.iban(),
+        description: '',
+    })
     fax: string;
 
     @Column()
     supplierType: SUPPLIER_TYPE;
 
     @Column()
-    
+    @IsOptional()
     storeId: number;
 
     @Column()
@@ -145,12 +152,12 @@ export class SubOrganization extends Base {
     // @OneToMany(() => DocumentSubOrganiztion, (contract) => contract.subOrg)
     // contract: DocumentSubOrganiztion[];
     @Column()
-    contract: Array<string>;
+    contract: string
 
     // @OneToMany(() => SubOrgCommision, (commission) => commission.subOrg)
     // commission: SubOrgCommision[];
     @Column()
-    commission: Array<string>;
+    commission: string
 
     // @ManyToOne(() => SubOrganization)
     // @JoinColumn({ name: 'store_id', referencedColumnName: 'id' })
@@ -169,5 +176,5 @@ export class SubOrganization extends Base {
     // @OneToMany(() => InventoryProduct, inventoryProduct => inventoryProduct.branch)
     // inventoryProduct: InventoryProduct[]
     @Column()
-    inventoryProduct: Array<string>;
+    inventoryProduct: string
 }

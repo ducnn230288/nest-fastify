@@ -2,6 +2,7 @@ import type { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { appConfig } from './config';
+import { prefixRouter } from '@shared';
 
 export function setupSwagger(app: INestApplication): void {
   const documentBuilder = new DocumentBuilder()
@@ -50,7 +51,7 @@ Routes is following REST standard (Richardson level 3)
   documentBuilder.setVersion('1.0');
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build());
-  SwaggerModule.setup('api/v1/supermarket', app, document, {
+  SwaggerModule.setup(prefixRouter, app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
@@ -58,5 +59,5 @@ Routes is following REST standard (Richardson level 3)
       'div.swagger-ui > div:last-child > .wrapper:last-child, .swagger-ui > div:nth-child(2) > .wrapper > section > div > span:nth-child(1){display: none}',
   });
   const logger = new Logger('___DevLog___');
-  logger.log(`Documentation: http://localhost:${appConfig.SERVER_PORT}/api/v1/supermarket`);
+  logger.log(`Documentation: http://localhost:${appConfig.SERVER_PORT}${prefixRouter}`);
 }

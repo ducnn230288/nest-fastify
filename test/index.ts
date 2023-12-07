@@ -9,6 +9,7 @@ import { UserRoleService, UserService } from '@service';
 import { User } from '@model';
 import { AppModule } from '../src/app.module';
 import { AppDataSource } from '../database/data-source';
+import { prefixRouter } from '@shared';
 
 export const BaseTest: {
   moduleFixture?: TestingModule;
@@ -59,7 +60,7 @@ export const BaseTest: {
   login: async (user) => {
     await BaseTest.serviceUser!.create({ ...user, retypedPassword: user.password! });
     const { body } = await request(BaseTest.server)
-      .post('/api/auth/login')
+      .post(`${prefixRouter}/auth/login `)
       .send({
         email: user.email,
         password: user.password,

@@ -1,5 +1,6 @@
 import { applyDecorators, ClassSerializerInterceptor, Controller, UseInterceptors } from '@nestjs/common';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { prefixRouter } from '@shared';
 
 export function Headers(
   name: string,
@@ -9,7 +10,7 @@ export function Headers(
   descriptor?: TypedPropertyDescriptor<Y> | undefined,
 ) => void {
   return applyDecorators(
-    Controller('/api/v1/supermarket/' + name),
+    Controller(prefixRouter + '/' + name),
     ApiTags(name),
     ApiHeader({ name: 'Accept-Language' }),
     UseInterceptors(ClassSerializerInterceptor),

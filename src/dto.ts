@@ -13,3 +13,9 @@ export * from './module/user/dto/ward.dto';
 export * from './module/user/dto/address.dto';
 export * from './module/user/dto/user.dto';
 export * from './module/user/dto/user-role.dto';
+
+export * from './module/member/sub-organization/dto';
+
+
+
+
