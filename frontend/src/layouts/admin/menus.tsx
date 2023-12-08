@@ -3,7 +3,7 @@ import { URLSearchParamsInit } from 'react-router-dom/dist/dom';
 
 import { keyRole } from '@utils';
 import './index.less';
-import { Cog, User, Coffee, Booking } from '@svgs';
+import { Cog, User, Coffee, Booking, Times, Eye } from '@svgs';
 
 const Layout: IMenu[] = [
   {
@@ -23,9 +23,8 @@ const Layout: IMenu[] = [
     permission: keyRole.P_BOOKING_LISTED,
   },
   {
-    icon: <Booking className="h-8 w-8" />,
-    name: 'TimeSheet',
-    // permission: keyRole.P_BOOKING_LISTED,
+    icon: <Eye className="h-8 w-8" />,
+    name: 'Task',
   },
   {
     icon: <Cog className="h-6 w-6" />,

@@ -6,6 +6,18 @@ import { gsap } from 'gsap';
 import { Arrow } from '@svgs';
 import classNames from 'classnames';
 
+export enum ETaskPriority {
+  Normal = -1,
+  Hard = 0,
+  Urgent = 1,
+}
+
+export enum ETaskStatus {
+  Cancel = -1,
+  Processing = 0,
+  Complete = 1,
+}
+
 export const Gantt = ({
   widthColumnDay = 36,
   perRow = 3,
@@ -418,17 +430,17 @@ export const Gantt = ({
                       <td className="border-x px-4 py-0 h-6 truncate">{item.assignee}</td>
                       <td
                         className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
-                          'bg-blue-600': item.status === 'In Progress',
-                          'bg-green-600': item.status === 'Completed',
-                          'bg-gray-600': item.status === 'On Hold',
+                          'bg-blue-600': item.status === 'Processing',
+                          'bg-green-600': item.status === 'Complete',
+                          'bg-gray-600': item.status === 'Cancel',
                         })}
                       >
                         {item.status}
                       </td>
                       <td
                         className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
-                          'bg-red-500': item.priority === 'Critical',
-                          'bg-orange-500': item.priority === 'High',
+                          'bg-red-500': item.priority === 'Urgent',
+                          'bg-orange-500': item.priority === 'Hard',
                           'bg-yellow-500': item.priority === 'Normal',
                         })}
                       >
@@ -573,6 +585,7 @@ export const Gantt = ({
 type TTask = {
   id: string;
   name: string;
+  start?:string;
   assignee?: string;
   status?: string;
   priority?: string;

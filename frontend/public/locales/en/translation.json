@@ -76,7 +76,8 @@
     "Booking": "Booking",
     "Booking/List": "List",
     "Booking/Add": "Add",
-    "Question": "Question"
+    "Question": "Question",
+    "Task": "task"
   },
   "pages": {
     "ForgetPassword": "Forgot Password",
@@ -111,7 +112,8 @@
     "Booking": "Booking",
     "Booking/Detail": "Booking {{date}}",
     "Booking/Add": "Add booking {{type}} {{date}}",
-    "Question": "Question"
+    "Question": "Question",
+    "Task": "Task"
   },
   "columns": {
     "auth": {

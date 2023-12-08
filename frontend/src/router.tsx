@@ -172,6 +172,16 @@ const pages = [
         title: 'DayOff/Detail',
       },
       {
+        path: routerLinks('Dashboard'),
+        component: React.lazy(() => import('@pages/dashboard')),
+        title: 'Dashboard',
+      },
+      {
+        path: routerLinks('Task'),
+        component: React.lazy(() => import('@pages/task')),
+        title: 'Task',
+      },
+      {
         path: routerLinks('Booking'),
         component: React.lazy(() => import('@pages/booking')),
         title: 'Booking',
@@ -216,7 +226,7 @@ const Page = ({
   component: Comp,
 }: {
   title: string;
-  component: React.LazyExoticComponent<() => JSX.Element>;
+  component: React.LazyExoticComponent<() => JSX.Element | undefined>;
 }) => {
   const { t } = useTranslation();
   const globalFacade = GlobalFacade();
