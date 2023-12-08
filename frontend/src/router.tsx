@@ -186,6 +186,11 @@ const pages = [
         component: React.lazy(() => import('@pages/booking/add')),
         title: 'Booking/Add',
       },
+      {
+        path: routerLinks('TimeSheet'),
+        component: React.lazy(() => import('@pages/timesheet/index')),
+        title: 'TimeSheet',
+      },
     ], // 💬 generate link to here
   },
 ];
