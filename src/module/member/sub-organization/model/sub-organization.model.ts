@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Base } from "@shared"
-import { Column, Entity } from "typeorm"
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm"
 import { faker } from '@faker-js/faker';
 import { IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 import { SUPPLIER_TYPE, SubOrgType } from "../enum";
+import { Address } from "@model";
 
 
 
@@ -71,12 +72,13 @@ export class SubOrganization extends Base {
     })
     updatedAt: Date;
 
-    @Column()
-    @ApiProperty({
-        example: faker.finance.bic(),
-        description: '',
-    })
-    addressId: number;
+    @Column({name: 'address_id'})
+    @ApiProperty({ example: faker.finance.bic(), description: ''  })
+    addressId: string;
+
+    @OneToOne(() => Address, (address) => address.subOrg, { eager: true })
+    @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
+    address: Address;
 
     @Column()
     @ApiProperty({
@@ -109,13 +111,11 @@ export class SubOrganization extends Base {
 
     @Column()
     @IsOptional()
+    @ApiProperty({
+        example: faker.string.uuid(),
+        description: '',
+    })
     storeId: number;
-
-    @Column()
-    // @OneToOne(() => Address, (address) => address.subOrg)
-    // @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
-    //address: Address;
-    address: string;
 
     @Column()
     // @OneToMany(() => Product, (product) => product.subOrg)

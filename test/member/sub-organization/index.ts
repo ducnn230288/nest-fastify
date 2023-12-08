@@ -18,7 +18,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const factoryManager = useSeederFactoryManager();
 
 
-  let dataCreate: CreateSubOrganizationRequestDto;
+  let dataCreate : CreateSubOrganizationRequestDto
 
   let dataType: CreateDataTypeRequestDto;
   let dataUpdateType: UpdateDataTypeRequestDto;
@@ -28,19 +28,24 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataUpdate: UpdateDataRequestDto;
   let result: Data | null;
 
-  // it(`Create [POST ${API}]`, async () => {
-  //   dataCreate = await factoryManager.get(SubOrganization).make();
-  //   const { body } = await request(BaseTest.server)
-  //     .post(API)
-  //     .set('Authorization', 'Bearer ' + BaseTest.token)
-  //     .send(dataCreate as CreateSubOrganizationRequestDto)
-  //     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+  it(`Create [POST ${API}]`, async () => {
+    // dataCreate = await factoryManager.get(SubOrganization).make();
+    const { body } = await request(BaseTest.server)
+      .post(API)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .send(dataCreate as CreateSubOrganizationRequestDto)
+    // .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+    console.log(dataCreate);
 
-  //   if (type) {
-  //     expect(body.data).toEqual(jasmine.objectContaining(dataType));
-  //     resultType = body.data;
-  //   }
-  // });
+    console.log(body);
+
+
+    return
+    if (type) {
+      expect(body.data).toEqual(jasmine.objectContaining(dataType));
+      resultType = body.data;
+    }
+  });
 
   // it('Get all [GET /api/data-type]', async () => {
   //   const { body } = await request(BaseTest.server)

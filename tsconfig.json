@@ -29,7 +29,8 @@
       "@repository": ["src/repository"],
       "@service": ["src/service"],
       "@test": ["test"],
-      "@factories": ["database/factories"]
+      "@factories": ["database/factories"],
+      "@enum": ["src/enum"]
     }
   },
   "watchOptions": {

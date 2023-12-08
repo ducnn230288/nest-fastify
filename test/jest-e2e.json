@@ -16,7 +16,8 @@
     "@repository": "<rootDir>../src/repository",
     "@service": "<rootDir>../src/service",
     "@test": "<rootDir>../test",
-    "@factories": "<rootDir>../database/factories"
+    "@factories": "<rootDir>../database/factories",
+    "@enum": "<rootDir>../src/enum"
   },
   "testRunner": "jest-jasmine2"
 }

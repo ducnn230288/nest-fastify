@@ -21,6 +21,7 @@ import {
   Address,
   User,
   UserRole,
+  SubOrganization,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -47,6 +48,7 @@ const options: DataSourceOptions & SeederOptions = {
     PostTranslation,
     PostType,
     File,
+    SubOrganization,
   ],
   migrations: [Core1698359444654],
   seeds: [MainSeeder],

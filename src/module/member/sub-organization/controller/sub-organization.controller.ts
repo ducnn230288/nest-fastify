@@ -3,6 +3,7 @@ import { Auth, AuthUser, Headers, SerializerBody } from "@shared";
 import { I18n, I18nContext } from "nestjs-i18n";
 import { CreateSubOrganizationRequestDto } from "@dto";
 import { User } from "@model";
+import { SubOrganizationService } from "@service";
 
 
 
@@ -10,9 +11,14 @@ import { User } from "@model";
 @Headers('sub-organization')
 
 export class SubOrganizationController {
+    constructor(
+        private service : SubOrganizationService
+    ) {
+
+    }
 
     @Auth({
-        summary: 'Tạo đơn vị mới',
+        summary: 'Create new store',
         // permission: P_DATA_LISTED,
         serializeOptions: { groups: [] },
     })
@@ -23,7 +29,8 @@ export class SubOrganizationController {
         @Body(new SerializerBody()) body: CreateSubOrganizationRequestDto,
         @AuthUser() user: User,
     ) {
-
+    console.log(body);
+    
     }
 } 
 

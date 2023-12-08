@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { SubOrganization } from "@model";
 import { SubOrganizationController } from "@controller";
+import { SubOrganizationService } from "@service";
 
 
 @Module({
@@ -13,7 +14,9 @@ import { SubOrganizationController } from "@controller";
     controllers: [
         SubOrganizationController
     ],
-    providers: [],
+    providers: [
+        SubOrganizationService
+    ],
     exports: [],
 })
 

@@ -11,3 +11,4 @@ export * from './adress.factory';
 export * from './province.factory';
 export * from './district.factory';
 export * from './ward.factory';
+export * from './sub-organization.factory';
