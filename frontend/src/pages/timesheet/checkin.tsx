@@ -19,65 +19,6 @@ const Page = () => {
   const isReload = useRef(false);
   const param = JSON.parse(timesheetFacade.queryParams || '{}');
   const taskFacade=TaskFacade()
-  // useEffect(() => {
-  //   if (id) timesheetFacade.getById({ id });
-  //   else timesheetFacade.set({ data: undefined });
-  //   set({
-  //     breadcrumbs: [
-  //       { title: 'titles.Booking', link: '' },
-  //       { title: 'titles.Booking/List', link: '' },
-  //       { title: 'pages.Booking/Detail', link: '' },
-  //       { title: id ? 'pages.Booking/Edit' : 'pages.Booking/Add', link: '' },
-  //     ],
-  //     titleOption: { date },
-  //   });
-  //   return () => {
-  //     isReload.current && timesheetFacade.get(param);
-  //   };
-  // }, [id]);
-  const navigate = useNavigate();
-  const isBack = useRef(true);
-  // useEffect(() => {
-  //   switch (timesheetFacade.status) {
-  //     case EStatusState.postFulfilled:
-  //     case EStatusState.putFulfilled:
-  //       timesheetFacade.get(JSON.parse(timesheetFacade.queryParams || '{}'));
-  //       if (Object.keys(param).length > 0) isReload.current = true;
-  //       if (isBack.current) handleBack();
-  //       else {
-  //         isBack.current = true;
-  //         navigate(`/${lang}${routerLinks('Booking')}/${date}/add`);
-  //       }
-  //       break;
-  //   }
-  // }, [timesheetFacade.status]);
-
-  // const codeTypeFacade = CodeTypeFacade();
-  // useEffect(() => {
-  //   if (!codeTypeFacade.result?.data?.length) codeTypeFacade.get({});
-  // }, []);
-  // useEffect(() => {
-  //   if (codeTypeFacade.result?.data?.length) {
-  //     set({
-  //       titleOption: { date, type: codeTypeFacade.result?.data?.filter((item) => item.code === typeCode)[0]?.name },
-  //     });
-  //     if (!codeTypeFacade?.result?.data?.filter((item) => item.code === typeCode).length) {
-  //       navigate({
-  //         pathname: location.hash
-  //           .substring(1)
-  //           .replace(`/${typeCode}/`, id && timesheetFacade.data?.type ? `/${timesheetFacade.data?.type}/` : '/room/'),
-  //       });
-  //     }
-  //   }
-  // }, [codeTypeFacade.result]);
-  const handleBack = () => navigate(`/${lang}${routerLinks('TimeSheet')}`);
-  const handleSubmit = (values: Booking) => {
-    values.startTime = dayjs(values.time![0].format('HH:mm') + ' ' + date).toISOString();
-    values.endTime = dayjs(values.time![1].format('HH:mm') + ' ' + date).toISOString();
-    delete values.time;
-    // if (id) timesheetFacade.put({ ...values, typeCode, id });
-    // else timesheetFacade.post({ ...values, typeCode });
-  };
   useEffect(() => {
     if (id) {
       const fetchData=async ()=>{
@@ -99,33 +40,39 @@ const Page = () => {
       fetchData()
     }
   }, [id]);
+  const navigate = useNavigate();
+  const isBack = useRef(true);
+  
+  const handleBack = () => navigate(`/${lang}${routerLinks('TimeSheet')}`);
+  const handleSubmit = (values: Booking) => {
+    values.startTime = dayjs(values.time![0].format('HH:mm') + ' ' + date).toISOString();
+    values.endTime = dayjs(values.time![1].format('HH:mm') + ' ' + date).toISOString();
+    delete values.time;
+    // if (id) timesheetFacade.put({ ...values, typeCode, id });
+    // else timesheetFacade.post({ ...values, typeCode });
+  };
+  
   const { t } = useTranslation();
   return (
     <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl'}>
-      <Spin spinning={timesheetFacade.isLoading}>
+      <Spin spinning={taskFacade.isLoading}>
         <Form
-          values={{ ...timesheetFacade.data }}
+          values={{ ...taskFacade.data }}
           className="intro-x"
           columns={[
             {
               title: 'Project',
               name: 'Project',
               formItem: {
-                type: EFormType.addable,
-               column:[
-                {
-                  name:"project",
-                  title:"project"
-                },
-                
-               ],
-               
-                rules: [{ type: EFormRuleType.required }],
-                col: 6,
-                onAdd:()=>{
-                  projectname
-                },
-                
+                  type: EFormType.addable,
+                  column:[
+                    {
+                      name:"project",
+                      title:"project"
+                    },
+                  ],
+                  rules: [{ type: EFormRuleType.required }],
+                  col: 6,
               },
             },
             {

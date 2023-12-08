@@ -201,6 +201,11 @@ const pages = [
         component: React.lazy(() => import('@pages/timesheet/index')),
         title: 'TimeSheet',
       },
+      {
+        path: routerLinks('TimeSheet')+'/:id'+'/checkin' ,
+        component: React.lazy(() => import('@pages/timesheet/checkin')),
+        title: 'checkin',
+      },
     ], // 💬 generate link to here
   },
 ];
