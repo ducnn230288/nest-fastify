@@ -9,6 +9,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Button } from '@core/button';
 import { Plus } from '@svgs';
 import { ModalForm } from '@core/modal/form';
+import { lang, routerLinks } from '@utils';
 const Page = () => {
     const { formatDate } = GlobalFacade();
     const { t } = useTranslation();
@@ -94,6 +95,11 @@ const Page = () => {
                 ref={dataTableRef}
                 pageSizeRender={(sizePage: number) => sizePage}
                 pageSizeWidth={'50px'}
+                onRow={(data: any) => ({
+                    onDoubleClick: () => {
+                        navigate(`/${lang}${routerLinks('TimeSheet')}/${data?.works?.[0]?.task?.id}/checkin`)
+                    },
+                })}
                 paginationDescription={(from: number, to: number, total: number) =>
                     t('routes.admin.team.Pagination', { from, to, total })
                 }
