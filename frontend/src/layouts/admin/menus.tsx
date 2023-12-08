@@ -23,6 +23,11 @@ const Layout: IMenu[] = [
     permission: keyRole.P_BOOKING_LISTED,
   },
   {
+    icon: <Booking className="h-8 w-8" />,
+    name: 'TimeSheet',
+    // permission: keyRole.P_BOOKING_LISTED,
+  },
+  {
     icon: <Eye className="h-8 w-8" />,
     name: 'Task',
   },
