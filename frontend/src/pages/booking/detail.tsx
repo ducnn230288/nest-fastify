@@ -25,10 +25,9 @@ const Page = () => {
     // else bookingFacade.set({ data: undefined });
     bookingFacade.get({
       perPage: 1000,
-      // filter:
-      // JSON.stringify({
-      //   startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
-      // }),
+      filter: JSON.stringify({
+        start_time: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
+      }),
     });
 
     set({
@@ -51,15 +50,14 @@ const Page = () => {
       case EStatusState.deleteFulfilled:
         bookingFacade.get({
           perPage: 1000,
-          // filter: JSON.stringify({
-          //   startTime: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
-          // }),
+          filter: JSON.stringify({
+            start_time: [dayjs(date).startOf('date').toISOString(), dayjs(date).endOf('date').toISOString()],
+          }),
         });
         break;
     }
   }, [bookingFacade.status]);
 
-  // const { data } = bookingFacade;
   const { t } = useTranslation();
   return (
     <Fragment>
@@ -104,46 +102,37 @@ const Page = () => {
               </thead>
 
               <tbody>
-                {bookingFacade.result?.data
-                  ?.filter(
-                    (item) => item.typeCode === 'room' && item?.startTime && item?.startTime.slice(0, 10) == date,
-                  )
-                  // item.typeCode === 'room' && item?.startTime && items?.endTime && item?.startTime < dayjs(date).startOf('date').toISOString() && item?.endTime < dayjs(date).endOf('date').toISOString()
-                  .map((data, index) => (
-                    <tr className={'border-b'} key={index}>
-                      <td className="py-4 px-6">
-                        {dayjs(data?.startTime).format('HH:mm')} - {dayjs(data?.endTime).format('HH:mm')}
-                      </td>
-                      <td className="py-4 px-6">{data?.item?.name}</td>
-                      <td className="py-4 px-6">{data?.name}</td>
-                      <td className="py-4 px-6">{data?.user?.name}</td>
-                      <td className="py-4 px-6">
-                        <img
-                          src={data?.user?.avatar}
-                          alt="avataruser"
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                      </td>
-                      <td className="py-4 px-6">{data?.description}</td>
-                      <td>
-                        {user?.role?.permissions?.includes(keyRole.P_BOOKING_DELETE) && (
-                          <Tooltip title={t('routes.admin.Layout.Delete')}>
-                            <Popconfirm
-                              placement="left"
-                              title={t('components.datatable.areYouSureWant')}
-                              onConfirm={() => bookingFacade.delete(data.id!)}
-                              okText={t('components.datatable.ok')}
-                              cancelText={t('components.datatable.cancel')}
-                            >
-                              <button title={t('routes.admin.Layout.Delete') || ''}>
-                                <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
-                              </button>
-                            </Popconfirm>
-                          </Tooltip>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                {bookingFacade.result?.data.map((data, index) => (
+                  <tr className={'border-b'} key={index}>
+                    <td className="py-4 px-6">
+                      {dayjs(data?.startTime).format('HH:mm')} - {dayjs(data?.endTime).format('HH:mm')}
+                    </td>
+                    <td className="py-4 px-6">{data?.item?.name}</td>
+                    <td className="py-4 px-6">{data?.name}</td>
+                    <td className="py-4 px-6">{data?.user?.name}</td>
+                    <td className="py-4 px-6">
+                      <img src={data?.user?.avatar} alt="avataruser" className="w-10 h-10 rounded-full object-cover" />
+                    </td>
+                    <td className="py-4 px-6">{data?.description}</td>
+                    <td>
+                      {user?.role?.permissions?.includes(keyRole.P_BOOKING_DELETE) && (
+                        <Tooltip title={t('routes.admin.Layout.Delete')}>
+                          <Popconfirm
+                            placement="left"
+                            title={t('components.datatable.areYouSureWant')}
+                            onConfirm={() => bookingFacade.delete(data.id!)}
+                            okText={t('components.datatable.ok')}
+                            cancelText={t('components.datatable.cancel')}
+                          >
+                            <button title={t('routes.admin.Layout.Delete') || ''}>
+                              <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
+                            </button>
+                          </Popconfirm>
+                        </Tooltip>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           ) : (

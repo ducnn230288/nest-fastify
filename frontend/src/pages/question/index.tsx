@@ -19,7 +19,8 @@ const Page = () => {
   const codeFacade = CodeFacade();
 
   useEffect(() => {
-    if (!codeFacade.result?.data) codeFacade.get({});
+    const param = { filter: JSON.stringify({ type: 'test' }) };
+    if (codeFacade.queryParams !== JSON.stringify(param)) codeFacade.get(param);
     set({
       breadcrumbs: [
         { title: 'titles.Setting', link: '' },
