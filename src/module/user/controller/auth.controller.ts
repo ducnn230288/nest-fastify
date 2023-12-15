@@ -43,6 +43,8 @@ export class AuthController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup, OnlyUpdateGroup])) createUserDto: RegisterAuthRequestDto,
   ): Promise<ProfileAuthResponseDto> {
+    console.log('vo');
+    
     return {
       message: i18n.t('common.Success'),
       data: await this.authService.register(createUserDto),

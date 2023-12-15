@@ -17,3 +17,4 @@ export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
 
 export * from './module/member/sub-organization/model/sub-organization.model';
+export * from './module/category/model/category.model'

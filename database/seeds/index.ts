@@ -5,3 +5,4 @@ export * from './post-type.seeder';
 export * from './user.seeder';
 
 export * from './province.seeder';
+export * from './category.seeder'
