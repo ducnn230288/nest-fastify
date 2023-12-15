@@ -20,7 +20,7 @@ services:
     volumes:
       - cache:/data
 
-  backend:
+  server:
     build:
       context: .
       args:
