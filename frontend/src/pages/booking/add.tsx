@@ -13,6 +13,7 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 const Page = () => {
   const { id, date, typeCode } = useParams();
   const bookingFacade = BookingFacade();
+  
   const { set } = GlobalFacade();
   const isReload = useRef(false);
   const param = JSON.parse(bookingFacade.queryParams || '{}');
@@ -77,7 +78,6 @@ const Page = () => {
     if (id) bookingFacade.put({ ...values, typeCode, id });
     else bookingFacade.post({ ...values, typeCode });
   };
-
   const { t } = useTranslation();
   return (
     <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl'}>

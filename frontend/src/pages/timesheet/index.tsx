@@ -97,7 +97,7 @@ const Page = () => {
                 pageSizeWidth={'50px'}
                 onRow={(data: any) => ({
                     onDoubleClick: () => {
-                        navigate(`/${lang}${routerLinks('TimeSheet')}/${data?.works?.[0]?.task?.id}/checkin`)
+                        navigate(`/${lang}${routerLinks('Task')}/${data?.works?.[0]?.task?.id}`)
                     },
                 })}
                 paginationDescription={(from: number, to: number, total: number) =>

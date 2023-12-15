@@ -10,6 +10,7 @@ import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 import { title } from 'process';
+import { Addable } from '@core/form/input';
 const Page = () => {
   const [projectname, setProjectName] = useState([]);
   const [taskname, setTaskName] = useState([]);
@@ -19,27 +20,26 @@ const Page = () => {
   const isReload = useRef(false);
   const param = JSON.parse(timesheetFacade.queryParams || '{}');
   const taskFacade=TaskFacade()
+
   useEffect(() => {
-    if (id) {
-      const fetchData=async ()=>{
-        const res=await taskFacade.getById({id})
-        const data= res && res?.payload?.data
+    if (id) { taskFacade.getById({id})
+       
         // console.log(data?.works?.[0]?.task?.project?.name )
-       console.log(taskFacade)
-        const transformed = data?.works?.map((work: { task: { project: { name: any; }; }; }) => ({
-          name: work?.task?.project?.name,
-          label: work?.task?.project?.name,
-        })) || [];
-        setProjectName(transformed);
-        const transformedtask =data?.works?.map((work: { task: { name: any; }; }) => ({
-          value: work?.task?.name,
-          label: work?.task?.name,
-        })) || [];
-        setTaskName(transformedtask);
-      } 
-      fetchData()
+        // const transformed = data?.works?.map((work: { task: { project: { name: any; }; }; }) => ({
+        //   name: work?.task?.project?.name,
+        //   label: work?.task?.project?.name,
+        // })) || [];
+        // setProjectName(transformed);
+        // const transformedtask =data?.works?.map((work: { task: { name: any; }; }) => ({
+        //   value: work?.task?.name,
+        //   label: work?.task?.name,
+        // })) || [];
+        // setTaskName(transformedtask);
+      
+   
     }
   }, [id]);
+  console.log(taskFacade)
   const navigate = useNavigate();
   const isBack = useRef(true);
   
@@ -65,14 +65,16 @@ const Page = () => {
               name: 'Project',
               formItem: {
                   type: EFormType.addable,
-                  column:[
-                    {
-                      name:"project",
-                      title:"project"
-                    },
-                  ],
                   rules: [{ type: EFormRuleType.required }],
                   col: 6,
+                  column:[{
+                    title:"managerId",
+                    name:"managerId",
+                    formItem:{
+                      render:(text:any,item)=> <div>{text}</div>
+                    }
+                  }]
+                  
               },
             },
             {
