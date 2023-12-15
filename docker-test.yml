@@ -16,7 +16,7 @@ services:
     ports:
       - 6379:6379
 
-  backend:
+  server:
     build:
       context: .
       dockerfile: Dockerfile
@@ -45,8 +45,3 @@ services:
       - database
       - cache
     command: npm run start:prod
-
-  frontend:
-    build:
-      context: .
-      dockerfile: DockerfileFrontend
