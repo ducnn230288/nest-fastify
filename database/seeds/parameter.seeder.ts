@@ -9,8 +9,8 @@ export class ParameterSeeder implements Seeder {
     const listData: Parameter[] = [
       {
         code: 'address',
-        vn: 'P3A.01.03, Picity High Park, 9A đường Thạnh ân 13, P. Thạnh Xuân, Q.12, TP. Hồ Chí Minh, Việt Nam.',
-        en: '7 Cong Hoa St., Ward 4, Tan Binh Dist., Ho Chi Minh City, Vietnam.',
+        vn: 'P3A.01.03, PiCity High Park, 9A Đường Thạnh Lộc 13, P. Thạnh Xuân, Q.12, TP. Hồ Chí Minh, Việt Nam.',
+        en: 'P3A.01.03, PiCity High Park, No. 9A Thanh Xuan 13, Thanh Xuan Ward, District 12, Ho Chi Minh City, Vietnam.',
       },
       {
         code: 'email',
