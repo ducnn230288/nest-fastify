@@ -41,13 +41,13 @@ jobs:
       - name: Build the docker-compose stack
         run: docker-compose -f docker-test.yml up -d
       - name: Lint
-        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run lint"
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run lint"
       - name: Run Test Backend
-        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run test:e2e"
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run test:e2e"
       - name: Run Migration && Seed Database
-        run: docker-compose -f docker-test.yml run --rm backend sh -c "npm run migration && npm run seed"
+        run: docker-compose -f docker-test.yml run --rm server sh -c "npm run migration && npm run seed"
       - name: Run Test Frontend
-        run: docker-compose -f docker-test.yml exec -T backend robot -d robot/result robot/testcases/login.robot
+        run: docker-compose -f docker-test.yml exec -T server robot -d robot/result robot/testcases/login.robot
 #       docker-compose -f docker-build.yml up -d --build
-#       docker-compose -f docker-build.yml run --rm backend sh -c "npm run migration && npm run seed"
+#       docker-compose -f docker-build.yml run --rm server sh -c "npm run migration && npm run seed"
 
