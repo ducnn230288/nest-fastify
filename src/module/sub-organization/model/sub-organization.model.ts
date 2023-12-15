@@ -104,6 +104,7 @@ export class SubOrganization extends Base {
         example: faker.finance.iban(),
         description: '',
     })
+    @IsString()
     fax: string;
 
     @Column()

@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { SubOrganization } from "@model";
+import { ConnectKiotViet, SubOrganization } from "@model";
 import { SubOrganizationController } from "@controller";
 import { SubOrganizationService } from "@service";
 
@@ -8,7 +8,8 @@ import { SubOrganizationService } from "@service";
 @Module({
     imports: [
         TypeOrmModule.forFeature([
-            SubOrganization
+            SubOrganization,
+            ConnectKiotViet
         ]),
     ],
     controllers: [
@@ -20,4 +21,4 @@ import { SubOrganizationService } from "@service";
     exports: [],
 })
 
-export class MemberModule { }
+export class SubOrganizationModule { }

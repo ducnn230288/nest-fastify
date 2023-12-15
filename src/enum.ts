@@ -1,1 +1,1 @@
-export * from './module/member/sub-organization/enum/';
+export * from './module/sub-organization/enum';

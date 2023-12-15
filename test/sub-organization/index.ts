@@ -2,9 +2,8 @@ import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { Data, DataType, SubOrganization } from '@model';
+import { Address, ConnectKiotViet, Data, DataType, SubOrganization, User } from '@model';
 import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto, CreateSubOrganizationRequestDto } from '@dto';
-import { DataService, DataTypeService } from '@service';
 import '@factories';
 import { BaseTest } from '@test';
 import { prefixRouter } from '@shared';
@@ -18,33 +17,40 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const factoryManager = useSeederFactoryManager();
 
 
-  let dataCreate : CreateSubOrganizationRequestDto
+  let dataCreate: CreateSubOrganizationRequestDto
 
-  let dataType: CreateDataTypeRequestDto;
-  let dataUpdateType: UpdateDataTypeRequestDto;
-  let resultType: DataType | null;
-
-  let data: CreateDataRequestDto;
-  let dataUpdate: UpdateDataRequestDto;
-  let result: Data | null;
+  let userModel: User | null
 
   it(`Create [POST ${API}]`, async () => {
-    // dataCreate = await factoryManager.get(SubOrganization).make();
+    const dataSubOrg = await factoryManager.get(SubOrganization).make();
+    const dataUser = await factoryManager.get(User).make();
+    const dataAddress = await factoryManager.get(Address).make();
+    const dataKiotViet = await factoryManager.get(ConnectKiotViet).make();    
+
+    dataCreate = {
+      ...dataSubOrg,
+      emailContact: dataUser.email,
+      nameContact: dataUser.name,
+      phoneNumber: dataUser.phoneNumber,
+      address: dataAddress,
+      connectKiot : dataKiotViet
+    }
+
+
     const { body } = await request(BaseTest.server)
       .post(API)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataCreate as CreateSubOrganizationRequestDto)
-    // .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    console.log(dataCreate);
+      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     console.log(body);
 
 
     return
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining(dataType));
-      resultType = body.data;
-    }
+    // if (type) {
+    //   expect(body.data).toEqual(jasmine.objectContaining(dataType));
+    //   resultType = body.data;
+    // }
   });
 
   // it('Get all [GET /api/data-type]', async () => {
