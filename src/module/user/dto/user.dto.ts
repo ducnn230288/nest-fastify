@@ -12,7 +12,7 @@ export class RegisterAuthRequestDto extends PickType(User, [
   'password',
   'email',
   'phoneNumber',
-  'dob',
+  'dateOfBirth',
   'description',
   'startDate',
 ] as const) {
@@ -34,10 +34,10 @@ export class ProfileAuthRequestDto extends PickType(User, [
   'password',
   'email',
   'phoneNumber',
-  'dob',
+  'dateOfBirth',
   'positionCode',
   'description',
-  'avatar',
+  'profileImage',
 ] as const) {
   @ApiProperty({ example: Example.password, description: '' })
   @IsString()
@@ -91,11 +91,11 @@ export class CreateUserRequestDto extends PickType(User, [
   'name',
   'email',
   'phoneNumber',
-  'dob',
+  'dateOfBirth',
   'startDate',
   'positionCode',
   'description',
-  'avatar',
+  'profileImage',
   'dateLeave',
   'roleCode',
 ] as const) {
@@ -108,11 +108,11 @@ export class UpdateUserRequestDto extends PickType(User, [
   'name',
   'email',
   'phoneNumber',
-  'dob',
+  'dateOfBirth',
   'startDate',
   'positionCode',
   'description',
-  'avatar',
+  'profileImage',
   'dateLeave',
   'roleCode',
 ] as const) {}

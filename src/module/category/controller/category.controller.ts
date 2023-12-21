@@ -1,40 +1,103 @@
-import { Auth, AuthUser, Headers, SerializerBody } from "@shared";
-import { CategoryService } from "../service/category.service";
-import { Body, Post } from "@nestjs/common";
+import { Body, Delete, Get, Param, Post, Put, Query, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from "@shared";
 import { I18n, I18nContext } from "nestjs-i18n";
-import { CreateCategoryRequestDto } from "../dto";
+import { CreateCategoryRequestDto, UpdateCategoryRequestDto } from "@dto";
 import { User } from "@model";
-import { Connection } from "typeorm";
-
+import { CategoryService, P_CATEGORY_CREATE, P_CATEGORY_DELETE, P_CATEGORY_FINDALL, P_CATEGORY_FINDONE, P_CATEGORY_UPDATE } from "@service";
+import { UUID } from "crypto";
+import { async } from "rxjs";
 
 @Headers('category')
-
 export class CategoryController {
     constructor(
-        private categoryService : CategoryService,
-        private readonly connection: Connection,
-    ) {
+        private categoryService: CategoryService,
 
-    }
+    ) { }
 
-    // @Auth({
-    //     summary: 'Create new store',
-    //     // permission: P_DATA_LISTED,
-    //     serializeOptions: { groups: [] },
-    // })
-
+    @Auth({
+        summary: 'create category',
+        permission: P_CATEGORY_CREATE
+    })
     @Post('')
-    async create(
-        @I18n() i18n: I18nContext,
+    async create(@I18n() i18n: I18nContext,
         @Body(new SerializerBody()) body: CreateCategoryRequestDto,
-       // @AuthUser() user: User,
-    ) {
-        return{
+        @AuthUser() user: User,
+    ) : Promise<any> {
+        return {
             message: i18n.t('common.Create Success'),
-            data:await this.categoryService.addCategory(body)
-        } 
-        
+            data: await this.categoryService.addCategory(body, user)
+        }
+
     }
-} 
+    @Auth({
+        summary: 'create category',
+        permission: P_CATEGORY_FINDONE
+    })
+    @Get(":id")
+    async getOne(
+        @I18n() i18n: I18nContext,
+        @AuthUser() user: User,
+        @Param('id') id: string
+    ) : Promise<any> {
+        return {
+            message: i18n.t('common.Get Detail Success'),
+            data: await this.categoryService.findOne(id)
+        }
+    }
+    @Auth({
+        summary: 'create category',
+        permission: P_CATEGORY_UPDATE
+    })
+    @Put(":id")
+    async updateOne(
+        @I18n() i18n: I18nContext,
+        @Param('id') id: string,
+        @Body() updateData: UpdateCategoryRequestDto,
+    ) : Promise<any> {
+        
+        return {
+            message: i18n.t('common.Update Success'),
+            data: await this.categoryService.update(id, { ...updateData, updatedAt: new Date() })
+        }
+    }
+    @Delete(":id")
+    @Auth({
+        summary: 'create category',
+        permission: P_CATEGORY_DELETE
+    })
+    async deleteOne(
+        @I18n() i18n: I18nContext,
+        @AuthUser() user: User,
+        @Param('id') id: string,
+    ) : Promise<any> {
+        return {
+            message: i18n.t('common.Delete Success'),
+            data: await this.categoryService.remove(id)
+        }
+    }
+    @Auth({
+        summary: 'create category',
+        permission: P_CATEGORY_FINDALL
+    })
+    @Get('/findAll')
+    async findAll(
+        @I18n() i18n: I18nContext,
+        @AuthUser() user: User,
+        @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    ) : Promise<any> {
+        const [result, total] = await this.categoryService.findAll(paginationQuery);
+        return {
+            message: i18n.t('common.Get List success'),
+            count: total,
+            data: result,
+        }
+    }
+    @Get("child/:id")
+    async findCategoryParentByChildId(
+        @I18n() i18n: I18nContext,
+        @AuthUser() user: User,
+        @Param('id') id: string
+    ) {
 
-
+    }
+}

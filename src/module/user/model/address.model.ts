@@ -32,6 +32,12 @@ export class Address extends Base {
   @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
   codeWard: string;
 
+  @Column()
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ example: faker.location.zipCode(), description: '' })
+  postCode: string;
+
   @ManyToOne(() => Ward, (ward) => ward.item, { eager: true })
   @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public wardItem: Ward;
@@ -58,7 +64,4 @@ export class Address extends Base {
   @Expose({ groups: [MaxGroup] })
   subOrg ?: SubOrganization[];
 
-  @IsString()
-  @IsOptional()
-  postCode : string
 }

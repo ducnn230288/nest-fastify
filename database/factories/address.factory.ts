@@ -4,8 +4,9 @@ import { Address } from '@model';
 export default setSeederFactory(Address, (faker) => {
   const data = new Address();
   data.specificAddress = faker.lorem.paragraph();
-  //   data.codeProvince = '10';
-  //   data.codeDistrict = '001';
-  //   data.codeWard = '00001';
+    data.codeProvince = '10';
+    data.codeDistrict = '001';
+    data.codeWard = '00001';
+    data.postCode = faker.location.zipCode()
   return data;
 });

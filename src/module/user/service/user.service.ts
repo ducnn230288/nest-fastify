@@ -39,8 +39,8 @@ export class UserService extends BaseService<User> {
 
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
     const data = await super.create(body);
-    if (data?.avatar) await this.fileService.activeFiles([data?.avatar]);
-    await this.fileService.activeFiles(getImages<User>(['avatar'], data)[0]);
+    if (data?.profileImage) await this.fileService.activeFiles([data?.profileImage]);
+    await this.fileService.activeFiles(getImages<User>(['profileImage'], data)[0]);
     return data;
   }
 
@@ -73,7 +73,7 @@ export class UserService extends BaseService<User> {
    */
   async remove(id: string): Promise<User | null> {
     const data = await super.remove(id);
-    if (data?.avatar) await this.fileService.removeFiles([data?.avatar]);
+    if (data?.profileImage) await this.fileService.removeFiles([data?.profileImage]);
     await this.fileService.removeFiles(getImages<User>(['thumbnailUrl'], data)[0]);
     return data;
   }

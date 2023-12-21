@@ -8,8 +8,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, SchedulerModule, CoreModule, UserModule, MemberModule } from '@module';
-import { CategoryModule } from './module/category/category.module';
+import { NotificationModule, SchedulerModule, CoreModule, UserModule, SubOrganizationModule, CategoryModule } from '@module';
 
 @Module({
   controllers: [AppController],
@@ -19,7 +18,7 @@ import { CategoryModule } from './module/category/category.module';
     SchedulerModule,
     UserModule,
     CoreModule,
-    MemberModule,
+    SubOrganizationModule,
     CategoryModule,
     I18nModule.forRootAsync({
       useFactory: () => ({

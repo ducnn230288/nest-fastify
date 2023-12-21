@@ -131,7 +131,7 @@ export class UserSeeder implements Seeder {
       const repository = dataSource.getRepository(User);
       const data: User = await factoryManager.get(User).make({
         email: 'admin@admin.com',
-        avatar: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
+        profileImage: 'https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg',
         roleCode: newDataRoleSuperAdmin.code,
       });
       if (

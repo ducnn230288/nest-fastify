@@ -1,3 +1,5 @@
+import { from } from 'rxjs';
+
 export * from './module/core/dto/code.dto';
 export * from './module/core/dto/code-type.dto';
 export * from './module/core/dto/data.dto';
@@ -14,7 +16,9 @@ export * from './module/user/dto/address.dto';
 export * from './module/user/dto/user.dto';
 export * from './module/user/dto/user-role.dto';
 
-export * from './module/member/sub-organization/dto';
+export * from './module/sub-organization/dto';
+
+export * from './module/category/dto/category.dto';
 
 
 

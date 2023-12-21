@@ -16,6 +16,7 @@ import * as argon2 from 'argon2';
 
 import { UserRole, Code, Address } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
+import { IsUUID } from 'class-validator';
 
 @Entity()
 export class User extends Base {
@@ -24,19 +25,33 @@ export class User extends Base {
   @IsString()
   name: string;
 
+  @Column({ 
+    nullable: true
+  })
+  @ApiProperty({ example: faker.internet.email(), description: '' })
+  @IsString()
+  username: string
+
+  @Column({
+    nullable: true
+  })
+  @ApiProperty({ example: faker.datatype.uuid(), description: '' })
+  @IsUUID()
+  uuid: string
+
   @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
   @IsString()
   @IsOptional()
-  avatar?: string;
+  profileImage?: string;
   @BeforeInsert()
   @BeforeUpdate()
   beforeAvatar?(): void {
-    this.avatar = setImage(this.avatar);
+    this.profileImage = setImage(this.profileImage);
   }
   @AfterLoad()
   afterAvatar?(): void {
-    this.avatar = setImage(this.avatar, false);
+    this.profileImage = setImage(this.profileImage, false);
   }
 
   @Column()
@@ -68,8 +83,8 @@ export class User extends Base {
 
   @Column()
   @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
-  @IsEmail()
-  email?: string;
+  @IsString()
+  email: string;
 
   @Column({ name: 'phone_number' })
   @ApiProperty({ example: faker.phone.number(), description: '' })
@@ -81,7 +96,7 @@ export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
   @IsDateString()
-  dob: Date;
+  dateOfBirth: Date;
 
   @Column({ nullable: true })
   @Expose()
@@ -95,6 +110,41 @@ export class User extends Base {
   @IsString()
   @IsOptional()
   roleCode?: string;
+
+  @Column({ nullable: true})
+  @ApiProperty({ example: faker.address.city(), description: '' })
+  @IsString()
+  identityCard: string;
+
+  @Column({ nullable: true})
+  @ApiProperty({
+    example: faker.helpers.arrayElement(['MALE', 'FEMALE']),
+  })
+  gender: string;
+
+  @Column({ nullable: true})
+  addressId: number;
+
+  @Column({ nullable: true})
+  orgId: number;
+
+  @Column({ nullable: true})
+  subOrgId: number;
+
+  @Column({ nullable: true})
+  note: string;
+
+  @Column({ nullable: true})
+  code: string;
+
+  @Column({ nullable: true})
+  sale_code: string;
+
+  @Column({ nullable: true})
+  status: string;
+
+  @Column({ nullable: true})
+  parentId: number;
 
   @ManyToOne(() => UserRole, (role) => role.users, { eager: true }) //
   @JoinColumn({ name: 'role_code', referencedColumnName: 'code' })

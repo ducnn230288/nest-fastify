@@ -22,6 +22,7 @@ import {
   User,
   UserRole,
   SubOrganization,
+  ConnectKiotViet,
   Category,
 } from '@model';
 
@@ -50,6 +51,7 @@ const options: DataSourceOptions & SeederOptions = {
     PostType,
     File,
     SubOrganization,
+    ConnectKiotViet,
     Category
   ],
   migrations: [Core1698359444654],

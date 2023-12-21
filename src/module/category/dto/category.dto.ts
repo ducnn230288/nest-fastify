@@ -1,10 +1,7 @@
-import { PickType } from "@nestjs/swagger";
-import { Category } from "../model/category.model";
-import { IsOptional,IsNumber} from 'class-validator';
-export class CreateCategoryRequestDto extends PickType(Category, [
-    'name', 
-]){
-    @IsOptional()
-    @IsNumber()
-    parentId: number;
-}
+import { PartialType, PickType } from "@nestjs/swagger";
+import { Category } from "@model";
+
+
+export class CreateCategoryRequestDto extends PickType(Category, ['name','parentId']) { }
+export class DetailCategoryResponeDto extends PartialType(Category){}
+export class UpdateCategoryRequestDto extends PartialType(Category){}

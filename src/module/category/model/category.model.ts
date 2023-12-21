@@ -1,12 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, Unique } from "typeorm";
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString, MinLength } from 'class-validator';
-@Entity()
-export class Category {
-    @PrimaryGeneratedColumn()
-    id: number;
+import { IsString, IsOptional,IsUUID } from 'class-validator';
+import { Base } from "@shared";
 
+@Entity()
+export class Category extends Base{
     @Column()
     @ApiProperty({
         example: faker.person.jobType(),
@@ -21,23 +20,17 @@ export class Category {
         description: '',
     })
     @IsString()
+    @Column({nullable:true})
     code: string;
 
-    @Column()
+    @Column({default:true})
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
     })
     isActive: boolean;
 
-    @Column()
-    @ApiProperty({
-        example: faker.datatype.boolean(),
-        description: '',
-    })
-    isDeleted: boolean;
-
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
@@ -58,52 +51,45 @@ export class Category {
     })
     updatedAt: Date;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
-    createdById: number;
+    createdById: string;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     orgId: number;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
     })
     isKiotViet: boolean;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     categoryKiotId: number;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
-    parentId: number;
     @IsOptional()
-    @OneToOne(() => Category, (category) => category.parent)
-    @JoinColumn({ name: 'parent_id', referencedColumnName: 'id' })
+    @IsString()
+    @Column({nullable:true,unique:false})
+    parentId: string;
+    @IsOptional()
+    @OneToMany(() => Category, (category) => category.parent)
+    @JoinColumn({ name: 'parentId', referencedColumnName: 'id' })
     parent: Category
-
-    // @ManyToOne(() => Organization, (org) => org.category)
-    // @JoinColumn({ name: 'org_id', referencedColumnName: 'id' })
-    // org: Organization;
-
-    // @OneToMany(
-    //     () => ProductCategory,
-    //     (productCategory) => productCategory.category
-    // )
-    // productCategory: ProductCategory[];
 }

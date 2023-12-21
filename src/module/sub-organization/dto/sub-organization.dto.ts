@@ -1,7 +1,7 @@
 import { ApiProperty, PickType } from "@nestjs/swagger";
-import {  Address, SubOrganization } from "@model";
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
-// import { ConnectKiotViet } from "@dto";
+import { Address, SubOrganization } from "@model";
+import { IsNotEmpty, IsString, IsOptional, IsEmail } from 'class-validator';
+import { DetailConnectKiotViet } from "@dto";
 import { faker } from '@faker-js/faker';
 import { SUPPLIER_TYPE, SubOrgType } from "../enum";
 
@@ -15,27 +15,25 @@ class DetailAddress extends PickType(Address, [
 
 export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
     'name',
-    // 'address',
     'storeId',
     'note',
     'fax',
 ]) {
 
-    address : DetailAddress
+    @IsOptional()
+    address: DetailAddress
 
     @IsString()
     @IsNotEmpty()
-    type : SubOrgType
+    type: SubOrgType
 
     @IsString()
     @IsNotEmpty()
-    supplierType : SUPPLIER_TYPE
+    supplierType: SUPPLIER_TYPE
 
     @IsNotEmpty()
     @IsString()
-    @ApiProperty({
-        example: faker.internet.email()
-    })
+    @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
     emailContact: string;
 
     @IsNotEmpty()
@@ -52,7 +50,7 @@ export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
     })
     phoneNumber: string;
 
-    // @IsOptional()
-    // connectKiot: ConnectKiotViet;
+    @IsOptional()
+    connectKiot: DetailConnectKiotViet;
 
 }

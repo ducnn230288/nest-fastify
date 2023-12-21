@@ -16,5 +16,6 @@ export * from './module/user/service/ward.service';
 export * from './module/user/service/address.service';
 export * from './module/user/service/user.service';
 export * from './module/user/service/user-role.service';
+export * from './module/sub-organization/service/sub-organization.service';
 
-export * from './module/member/sub-organization/service/sub-organization.service';
+export * from './module/category/service/category.service';
