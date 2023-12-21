@@ -41,7 +41,7 @@ export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
     @IsNotEmpty()
     @IsString()
     @ApiProperty({
-        example: faker.name.firstName()
+        example: faker.person.firstName()
     })
     nameContact: string;
 

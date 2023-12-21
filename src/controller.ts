@@ -18,3 +18,4 @@ export * from './module/user/controller/user.controller';
 export * from './module/user/controller/user-role.controller';
 
 export * from './module/member/sub-organization/controller/sub-organization.controller';
+export * from './module/user-admin/controller/user-admin.controller';

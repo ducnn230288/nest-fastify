@@ -8,3 +8,4 @@ export * from './module/core/repository/post-translation.repository';
 
 export * from './module/user/repository/address.repository';
 export * from './module/user/repository/user.repository';
+export * from './module/user-admin/repository/user-admin.repository';

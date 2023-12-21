@@ -22,6 +22,7 @@ import {
   User,
   UserRole,
   SubOrganization,
+  UserAdmin,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -49,6 +50,7 @@ const options: DataSourceOptions & SeederOptions = {
     PostType,
     File,
     SubOrganization,
+    UserAdmin,
   ],
   migrations: [Core1698359444654],
   seeds: [MainSeeder],
