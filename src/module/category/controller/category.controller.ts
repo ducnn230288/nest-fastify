@@ -30,7 +30,7 @@ export class CategoryController {
 
     }
     @Auth({
-        summary: 'create category',
+        summary: 'find one ',
         permission: P_CATEGORY_FINDONE
     })
     @Get(":id")
@@ -45,24 +45,24 @@ export class CategoryController {
         }
     }
     @Auth({
-        summary: 'create category',
+        summary: 'update categoy',
         permission: P_CATEGORY_UPDATE
     })
     @Put(":id")
     async updateOne(
         @I18n() i18n: I18nContext,
         @Param('id') id: string,
-        @Body() updateData: UpdateCategoryRequestDto,
+        @Query('name') name: string,
     ) : Promise<any> {
         
         return {
             message: i18n.t('common.Update Success'),
-            data: await this.categoryService.update(id, { ...updateData, updatedAt: new Date() })
+            data: await this.categoryService.update(id, { name:name, updatedAt: new Date() })
         }
     }
     @Delete(":id")
     @Auth({
-        summary: 'create category',
+        summary: 'delete category',
         permission: P_CATEGORY_DELETE
     })
     async deleteOne(
@@ -76,7 +76,7 @@ export class CategoryController {
         }
     }
     @Auth({
-        summary: 'create category',
+        summary: 'find all category',
         permission: P_CATEGORY_FINDALL
     })
     @Get('/findAll')
@@ -91,13 +91,5 @@ export class CategoryController {
             count: total,
             data: result,
         }
-    }
-    @Get("child/:id")
-    async findCategoryParentByChildId(
-        @I18n() i18n: I18nContext,
-        @AuthUser() user: User,
-        @Param('id') id: string
-    ) {
-
     }
 }

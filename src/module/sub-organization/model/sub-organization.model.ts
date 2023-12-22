@@ -18,7 +18,7 @@ export class SubOrganization extends Base {
     @IsString()
     name: string;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.string.uuid(),
         description: '',
@@ -26,7 +26,7 @@ export class SubOrganization extends Base {
     @IsUUID()
     uuid: string;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.person.jobTitle(),
         description: '',
@@ -34,7 +34,7 @@ export class SubOrganization extends Base {
     @IsString()
     description: string;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
@@ -42,7 +42,7 @@ export class SubOrganization extends Base {
     @IsString()
     code: string;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.internet.url(),
         description: '',
@@ -72,7 +72,7 @@ export class SubOrganization extends Base {
     })
     updatedAt: Date;
 
-    @Column({name: 'address_id'})
+    @Column({name: 'address_id',nullable:true})
     @ApiProperty({ example: faker.finance.bic(), description: ''  })
     addressId: string;
 
@@ -80,14 +80,14 @@ export class SubOrganization extends Base {
     @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
     address: Address;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     orgId: number;
 
-    @Column()
+    @Column({nullable:true})
     @ApiProperty({
         example: faker.person.jobTitle(),
         description: '',
@@ -110,7 +110,7 @@ export class SubOrganization extends Base {
     @Column()
     supplierType: SUPPLIER_TYPE;
 
-    @Column()
+    @Column({nullable:true})
     @IsOptional()
     @ApiProperty({
         example: faker.string.uuid(),
@@ -118,20 +118,20 @@ export class SubOrganization extends Base {
     })
     storeId: number;
 
-    @Column()
+    @Column({nullable:true})
     // @OneToMany(() => Product, (product) => product.subOrg)
     // product: Product[];
     product: string;
 
     // @OneToMany(() => UserRole, (userRole) => userRole.subOrg)
     // userRole: UserRole[];
-    @Column()
+    @Column({nullable:true})
     userRole: string
 
     // @ManyToOne(() => Organization, (org) => org.subOrg)
     // @JoinColumn({ name: 'org_id', referencedColumnName: 'id' })
     // org: Organization;
-    @Column()
+    @Column({nullable:true})
     org: string
 
     // @OneToMany(
@@ -139,31 +139,31 @@ export class SubOrganization extends Base {
     //     (storeConnectSupplier) => storeConnectSupplier.supplier
     // )
     // storeConnectSupplier: StoreConnectSupplier[];
-    @Column()
+    @Column({nullable:true})
     storeConnectSupplier: string
 
 
     // @OneToOne(() => Order, (order) => order.supplier)
     // orderSupplier: Order;
-    @Column()
+    @Column({nullable:true})
     orderSupplier: string
 
     // @OneToOne(() => Order, (order) => order.store)
     // orderStore: Order;
     // @OneToMany(() => DocumentSubOrganiztion, (contract) => contract.subOrg)
     // contract: DocumentSubOrganiztion[];
-    @Column()
+    @Column({nullable:true})
     contract: string
 
     // @OneToMany(() => SubOrgCommision, (commission) => commission.subOrg)
     // commission: SubOrgCommision[];
-    @Column()
+    @Column({nullable:true})
     commission: string
 
     // @ManyToOne(() => SubOrganization)
     // @JoinColumn({ name: 'store_id', referencedColumnName: 'id' })
     // store: SubOrganization;
-    @Column()
+    @Column({nullable:true})
     store: string
 
     // @OneToOne(
@@ -171,11 +171,11 @@ export class SubOrganization extends Base {
     //     (informationConnect) => informationConnect.subOrg
     // )
     // informationConnect: InformationConnect;
-    @Column()
+    @Column({nullable:true})
     informationConnect: string
 
     // @OneToMany(() => InventoryProduct, inventoryProduct => inventoryProduct.branch)
     // inventoryProduct: InventoryProduct[]
-    @Column()
+    @Column({nullable:true})
     inventoryProduct: string
 }

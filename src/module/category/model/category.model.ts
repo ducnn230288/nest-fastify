@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from "typeorm";
 import { faker } from '@faker-js/faker';
 import { IsString, IsOptional,IsUUID } from 'class-validator';
 import { Base } from "@shared";
@@ -87,9 +87,10 @@ export class Category extends Base{
     @IsOptional()
     @IsString()
     @Column({nullable:true,unique:false})
+    @ApiProperty({ example: faker.string.uuid(), description: '' })
     parentId: string;
     @IsOptional()
-    @OneToMany(() => Category, (category) => category.parent)
+    @ManyToOne(() => Category, (category) => category.parent)
     @JoinColumn({ name: 'parentId', referencedColumnName: 'id' })
     parent: Category
 }

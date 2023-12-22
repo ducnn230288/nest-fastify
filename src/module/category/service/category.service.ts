@@ -67,18 +67,7 @@ export class CategoryService extends BaseService<Category> {
                 );
             }
         }
-        // await transactionManager.update(
-        //     Category,
-        //     {
-        //         id: parentId
-        //     },
-        //     {
-        //         isParent: true
-        //     }
-        // );
 
-
-        // await this.datasource.transaction(async (entityManager) => {
         return await this.repo.save(
             this.repo.create({
                 name: name,

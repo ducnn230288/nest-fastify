@@ -9,6 +9,7 @@ import {
   P_DATA_CREATE,
   P_DATA_UPDATE,
   P_DATA_DELETE,
+  P_SUB_ORGANIZATION_CREATE,
 } from '@service';
 
 describe('Role -' +  API, () =>
@@ -21,4 +22,5 @@ describe('Role -' +  API, () =>
     P_DATA_CREATE,
     P_DATA_UPDATE,
     P_DATA_DELETE,
+    P_SUB_ORGANIZATION_CREATE
   ]));
