@@ -98,6 +98,11 @@ export class CreateUserRequestDto extends PickType(User, [
   'profileImage',
   'dateLeave',
   'roleCode',
+  'addressId',
+  'note',
+  'subOrgId',
+  'orgId',
+  
 ] as const) {
   @MinLength(6)
   @ApiProperty({ example: Example.password, description: '' })

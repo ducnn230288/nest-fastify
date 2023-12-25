@@ -58,12 +58,12 @@ export class SubOrganization extends Base {
     @IsBoolean()
     isActive: boolean;
 
-    @Column()
-    @ApiProperty({
-        example: faker.date.recent(),
-        description: '',
-    })
-    createdOn: Date;
+    // @Column()
+    // @ApiProperty({
+    //     example: faker.date.recent(),
+    //     description: '',
+    // })
+    // createdOn: Date;
 
     @Column()
     @ApiProperty({

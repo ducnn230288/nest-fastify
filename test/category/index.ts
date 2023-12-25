@@ -52,7 +52,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
   it(`Get all [GET ${API}/findAll]`, async () => {
     if (!type) {
-      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCreate);
+      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create({...dataCreate});
     }
     const { body } = await request(BaseTest.server)
       .get(`${API}/findAll`)
@@ -66,20 +66,14 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
 
   it(`Update Category [PUT ${API}/:id`, async () => {
-    console.log("vô");
-    
     categoryUpdate = await factoryManager.get(Category).make();
    // resultCategory= await BaseTest.moduleFixture!.get(CategoryService).create(categoryUpdate)
-    console.log("categoryUpdate",categoryUpdate);
-    console.log("resultCategory",resultCategory);
-    
-    
     const { body } = await request(BaseTest.server)
       .put(API + "/" + resultCategory?.id+"?name=" +categoryUpdate?.name)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send({name:categoryUpdate.name})
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-      console.log(body);
+
       
     if (type) {
       expect(body.data).toEqual(jasmine.objectContaining({name:categoryUpdate.name}));
@@ -97,8 +91,10 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       const { updatedAt, isDisabled, isDeleted, ...test } = resultCategory!;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
+    
+  
   });
 
-
+  
   return afterAll(BaseTest.initAfterAll);
 };

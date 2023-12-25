@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Category } from "@model";
 import { CategoryController } from "@controller";
 import { CategoryService } from "@service";
+import { CategoryRepository } from "./repository/category.repository";
 
 
 @Module({
@@ -15,9 +16,12 @@ import { CategoryService } from "@service";
         CategoryController
     ],
     providers: [
-        CategoryService
+        CategoryService,
+        CategoryRepository
     ],
-    exports: [],
+    exports: [
+        CategoryService,
+        CategoryRepository],
 })
 
 export class CategoryModule { }

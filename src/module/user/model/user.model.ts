@@ -93,7 +93,7 @@ export class User extends Base {
   @MaxLength(12)
   phoneNumber: string;
 
-  @Column()
+  @Column({nullable:true})
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
   @IsDateString()
   dateOfBirth: Date;
@@ -123,7 +123,7 @@ export class User extends Base {
   gender: string;
 
   @Column({ nullable: true})
-  addressId: number;
+  addressId: string;
 
   @Column({ nullable: true})
   orgId: number;
@@ -162,7 +162,7 @@ export class User extends Base {
   @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   readonly position?: Code;
 
-  @Column({ name: 'start_date' })
+  @Column({ name: 'start_date', nullable: true })
   @ApiProperty({ example: faker.date.past(), description: '' })
   @IsDateString()
   startDate?: Date;
@@ -182,4 +182,8 @@ export class User extends Base {
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)
   readonly address?: Address[];
+  @BeforeInsert()
+  updatePass() {
+      this.password = '123456'
+  }
 }

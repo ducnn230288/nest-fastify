@@ -7,7 +7,7 @@ import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDt
 import '@factories';
 import { BaseTest } from '@test';
 import { prefixRouter } from '@shared';
-import { AddressService, DistrictService, ProvinceService, UserService, WardService } from '@service';
+import { AddressService, DistrictService, ProvinceService, SubOrganizationService, UserService, WardService } from '@service';
 
 const controller = '/sub-organization'
 export const API = prefixRouter + controller;
@@ -21,7 +21,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataCreate: CreateSubOrganizationRequestDto
 
   let userModel: User | null
-
+  let resultSubOrg;
   // it(`Create [POST ${API}]`, async () => {
   //   const dataSubOrg = await factoryManager.get(SubOrganization).make();
   //   const dataUser = await factoryManager.get(User).make();
@@ -86,13 +86,20 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     console.log("datacreate",dataCreate);
     console.log("bodydata",body);
-    
-   
-        
-        
-  
-
   });
+
+  // it(`Get one [GET ${API}/:id ]`, async () => {
+  //   if (!type) {
+  //     resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).create(dataCreate);
+  //   }
+  //   const { body } = await request(BaseTest.server)
+  //     .get(API + '/detail/' + resultSubOrg?.id )
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //     if (type) {
+  //       expect(body.data).toEqual(jasmine.objectContaining(resultSubOrg));
+  //     }
+  // });
   // it('Get all [GET /api/data-type]', async () => {
   //   const { body } = await request(BaseTest.server)
   //     .get('/api/data-type')
