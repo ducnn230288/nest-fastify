@@ -1,12 +1,12 @@
-import { CreateCategoryRequestDto, DefaultCategoryResponseDto } from "@dto";
+import { HttpStatus } from "@nestjs/common";
+import { useSeederFactoryManager } from 'typeorm-extension';
+import { randomUUID } from "crypto";
+import request from 'supertest';
+
 import { Category } from "@model";
 import { BaseTest } from "@test";
-import { useSeederFactoryManager } from 'typeorm-extension';
-import '@factories';
-import request from 'supertest';
-import { HttpStatus } from "@nestjs/common";
 import { CategoryService } from "@service";
-import { randomUUID } from "crypto";
+import '@factories';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
     beforeAll(() => BaseTest.initBeforeAll(type, permissions));
