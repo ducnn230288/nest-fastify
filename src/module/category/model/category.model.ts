@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } from "typeorm";
 import { faker } from '@faker-js/faker';
-import { IsString, IsOptional,IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsUUID } from 'class-validator';
 import { Base } from "@shared";
 
 @Entity()
-export class Category extends Base{
+export class Category extends Base {
     @Column()
     @ApiProperty({
         example: faker.person.jobType(),
@@ -20,17 +20,17 @@ export class Category extends Base{
         description: '',
     })
     @IsString()
-    @Column({nullable:true})
+    @Column({ nullable: true })
     code: string;
 
-    @Column({default:true})
+    @Column({ default: true })
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
     })
     isActive: boolean;
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
@@ -51,42 +51,36 @@ export class Category extends Base{
     })
     updatedAt: Date;
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     createdById: string;
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     orgId: number;
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
     })
     isKiotViet: boolean;
 
-    @Column({nullable:true})
+    @Column({ nullable: true })
     @ApiProperty({
         example: faker.finance.bic(),
         description: '',
     })
     categoryKiotId: number;
 
-    @Column({nullable:true})
-    @ApiProperty({
-        example: faker.finance.bic(),
-        description: '',
-    })
-    @IsOptional()
-    @IsString()
-    @Column({nullable:true,unique:false})
+    @Column({ nullable: true, unique: false })
+    @IsUUID()
     @ApiProperty({ example: faker.string.uuid(), description: '' })
     parentId: string;
     @IsOptional()

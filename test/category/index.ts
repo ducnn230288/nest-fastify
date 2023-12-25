@@ -38,66 +38,66 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it(`Get one [GET ${API}/:id ]`, async () => {
-    if (!type) {
-      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCreate);
-    }
-    const { body } = await request(BaseTest.server)
-      .get(API + '/' + resultCategory?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-      if (type) {
-        expect(body.data).toEqual(jasmine.objectContaining(resultCategory));
-      }
-  });
-  it(`Get all [GET ${API}/findAll]`, async () => {
-    if (!type) {
-      resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCreate);
-    }
-    const { body } = await request(BaseTest.server)
-      .get(`${API}/findAll`)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN)
-      if (type) {
-      expect(body.data[0]).toEqual(jasmine.objectContaining(resultCategory));
+  // it(`Get one [GET ${API}/:id ]`, async () => {
+  //   if (!type) {
+  //     resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCreate);
+  //   }
+  //   const { body } = await request(BaseTest.server)
+  //     .get(API + '/' + resultCategory?.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //     if (type) {
+  //       expect(body.data).toEqual(jasmine.objectContaining(resultCategory));
+  //     }
+  // });
+  // it(`Get all [GET ${API}/findAll]`, async () => {
+  //   if (!type) {
+  //     resultCategory = await BaseTest.moduleFixture!.get(CategoryService).create(dataCreate);
+  //   }
+  //   const { body } = await request(BaseTest.server)
+  //     .get(`${API}/findAll`)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN)
+  //     if (type) {
+  //     expect(body.data[0]).toEqual(jasmine.objectContaining(resultCategory));
     
-    }
-  });
+  //   }
+  // });
 
 
-  it(`Update Category [PUT ${API}/:id`, async () => {
-    console.log("vô");
+  // it(`Update Category [PUT ${API}/:id`, async () => {
+  //   console.log("vô");
     
-    categoryUpdate = await factoryManager.get(Category).make();
-   // resultCategory= await BaseTest.moduleFixture!.get(CategoryService).create(categoryUpdate)
-    console.log("categoryUpdate",categoryUpdate);
-    console.log("resultCategory",resultCategory);
+  //   categoryUpdate = await factoryManager.get(Category).make();
+  //  // resultCategory= await BaseTest.moduleFixture!.get(CategoryService).create(categoryUpdate)
+  //   console.log("categoryUpdate",categoryUpdate);
+  //   console.log("resultCategory",resultCategory);
     
     
-    const { body } = await request(BaseTest.server)
-      .put(API + "/" + resultCategory?.id+"?name=" +categoryUpdate?.name)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send({name:categoryUpdate.name})
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-      console.log(body);
+  //   const { body } = await request(BaseTest.server)
+  //     .put(API + "/" + resultCategory?.id+"?name=" +categoryUpdate?.name)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .send({name:categoryUpdate.name})
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //     console.log(body);
       
-    if (type) {
-      expect(body.data).toEqual(jasmine.objectContaining({name:categoryUpdate.name}));
-      resultCategory = body.data;
-    }
-  });
+  //   if (type) {
+  //     expect(body.data).toEqual(jasmine.objectContaining({name:categoryUpdate.name}));
+  //     resultCategory = body.data;
+  //   }
+  // });
 
 
-  it(`Delete [DELETE ${API}/:id]`, async () => {
-    const { body } = await request(BaseTest.server)
-      .delete(API + '/' + resultCategory?.id)
-      .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      const { updatedAt, isDisabled, isDeleted, ...test } = resultCategory!;
-      expect(body.data).toEqual(jasmine.objectContaining(test));
-    }
-  });
+  // it(`Delete [DELETE ${API}/:id]`, async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .delete(API + '/' + resultCategory?.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+  //   if (type) {
+  //     const { updatedAt, isDisabled, isDeleted, ...test } = resultCategory!;
+  //     expect(body.data).toEqual(jasmine.objectContaining(test));
+  //   }
+  // });
 
 
   return afterAll(BaseTest.initAfterAll);

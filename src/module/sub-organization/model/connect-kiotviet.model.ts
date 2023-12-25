@@ -11,7 +11,7 @@ export class ConnectKiotViet extends Base {
     @IsString()
     @IsOptional()
     @ApiProperty({
-        example: faker.datatype.uuid(),
+        example: faker.string.uuid(),
     })
 
     clientSecret: string;
@@ -19,21 +19,21 @@ export class ConnectKiotViet extends Base {
     @IsString()
     @IsOptional()
     @ApiProperty({
-        example: faker.datatype.uuid(),
+        example: faker.string.uuid(),
     })
     clientId: string;
     @Column()
     @IsString()
     @IsOptional()
     @ApiProperty({
-        example: faker.datatype.uuid(),
+        example: faker.string.uuid(),
     })
     retailer: string;
     @Column()
     @IsString()
     @IsOptional()
     @ApiProperty({
-        example: faker.datatype.number(),
+        example: faker.number.int(),
     })
     branchId: number;
 }

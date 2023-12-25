@@ -35,7 +35,7 @@ export class User extends Base {
   @Column({
     nullable: true
   })
-  @ApiProperty({ example: faker.datatype.uuid(), description: '' })
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   uuid: string
 
