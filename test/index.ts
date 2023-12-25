@@ -17,6 +17,7 @@ export const BaseTest: {
   app?: NestFastifyApplication;
   server?: http.Server;
   token: undefined;
+  idUser: undefined;
 
   login: (user: User) => Promise<void>;
   loginAdmin: () => Promise<void>;
@@ -29,6 +30,7 @@ export const BaseTest: {
   app: undefined,
   server: undefined,
   token: undefined,
+  idUser: undefined,
   serviceRole: undefined,
   serviceUser: undefined,
 
@@ -66,6 +68,7 @@ export const BaseTest: {
       })
       .expect(HttpStatus.CREATED);
     BaseTest.token = body.data.accessToken;
+    BaseTest.idUser = body.data.user.id;
   },
   loginAdmin: async () => {
     const role = await BaseTest.serviceRole!.create({

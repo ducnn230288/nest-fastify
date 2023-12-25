@@ -5,9 +5,10 @@
   "Create Success": "Tạo thành công",
   "Update Success": "Cập nhật thành công",
   "Delete Success": "Xóa thành công",
+  "Data id not found": "Dữ liệu {id} không tồn tại",
   "Auth": {
     "Invalid credentials for user": "Thông tin đăng nhập không hợp lệ cho người dùng {email}",
-    "email is already taken": "Email này đã được sử dụng",
+    "Email is already taken": "Email này đã được sử dụng",
     "Passwords are not identical": "Mật khẩu không giống nhau",
     "Password do not match": "Mật khẩu không khớp!",
     "Invalid email": "Email không hợp lệ!",
@@ -27,5 +28,8 @@
       "You may have mistyped": "Có thể bạn đã gõ sai địa chỉ hoặc trang đã được di chuyển.",
       "Back to Home": "Trở về trang chủ"
     }
+  },
+  "Category": {
+    "Name is already taken": "Tên Category đã tồn tại"
   }
 }
