@@ -5,7 +5,7 @@ import { SubOrganizationController } from "@controller";
 import { AddressService, SubOrganizationService } from "@service";
 import { AddressRepository } from "../user/repository/address.repository";
 import { UserModule } from "../user/user.module";
-import { SubOrganizationRepository } from "@repository";
+import { SubOrganizationRepository, UserRepository } from "@repository";
 
 
 
@@ -24,7 +24,8 @@ import { SubOrganizationRepository } from "@repository";
     ],
     providers: [
         SubOrganizationService,
-        SubOrganizationRepository
+        SubOrganizationRepository,
+        
     ],
     exports: [SubOrganizationRepository],
 })

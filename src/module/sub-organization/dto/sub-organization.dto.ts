@@ -1,4 +1,4 @@
-import { ApiProperty, PickType } from "@nestjs/swagger";
+import { ApiProperty, PartialType, PickType } from "@nestjs/swagger";
 import { Address, SubOrganization } from "@model";
 import { IsNotEmpty, IsString, IsOptional, IsEmail } from 'class-validator';
 import { DetailConnectKiotViet } from "@dto";
@@ -21,15 +21,15 @@ export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
 ]) {
 
     @IsOptional()
-    address: DetailAddress
+    address: DetailAddress;
 
     @IsString()
     @IsNotEmpty()
-    type: SubOrgType
+    type: SubOrgType;
 
     @IsString()
     @IsNotEmpty()
-    supplierType: SUPPLIER_TYPE
+    supplierType: SUPPLIER_TYPE;
 
     @IsNotEmpty()
     @IsString()
@@ -54,3 +54,5 @@ export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
     connectKiot: DetailConnectKiotViet;
 
 }
+export class UpdateSubOrganizationDto extends PartialType(CreateSubOrganizationRequestDto){}
+export class UpdateSubOrganizationActiveDto extends PickType(SubOrganization,['isActive']){}

@@ -3,13 +3,13 @@ import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { Address, ConnectKiotViet, Data, DataType, District, Province, SubOrganization, User, Ward } from '@model';
-import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto, CreateSubOrganizationRequestDto } from '@dto';
+import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto, CreateSubOrganizationRequestDto, UpdateSubOrganizationDto } from '@dto';
 import '@factories';
 import { BaseTest } from '@test';
 import { prefixRouter } from '@shared';
 import { AddressService, DistrictService, ProvinceService, SubOrganizationService, UserService, WardService } from '@service';
 
-const controller = '/sub-organization'
+const controller = '/sub-organization';
 export const API = prefixRouter + controller;
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
@@ -18,10 +18,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const factoryManager = useSeederFactoryManager();
 
 
-  let dataCreate: CreateSubOrganizationRequestDto
+  let dataCreate: CreateSubOrganizationRequestDto;
 
-  let userModel: User | null
+  let userModel: User | null;
   let resultSubOrg;
+  let dataUpdate: UpdateSubOrganizationDto;
   // it(`Create [POST ${API}]`, async () => {
   //   const dataSubOrg = await factoryManager.get(SubOrganization).make();
   //   const dataUser = await factoryManager.get(User).make();
@@ -76,7 +77,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot : dataKiotViet
-    }
+    };
     
     
     const { body } = await request(BaseTest.server)
@@ -84,9 +85,83 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     .set('Authorization', 'Bearer ' + BaseTest.token)
     .send(dataCreate as CreateSubOrganizationRequestDto)
     .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    console.log("datacreate",dataCreate);
-    console.log("bodydata",body);
+    resultSubOrg=body.data
+    //console.log(resultSubOrg);
+    
   });
+
+  it(`Update one [PUT ${API}/:id]`, async () => {
+    const distric= await factoryManager.get(District).make();
+    const provine = await factoryManager.get(Province).make();
+    const ward =await factoryManager.get(Ward).make();
+    // await BaseTest.moduleFixture!.get(ProvinceService).create(provine);
+    // await BaseTest.moduleFixture!.get(DistrictService).create({...distric,codeProvince:provine.code});
+    // await BaseTest.moduleFixture!.get(WardService).create({...ward,codeDistrict:distric.code});
+    const dataSubOrg = await factoryManager.get(SubOrganization).make();
+    const dataUser = await factoryManager.get(User).make();
+    const dataAddress = await factoryManager.get(Address).make();
+    const dataKiotViet = await factoryManager.get(ConnectKiotViet).make();
+   
+   
+    
+    dataUpdate = {
+      ...dataSubOrg,
+      emailContact: dataUser.email,
+      nameContact: dataUser.name,
+      phoneNumber: dataUser.phoneNumber,
+      address: dataAddress,
+      connectKiot : dataKiotViet
+    };
+     // resultSubOrg =  await BaseTest.moduleFixture!.get(SubOrganizationService).create(dataUpdate);
+    // console.log('resultSubOrg',resultSubOrg);
+      
+      
+      
+      const { body } = await request(BaseTest.server)
+        .put(API+ '/' + resultSubOrg!.id)
+        .set('Authorization', 'Bearer ' + BaseTest.token)
+        .send(dataUpdate)
+        .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+   // console.log("body",body);
+    
+    //  if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+    });
+    it(`Update one [PUT ${API}/:id/active-status]`, async () => {
+      const distric= await factoryManager.get(District).make();
+      const provine = await factoryManager.get(Province).make();
+      const ward =await factoryManager.get(Ward).make();
+      // await BaseTest.moduleFixture!.get(ProvinceService).create(provine);
+      // await BaseTest.moduleFixture!.get(DistrictService).create({...distric,codeProvince:provine.code});
+      // await BaseTest.moduleFixture!.get(WardService).create({...ward,codeDistrict:distric.code});
+      const dataSubOrg = await factoryManager.get(SubOrganization).make();
+      const dataUser = await factoryManager.get(User).make();
+      const dataAddress = await factoryManager.get(Address).make();
+      const dataKiotViet = await factoryManager.get(ConnectKiotViet).make();
+     
+     
+      
+      dataUpdate = {
+        ...dataSubOrg,
+        emailContact: dataUser.email,
+        nameContact: dataUser.name,
+        phoneNumber: dataUser.phoneNumber,
+        address: dataAddress,
+        connectKiot : dataKiotViet
+      };
+       // resultSubOrg =  await BaseTest.moduleFixture!.get(SubOrganizationService).create(dataUpdate);
+       console.log('resultSubOrg',resultSubOrg);
+        
+        
+        
+        const { body } = await request(BaseTest.server)
+          .put(API+ '/' + resultSubOrg!.id+"/active-status")
+          .set('Authorization', 'Bearer ' + BaseTest.token)
+          .send({isActive:false})
+          .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      console.log("body",body);
+      
+      //  if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
+      });
 
   // it(`Get one [GET ${API}/:id ]`, async () => {
   //   if (!type) {

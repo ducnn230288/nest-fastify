@@ -1,22 +1,26 @@
-import { ConflictException, ForbiddenException, Inject, Injectable, InternalServerErrorException, forwardRef } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Inject, Injectable, InternalServerErrorException, NotFoundException, forwardRef } from "@nestjs/common";
 import { BaseService } from "@shared";
 import { SubOrganization, User } from "@model";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { CreateSubOrganizationRequestDto } from "../dto";
+import { CreateSubOrganizationRequestDto, UpdateSubOrganizationActiveDto, UpdateSubOrganizationDto } from "@dto";
 import { isNullOrUndefined } from "util";
 import { SUPPLIER_TYPE, SubOrgType } from "@enum";
 import { AddressService, UserService } from "@service";
 import { CreateUserRequestDto, UserDto } from "@dto";
 import { SubOrganizationRepository } from "../repository/sub-organization.repository";
-export const P_SUB_ORGANIZATION_CREATE = 'e1d01bee-a848-4924-9fdd-2f855bbda36a'
+import { async } from "rxjs";
+import { I18n, I18nContext } from "nestjs-i18n";
+export const P_SUB_ORGANIZATION_CREATE = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
+export const P_SUB_ORGANIZATION_UPDATE = 'e2ba1491-ddfd-4acc-90cd-7df987700b52';
+export const P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS = '0e399cb2-00b5-4d93-897f-85321715aeb8';
 
 @Injectable()
 export class SubOrganizationService extends BaseService<SubOrganization> {
     constructor(
-        
+
         public repo: SubOrganizationRepository,
-        public userService : UserService,    
+        public userService: UserService,
         public addressService: AddressService,
         public dataSource: DataSource
     ) {
@@ -26,7 +30,7 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
 
     async createSubOrg(body: CreateSubOrganizationRequestDto, user: User) {
         if (!user || user && user.roleCode !== 'supper_admin') {
-            throw new ForbiddenException('Bạn không đủ quyền để tạo')
+            throw new ForbiddenException('Bạn không đủ quyền để tạo');
         }
         const {
             type,
@@ -39,9 +43,9 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
             note,
             connectKiot
         } = body;
-       
+
     }
-    async createSubOrgTest(body: CreateSubOrganizationRequestDto, user: User) {
+    async createSubOrgTest(body: CreateSubOrganizationRequestDto, user: User): Promise<any> {
 
         const {
 
@@ -60,15 +64,15 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
         //     ? SUB_ORG_TEXT.STORE
         //     : SUB_ORG_TEXT.SUPPLIER;
         let data;
-       const checkFax =await this.repo.checkFax(user,body)
+        const checkFax = await this.repo.checkFax(user, body);
         if (checkFax) {
             throw new ConflictException(
                 'Số Fax đã được đăng kí trước đó.'
             );
         }
         await this.dataSource.transaction(async (transactionalEntityManager) => {
-            const newAddress =  await this.addressService.create({ ...address, userId: user.id });
-             data = await this.create({
+            const newAddress = await this.addressService.create({ ...address, userId: user.id })
+            data = await this.create({
                 name: body.name,
                 isActive: true,
                 addressId: newAddress?.id,
@@ -77,24 +81,98 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
                 orgId: user.orgId,
                 supplierType: supplierType,
                 fax
-            })
-            
-            const userDto = new CreateUserRequestDto()
-            userDto.addressId = newAddress?.id!
-            userDto.email=emailContact;
-            userDto.name=nameContact;
-            userDto.phoneNumber=phoneNumber;
-            userDto.note=note;
-            userDto.subOrgId=user.subOrgId
-            await this.userService.create(userDto)
-        })
- 
-       return data
-        
+            });
+
+            const userDto = new CreateUserRequestDto();
+            userDto.addressId = newAddress?.id!;
+            userDto.email = emailContact;
+            userDto.name = nameContact;
+            userDto.phoneNumber = phoneNumber;
+            userDto.note = note;
+            userDto.subOrgId = user.subOrgId;
+            await this.userService.create({
+                addressId : newAddress?.id!,
+                email : emailContact,
+                name : nameContact,
+                phoneNumber : phoneNumber,
+               note : note,
+              subOrgId : user.subOrgId,
+               retypedPassword:'',
+                 });
+        });
+
+        return data;
+
     }
-//     async getDetailSubOrganization(user: User,id :string){
-//         const query = this.repo.createQueryBuilder('sub_org')
-//         .select('sub_org')
-//         .where()
-//     }
+    async updateSubOrganization(
+        subOrgDto: UpdateSubOrganizationDto,
+        id: string,
+        user: User
+    ) {
+        const i18n = I18nContext.current();
+        const {
+            address,
+            emailContact,
+            fax,
+            name,
+            nameContact,
+            note,
+            phoneNumber,
+            type,
+            supplierType,
+            connectKiot
+        } = subOrgDto;
+        const objectMessage =
+            type == SubOrgType.STORE
+                ? SubOrgType.STORE
+                : SubOrgType.SUPPLIER;
+        //check sub-org exist
+        const subOrg = await this.findOne(id);
+        if (isNullOrUndefined(subOrg)) {
+            throw new NotFoundException(i18n?.t('common.Data id not found', { args: { id } }));
+        }
+        const checkFax = await this.repo.checkFax(user, subOrgDto);
+        console.log('vo', checkFax);
+
+        //check fax exist
+        if (!isNullOrUndefined(checkFax)) {
+            throw new ConflictException('fax đã được sử dụng');
+        }
+        // update sub-org , address , user
+        await this.dataSource.transaction(async (transactionalEntityManager) => {
+            await this.update(id, {
+                id,
+                name,
+                note,
+                fax,
+            });
+            await this.addressService.update(
+                subOrg.addressId,
+                {
+                    codeDistrict: address?.codeDistrict,
+                    codeProvince: address?.codeProvince,
+                    codeWard: address?.codeWard,
+                    postCode: address?.postCode
+                }
+            );
+            const newAddress = await this.addressService.findOne(subOrg.addressId);
+            await this.userService.update(
+                newAddress?.userId!,
+                {
+                    name: nameContact!,
+                    email: emailContact!,
+                    phoneNumber: phoneNumber!,
+                }
+            )
+        });
+    }
+    async updateActiveStatusSubOrganization(
+        user: User,
+        updateActiveStatusDto: UpdateSubOrganizationActiveDto,
+        id: string
+    ) {
+        const { isActive } = updateActiveStatusDto
+            const data= await this.update(id,updateActiveStatusDto)
+            return data;
+    }
 }

@@ -104,6 +104,7 @@ export class CreateUserRequestDto extends PickType(User, [
   'orgId',
   
 ] as const) {
+  @IsOptional()
   @MinLength(6)
   @ApiProperty({ example: Example.password, description: '' })
   retypedPassword: string;

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Base } from "@shared"
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm"
+import { Base } from "@shared";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import { faker } from '@faker-js/faker';
 import { IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 import { SUPPLIER_TYPE, SubOrgType } from "../enum";
@@ -50,7 +50,7 @@ export class SubOrganization extends Base {
     @IsString()
     logoPhoto: string;
 
-    @Column()
+    @Column({nullable:true,default:true})
     @ApiProperty({
         example: faker.datatype.boolean(),
         description: '',
@@ -126,13 +126,13 @@ export class SubOrganization extends Base {
     // @OneToMany(() => UserRole, (userRole) => userRole.subOrg)
     // userRole: UserRole[];
     @Column({nullable:true})
-    userRole: string
+    userRole: string;
 
     // @ManyToOne(() => Organization, (org) => org.subOrg)
     // @JoinColumn({ name: 'org_id', referencedColumnName: 'id' })
     // org: Organization;
     @Column({nullable:true})
-    org: string
+    org: string;
 
     // @OneToMany(
     //     () => StoreConnectSupplier,
@@ -140,31 +140,31 @@ export class SubOrganization extends Base {
     // )
     // storeConnectSupplier: StoreConnectSupplier[];
     @Column({nullable:true})
-    storeConnectSupplier: string
+    storeConnectSupplier: string;
 
 
     // @OneToOne(() => Order, (order) => order.supplier)
     // orderSupplier: Order;
     @Column({nullable:true})
-    orderSupplier: string
+    orderSupplier: string;
 
     // @OneToOne(() => Order, (order) => order.store)
     // orderStore: Order;
     // @OneToMany(() => DocumentSubOrganiztion, (contract) => contract.subOrg)
     // contract: DocumentSubOrganiztion[];
     @Column({nullable:true})
-    contract: string
+    contract: string;
 
     // @OneToMany(() => SubOrgCommision, (commission) => commission.subOrg)
     // commission: SubOrgCommision[];
     @Column({nullable:true})
-    commission: string
+    commission: string;
 
     // @ManyToOne(() => SubOrganization)
     // @JoinColumn({ name: 'store_id', referencedColumnName: 'id' })
     // store: SubOrganization;
     @Column({nullable:true})
-    store: string
+    store: string;
 
     // @OneToOne(
     //     () => InformationConnect,
@@ -172,10 +172,10 @@ export class SubOrganization extends Base {
     // )
     // informationConnect: InformationConnect;
     @Column({nullable:true})
-    informationConnect: string
+    informationConnect: string;
 
     // @OneToMany(() => InventoryProduct, inventoryProduct => inventoryProduct.branch)
     // inventoryProduct: InventoryProduct[]
     @Column({nullable:true})
-    inventoryProduct: string
+    inventoryProduct: string;
 }

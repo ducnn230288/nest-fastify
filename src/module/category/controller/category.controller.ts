@@ -26,7 +26,7 @@ export class CategoryController {
         return {
             message: i18n.t('common.Create Success'),
             data: await this.categoryService.addCategory(body, user)
-        }
+        };
 
     }
     @Auth({
@@ -42,7 +42,7 @@ export class CategoryController {
         return {
             message: i18n.t('common.Get Detail Success'),
             data: await this.categoryService.findOne(id)
-        }
+        };
     }
     @Auth({
         summary: 'update categoy',
@@ -58,7 +58,7 @@ export class CategoryController {
         return {
             message: i18n.t('common.Update Success'),
             data: await this.categoryService.update(id, { name:name, updatedAt: new Date() })
-        }
+        };
     }
     @Delete(":id")
     @Auth({
@@ -73,7 +73,7 @@ export class CategoryController {
         return {
             message: i18n.t('common.Delete Success'),
             data: await this.categoryService.remove(id)
-        }
+        };
     }
     @Auth({
         summary: 'find all category',
@@ -90,6 +90,6 @@ export class CategoryController {
             message: i18n.t('common.Get List success'),
             count: total,
             data: result,
-        }
+        };
     }
 }

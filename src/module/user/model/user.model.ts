@@ -35,7 +35,7 @@ export class User extends Base {
   @Column({
     nullable: true
   })
-  @ApiProperty({ example: faker.datatype.uuid(), description: '' })
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   uuid: string
 
@@ -96,14 +96,15 @@ export class User extends Base {
   @Column({nullable:true})
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
   @IsDateString()
-  dateOfBirth: Date;
+  @IsOptional()
+  dateOfBirth?: Date;
 
   @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @Column({ nullable: true, name: 'role_code' })
   @Expose()
@@ -112,7 +113,7 @@ export class User extends Base {
   roleCode?: string;
 
   @Column({ nullable: true})
-  @ApiProperty({ example: faker.address.city(), description: '' })
+  @ApiProperty({ example: faker.location.city(), description: '' })
   @IsString()
   identityCard: string;
 
