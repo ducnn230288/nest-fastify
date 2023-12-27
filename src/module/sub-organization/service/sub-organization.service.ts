@@ -14,6 +14,7 @@ import { I18n, I18nContext } from "nestjs-i18n";
 export const P_SUB_ORGANIZATION_CREATE = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
 export const P_SUB_ORGANIZATION_UPDATE = 'e2ba1491-ddfd-4acc-90cd-7df987700b52';
 export const P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS = '0e399cb2-00b5-4d93-897f-85321715aeb8';
+export const P_SUB_ORGANIZATION_DELETE = '0bbc127d-043b-4987-931f-e9349c63c00f';
 
 @Injectable()
 export class SubOrganizationService extends BaseService<SubOrganization> {

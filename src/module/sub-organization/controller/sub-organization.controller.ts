@@ -1,4 +1,4 @@
-import { Body, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateSubOrganizationRequestDto, UpdateSubOrganizationActiveDto } from '@dto';
@@ -6,6 +6,7 @@ import { User } from '@model';
 import {
   P_DATA_CREATE,
   P_SUB_ORGANIZATION_CREATE,
+  P_SUB_ORGANIZATION_DELETE,
   P_SUB_ORGANIZATION_UPDATE,
   P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS,
   SubOrganizationService,
@@ -38,7 +39,7 @@ export class SubOrganizationController {
     permission: P_SUB_ORGANIZATION_CREATE,
   })
   @Post('')
-  async createTest(
+  async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateSubOrganizationRequestDto,
     @AuthUser() user: User,
@@ -53,7 +54,7 @@ export class SubOrganizationController {
     permission: P_SUB_ORGANIZATION_UPDATE,
   })
   @Put(':id')
-  async updateSubOrganization(
+  async update(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateSubOrganizationRequestDto,
     @AuthUser() user: User,
@@ -81,6 +82,18 @@ export class SubOrganizationController {
       message: i18n.t('common.Update Success'),
       statusCode: 200,
       data: await this.service.update(id, body),
+    };
+  }
+    @Auth({
+      summary: 'delete categry',
+      permission: P_SUB_ORGANIZATION_DELETE,
+    })
+  @Delete(':id')
+  async delete(@I18n() i18n: I18nContext, @Param('id') id: string) {
+    await this.service.remove(id);
+    return {
+      message: i18n.t('common.Delete Success'),
+      statusCode: 200,
     };
   }
 }

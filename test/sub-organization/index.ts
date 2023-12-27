@@ -160,7 +160,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
     //  if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
   });
-
+  
+  it(`Delete [DELETE ${API}/:id]`, async () => {
+    const { body } = await request(BaseTest.server)
+      .delete(API + '/' + resultSubOrg?.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+    
+    
+  
+  });
   // it(`Get one [GET ${API}/:id ]`, async () => {
   //   if (!type) {
   //     resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).create(dataCreate);
