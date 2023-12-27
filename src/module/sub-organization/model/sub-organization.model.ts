@@ -85,7 +85,7 @@ export class SubOrganization extends Base {
         example: faker.finance.bic(),
         description: '',
     })
-    orgId: number;
+    orgId: string;
 
     @Column({nullable:true})
     @ApiProperty({
@@ -116,7 +116,7 @@ export class SubOrganization extends Base {
         example: faker.string.uuid(),
         description: '',
     })
-    storeId: number;
+    storeId: string;
 
     @Column({nullable:true})
     // @OneToMany(() => Product, (product) => product.subOrg)

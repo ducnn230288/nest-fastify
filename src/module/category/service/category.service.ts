@@ -47,15 +47,15 @@ export class CategoryService extends BaseService<Category> {
             }
         }
 
-        return await this.repo.save(
-            this.repo.create({
+        return await this.create(
+            {
                 name: name,
                 parentId: parentId,
                 isParent: parentId ? true : false,
                 createdById: user?.id,
                 orgId: user?.orgId,
                 isKiotViet: false
-            }))
+            })
     }
     // async getOne(id: String, user: User) {
     //     const i18n = I18nContext.current()!;

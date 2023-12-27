@@ -28,81 +28,58 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
     }
 
 
-    async createSubOrg(body: CreateSubOrganizationRequestDto, user: User) {
-        if (!user || user && user.roleCode !== 'supper_admin') {
-            throw new ForbiddenException('Bạn không đủ quyền để tạo');
-        }
+    // async createSubOrg(body: CreateSubOrganizationRequestDto, user: User) {
+    //     // if (!user || user && user.roleCode !== 'supper_admin') {
+    //     //     throw new ForbiddenException('Bạn không đủ quyền để tạo');
+    //     // }
+    //     const {
+    //         type,
+    //         supplierType,
+    //         fax,
+    //         emailContact,
+    //         phoneNumber,
+    //         address,
+    //         nameContact,
+    //         note,
+    //         connectKiot
+    //     } = body;
+
+    // }
+    async add(body: CreateSubOrganizationRequestDto, user: User): Promise<any> {
         const {
-            type,
-            supplierType,
-            fax,
+            note,
             emailContact,
             phoneNumber,
             address,
             nameContact,
-            note,
-            connectKiot
+            connectKiot,
+            storeId,
+            ...subOrg
         } = body;
-
-    }
-    async createSubOrgTest(body: CreateSubOrganizationRequestDto, user: User): Promise<any> {
-
-        const {
-
-            type,
-            supplierType,
-            fax,
-            emailContact,
-            phoneNumber,
-            address,
-            nameContact,
-            note,
-            connectKiot
-        } = body;
-        // const objectMessage =
-        // type == SubOrgType.STORE
-        //     ? SUB_ORG_TEXT.STORE
-        //     : SUB_ORG_TEXT.SUPPLIER;
         let data;
-        const checkFax = await this.repo.checkFax(user, body);
-        if (checkFax) {
-            throw new ConflictException(
-                'Số Fax đã được đăng kí trước đó.'
-            );
+        if (await this.repo.checkFax(user, body)) {
+            throw new ConflictException('Số Fax đã được đăng kí trước đó.');
         }
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             const newAddress = await this.addressService.create({ ...address, userId: user.id })
             data = await this.create({
-                name: body.name,
-                isActive: true,
                 addressId: newAddress?.id,
+                orgId: user.orgId!,
                 note,
-                type,
-                orgId: user.orgId,
-                supplierType: supplierType,
-                fax
+                storeId:user.subOrgId||storeId!,
+                ...subOrg
             });
-
-            const userDto = new CreateUserRequestDto();
-            userDto.addressId = newAddress?.id!;
-            userDto.email = emailContact;
-            userDto.name = nameContact;
-            userDto.phoneNumber = phoneNumber;
-            userDto.note = note;
-            userDto.subOrgId = user.subOrgId;
             await this.userService.create({
-                addressId : newAddress?.id!,
-                email : emailContact,
-                name : nameContact,
-                phoneNumber : phoneNumber,
-               note : note,
-              subOrgId : user.subOrgId,
-               retypedPassword:'',
-                 });
+                addressId: newAddress?.id!,
+                name: nameContact,
+                note,
+                orgId: user.orgId,
+                phoneNumber,
+                email: emailContact,
+                subOrgId: user.subOrgId,
+            });
         });
-
-        return data;
-
+        return data
     }
     async updateSubOrganization(
         subOrgDto: UpdateSubOrganizationDto,
@@ -111,53 +88,31 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
     ) {
         const i18n = I18nContext.current();
         const {
-            address,
             emailContact,
-            fax,
-            name,
-            nameContact,
-            note,
             phoneNumber,
-            type,
-            supplierType,
-            connectKiot
+            address,
+            nameContact,
+            connectKiot,
+            storeId,
+            ...sub
         } = subOrgDto;
-        const objectMessage =
-            type == SubOrgType.STORE
-                ? SubOrgType.STORE
-                : SubOrgType.SUPPLIER;
         //check sub-org exist
         const subOrg = await this.findOne(id);
         if (isNullOrUndefined(subOrg)) {
             throw new NotFoundException(i18n?.t('common.Data id not found', { args: { id } }));
         }
         const checkFax = await this.repo.checkFax(user, subOrgDto);
-        console.log('vo', checkFax);
-
         //check fax exist
         if (!isNullOrUndefined(checkFax)) {
             throw new ConflictException('fax đã được sử dụng');
         }
         // update sub-org , address , user
         await this.dataSource.transaction(async (transactionalEntityManager) => {
-            await this.update(id, {
-                id,
-                name,
-                note,
-                fax,
-            });
-            await this.addressService.update(
-                subOrg.addressId,
-                {
-                    codeDistrict: address?.codeDistrict,
-                    codeProvince: address?.codeProvince,
-                    codeWard: address?.codeWard,
-                    postCode: address?.postCode
-                }
-            );
-            const newAddress = await this.addressService.findOne(subOrg.addressId);
+            await this.update(id,sub);
+            await this.addressService.update(subOrg.addressId, address!);
+            const addressSubOrg = await this.addressService.findOne(subOrg.addressId);
             await this.userService.update(
-                newAddress?.userId!,
+                addressSubOrg?.userId!,
                 {
                     name: nameContact!,
                     email: emailContact!,
@@ -166,13 +121,13 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
             )
         });
     }
-    async updateActiveStatusSubOrganization(
-        user: User,
-        updateActiveStatusDto: UpdateSubOrganizationActiveDto,
-        id: string
-    ) {
-        const { isActive } = updateActiveStatusDto
-            const data= await this.update(id,updateActiveStatusDto)
-            return data;
-    }
+    //     async updateActiveStatusSubOrganization(
+    //         user: User,
+    //         updateActiveStatusDto: UpdateSubOrganizationActiveDto,
+    //         id: string
+    //     ) {
+    //         const { isActive } = updateActiveStatusDto
+    //             const data= await this.update(id,updateActiveStatusDto)
+    //             return data;
+    //     }
 }

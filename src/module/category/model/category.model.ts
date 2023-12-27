@@ -63,7 +63,7 @@ export class Category extends Base{
         example: faker.finance.bic(),
         description: '',
     })
-    orgId: number;
+    orgId: string;
 
     @Column({nullable:true})
     @ApiProperty({

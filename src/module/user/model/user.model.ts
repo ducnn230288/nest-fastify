@@ -127,10 +127,10 @@ export class User extends Base {
   addressId: string;
 
   @Column({ nullable: true})
-  orgId: number;
+  orgId: string;
 
   @Column({ nullable: true})
-  subOrgId: number;
+  subOrgId: string;
 
   @Column({ nullable: true})
   note: string;

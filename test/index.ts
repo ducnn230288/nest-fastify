@@ -58,7 +58,7 @@ export const BaseTest: {
     }
   },
   login: async (user) => {
-    await BaseTest.serviceUser!.create({ ...user, retypedPassword: user.password! });
+    await BaseTest.serviceUser!.create(user);
     const { body } = await request(BaseTest.server)
       .post(`${prefixRouter}/auth/login `)
       .send({

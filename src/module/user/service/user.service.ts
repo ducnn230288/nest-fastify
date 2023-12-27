@@ -32,8 +32,8 @@ export class UserService extends BaseService<User> {
    */
   async create(body: CreateUserRequestDto): Promise<User | null> {
     const i18n = I18nContext.current()!;
-    if (body.password !== body.retypedPassword)
-      throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
+    // if (body.password !== body.retypedPassword)
+    //   throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
     const existingUser = await this.repo.getDataByEmail(body.email!);
 

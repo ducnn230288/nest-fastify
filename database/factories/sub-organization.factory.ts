@@ -8,7 +8,7 @@ export default setSeederFactory(SubOrganization, (faker) => {
     const data = new SubOrganization();
 
     data.name = faker.person.jobType();
-    data.storeId = faker.number.int({ min: 1, max: 10 });
+    data.storeId = faker.string.uuid();
     data.note = faker.lorem.paragraph();
     data.fax =  faker.finance.iban()
     data.type = SubOrgType.STORE
