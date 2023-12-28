@@ -8,7 +8,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, SchedulerModule, CoreModule, UserModule, CategoryModule } from '@module';
+import { NotificationModule, SchedulerModule, CoreModule, UserModule, CategoryModule, StoreModule } from '@module';
 
 @Module({
   controllers: [AppController],
@@ -19,6 +19,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule, CategoryMo
     UserModule,
     CoreModule,
     CategoryModule,
+    StoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',

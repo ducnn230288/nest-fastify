@@ -2,8 +2,7 @@ import { PartialType, PickType } from "@nestjs/swagger";
 import { Category } from '@model';
 import { DefaultResponsesDto, PaginationResponsesDto } from "@shared";
 
-export class CreateCategoryRequestDto extends PickType(Category, ['name'] as const) {
-    readonly parentId?: string;
+export class CreateCategoryRequestDto extends PickType(Category, ['name', 'parentId'] as const) {
 }
 
 export class UpdateCategoryRequestDto extends PartialType(CreateCategoryRequestDto) {
@@ -11,7 +10,7 @@ export class UpdateCategoryRequestDto extends PartialType(CreateCategoryRequestD
 }
 
 export class CreateCategoryWithUserRequestDto extends PartialType(CreateCategoryRequestDto) {
-    readonly createdById?: string;
+    readonly createdById: string;
 }
 
 export class ListCategoryResponseDto extends PartialType(PaginationResponsesDto) {

@@ -2,7 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, OnlyUpdateGroup, PaginationQueryDto, SerializerBody } from "@shared";
-import { CategoryService, P_CATEGORY_CREATE, P_CATEGORY_DELETE, P_CATEGORY_LISTED, P_CATEGORY_UPDATE } from "@service";
+import { CategoryService, P_CATEGORY_CREATE, P_CATEGORY_DELETE, P_CATEGORY_DETAIL, P_CATEGORY_LISTED, P_CATEGORY_UPDATE } from "@service";
 
 import { Category, User } from '@model';
 import { CategoryResponseDto, CreateCategoryRequestDto, DefaultCategoryResponseDto, ListCategoryResponseDto, UpdateCategoryRequestDto } from "@dto";
@@ -30,6 +30,10 @@ export class CategoryController {
         };
     }
 
+    @Auth({
+        summary: 'Get One Category',
+        permission: P_CATEGORY_DETAIL
+    })
     @Get(':id')
     async getOne(
         @I18n() i18n: I18nContext,
@@ -50,7 +54,7 @@ export class CategoryController {
     async create(
         @I18n() i18n: I18nContext,
         @AuthUser() user: User,
-        @Body() request: CreateCategoryRequestDto
+        @Body(new SerializerBody()) request: CreateCategoryRequestDto
     ): Promise<CategoryResponseDto> {
         return {
             message: i18n.t('common.Create Success'),
@@ -65,7 +69,7 @@ export class CategoryController {
     @Put(':id')
     async update(
         @I18n() i18n: I18nContext,
-        @Body() body: UpdateCategoryRequestDto,
+        @Body(new SerializerBody()) body: UpdateCategoryRequestDto,
         @Param('id') id: string
     ): Promise<CategoryResponseDto> {
         return {

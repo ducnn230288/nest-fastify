@@ -10,3 +10,5 @@ export * from './module/user/repository/address.repository';
 export * from './module/user/repository/user.repository';
 
 export * from './module/category/repository/category.repository';
+export * from './module/store/repository/store.repository';
+export * from './module/store/repository/product.repository';

@@ -21,7 +21,9 @@ import {
   Address,
   User,
   UserRole,
-  Category
+  Category,
+  Store,
+  Product
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -48,7 +50,9 @@ const options: DataSourceOptions & SeederOptions = {
     PostTranslation,
     PostType,
     File,
-    Category
+    Category,
+    Store,
+    Product
   ],
   migrations: [Core1698359444654],
   seeds: [MainSeeder],

@@ -14,7 +14,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address } from '@model';
+import { UserRole, Code, Address, Store } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity()
@@ -132,4 +132,8 @@ export class User extends Base {
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)
   readonly address?: Address[];
+  
+  @OneToMany(() => Store, (store) => store.user)
+  @Type(() => Store)
+  readonly stores?: Store[];
 }

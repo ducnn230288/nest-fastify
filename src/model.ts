@@ -17,3 +17,5 @@ export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
 
 export * from './module/category/model/category.model'
+export * from './module/store/model/store.model'
+export * from './module/store/model/product.model'

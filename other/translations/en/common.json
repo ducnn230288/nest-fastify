@@ -26,5 +26,8 @@
       "You may have mistyped": "You may have mistyped the address or the page may have moved.",
       "Back to Home": "Back to Home"
     }
+  },
+  "Category": {
+    "Name is already taken": "Category name is already taken"
   }
 }

@@ -13,3 +13,5 @@ export * from './district.factory';
 export * from './ward.factory';
 
 export * from './category.factory';
+export * from './store.factory';
+export * from './product.factory';

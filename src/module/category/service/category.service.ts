@@ -8,7 +8,7 @@ import { CategoryRepository } from '@repository';
 
 export const P_CATEGORY_CREATE = '9b0feb4a-fd07-4353-bdd0-21bcd41485eb';
 export const P_CATEGORY_LISTED = '1ed5a406-df45-4057-a480-5907a55b79e0';
-export const P_CATEGORY_DETAIL = '';
+export const P_CATEGORY_DETAIL = '63ce89fa-20ba-4cde-a368-cc08d412b44e';
 export const P_CATEGORY_UPDATE = '877d9897-a786-4b92-82ba-544bd68f459c';
 export const P_CATEGORY_DELETE = '3ac1ef75-d3f5-49e9-bf21-51307a1fb448';
 

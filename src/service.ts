@@ -18,3 +18,5 @@ export * from './module/user/service/user.service';
 export * from './module/user/service/user-role.service';
 
 export * from './module/category/service/category.service';
+export * from './module/store/service/store.service';
+export * from './module/store/service/product.service';

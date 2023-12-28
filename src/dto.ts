@@ -15,3 +15,5 @@ export * from './module/user/dto/user.dto';
 export * from './module/user/dto/user-role.dto';
 
 export * from './module/category/dto/category.dto'
+export * from './module/store/dto/store.dto'
+export * from './module/store/dto/product.dto'

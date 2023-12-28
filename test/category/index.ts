@@ -73,7 +73,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
         const { body } = await request(BaseTest.server)
             .get('/api/category/' + result.id!)
             .set('Authorization', 'Bearer' + BaseTest.token)
-            .expect(HttpStatus.OK);
+            .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     })
 
     it('Get one category not exist [GET /api/category/:id]', async () => {
@@ -82,7 +82,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
         const { body } = await request(BaseTest.server)
             .get('/api/category/' + randomId)
             .set('Authorization', 'Bearer ' + BaseTest.token)
-            .expect(HttpStatus.BAD_REQUEST);
+            .expect(type ? HttpStatus.BAD_REQUEST : HttpStatus.FORBIDDEN);
 
         expect(body.message).toEqual(`Dữ liệu ${randomId} không tồn tại`);
     })

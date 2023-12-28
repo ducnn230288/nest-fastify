@@ -4,6 +4,7 @@ import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger";
 import { faker } from '@faker-js/faker';
 import { Type } from "class-transformer";
+import { Product } from "@model";
 
 @Entity()
 export class Category extends Base {
@@ -33,4 +34,7 @@ export class Category extends Base {
 
     @OneToMany(() => Category, (category) => category.parent)
     listCategory?: Category[];
+
+    @OneToMany(() => Product, (product) => product.category)
+    products: Product[];
 }
