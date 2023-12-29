@@ -20,6 +20,8 @@ export * from './module/sub-organization/dto';
 
 export * from './module/category/dto/category.dto';
 
+export * from './module/store-request/dto/store-request.dto';
+
 
 
 

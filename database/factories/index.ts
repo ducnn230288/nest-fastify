@@ -14,3 +14,4 @@ export * from './ward.factory';
 export * from './sub-organization.factory';
 export * from './connect-kiotviet.factory';
 export * from './category.factory';
+export * from './store-request.factory';

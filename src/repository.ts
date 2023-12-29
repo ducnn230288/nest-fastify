@@ -10,3 +10,4 @@ export * from './module/user/repository/address.repository';
 export * from './module/user/repository/user.repository';
 export * from './module/category/repository/category.repository'
 export * from './module/sub-organization/repository/sub-organization.repository'
+export * from './module/store-request/repository/store-request.repository'

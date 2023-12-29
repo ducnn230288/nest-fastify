@@ -79,7 +79,7 @@ export class CategoryController {
         summary: 'find all category',
         permission: P_CATEGORY_FINDALL
     })
-    @Get('/findAll')
+    @Get('')
     async findAll(
         @I18n() i18n: I18nContext,
         @AuthUser() user: User,

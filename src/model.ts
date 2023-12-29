@@ -19,3 +19,5 @@ export * from './module/sub-organization/model'
 
 export * from './module/category/model';
 
+export * from './module/store-request/model/store-request.model';
+

@@ -90,17 +90,8 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
             userDto.phoneNumber = phoneNumber;
             userDto.note = note;
             userDto.subOrgId = user.subOrgId;
-            await this.userService.create({
-                addressId : newAddress?.id!,
-                email : emailContact,
-                name : nameContact,
-                phoneNumber : phoneNumber,
-               note : note,
-              subOrgId : user.subOrgId,
-               retypedPassword:'',
-                 });
+            await this.userService.create(userDto);
         });
-
         return data;
 
     }

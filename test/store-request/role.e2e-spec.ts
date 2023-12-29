@@ -1,0 +1,15 @@
+import { API, testCase } from './index';
+
+import {
+  P_STORE_REQUEST_ACCEPT,
+  P_STORE_REQUEST_CREATE, P_STORE_REQUEST_FIND_ALL, P_STORE_REQUEST_FIND_ONE, P_STORE_REQUEST_REJECT
+} from '@service';
+
+describe('Role -' + API, () =>
+  testCase('Role', [
+    P_STORE_REQUEST_CREATE,
+    P_STORE_REQUEST_FIND_ALL,
+    P_STORE_REQUEST_FIND_ONE,
+    P_STORE_REQUEST_REJECT,
+    P_STORE_REQUEST_ACCEPT
+  ]));
