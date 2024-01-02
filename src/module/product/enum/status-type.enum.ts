@@ -1,0 +1,5 @@
+export enum E_STATUS_TYPE {
+    ON_SALE = 'ON_SALE',
+    INTERRUPTIVE = 'INTERRUPTIVE',
+    OUT_OF_STOCK = 'OUT_OF_STOCK'
+}
