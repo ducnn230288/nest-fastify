@@ -15,7 +15,7 @@ export const P_SUB_ORGANIZATION_CREATE = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
 export const P_SUB_ORGANIZATION_UPDATE = 'e2ba1491-ddfd-4acc-90cd-7df987700b52';
 export const P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS = '0e399cb2-00b5-4d93-897f-85321715aeb8';
 export const P_SUB_ORGANIZATION_DELETE = '0bbc127d-043b-4987-931f-e9349c63c00f';
-
+export const P_SUB_ORGANIZATION_GET_ALL_SUPPLIER_BY_ADMIN='7491b33f-52dd-40ad-9fab-a947024a633d';
 @Injectable()
 export class SubOrganizationService extends BaseService<SubOrganization> {
     constructor(
@@ -47,88 +47,76 @@ export class SubOrganizationService extends BaseService<SubOrganization> {
 
     // }
     async add(body: CreateSubOrganizationRequestDto, user: User): Promise<any> {
-        const {
-            note,
-            emailContact,
-            phoneNumber,
-            address,
-            nameContact,
-            connectKiot,
-            storeId,
-            ...subOrg
-        } = body;
-        let data;
-        if (await this.repo.checkFax(user, body)) {
-            throw new ConflictException('Số Fax đã được đăng kí trước đó.');
-        }
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
-            const newAddress = await this.addressService.create({ ...address, userId: user.id })
-            data = await this.create({
-                addressId: newAddress?.id,
-                orgId: user.orgId!,
-                note,
-                storeId:user.subOrgId||storeId!,
-                ...subOrg
-            });
-            await this.userService.create({
-                addressId: newAddress?.id!,
-                name: nameContact,
-                note,
-                orgId: user.orgId,
-                phoneNumber,
-                email: emailContact,
-                subOrgId: user.subOrgId,
-            });
-        });
-        return data
+        // const {
+        //     note,
+        //     emailContact,
+        //     phoneNumber,
+        //     address,
+        //     nameContact,
+        //     connectKiot,
+        //     storeId,
+        //     ...subOrg
+        // } = body;
+        // let data;
+        // if (await this.repo.checkFax(user, body)) throw new ConflictException('Số Fax đã được đăng kí trước đó.');
+        // await this.dataSource.transaction(async (transactionalEntityManager) => {
+        //     const newAddress = await this.addressService.create({ ...address, userId: user.id })
+        //     data = await this.create({
+        //         addressId: newAddress?.id,
+        //         orgId: user.orgId!,
+        //         note,
+        //         storeId:user.subOrgId||storeId!,
+        //         ...subOrg
+        //     });
+        //     await this.userService.create({
+        //         addressId: newAddress?.id!,
+        //         name: nameContact,
+        //         note,
+        //         orgId: user.orgId,
+        //         phoneNumber,
+        //         email: emailContact,
+        //         subOrgId: data.id,
+        //     });
+        // });
+        // return data
     }
     async updateSubOrganization(
         subOrgDto: UpdateSubOrganizationDto,
         id: string,
         user: User
     ) {
-        const i18n = I18nContext.current();
-        const {
-            emailContact,
-            phoneNumber,
-            address,
-            nameContact,
-            connectKiot,
-            storeId,
-            ...sub
-        } = subOrgDto;
-        //check sub-org exist
-        const subOrg = await this.findOne(id);
-        if (isNullOrUndefined(subOrg)) {
-            throw new NotFoundException(i18n?.t('common.Data id not found', { args: { id } }));
-        }
-        const checkFax = await this.repo.checkFax(user, subOrgDto);
-        //check fax exist
-        if (!isNullOrUndefined(checkFax)) {
-            throw new ConflictException('fax đã được sử dụng');
-        }
-        // update sub-org , address , user
-        await this.dataSource.transaction(async (transactionalEntityManager) => {
-            await this.update(id,sub);
-            await this.addressService.update(subOrg.addressId, address!);
-            const addressSubOrg = await this.addressService.findOne(subOrg.addressId);
-            await this.userService.update(
-                addressSubOrg?.userId!,
-                {
-                    name: nameContact!,
-                    email: emailContact!,
-                    phoneNumber: phoneNumber!,
-                }
-            )
-        });
+        // const i18n = I18nContext.current();
+        // const {
+        //     emailContact,
+        //     phoneNumber,
+        //     address,
+        //     nameContact,
+        //     connectKiot,
+        //     storeId,
+        //     ...sub
+        // } = subOrgDto;
+        // //check sub-org exist
+        // const subOrg = await this.findOne(id);
+        // if (isNullOrUndefined(subOrg)) throw new NotFoundException(i18n?.t('common.Data id not found', { args: { id } }));
+        //  //check fax exist
+        // const checkFax = await this.repo.checkFax(user, subOrgDto);
+        // if (!isNullOrUndefined(checkFax)) throw new ConflictException('fax đã được sử dụng');
+        // // update sub-org , address , user
+        // await this.dataSource.transaction(async (transactionalEntityManager) => {
+        //     await this.update(id,sub);
+        //     await this.addressService.update(subOrg.addressId, address!);
+        //     const addressSubOrg = await this.addressService.findOne(subOrg.addressId);
+        //     await this.userService.update(
+        //         addressSubOrg?.userId!,
+        //         {
+        //             name: nameContact!,
+        //             email: emailContact!,
+        //             phoneNumber: phoneNumber!,
+        //         }
+        //     )
+        // });
     }
-    //     async updateActiveStatusSubOrganization(
-    //         user: User,
-    //         updateActiveStatusDto: UpdateSubOrganizationActiveDto,
-    //         id: string
-    //     ) {
-    //         const { isActive } = updateActiveStatusDto
-    //             const data= await this.update(id,updateActiveStatusDto)
-    //             return data;
-    //     }
+    async getSuppliersByAdmin (user:User){
+        return this.repo.getSuppliersByAdmin(user)
+    }
 }

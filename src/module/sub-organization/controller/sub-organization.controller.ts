@@ -7,6 +7,7 @@ import {
   P_DATA_CREATE,
   P_SUB_ORGANIZATION_CREATE,
   P_SUB_ORGANIZATION_DELETE,
+  P_SUB_ORGANIZATION_GET_ALL_SUPPLIER_BY_ADMIN,
   P_SUB_ORGANIZATION_UPDATE,
   P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS,
   SubOrganizationService,
@@ -60,6 +61,7 @@ export class SubOrganizationController {
     @AuthUser() user: User,
     @Param('id') id: string,
   ): Promise<any> {
+    
     await this.service.updateSubOrganization(body, id, user);
     return {
       message: i18n.t('common.Update Success'),
@@ -75,19 +77,17 @@ export class SubOrganizationController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: UpdateSubOrganizationActiveDto,
     @Param('id') id: string,
-  ) {
-    console.log('isactive', body);
-
+  ) {    
     return {
       message: i18n.t('common.Update Success'),
       statusCode: 200,
       data: await this.service.update(id, body),
     };
   }
-    @Auth({
-      summary: 'delete categry',
-      permission: P_SUB_ORGANIZATION_DELETE,
-    })
+  @Auth({
+    summary: 'delete categry',
+    permission: P_SUB_ORGANIZATION_DELETE,
+  })
   @Delete(':id')
   async delete(@I18n() i18n: I18nContext, @Param('id') id: string) {
     await this.service.remove(id);
@@ -95,5 +95,20 @@ export class SubOrganizationController {
       message: i18n.t('common.Delete Success'),
       statusCode: 200,
     };
+  }
+  @Auth({
+    summary: 'get all supplier vby admin',
+    permission: P_SUB_ORGANIZATION_GET_ALL_SUPPLIER_BY_ADMIN,
+  })
+  @Get('/admin/all-supplier')
+  async getSuppliersByAdmin(
+    @I18n() i18n: I18nContext,
+    @AuthUser() user: User,
+  ){
+    return{
+      message: i18n.t('common.Get List success'),
+      statusCode: 200,
+      data: await this.service.getSuppliersByAdmin(user)
+    }
   }
 }
