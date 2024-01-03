@@ -15,7 +15,7 @@ export * from './module/user/model/ward.model';
 export * from './module/user/model/address.model';
 export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
-export * from './module/sub-organization/model'
+export * from './module/sub-organization/model';
 
 export * from './module/category/model';
-
+export * from './module/retail-price/model/retail-price.model';

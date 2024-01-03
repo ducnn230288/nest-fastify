@@ -20,3 +20,4 @@ export * from './module/user/controller/user-role.controller';
 export * from './module/sub-organization/controller/sub-organization.controller';
 
 export * from './module/category/controller/category.controller';
+export * from './module/retail-price/controller/retail-price.controller';

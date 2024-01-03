@@ -25,7 +25,7 @@ import {
   ConnectKiotViet,
   Category,
 } from '@model';
-import { RetailPrice } from 'src/module/retail-price/model/retail-price.entity';
+import { RetailPrice } from 'src/module/retail-price/model/retail-price.model';
 
 const options: DataSourceOptions & SeederOptions = {
   type: 'postgres',
@@ -54,7 +54,7 @@ const options: DataSourceOptions & SeederOptions = {
     SubOrganization,
     ConnectKiotViet,
     Category,
-    RetailPrice
+    RetailPrice,
   ],
   migrations: [Core1698359444654],
   seeds: [MainSeeder],

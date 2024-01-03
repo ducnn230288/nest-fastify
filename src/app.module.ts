@@ -8,7 +8,15 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, SchedulerModule, CoreModule, UserModule, SubOrganizationModule, CategoryModule } from '@module';
+import {
+  NotificationModule,
+  SchedulerModule,
+  CoreModule,
+  UserModule,
+  SubOrganizationModule,
+  CategoryModule,
+} from '@module';
+import { RetailPrice } from './module/retail-price/model/retail-price.model';
 
 @Module({
   controllers: [AppController],
@@ -20,6 +28,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule, SubOrganiz
     CoreModule,
     SubOrganizationModule,
     CategoryModule,
+    RetailPrice,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',

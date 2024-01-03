@@ -19,7 +19,7 @@ export * from './module/user/dto/user-role.dto';
 export * from './module/sub-organization/dto';
 
 export * from './module/category/dto/category.dto';
-
+export * from './module/retail-price/dto/create-retail-price.dto'
 
 
 
