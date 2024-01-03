@@ -137,3 +137,13 @@ export class UserDto extends PartialType(
 export class UserResponseDto extends PartialType(DefaultResponsesDto) {
   readonly data: DefaultAuthResponsesUserDto | null;
 }
+// export class UserOnCreateSubOrgDto extends PickType(User,['phoneNumber']){
+//   @ApiProperty({
+//             example: faker.person.firstName()
+//         })
+//   nameContact: User['name']
+//   @ApiProperty({
+//             example: faker.internet.email()
+//         })
+//   emailContact: User['email']         
+// }

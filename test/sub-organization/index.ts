@@ -22,7 +22,7 @@ import {
   UserService,
   WardService,
 } from '@service';
-import { SUPPLIER_TYPE, SubOrgType } from '@enum';
+import { SUPPLIER_TYPE, SUBORG_TYPE } from '@enum';
 
 const controller = '/sub-organization';
 export const API = prefixRouter + controller;
@@ -52,7 +52,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataCreate = {
       ...dataSubOrg,
       emailContact: dataUser.email,
-      nameContact: dataUser.name,
+      nameContact: dataUser.nameContact,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
@@ -73,7 +73,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataCreate = {
       ...dataSubOrg,
       emailContact: dataUser.email,
-      nameContact: dataUser.name,
+      nameContact: dataUser.nameContact,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
@@ -85,7 +85,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataUpdate = {
       ...dataSubOrgUpdate,
       emailContact: dataUserUpdate.email,
-      nameContact: dataUserUpdate.name,
+      nameContact: dataUserUpdate.nameContact,
       phoneNumber: dataUserUpdate.phoneNumber,
       address: dataAddressUpdate,
       connectKiot: dataKiotVietUpdate,
@@ -114,8 +114,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
   });
   it(`Get all supplier by admin [GET ${API}/admin-supplier ]`, async () => {
-    
-      const dataSubOrg = await factoryManager.get(SubOrganization).make();
+    const dataSubOrg = await factoryManager.get(SubOrganization).make();
     const dataUser = await factoryManager.get(User).make();
     const dataAddress = await factoryManager.get(Address).make();
     const dataKiotViet = await factoryManager.get(ConnectKiotViet).make();
@@ -123,28 +122,27 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const userTest = await BaseTest.moduleFixture!.get(UserService).create(userDataTest);
     dataCreate = {
       ...dataSubOrg,
-      type:SubOrgType.SUPPLIER,
-      supplierType:SUPPLIER_TYPE.BALANCE,
+      type: SUBORG_TYPE.SUPPLIER,
+      supplierType: SUPPLIER_TYPE.BALANCE,
       emailContact: dataUser.email,
-      nameContact: dataUser.name,
+      nameContact: dataUser.nameContact,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
     };
-    
+
     resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).add(dataCreate, userTest!);
     console.log(resultSubOrg);
-    
-    
+
     const { body } = await request(BaseTest.server)
       .get(API + '/admin/all-supplier')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-      console.log(body);
-      
-      // if (type) {
-      //   expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
-      // }
+    console.log(body);
+
+    // if (type) {
+    //   expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
+    // }
   });
   // it('Get all [GET /api/data-type]', async () => {
   //   const { body } = await request(BaseTest.server)

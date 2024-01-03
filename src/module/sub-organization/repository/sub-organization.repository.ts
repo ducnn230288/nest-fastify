@@ -5,7 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { async, publish } from 'rxjs';
 import { User } from '@model';
 import { isNullOrUndefined } from 'util';
-import { SUPPLIER_TYPE, SubOrgType } from '../enum';
+import { SUPPLIER_TYPE, SUBORG_TYPE } from '../enum';
 import { CreateSubOrganizationRequestDto, UpdateSubOrganizationDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -32,13 +32,24 @@ export class SubOrganizationRepository extends BaseRepository<SubOrganization> {
       .select(['sub_organization.id', 'sub_organization.name', 'sub_organization.supplierType'])
       //.where(`sub_organization.orgId = ${user.orgId}`)
       .where('sub_organization.type = :type', {
-        type: SubOrgType.SUPPLIER,
+        type: SUBORG_TYPE.SUPPLIER,
       })
       .andWhere('sub_organization.supplierType = :supplierType', {
         supplierType: SUPPLIER_TYPE.BALANCE,
       })
       .getMany();
- //   console.log('data', data);
     return data;
+  }
+  async getAllSuppliersByDistributor(user : User){
+    const data = await this.createQueryBuilder('sub_organization')
+    .leftJoin('sub_organization.address', 'address')
+    .select([
+      'sub_organization','address'
+    ])
+    .andWhere('address.id = sub_organization.address_id')
+                .andWhere('sub_organization.type = :type', {
+                    type: SUBORG_TYPE.SUPPLIER
+                })
+  
   }
 }

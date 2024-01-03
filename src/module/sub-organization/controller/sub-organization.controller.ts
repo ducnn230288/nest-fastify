@@ -36,7 +36,7 @@ export class SubOrganizationController {
 
   // }
   @Auth({
-    summary: 'update categoy',
+    summary: 'create subOrg',
     permission: P_SUB_ORGANIZATION_CREATE,
   })
   @Post('')
@@ -51,7 +51,7 @@ export class SubOrganizationController {
     };
   }
   @Auth({
-    summary: 'update categoy',
+    summary: 'update subOrg',
     permission: P_SUB_ORGANIZATION_UPDATE,
   })
   @Put(':id')
@@ -69,7 +69,7 @@ export class SubOrganizationController {
     };
   }
   @Auth({
-    summary: 'update category active-status',
+    summary: 'update subOrg active-status',
     permission: P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS,
   })
   @Put(':id/active-status')
@@ -85,7 +85,7 @@ export class SubOrganizationController {
     };
   }
   @Auth({
-    summary: 'delete categry',
+    summary: 'delete subOrg',
     permission: P_SUB_ORGANIZATION_DELETE,
   })
   @Delete(':id')
@@ -97,7 +97,7 @@ export class SubOrganizationController {
     };
   }
   @Auth({
-    summary: 'get all supplier vby admin',
+    summary: 'get all supplier by admin',
     permission: P_SUB_ORGANIZATION_GET_ALL_SUPPLIER_BY_ADMIN,
   })
   @Get('/admin/all-supplier')

@@ -27,5 +27,8 @@
       "You may have mistyped": "Có thể bạn đã gõ sai địa chỉ hoặc trang đã được di chuyển.",
       "Back to Home": "Trở về trang chủ"
     }
+  },
+  "SubOrg":{
+    "Fax number has been previously registered" : "Số Fax đã được đăng ký trước đó"
   }
 }
