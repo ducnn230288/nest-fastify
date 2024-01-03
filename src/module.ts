@@ -5,3 +5,4 @@ export * from './module/user/user.module';
 export * from './module/sub-organization/sub-organization.module';
 export * from './module/category/category.module';
 export * from './module/store-request/store-request.module';
+export * from './module/product/product.module';

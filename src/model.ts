@@ -21,3 +21,5 @@ export * from './module/category/model';
 
 export * from './module/store-request/model/store-request.model';
 
+export * from './module/product/model/product.model';
+

@@ -25,6 +25,7 @@ import {
   ConnectKiotViet,
   Category,
   StoreRequest,
+  Product,
 } from '@model';
 
 const options: DataSourceOptions & SeederOptions = {
@@ -55,6 +56,7 @@ const options: DataSourceOptions & SeederOptions = {
     ConnectKiotViet,
     Category,
     StoreRequest,
+    Product
   ],
   migrations: [Core1698359444654],
   seeds: [MainSeeder],
