@@ -1,9 +1,20 @@
-import { ApiProperty, IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, PartialType, PickType, OmitType } from '@nestjs/swagger';
 import { Address, ConnectKiotViet, SubOrganization, User } from '@model';
 import { IsNotEmpty, IsString, IsOptional, IsEmail } from 'class-validator';
 import { DetailConnectKiotViet } from '@dto';
 import { faker } from '@faker-js/faker';
 import { SUPPLIER_TYPE, SubOrgType } from '../enum';
+import { PaginationResponsesDto, DefaultResponsesDto } from '@shared';
+
+export class SubOrganizationDto extends PartialType(OmitType(SubOrganization, [] as const)) {}
+
+export class ListSubOrganizationResponseDto extends PartialType(PaginationResponsesDto) {
+  readonly data: SubOrganizationDto[];
+}
+
+export class SubOrganizationResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: SubOrganizationDto | null;
+}
 
 class DetailAddress extends PickType(Address, [
   'codeProvince',

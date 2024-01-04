@@ -1,10 +1,16 @@
-import { Body, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { Auth, AuthUser, Headers, MaxGroup, SerializerBody } from '@shared';
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Auth, AuthUser, Headers, MaxGroup, SerializerBody, PaginationQueryDto } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { CreateSubOrganizationRequestDto, UpdateSubOrganizationActiveDto } from '@dto';
+import {
+  ListSubOrganizationResponseDto,
+  SubOrganizationResponseDto,
+  CreateSubOrganizationRequestDto,
+  UpdateSubOrganizationActiveDto,
+} from '@dto';
 import { User } from '@model';
 import {
-  P_DATA_CREATE,
+  P_SUB_ORGANIZATION_LIST,
+  P_SUB_ORGANIZATION_DETAIL,
   P_SUB_ORGANIZATION_CREATE,
   P_SUB_ORGANIZATION_DELETE,
   P_SUB_ORGANIZATION_GET_ALL_SUPPLIER_BY_ADMIN,
@@ -35,6 +41,38 @@ export class SubOrganizationController {
   //     };
 
   // }
+
+  @Auth({
+    summary: 'Get list sub ogrganization',
+    permission: P_SUB_ORGANIZATION_LIST,
+  })
+  @Get('')
+  async findAll(
+    @I18n() i18n: I18nContext,
+    @Query() paginationQuery: PaginationQueryDto,
+  ): Promise<ListSubOrganizationResponseDto> {
+    const [result, total] = await this.service.findAll(paginationQuery);
+
+    return {
+      message: i18n.t('common.Get List success'),
+      count: total,
+      data: result,
+    };
+  }
+
+  @Auth({
+    summary: 'Get detail sub organization',
+    permission: P_SUB_ORGANIZATION_DETAIL,
+  })
+  @Get('/:id')
+  async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<SubOrganizationResponseDto> {
+    console.log('id', id);
+    return {
+      message: i18n.t('common.Get Detail Success'),
+      data: await this.service.findOne(id),
+    };
+  }
+
   @Auth({
     summary: 'update categoy',
     permission: P_SUB_ORGANIZATION_CREATE,

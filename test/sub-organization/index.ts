@@ -107,6 +107,29 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send({ isActive: false });
   });
 
+  it(`Get all [GET ${API}]`, async () => {
+    const { body } = await request(BaseTest.server)
+      .get(API)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+    if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
+  });
+
+  it(`Get one [GET ${API}/:id]`, async () => {
+    if (!type)
+      resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).create(
+        await factoryManager.get(SubOrganization).make(),
+      );
+
+    const { body } = await request(BaseTest.server)
+      .get(`${API}/` + resultSubOrg!.id)
+      .set('Authorization', 'Bearer ' + BaseTest.token)
+      .expect(HttpStatus.OK);
+
+    if (type) expect(body.data).toEqual(jasmine.objectContaining(resultSubOrg));
+  });
+
   it(`Delete [DELETE ${API}/:id]`, async () => {
     const { body } = await request(BaseTest.server)
       .delete(API + '/' + resultSubOrg?.id)
@@ -114,8 +137,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
   });
   it(`Get all supplier by admin [GET ${API}/admin-supplier ]`, async () => {
-    
-      const dataSubOrg = await factoryManager.get(SubOrganization).make();
+    const dataSubOrg = await factoryManager.get(SubOrganization).make();
     const dataUser = await factoryManager.get(User).make();
     const dataAddress = await factoryManager.get(Address).make();
     const dataKiotViet = await factoryManager.get(ConnectKiotViet).make();
@@ -123,28 +145,27 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const userTest = await BaseTest.moduleFixture!.get(UserService).create(userDataTest);
     dataCreate = {
       ...dataSubOrg,
-      type:SubOrgType.SUPPLIER,
-      supplierType:SUPPLIER_TYPE.BALANCE,
+      type: SubOrgType.SUPPLIER,
+      supplierType: SUPPLIER_TYPE.BALANCE,
       emailContact: dataUser.email,
       nameContact: dataUser.name,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
     };
-    
+
     resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).add(dataCreate, userTest!);
     console.log(resultSubOrg);
-    
-    
+
     const { body } = await request(BaseTest.server)
       .get(API + '/admin/all-supplier')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-      console.log(body);
-      
-      // if (type) {
-      //   expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
-      // }
+    console.log(body);
+
+    // if (type) {
+    //   expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
+    // }
   });
   // it('Get all [GET /api/data-type]', async () => {
   //   const { body } = await request(BaseTest.server)
