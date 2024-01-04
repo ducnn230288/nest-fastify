@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Unique } fr
 import { faker } from '@faker-js/faker';
 import { IsString, IsOptional,IsUUID } from 'class-validator';
 import { Base } from "@shared";
+import { Exclude, Expose } from "class-transformer";
 
 @Entity()
 export class Category extends Base{
@@ -12,6 +13,7 @@ export class Category extends Base{
         description: '',
     })
     @IsString()
+    @Expose()
     name: string;
 
     @Column()
@@ -21,6 +23,7 @@ export class Category extends Base{
     })
     @IsString()
     @Column({nullable:true})
+    @Exclude()
     code: string;
 
     @Column({default:true})
@@ -28,6 +31,7 @@ export class Category extends Base{
         example: faker.datatype.boolean(),
         description: '',
     })
+    @Exclude()
     isActive: boolean;
 
     @Column({nullable:true})
@@ -35,6 +39,7 @@ export class Category extends Base{
         example: faker.datatype.boolean(),
         description: '',
     })
+    @Exclude()
     isParent: boolean;
 
     @Column()
@@ -42,6 +47,7 @@ export class Category extends Base{
         example: faker.date.recent(),
         description: '',
     })
+    @Exclude()
     createdAt: Date;
 
     @Column()
@@ -49,6 +55,7 @@ export class Category extends Base{
         example: faker.date.recent(),
         description: '',
     })
+    @Exclude()
     updatedAt: Date;
 
     @Column({nullable:true})
@@ -56,6 +63,7 @@ export class Category extends Base{
         example: faker.finance.bic(),
         description: '',
     })
+    @Exclude()
     createdById: string;
 
     @Column({nullable:true})
@@ -63,6 +71,7 @@ export class Category extends Base{
         example: faker.finance.bic(),
         description: '',
     })
+    @Exclude()
     orgId: string;
 
     @Column({nullable:true})
@@ -70,6 +79,7 @@ export class Category extends Base{
         example: faker.datatype.boolean(),
         description: '',
     })
+    @Exclude()
     isKiotViet: boolean;
 
     @Column({nullable:true})
@@ -77,6 +87,7 @@ export class Category extends Base{
         example: faker.finance.bic(),
         description: '',
     })
+    @Exclude()
     categoryKiotId: number;
 
     @Column({nullable:true})
@@ -88,6 +99,7 @@ export class Category extends Base{
     @IsString()
     @Column({nullable:true,unique:false})
     @ApiProperty({ example: faker.string.uuid(), description: '' })
+    @Expose()
     parentId: string;
     @IsOptional()
     @ManyToOne(() => Category, (category) => category.parent)

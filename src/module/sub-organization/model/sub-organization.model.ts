@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Base } from '@shared';
+import { Base, MaxGroup } from '@shared';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 import { SUPPLIER_TYPE, SUBORG_TYPE } from '../enum';
 import { Address } from '@model';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
 export class SubOrganization extends Base {
@@ -13,6 +14,7 @@ export class SubOrganization extends Base {
     example: faker.person.jobType(),
     description: '',
   })
+  @Expose()
   @IsString()
   name: string;
 
@@ -22,6 +24,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsUUID()
+  @Expose()
   uuid: string;
 
   @Column({ nullable: true })
@@ -30,6 +33,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsString()
+  @Expose()
   description: string;
 
   @Column({ nullable: true })
@@ -38,6 +42,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsString()
+  @Expose()
   code: string;
 
   @Column({ nullable: true })
@@ -46,6 +51,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsString()
+  @Exclude()
   logoPhoto: string;
 
   @Column({ nullable: true, default: true })
@@ -54,6 +60,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsBoolean()
+  @Exclude()
   isActive: boolean;
 
   // @Column()
@@ -68,14 +75,17 @@ export class SubOrganization extends Base {
     example: faker.date.recent(),
     description: '',
   })
+  @Exclude()
   updatedAt: Date;
 
   @Column({ name: 'address_id', nullable: true })
   @ApiProperty({ example: faker.finance.bic(), description: '' })
+  @Exclude()
   addressId: string;
 
   @OneToOne(() => Address, (address) => address.subOrg, { eager: true })
   @JoinColumn({ name: 'address_id', referencedColumnName: 'id' })
+  @Exclude()
   address: Address;
 
   @Column({ nullable: true })
@@ -83,6 +93,7 @@ export class SubOrganization extends Base {
     example: faker.finance.bic(),
     description: '',
   })
+  @Exclude()
   orgId: string;
 
   @Column({ nullable: true })
@@ -92,6 +103,7 @@ export class SubOrganization extends Base {
   })
   @IsString()
   @IsOptional()
+  @Expose()
   note: string;
 
   @Column()
@@ -99,6 +111,7 @@ export class SubOrganization extends Base {
     example: SUBORG_TYPE.STORE,
     description: '',
   })
+  @Exclude()
   type: SUBORG_TYPE;
 
   @Column()
@@ -107,6 +120,7 @@ export class SubOrganization extends Base {
     description: '',
   })
   @IsString()
+  @Expose()
   fax: string;
 
   @Column()
@@ -114,6 +128,7 @@ export class SubOrganization extends Base {
     example: SUPPLIER_TYPE.BALANCE,
     description: '',
   })
+  @Expose()
   supplierType: SUPPLIER_TYPE;
 
   @Column({ nullable: true })
@@ -122,9 +137,11 @@ export class SubOrganization extends Base {
     example: faker.string.uuid(),
     description: '',
   })
+  @Exclude()
   storeId: string;
 
   @Column({ nullable: true })
+  @Exclude()
   // @OneToMany(() => Product, (product) => product.subOrg)
   // product: Product[];
   product: string;
@@ -132,12 +149,14 @@ export class SubOrganization extends Base {
   // @OneToMany(() => UserRole, (userRole) => userRole.subOrg)
   // userRole: UserRole[];
   @Column({ nullable: true })
+  @Exclude()
   userRole: string;
 
   // @ManyToOne(() => Organization, (org) => org.subOrg)
   // @JoinColumn({ name: 'org_id', referencedColumnName: 'id' })
   // org: Organization;
   @Column({ nullable: true })
+  @Exclude()
   org: string;
 
   // @OneToMany(
@@ -146,11 +165,13 @@ export class SubOrganization extends Base {
   // )
   // storeConnectSupplier: StoreConnectSupplier[];
   @Column({ nullable: true })
+  @Exclude()
   storeConnectSupplier: string;
 
   // @OneToOne(() => Order, (order) => order.supplier)
   // orderSupplier: Order;
   @Column({ nullable: true })
+  @Exclude()
   orderSupplier: string;
 
   // @OneToOne(() => Order, (order) => order.store)
@@ -158,17 +179,20 @@ export class SubOrganization extends Base {
   // @OneToMany(() => DocumentSubOrganiztion, (contract) => contract.subOrg)
   // contract: DocumentSubOrganiztion[];
   @Column({ nullable: true })
+  @Exclude()
   contract: string;
 
   // @OneToMany(() => SubOrgCommision, (commission) => commission.subOrg)
   // commission: SubOrgCommision[];
   @Column({ nullable: true })
+  @Exclude()
   commission: string;
 
   // @ManyToOne(() => SubOrganization)
   // @JoinColumn({ name: 'store_id', referencedColumnName: 'id' })
   // store: SubOrganization;
   @Column({ nullable: true })
+  @Exclude()
   store: string;
 
   // @OneToOne(
@@ -177,10 +201,12 @@ export class SubOrganization extends Base {
   // )
   // informationConnect: InformationConnect;
   @Column({ nullable: true })
+  @Exclude()
   informationConnect: string;
 
   // @OneToMany(() => InventoryProduct, inventoryProduct => inventoryProduct.branch)
   // inventoryProduct: InventoryProduct[]
   @Column({ nullable: true })
+  @Exclude()
   inventoryProduct: string;
 }

@@ -45,6 +45,8 @@ export class SubOrganizationController {
     @Body(new SerializerBody([MaxGroup])) body: CreateSubOrganizationRequestDto,
     @AuthUser() user: User,
   ): Promise<any> {
+    console.log('b',body);
+    
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.add(body, user),

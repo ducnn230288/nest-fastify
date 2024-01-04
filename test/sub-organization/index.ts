@@ -52,7 +52,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataCreate = {
       ...dataSubOrg,
       emailContact: dataUser.email,
-      nameContact: dataUser.nameContact,
+      nameContact: dataUser.name,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
@@ -63,6 +63,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send(dataCreate as CreateSubOrganizationRequestDto)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
     resultSubOrg = body.data;
+    console.log('aaa',body.data);
+    
   });
 
   it(`Update one [PUT ${API}/:id]`, async () => {
@@ -73,7 +75,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataCreate = {
       ...dataSubOrg,
       emailContact: dataUser.email,
-      nameContact: dataUser.nameContact,
+      nameContact: dataUser.name,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
@@ -85,7 +87,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     dataUpdate = {
       ...dataSubOrgUpdate,
       emailContact: dataUserUpdate.email,
-      nameContact: dataUserUpdate.nameContact,
+      nameContact: dataUserUpdate.name,
       phoneNumber: dataUserUpdate.phoneNumber,
       address: dataAddressUpdate,
       connectKiot: dataKiotVietUpdate,
@@ -125,7 +127,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       type: SUBORG_TYPE.SUPPLIER,
       supplierType: SUPPLIER_TYPE.BALANCE,
       emailContact: dataUser.email,
-      nameContact: dataUser.nameContact,
+      nameContact: dataUser.name,
       phoneNumber: dataUser.phoneNumber,
       address: dataAddress,
       connectKiot: dataKiotViet,
