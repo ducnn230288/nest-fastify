@@ -89,14 +89,14 @@ export class Product extends Base {
     @Column()
     @IsUUID()
     @ApiProperty({
-        example : faker.datatype.uuid(),
+        example : faker.string.uuid(),
     })
     orgId: string;
 
     @Column()
     @IsUUID()
     @ApiProperty({
-        example : faker.datatype.uuid(),
+        example : faker.string.uuid(),
     })
     subOrgId: string;
 
@@ -133,7 +133,7 @@ export class Product extends Base {
     @Column()
     @IsUUID()
     @ApiProperty({
-        example : faker.datatype.uuid(),
+        example : faker.string.uuid(),
     })
     productSupplierId: string;
 

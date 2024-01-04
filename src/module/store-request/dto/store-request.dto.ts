@@ -6,7 +6,8 @@ import { StoreRequest } from "@model";
 export class CreateStoreRequestDto extends PickType(StoreRequest, [
     "productName",
     "description",
-    "note"
+    "note",
+    "approvedAt"
 ] as const) { }
 
 

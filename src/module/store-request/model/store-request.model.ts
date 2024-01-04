@@ -1,8 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Base } from "@shared";
+import { Base, MaxGroup } from "@shared";
 import { Column, Entity } from "typeorm";
 import { faker } from '@faker-js/faker';
 import { IsString, IsBoolean, IsUUID } from 'class-validator';
+import { E_APPROVE_STATUS } from "@enum";
+import { Expose } from 'class-transformer';
 
 @Entity()
 export class StoreRequest extends Base {
@@ -33,11 +35,9 @@ export class StoreRequest extends Base {
     @Column({
         default: true
     })
-    @IsBoolean({
-        message: 'Status must be boolean'
-    })
+    @IsString()
     @ApiProperty({
-        example: faker.datatype.boolean
+        example: E_APPROVE_STATUS.APPROVED,
     })
     status: string;
 
@@ -46,6 +46,7 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.lorem.text,
     })
+    @Expose({ groups: [MaxGroup] })
     note: string;
 
     @Column({
@@ -55,6 +56,7 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.lorem.text,
     })
+    @Expose({ groups: [MaxGroup] })
     reason: string;
 
     @Column({
@@ -63,6 +65,7 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.number.int({ min: 1, max: 10 }),
     })
+    @Expose({ groups: [MaxGroup] })
     createdById: number;
 
     @Column({
@@ -71,6 +74,7 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.number.int({ min: 1, max: 10 }),
     })
+    @Expose({ groups: [MaxGroup] })
     updatedById: number;
 
     @Column({
@@ -88,6 +92,7 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.date.past(),
     })
+    @Expose({ groups: [MaxGroup] })
     requestedAt: Date;
 
     @Column({
@@ -96,5 +101,6 @@ export class StoreRequest extends Base {
     @ApiProperty({
         example: faker.date.past(),
     })
+    @Expose()
     approvedAt: Date;
 }

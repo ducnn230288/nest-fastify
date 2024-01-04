@@ -1,5 +1,5 @@
 import { Body, Get, Param, Post, Put, Query, ValidationPipe } from "@nestjs/common";
-import { Auth, Headers, PaginationQueryDto, SerializerBody } from "@shared";
+import { Auth, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from "@shared";
 import { CreateStoreRequestDto, RejectStoreRequestDto } from "@dto";
 import { I18n, I18nContext } from "nestjs-i18n";
 import { P_POST_CREATE, P_STORE_REQUEST_ACCEPT, P_STORE_REQUEST_CREATE, P_STORE_REQUEST_FIND_ALL, P_STORE_REQUEST_FIND_ONE, P_STORE_REQUEST_REJECT, StoreRequestService } from "@service";
@@ -19,8 +19,10 @@ export class StoreRequestController {
     @Post('')
     async create(
         @I18n() i18n: I18nContext,
-        @Body(new SerializerBody()) body: CreateStoreRequestDto
+        @Body(new SerializerBody([MaxGroup])) body: CreateStoreRequestDto
     ) {
+        console.log('vvvv',body);
+        
         return {
             message: i18n.t('common.Create Success'),
             data: await this.service.create(body)
@@ -30,6 +32,7 @@ export class StoreRequestController {
     @Auth({
         summary: 'Lấy tất cả dữ liệu',
         permission: P_STORE_REQUEST_FIND_ALL,
+        serializeOptions: { groups: [] },
     })
     @Get('')
     async findAll(
