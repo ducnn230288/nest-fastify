@@ -1,24 +1,18 @@
-import {
-  ConflictException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  forwardRef,
-} from '@nestjs/common';
-import { BaseService } from '@shared';
-import { SubOrganization, User } from '@model';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { CreateSubOrganizationRequestDto, UpdateSubOrganizationActiveDto, UpdateSubOrganizationDto } from '@dto';
-import { isNullOrUndefined } from 'util';
-import { SUPPLIER_TYPE, SUBORG_TYPE } from '@enum';
-import { AddressService, UserService } from '@service';
-import { CreateUserRequestDto, UserDto } from '@dto';
-import { SubOrganizationRepository } from '../repository/sub-organization.repository';
-import { async } from 'rxjs';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { ConflictException, ForbiddenException, Inject, Injectable, InternalServerErrorException, NotFoundException, forwardRef } from "@nestjs/common";
+import { BaseService } from "@shared";
+import { SubOrganization, User } from "@model";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource, Repository } from "typeorm";
+import { CreateSubOrganizationRequestDto, UpdateSubOrganizationActiveDto, UpdateSubOrganizationDto } from "@dto";
+import { isNullOrUndefined } from "util";
+import { SUPPLIER_TYPE, SUBORG_TYPE } from "@enum";
+import { AddressService, UserService } from "@service";
+import { CreateUserRequestDto, UserDto } from "@dto";
+import { SubOrganizationRepository } from "../repository/sub-organization.repository";
+import { async } from "rxjs";
+import { I18n, I18nContext } from "nestjs-i18n";
+export const P_SUB_ORGANIZATION_LIST = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
+export const P_SUB_ORGANIZATION_DETAIL = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
 export const P_SUB_ORGANIZATION_CREATE = 'e1d01bee-a848-4924-9fdd-2f855bbda36a';
 export const P_SUB_ORGANIZATION_UPDATE = 'e2ba1491-ddfd-4acc-90cd-7df987700b52';
 export const P_SUB_ORGANIZATION_UPDATE_ACTIVE_STATUS = '0e399cb2-00b5-4d93-897f-85321715aeb8';

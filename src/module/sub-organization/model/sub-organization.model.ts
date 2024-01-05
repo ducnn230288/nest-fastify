@@ -111,7 +111,7 @@ export class SubOrganization extends Base {
     example: SUBORG_TYPE.STORE,
     description: '',
   })
-  @Exclude()
+  @Expose()
   type: SUBORG_TYPE;
 
   @Column()

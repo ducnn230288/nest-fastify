@@ -1,10 +1,18 @@
-import { ApiProperty, IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, PartialType, PickType, OmitType } from '@nestjs/swagger';
 import { Address, ConnectKiotViet, SubOrganization, User } from '@model';
 import { IsNotEmpty, IsString, IsOptional, IsEmail } from 'class-validator';
-import { DetailConnectKiotViet} from '@dto';
+import { DetailConnectKiotViet } from '@dto';
 import { faker } from '@faker-js/faker';
-import { SUPPLIER_TYPE, SUBORG_TYPE } from '../enum';
+import { SUBORG_TYPE, SUPPLIER_TYPE } from '@enum';
+export class SubOrganizationDto extends PartialType(OmitType(SubOrganization, [] as const)) {}
+import { PaginationResponsesDto, DefaultResponsesDto } from '@shared';
+export class ListSubOrganizationResponseDto extends PartialType(PaginationResponsesDto) {
+  readonly data: SubOrganizationDto[];
+}
 
+export class SubOrganizationResponseDto extends PartialType(DefaultResponsesDto) {
+  readonly data: SubOrganizationDto | null;
+}
 class DetailAddress extends PickType(Address, [
   'codeProvince',
   'codeDistrict',
@@ -21,46 +29,39 @@ class DetailAddress extends PickType(Address, [
 //   @IsOptional()
 //   connectKiot: DetailConnectKiotViet;
 // }
-export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, [
-    'name',
-    'storeId',
-    'note',
-    'fax',
-]) {
+export class CreateSubOrganizationRequestDto extends PickType(SubOrganization, ['name', 'storeId', 'note', 'fax']) {
+  @IsOptional()
+  address: DetailAddress;
 
-@IsOptional()
-address: DetailAddress;
+  @IsString()
+  @IsNotEmpty()
+  type: SUBORG_TYPE;
 
-    @IsString()
-    @IsNotEmpty()
-    type: SUBORG_TYPE;
+  @IsString()
+  @IsNotEmpty()
+  supplierType: SUPPLIER_TYPE;
 
-    @IsString()
-    @IsNotEmpty()
-    supplierType: SUPPLIER_TYPE;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
+  emailContact: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
-    emailContact: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    example: faker.person.firstName(),
+  })
+  nameContact: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty({
-        example: faker.person.firstName()
-    })
-    nameContact: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    example: faker.phone.number(),
+  })
+  phoneNumber: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty({
-        example: faker.phone.number()
-    })
-    phoneNumber: string;
-
-@IsOptional()
-connectKiot: DetailConnectKiotViet;
-
+  @IsOptional()
+  connectKiot: DetailConnectKiotViet;
 }
 export class UpdateSubOrganizationDto extends PartialType(CreateSubOrganizationRequestDto) {}
 export class UpdateSubOrganizationActiveDto extends PickType(SubOrganization, ['isActive']) {}

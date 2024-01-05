@@ -109,6 +109,29 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .send({ isActive: false });
   });
 
+  // it(`Get all [GET ${API}]`, async () => {
+  //   const { body } = await request(BaseTest.server)
+  //     .get(API)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+
+  //   if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(resultSubOrg));
+  // });
+
+  // it(`Get one [GET ${API}/:id]`, async () => {
+  //   if (!type)
+  //     resultSubOrg = await BaseTest.moduleFixture!.get(SubOrganizationService).create(
+  //       await factoryManager.get(SubOrganization).make(),
+  //     );
+
+  //   const { body } = await request(BaseTest.server)
+  //     .get(`${API}/` + resultSubOrg!.id)
+  //     .set('Authorization', 'Bearer ' + BaseTest.token)
+  //     .expect(HttpStatus.OK);
+
+  //   if (type) expect(body.data).toEqual(jasmine.objectContaining(resultSubOrg));
+  // });
+
   it(`Delete [DELETE ${API}/:id]`, async () => {
     const { body } = await request(BaseTest.server)
       .delete(API + '/' + resultSubOrg?.id)
@@ -124,8 +147,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const userTest = await BaseTest.moduleFixture!.get(UserService).create(userDataTest);
     dataCreate = {
       ...dataSubOrg,
-      type: SUBORG_TYPE.SUPPLIER,
-      supplierType: SUPPLIER_TYPE.BALANCE,
+      type:SUBORG_TYPE.SUPPLIER,
+      supplierType:SUPPLIER_TYPE.BALANCE,
       emailContact: dataUser.email,
       nameContact: dataUser.name,
       phoneNumber: dataUser.phoneNumber,
@@ -302,5 +325,5 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   //   if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
   // });
 
-  return afterAll(BaseTest.initAfterAll);
+  //return afterAll(BaseTest.initAfterAll);
 };
