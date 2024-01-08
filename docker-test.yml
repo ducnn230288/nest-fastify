@@ -4,9 +4,9 @@ services:
   database:
     image: postgres:latest
     environment:
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "postgres"
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - 5432:5432
     restart: always
@@ -22,6 +22,10 @@ services:
       args:
         - ENV=.test
       dockerfile: Dockerfile
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+      NODE_ENV: 'test'
     ports:
       - '3000:3000'
     depends_on:
