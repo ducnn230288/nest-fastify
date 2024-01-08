@@ -25,6 +25,7 @@ services:
       context: .
       args:
         - PROD=true
+        - ENV=.prod
       dockerfile: Dockerfile
     environment:
       REDIS_HOST: 'cache'

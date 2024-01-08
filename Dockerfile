@@ -23,10 +23,10 @@ COPY --from=build-frontend /app/build/. ./other/public/.
 
 COPY --chown=root:root ./test ./test
 COPY --chown=root:root frontend/test/ ./robot
-#COPY --chown=root:root .env ./
-
+ARG ENV=
+COPY --chown=root:root .env$ENV ./.env
 ENV NODE_OPTIONS=--max_old_space_size=4048
-RUN npm install -f && \
+RUN npm install --force && \
 npm run build && \
 npm cache clean --force
 
