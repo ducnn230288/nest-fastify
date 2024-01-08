@@ -26,6 +26,7 @@ services:
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
       NODE_ENV: 'test'
+      HOST_ADDRESS: 'http://localhost:3000/administrator'
     ports:
       - '3000:3000'
     depends_on:
