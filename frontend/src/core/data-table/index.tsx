@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
+import Draggabilly from 'draggabilly';
 
 import { Button } from '../button';
 import { Pagination } from '../pagination';
@@ -16,18 +17,6 @@ import { SorterResult } from 'antd/lib/table/interface';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { RangePicker } = DatePicker;
-const checkTextToShort = (text: string) => {
-  return text?.toString()?.length < 50 ? (
-    text
-  ) : (
-    <span>
-      {text?.toString()?.substring(0, 40)}
-      <Popover trigger="hover" overlayClassName="table-tooltip" content={text}>
-        ...
-      </Popover>
-    </span>
-  );
-};
 
 export const getQueryStringParams = (query: string) => {
   return query
@@ -60,7 +49,7 @@ export const DataTable = forwardRef(
       save = true,
       searchPlaceholder,
       subHeader,
-      xScroll,
+      xScroll = 1000,
       yScroll,
       emptyText = 'No Data',
       onRow,
@@ -94,6 +83,8 @@ export const DataTable = forwardRef(
         ? { ...defaultRequest, ...getQueryStringParams(location.search) }
         : defaultRequest,
     );
+    const tableRef = useRef<HTMLDivElement>(null);
+    const isDrag = useRef(false);
 
     const scroll = useRef<{ x?: number; y?: number }>({ x: xScroll, y: yScroll });
     useEffect(() => {
@@ -128,9 +119,52 @@ export const DataTable = forwardRef(
           }
         });
       }
-
       return () => localStorage.removeItem(idTable.current);
     }, []);
+
+    useEffect(() => {
+      if (data?.length || result?.data?.length)
+      setTimeout(() => {
+        let left: HTMLTableCellElement | null;
+        let table = tableRef.current?.querySelector('table');
+        let indexLeft: number;
+        let wLeft: number;
+        let wTable: number
+        const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
+        const cols = tableRef.current?.querySelectorAll('col')
+        for (let i = 0; i < cols!.length; i++) {
+          if (!cols![i].style.width) cols![i].style.width = cols![i].clientWidth + 'px'
+        }
+        table!.style.width = tableRef.current?.clientWidth + 'px'
+        for (let i = 0; i < dragging!.length; i++) {
+          new Draggabilly(dragging![i], {
+            axis: 'x',
+          })
+            .on('dragStart', () => {
+              left = (dragging![i]).closest('th');
+              const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
+              indexLeft = th.indexOf(left) + 1;
+              left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+              wLeft = parseFloat(left.style.width);
+              table = tableRef.current?.querySelector('table');
+              wTable = parseFloat(table!.style.width);
+              isDrag.current = true;
+            })
+            .on('dragMove', (_, __, moveVector) => {
+              const p = moveVector.x * 0.6;
+              left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+              left.style.width = wLeft + p + 'px';
+              left.style.minWidth = wLeft + p + 'px';
+              table!.style.width = wTable + p + 'px';
+            })
+            .on('dragEnd', () => {
+              dragging![i].style.left = '';
+              setTimeout(() => { isDrag.current = false; });
+            });
+
+        }
+      }, 10);
+    }, [data, result?.data]);
 
     const onChange = (request?: PaginationQuery, changeNavigate = true) => {
       if (request) {
@@ -367,7 +401,6 @@ export const DataTable = forwardRef(
         if (item?.sorter && sorts && sorts[col!.name!])
           item.defaultSortOrder =
             sorts[col!.name!] === 'ASC' ? 'ascend' : sorts[col!.name!] === 'DESC' ? 'descend' : '';
-        if (!item?.render) item!.render = (text: string) => text && checkTextToShort(text);
         if (item && !item?.onCell)
           item.onCell = (record) => ({
             className: record?.id && record?.id === (id || facade?.data?.id) ? '!bg-teal-100' : '',
@@ -376,6 +409,7 @@ export const DataTable = forwardRef(
         return {
           title: t(col.title || ''),
           dataIndex: col.name,
+          ellipsis: true,
           ...item,
         };
       });
@@ -419,7 +453,7 @@ export const DataTable = forwardRef(
           }))
         : [];
     return (
-      <div className={classNames(className, 'intro-x')}>
+      <div ref={tableRef} className={classNames(className, 'intro-x')}>
         <div className="lg:flex justify-between mb-2.5 gap-y-2.5 responsive-header supplier-tab4 store-tab3 flex-wrap form-index-supplier form-tab">
           {showSearch ? (
             <div className="relative">
@@ -487,6 +521,16 @@ export const DataTable = forwardRef(
           <Fragment>
             <Table
               onRow={onRow}
+              components={{
+                header: {
+                  cell: ({children, ...restProps }: { children: React.ReactNode }) => (
+                    <th {...restProps}>
+                      {children}
+                      <span className="dragging">|</span>
+                    </th>
+                  ),
+                },
+              }}
               locale={{
                 emptyText: (
                   <div className="bg-gray-100 text-gray-400 py-4">{t(`components.datatable.${emptyText}`)}</div>
@@ -498,7 +542,7 @@ export const DataTable = forwardRef(
               pagination={false}
               dataSource={loopData(data)}
               onChange={(pagination, filters, sorts) =>
-                handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
+                !isDrag.current && handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
               }
               showSorterTooltip={false}
               scroll={scroll.current}
