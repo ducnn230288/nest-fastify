@@ -84,7 +84,6 @@ export const DataTable = forwardRef(
         : defaultRequest,
     );
     const tableRef = useRef<HTMLDivElement>(null);
-    const isDrag = useRef(false);
 
     const scroll = useRef<{ x?: number; y?: number }>({ x: xScroll, y: yScroll });
     useEffect(() => {
@@ -142,13 +141,15 @@ export const DataTable = forwardRef(
           })
             .on('dragStart', () => {
               left = (dragging![i]).closest('th');
+              const div = document.createElement('div');
+              div.className = 'bg';
+              (dragging![i]).closest('tr')!.appendChild(div);
               const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
               indexLeft = th.indexOf(left) + 1;
               left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
               wLeft = parseFloat(left.style.width);
               table = tableRef.current?.querySelector('table');
               wTable = parseFloat(table!.style.width);
-              isDrag.current = true;
             })
             .on('dragMove', (_, __, moveVector) => {
               const p = moveVector.x * 0.6;
@@ -159,7 +160,7 @@ export const DataTable = forwardRef(
             })
             .on('dragEnd', () => {
               dragging![i].style.left = '';
-              setTimeout(() => { isDrag.current = false; });
+              setTimeout(() => { (dragging![i]).closest('tr')!.querySelector('.bg')!.remove(); });
             });
 
         }
@@ -542,7 +543,7 @@ export const DataTable = forwardRef(
               pagination={false}
               dataSource={loopData(data)}
               onChange={(pagination, filters, sorts) =>
-                !isDrag.current && handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
+                handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
               }
               showSorterTooltip={false}
               scroll={scroll.current}
