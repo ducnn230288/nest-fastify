@@ -527,7 +527,7 @@ export const DataTable = forwardRef(
                   cell: ({children, ...restProps }: { children: React.ReactNode }) => (
                     <th {...restProps}>
                       {children}
-                      <span className="dragging">|</span>
+                      <span className="dragging"></span>
                     </th>
                   ),
                 },
