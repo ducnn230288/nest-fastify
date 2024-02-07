@@ -10,6 +10,7 @@ import { CodeFacade, EStatusGlobal, GlobalFacade } from '@store';
 import { lang, routerLinks } from '@utils';
 import { useSearchParams } from 'react-router-dom';
 import { EFormRuleType, EFormType } from '@models';
+// import SelectTable from '@core/form/input/select-table';
 
 const Page = () => {
   const { user, isLoading, profile, status, putProfile, set, data } = GlobalFacade();
@@ -50,6 +51,9 @@ const Page = () => {
   if (user?.role?.name) roleName.current = user.role.name;
   return (
     <Fragment>
+      {/*<div className={'p-5'}>*/}
+      {/*  <SelectTable />*/}
+      {/*</div>*/}
       <div className="max-w-5xl mx-auto flex lg:flex-row flex-col w-full">
         <div className="flex-initial lg:w-[250px] mr-5 lg:rounded-xl w-full bg-white pt-6">
           <Form

@@ -1,6 +1,6 @@
 import React, { forwardRef, Fragment, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
-import { Checkbox, CheckboxOptionType, DatePicker, Popover, Radio, Spin, Table } from 'antd';
+import { Checkbox, CheckboxOptionType, DatePicker, Radio, Spin, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import dayjs from 'dayjs';
@@ -591,7 +591,7 @@ type Type = {
   xScroll?: number;
   yScroll?: number;
   emptyText?: JSX.Element | string;
-  onRow?: (data: any) => { onDoubleClick?: () => void };
+  onRow?: (data: any) => { onDoubleClick?: () => void, onClick?: () => void };
   pageSizeOptions?: number[];
   pageSizeRender?: (sizePage: number) => number | string;
   pageSizeWidth?: string;
