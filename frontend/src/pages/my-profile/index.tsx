@@ -146,10 +146,6 @@ const Page = () => {
                             col: 6,
                             type: EFormType.select,
                             rules: [{ type: EFormRuleType.required }],
-                            convert: (data) =>
-                              data?.map
-                                ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item))
-                                : data,
                             get: {
                               facade: CodeFacade,
                               params: (fullTextSearch: string) => ({
@@ -161,6 +157,7 @@ const Page = () => {
                                 label: item.name,
                                 value: item.code,
                               }),
+                              data: () => data?.position
                             },
                           },
                         },

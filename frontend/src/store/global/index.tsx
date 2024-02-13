@@ -6,7 +6,7 @@ import i18n from 'i18next';
 
 import { API, keyRefreshToken, keyToken, keyUser, lang, routerLinks } from '@utils';
 import { Message } from '@core/message';
-import { useAppDispatch, useTypedSelector, UserRole } from '@store';
+import { useAppDispatch, useTypedSelector, UserRole, Code } from '@store';
 import { CommonEntity } from '@models';
 
 const name = 'Auth';
@@ -57,13 +57,13 @@ const action = {
     if (message) Message.success({ text: message });
     return true;
   }),
-  resetPassword: createAsyncThunk(name + '/reset-password', async (values: resetPassword) => {
+  resetPassword: createAsyncThunk(name + '/reset-password', async (values: ResetPassword) => {
     const { message } = await API.post(`${routerLinks(name, 'api')}/reset-password`, values);
     if (message) Message.success({ text: message });
     return true;
   }),
 };
-interface resetPassword {
+interface ResetPassword {
   password?: string;
   retypedPassword?: string;
   passwordOld?: string;
@@ -85,6 +85,7 @@ export class User extends CommonEntity {
     public dob?: string,
     public description?: string,
     public positionCode?: string,
+    public position?: Code,
     public retypedPassword?: string,
     public roleCode?: string,
     public role?: UserRole,
@@ -295,7 +296,7 @@ export const globalSlice = createSlice({
         action.resetPassword.pending,
         (
           state: State,
-          action: PayloadAction<undefined, string, { arg: resetPassword; requestId: string; requestStatus: 'pending' }>,
+          action: PayloadAction<undefined, string, { arg: ResetPassword; requestId: string; requestStatus: 'pending' }>,
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
@@ -320,7 +321,7 @@ export type TLanguage = 'vn' | 'en';
 interface State {
   [selector: string]: any;
   user?: User;
-  data?: resetPassword;
+  data?: ResetPassword & User;
   routeLanguage?: Record<string, string>;
   isLoading?: boolean;
   isVisible?: boolean;
@@ -344,7 +345,7 @@ export const GlobalFacade = () => {
     login: (values: { password: string; email: string }) => dispatch(action.login(values)),
     forgottenPassword: (values: { email: string }) => dispatch(action.forgottenPassword(values)),
     otpConfirmation: (values: { email: string; otp: string }) => dispatch(action.otpConfirmation(values)),
-    resetPassword: (values: resetPassword) => dispatch(action.resetPassword(values)),
+    resetPassword: (values: ResetPassword) => dispatch(action.resetPassword(values)),
     setLanguage: (value: TLanguage) => dispatch(globalSlice.actions.setLanguage(value)),
   };
 };
