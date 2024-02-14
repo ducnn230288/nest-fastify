@@ -24,6 +24,7 @@ export enum EFormType {
   tag = 'tag',
   chips = 'chips',
   select = 'select',
+  selectTable = 'select_table',
   treeSelect = 'tree_select',
   otp = 'otp',
   switch = 'switch',

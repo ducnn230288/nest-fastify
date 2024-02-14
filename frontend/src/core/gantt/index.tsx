@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { nanoid } from 'nanoid';
 import dayjs, { Dayjs } from 'dayjs';
 import Draggabilly from 'draggabilly';
 import { gsap } from 'gsap';
-import { Arrow } from '@svgs';
 import classNames from 'classnames';
+
+import { Arrow } from '@svgs';
+import { uuidv4 } from '@utils';
 
 export const Gantt = ({
   widthColumnDay = 36,
@@ -24,7 +25,7 @@ export const Gantt = ({
   }[];
 }) => {
   const widthMonthYear = 110;
-  const id = useRef('gantt-' + nanoid());
+  const id = useRef('gantt-' + uuidv4());
   useEffect(() => {
     dayjs.locale('vi');
 

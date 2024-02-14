@@ -19,7 +19,6 @@ const Component = ({
   const [_list, set_list] = useState(formItem.list ? formItem.list : []);
   const facade = get?.facade() || {};
   let list = !get ? _list : facade[get.key || 'result']?.data?.map(get.format).filter((item: any) => !!item.value);
-  const [_temp, set_temp] = useState();
   const loadData = async (fullTextSearch: string) => {
     if (get) {
       const { time, queryParams } = facade;
@@ -43,6 +42,7 @@ const Component = ({
     }
   }, []);
 
+  const [_temp, set_temp] = useState([]);
   useEffect(() => {
     if (get?.data) {
       let data = get.data();

@@ -1,22 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Dropdown } from 'antd';
-import { ETableFilterType, TableRefObject } from '@models';
-import dayjs from 'dayjs';
+import { Dropdown, FormInstance } from 'antd';
+
+import { TableGet, TableRefObject } from '@models';
 import { DataTable } from '@core/data-table';
-import { CodeFacade, GlobalFacade } from '@store';
+import { arrayUnique } from '@utils';
 
 const Component = ({
+  formItem,
+  // form,
+  value,
   onChange,
-  value = [],
   placeholder,
   disabled,
-}: {
-  onChange?: (values: any[]) => void;
-  value?: any[];
-  placeholder: string;
-  disabled: boolean;
-}) => {
+  get,
+}: Type) => {
   const refSelect = useRef<HTMLDivElement>(null);
 
   const onBlur = () => {
@@ -35,10 +33,26 @@ const Component = ({
     search?.classList.toggle('opacity-100');
     search?.classList.toggle('opacity-0');
   }
-  const { formatDate } = GlobalFacade();
-  const codeFacade = CodeFacade();
+  const facade = get?.facade() || {};
+
   const table = useRef<TableRefObject>(null);
   const input = useRef<HTMLInputElement>(null);
+
+  const [_temp, set_temp] = useState([]);
+  useEffect(() => {
+    if (get?.data) {
+      const _data = get.data();
+      if (get?.format && _data) {
+        const data = formItem.mode === 'multiple' ? _data.map(get.format) : [get.format(_data)];
+        if (JSON.stringify(_data) !== JSON.stringify(_temp)) {
+          set_temp(_data.length ? _data : [_data]);
+          setTimeout(() => {
+            input.current!.value = data[0].label;
+          })
+        }
+      }
+    }
+  }, [get?.data]);
 
   return (
     <div
@@ -46,47 +60,27 @@ const Component = ({
       className={classNames('relative', { 'bg-gray-100': disabled })}
     >
       <Dropdown
-        overlayStyle={{width: '0%'}}
+        overlayStyle={{width: '70vw'}}
         trigger={['click']}
+        placement="bottom"
         dropdownRender={() => (
           <div className={'bg-white drop-shadow-lg rounded-xl overflow-hidden'}>
             <DataTable
+              formatData={(data) => (arrayUnique([..._temp, ...data], 'id'))}
               ref={table}
-              facade={codeFacade}
+              facade={facade}
               showPagination={false}
               showSearch={false}
               defaultRequest={{page: 1, perPage: 10,}}
               save={false}
-              onRow={(e) => ({onClick: () => input.current!.value = e.name})}
-              columns={[
-                {
-                  title: 'titles.Code',
-                  name: 'code',
-                  tableItem: {
-                    width: 100,
-                    filter: { type: ETableFilterType.search },
-                    sorter: true,
-                  },
-                },
-                {
-                  title: 'routes.admin.Code.Name',
-                  name: 'name',
-                  tableItem: {
-                    filter: { type: ETableFilterType.search },
-                    sorter: true,
-                  },
-                },
-                {
-                  title: 'Created',
-                  name: 'createdAt',
-                  tableItem: {
-                    width: 120,
-                    filter: { type: ETableFilterType.date },
-                    sorter: true,
-                    render: (text) => dayjs(text).format(formatDate),
-                  },
-                },
-              ]}
+              onRow={(e) => ({onClick: () => {
+                  if (get?.format) {
+                    const {label, value } = get!.format(e);
+                    onChange(value)
+                    input.current!.value = label!.toString();
+                  }
+                }})}
+              columns={get?.column || []}
             />
           </div>
         )}
@@ -116,5 +110,14 @@ const Component = ({
         d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path></svg></span>
     </div>
   );
+};
+type Type = {
+  formItem: any;
+  form: FormInstance;
+  value?: any;
+  onChange: (e: any) => any;
+  placeholder: string;
+  disabled: boolean;
+  get?: TableGet;
 };
 export default Component;

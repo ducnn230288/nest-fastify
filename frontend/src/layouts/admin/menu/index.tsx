@@ -3,10 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { nanoid } from 'nanoid';
 import { createSearchParams } from 'react-router-dom';
 
-import { routerLinks, lang } from '@utils';
+import { routerLinks, lang, uuidv4 } from '@utils';
 import listMenu from '../menus';
 import './index.less';
 
@@ -41,7 +40,7 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
         .filter((subItem) => !subItem.permission || permission?.includes(subItem.permission))
         .map((subItem, index: number) => (
           <li
-            key={index + nanoid()}
+            key={index + uuidv4()}
             className={classNames(
               'group flex items-center pl-9 py-2 cursor-pointer rounded-2xl text-gray-300 font-medium text-base',
               {

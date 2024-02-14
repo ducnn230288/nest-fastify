@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
-import { nanoid } from 'nanoid';
 
+import { uuidv4 } from '@utils';
 import { editorjsConfig } from './config';
 
 export const Editor = forwardRef(({ value, onChange }: { value?: any; onChange?: any }, ref) => {
@@ -39,7 +39,7 @@ export const Editor = forwardRef(({ value, onChange }: { value?: any; onChange?:
       }
     });
   }, []);
-  const id = useRef(nanoid());
+  const id = useRef(uuidv4());
 
   return <div id={'editorjs' + id.current}></div>;
 });

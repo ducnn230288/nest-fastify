@@ -9,11 +9,11 @@ import { Button } from '@core/button';
 import { CodeFacade, EStatusGlobal, GlobalFacade } from '@store';
 import { lang, routerLinks } from '@utils';
 import { useSearchParams } from 'react-router-dom';
-import { EFormRuleType, EFormType } from '@models';
-// import SelectTable from '@core/form/input/select-table';
+import { EFormRuleType, EFormType, ETableFilterType } from '@models';
+import dayjs from 'dayjs';
 
 const Page = () => {
-  const { user, isLoading, profile, status, putProfile, set, data } = GlobalFacade();
+  const { user, isLoading, profile, status, putProfile, set, data, formatDate } = GlobalFacade();
   useEffect(() => {
     profile();
     set({ breadcrumbs: [] });
@@ -51,9 +51,6 @@ const Page = () => {
   if (user?.role?.name) roleName.current = user.role.name;
   return (
     <Fragment>
-      {/*<div className={'p-5'}>*/}
-      {/*  <SelectTable />*/}
-      {/*</div>*/}
       <div className="max-w-5xl mx-auto flex lg:flex-row flex-col w-full">
         <div className="flex-initial lg:w-[250px] mr-5 lg:rounded-xl w-full bg-white pt-6">
           <Form
@@ -72,7 +69,7 @@ const Page = () => {
                 title: 'routes.admin.user.Full name',
                 name: 'name',
                 formItem: {
-                  render: (form, values) => (
+                  render: (_, values) => (
                     <div>
                       {values.name}
                       <div className="flex w-full flex-row justify-center pt-2 font-normal pb-3">
@@ -157,7 +154,36 @@ const Page = () => {
                                 label: item.name,
                                 value: item.code,
                               }),
-                              data: () => data?.position
+                              data: () => data?.position,
+                              column: [
+                                {
+                                  title: 'titles.Code',
+                                  name: 'code',
+                                  tableItem: {
+                                    width: 100,
+                                    filter: { type: ETableFilterType.search },
+                                    sorter: true,
+                                  },
+                                },
+                                {
+                                  title: 'routes.admin.Code.Name',
+                                  name: 'name',
+                                  tableItem: {
+                                    filter: { type: ETableFilterType.search },
+                                    sorter: true,
+                                  },
+                                },
+                                {
+                                  title: 'Created',
+                                  name: 'createdAt',
+                                  tableItem: {
+                                    width: 120,
+                                    filter: { type: ETableFilterType.date },
+                                    sorter: true,
+                                    render: (text) => dayjs(text).format(formatDate),
+                                  },
+                                },
+                              ]
                             },
                           },
                         },
@@ -222,7 +248,7 @@ const Page = () => {
                               {
                                 type: EFormRuleType.custom,
                                 validator: ({ getFieldValue }) => ({
-                                  validator(rule, value: string) {
+                                  validator(_, value: string) {
                                     const errorMsg = t('components.form.ruleConfirmPassword');
                                     if (!value || getFieldValue('password') === value) {
                                       return Promise.resolve();
