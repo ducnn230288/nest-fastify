@@ -303,7 +303,6 @@ export const Form = ({
             }
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
             formItem={formItem}
-            form={form}
             get={formItem.get}
           />
         );

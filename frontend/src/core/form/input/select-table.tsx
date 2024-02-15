@@ -8,8 +8,6 @@ import { arrayUnique } from '@utils';
 
 const Component = ({
   formItem,
-  // form,
-  value,
   onChange,
   placeholder,
   disabled,
@@ -24,6 +22,7 @@ const Component = ({
     arrowDown?.classList.toggle('opacity-0');
     search?.classList.toggle('opacity-100');
     search?.classList.toggle('opacity-0');
+    setTimeout(() => setOpen(false), 200);
   }
   const onFocus = () => {
     const arrowDown = refSelect.current?.querySelector('.arrow-down');
@@ -32,6 +31,7 @@ const Component = ({
     arrowDown?.classList.toggle('opacity-0');
     search?.classList.toggle('opacity-100');
     search?.classList.toggle('opacity-0');
+    setOpen(true);
   }
   const facade = get?.facade() || {};
 
@@ -54,6 +54,7 @@ const Component = ({
     }
   }, [get?.data]);
 
+  const [open, setOpen] = useState(false);
   return (
     <div
       ref={refSelect}
@@ -62,6 +63,7 @@ const Component = ({
       <Dropdown
         overlayStyle={{width: '70vw'}}
         trigger={['click']}
+        open={open}
         placement="bottom"
         dropdownRender={() => (
           <div className={'bg-white drop-shadow-lg rounded-xl overflow-hidden'}>
@@ -78,6 +80,7 @@ const Component = ({
                     const {label, value } = get!.format(e);
                     onChange(value)
                     input.current!.value = label!.toString();
+                    setOpen(false);
                   }
                 }})}
               columns={get?.column || []}
@@ -113,8 +116,6 @@ const Component = ({
 };
 type Type = {
   formItem: any;
-  form: FormInstance;
-  value?: any;
   onChange: (e: any) => any;
   placeholder: string;
   disabled: boolean;

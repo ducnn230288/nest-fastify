@@ -173,7 +173,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <main>
       {contextHolder}
-      <div className="leading-5 leading-10" />
+      <div className="leading-10" />
       <div className="h-16 relative">
         <div className="absolute top-0 left-0 right-0">
           <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
@@ -262,14 +262,14 @@ const Layout = ({ children }: PropsWithChildren) => {
       <section
         id={'main'}
         className={classNames(
-          'px-2 sm:px-0 h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out z-10 relative',
+          'px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative',
           {
             'ml-64': !isCollapsed && isDesktop,
             'ml-16': isCollapsed && isDesktop,
           },
         )}
       >
-        <div className={' pb-10'}>
+        <div className={'h-[calc(100vh-6rem)]'}>
           <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
           <div className={'flex items-center text-xs mt-0.5 pb-5 sm:hidden'}>
             {breadcrumbs?.map((item, i) => (
@@ -284,7 +284,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           {children}
         </div>
 
-        <footer className="text-center pt-1.5 w-full -mt-8">
+        <footer className="text-center pt-1.5 w-full">
           {t('layout.footer', { year: new Date().getFullYear() })}
         </footer>
       </section>
