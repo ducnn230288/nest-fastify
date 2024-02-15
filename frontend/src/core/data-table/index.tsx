@@ -258,7 +258,7 @@ export const DataTable = forwardRef(
           </Spin>
         );
       },
-      filterIcon: () => <CheckCircle className="h-4 w-4 fill-gray-600" />,
+      filterIcon: () => <CheckCircle className="h-3.5 w-3.5 fill-gray-600" />,
     });
     // noinspection JSUnusedGlobalSymbols
     const getColumnSearchCheckbox = (filters: any, key: any, get: TableGet = {}) => ({
@@ -304,7 +304,7 @@ export const DataTable = forwardRef(
         );
       },
       filterIcon: (filtered: boolean) => (
-        <CheckSquare className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <CheckSquare className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
     });
     // noinspection JSUnusedGlobalSymbols
@@ -327,7 +327,7 @@ export const DataTable = forwardRef(
         </div>
       ),
       filterIcon: (filtered: boolean) => (
-        <Search className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <Search className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
       filterDropdownOpen: !!filterDropdownOpen[key],
       onFilterDropdownOpenChange: (visible: boolean) => {
@@ -361,7 +361,7 @@ export const DataTable = forwardRef(
         </div>
       ),
       filterIcon: (filtered: boolean) => (
-        <Calendar className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <Calendar className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
     });
     cols.current = columns
@@ -490,7 +490,7 @@ export const DataTable = forwardRef(
                 />
                 {!params.fullTextSearch ? (
                   <Search
-                    className="w-4 h-4 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
+                    className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
                     onClick={() => {
                       if (params.fullTextSearch) {
                         (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
@@ -501,7 +501,7 @@ export const DataTable = forwardRef(
                 ) : (
                   !!params.fullTextSearch && (
                     <Times
-                      className="w-4 h-4 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
+                      className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
                       onClick={() => {
                         if (params.fullTextSearch) {
                           (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
@@ -547,7 +547,6 @@ export const DataTable = forwardRef(
               onChange={(pagination, filters, sorts) =>
                 handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
               }
-              showSorterTooltip={false}
               scroll={scroll.current}
               size="small"
               {...prop}

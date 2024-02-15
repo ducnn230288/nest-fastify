@@ -47,4 +47,7 @@
       .dragging { @apply opacity-0 cursor-col-resize !absolute right-0 top-0 z-50 h-full w-1; }
     }
   }
+  &-column-sorter-inner > .anticon { @apply !mt-0;
+    &:not(.active){ @apply hidden; }
+  }
 }
