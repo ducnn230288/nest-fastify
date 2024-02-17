@@ -1,10 +1,10 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
 import { PaginationResponsesDto } from '@shared';
 
-import { Province } from '@model';
+import { AddressProvince } from '@model';
 
 export class ProvinceDto extends PartialType(
-  OmitType(Province, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code'] as const),
+  OmitType(AddressProvince, ['isDeleted', 'createdAt', 'updatedAt', 'name', 'code'] as const),
 ) {
   readonly code: string;
 }

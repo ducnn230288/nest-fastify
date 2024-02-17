@@ -1,12 +1,12 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
-import { District, Province, Ward } from '@model';
+import { AddressDistrict, AddressProvince, AddressWard } from '@model';
 
 export class ProvinceSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
-    const repository = dataSource.getRepository(Province);
-    const listData: Province[] = [
+    const repository = dataSource.getRepository(AddressProvince);
+    const listData: AddressProvince[] = [
         {
           name: "Thành phố Hà Nội",
           code: "10",
@@ -58348,22 +58348,22 @@ export class ProvinceSeeder implements Seeder {
         let newData = repository.create(item);
         newData = await repository.save(newData);
 
-        const listDistrict: District[] = districtItem || [];
-        const repoDistrict = dataSource.getRepository(District);
+        const listDistrict: AddressDistrict[] = districtItem || [];
+        const repoDistrict = dataSource.getRepository(AddressDistrict);
 
         for (const district of listDistrict) {
           const districtExits = await repoDistrict
           .createQueryBuilder('base')
           .andWhere(`base.code=:code`, { code: district.code })
           .getOne();
-          
+
           if (!districtExits) {
             const { wardItem, ...item1 } = district;
             let newDistrict = repoDistrict.create(item1);
             newDistrict = await repoDistrict.save(newDistrict);
 
-            const listWard: Ward[] = wardItem || [];
-            const repoWard = dataSource.getRepository(Ward);
+            const listWard: AddressWard[] = wardItem || [];
+            const repoWard = dataSource.getRepository(AddressWard);
 
             for (const ward of listWard) {
               const wardExits = await repoWard

@@ -1,8 +1,8 @@
 import { setSeederFactory } from 'typeorm-extension';
-import { District } from '@model';
+import { AddressDistrict } from '@model';
 
-export default setSeederFactory(District, (faker) => {
-  const data = new District();
+export default setSeederFactory(AddressDistrict, (faker) => {
+  const data = new AddressDistrict();
   data.code = faker.string.numeric(3);
   // data.code = '001';
 

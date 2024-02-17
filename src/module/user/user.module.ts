@@ -13,7 +13,7 @@ import {
   UserRoleController,
   WardController,
 } from '@controller';
-import { Address, District, Province, User, UserRole, Ward } from '@model';
+import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   AddressService,
   AuthService,
@@ -43,7 +43,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward, Address]),
+    TypeOrmModule.forFeature([User, UserRole, AddressProvince, AddressDistrict, AddressWard, Address]),
   ],
   controllers: [
     AuthController,

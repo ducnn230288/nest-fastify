@@ -2,7 +2,7 @@ import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { Address, District, Province, User, UserRole, Ward } from '@model';
+import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   CreateUserRoleRequestDto,
   UpdateUserRoleRequestDto,
@@ -185,16 +185,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   // test address
   it('Create [CREATE /api/address]', async () => {
-    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
+    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(AddressProvince).make());
 
     district = await BaseTest.moduleFixture!.get(DistrictService).create(
-      await factoryManager.get(District).make({
+      await factoryManager.get(AddressDistrict).make({
         codeProvince: province?.code,
       }),
     );
 
     ward = await BaseTest.moduleFixture!.get(WardService).create(
-      await factoryManager.get(Ward).make({
+      await factoryManager.get(AddressWard).make({
         codeDistrict: district?.code,
       }),
     );

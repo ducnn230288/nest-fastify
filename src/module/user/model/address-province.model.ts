@@ -4,12 +4,11 @@ import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { Address } from '@model';
-import { District } from '@model';
+import { Address, AddressDistrict } from '@model';
 
 @Entity()
 @Unique(['code'])
-export class Province extends Base {
+export class AddressProvince extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })
   @Expose()
@@ -26,7 +25,7 @@ export class Province extends Base {
   @Expose({ groups: [MaxGroup] })
   items?: Address[];
 
-  @OneToMany(() => District, (district) => district.provinceItem, { eager: true })
+  @OneToMany(() => AddressDistrict, (district) => district.provinceItem, { eager: true })
   @Expose({ groups: [MaxGroup] })
-  districtItem?: District[];
+  districtItem?: AddressDistrict[];
 }
