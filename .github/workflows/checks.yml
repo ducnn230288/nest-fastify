@@ -50,4 +50,3 @@ jobs:
         run: docker-compose -f docker-test.yml exec -T server robot -d robot/result robot/testcases/login.robot
 #       docker-compose -f docker-build.yml up -d --build
 #       docker-compose -f docker-build.yml run --rm server sh -c "npm run migration && npm run seed"
-

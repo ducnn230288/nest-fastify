@@ -363,6 +363,7 @@ export const Form = ({
             switch (rule.type) {
               case EFormRuleType.required:
                 switch (item.formItem.type) {
+                  case EFormType.text:
                   case EFormType.name:
                   case EFormType.number:
                   case EFormType.hidden:
