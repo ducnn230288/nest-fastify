@@ -6,7 +6,7 @@ import { Exclude } from 'class-transformer';
 
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['url'])
 export class File extends Base {
   @Column()

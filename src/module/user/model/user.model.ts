@@ -17,7 +17,7 @@ import * as argon2 from 'argon2';
 import { UserRole, Code, Address } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
-@Entity()
+@Entity({ schema: 'user' })
 export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })

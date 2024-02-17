@@ -6,7 +6,7 @@ import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { Address, AddressDistrict } from '@model';
 
-@Entity()
+@Entity({ schema: 'user' })
 @Unique(['code'])
 export class AddressWard extends Base {
   @Column()

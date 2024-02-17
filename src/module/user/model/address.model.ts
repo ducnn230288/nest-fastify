@@ -6,7 +6,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { IsOptional, IsString } from 'class-validator';
 
-@Entity()
+@Entity({ schema: 'user' })
 export class Address extends Base {
   @Column({ name: 'code_province' })
   @IsString()

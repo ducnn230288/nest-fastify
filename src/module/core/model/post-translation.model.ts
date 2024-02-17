@@ -8,7 +8,7 @@ import { Post } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
 import { IEditor } from '@dto';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class PostTranslation extends Base {
   @Column()
   @ApiProperty({ example: 'en', description: '' })

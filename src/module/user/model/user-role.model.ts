@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { User } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'user' })
 @Unique(['code'])
 export class UserRole extends Base {
   @Column()

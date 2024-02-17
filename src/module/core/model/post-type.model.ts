@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { MaxGroup, Base } from '@shared';
 import { Post } from '@model';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['code'])
 @Tree('materialized-path')
 export class PostType extends Base {

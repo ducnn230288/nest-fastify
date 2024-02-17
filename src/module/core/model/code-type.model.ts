@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { Code } from '@model';
 import { MaxGroup, Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['code'])
 export class CodeType extends Base {
   @Column()
