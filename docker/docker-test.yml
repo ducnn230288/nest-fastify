@@ -2,13 +2,11 @@ version: '3.9'
 
 services:
   database:
+    env_file:
+      - ../.env.test
     build:
-      context: .
-      dockerfile: Dockerfile-database
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      context: ..
+      dockerfile: docker/Dockerfile-init
     ports:
       - 5432:5432
     restart: always
@@ -20,15 +18,14 @@ services:
 
   server:
     build:
-      context: .
+      context: ..
       args:
         - ENV=.test
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     environment:
+      HOST_ADDRESS: 'http://localhost:3000/administrator'
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
-      NODE_ENV: 'test'
-      HOST_ADDRESS: 'http://localhost:3000/administrator'
     ports:
       - '3000:3000'
     depends_on:

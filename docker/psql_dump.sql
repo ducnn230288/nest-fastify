@@ -12273,3 +12273,17 @@ ALTER TABLE ONLY "user".address
 -- PostgreSQL database dump complete
 --
 
+\connect postgres;
+CREATE SCHEMA core;
+
+
+ALTER SCHEMA core OWNER TO postgres;
+
+--
+-- Name: user; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA "user";
+
+
+ALTER SCHEMA "user" OWNER TO postgres;

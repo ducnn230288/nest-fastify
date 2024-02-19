@@ -2,13 +2,11 @@ version: '3.9'
 
 services:
   database:
+    env_file:
+      - ../.env.prod
     build:
-      context: .
-      dockerfile: Dockerfile-database
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      context: ..
+      dockerfile: docker/Dockerfile-init
     volumes:
       - database:/database
     ports:
@@ -24,15 +22,16 @@ services:
 
   server:
     build:
-      context: .
+      context: ..
       args:
         - PROD=true
         - ENV=.prod
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
+    env_file:
+      - ../.env.prod
     environment:
       REDIS_HOST: 'cache'
       DATABASE_HOST: 'database'
-      NODE_ENV: 'prod'
     ports:
       - 3000:3000
     depends_on:

@@ -29,7 +29,7 @@ const options: DataSourceOptions & SeederOptions = {
   port: appConfig.DATABASE_PORT,
   username: appConfig.DATABASE_USER,
   password: appConfig.DATABASE_PASSWORD,
-  database: appConfig.DATABASE_NAME,
+  database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
   entities: [
     Code,
     CodeType,

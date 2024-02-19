@@ -2,13 +2,11 @@ version: '3.9'
 
 services:
   database:
+    env_file:
+      - ../.env
     build:
-      context: .
-      dockerfile: Dockerfile-database
-    environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      context: ..
+      dockerfile: docker/Dockerfile-database
     volumes:
       - database:/database
     ports:
