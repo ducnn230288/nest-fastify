@@ -123,48 +123,49 @@ export const DataTable = forwardRef(
 
     useEffect(() => {
       if (data?.length || result?.data?.length)
-      setTimeout(() => {
-        let left: HTMLTableCellElement | null;
-        let table = tableRef.current?.querySelector('table');
-        let indexLeft: number;
-        let wLeft: number;
-        let wTable: number
-        const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
-        const cols = tableRef.current?.querySelectorAll('col')
-        for (let i = 0; i < cols!.length; i++) {
-          if (!cols![i].style.width) cols![i].style.width = cols![i].clientWidth + 'px'
-        }
-        table!.style.width = tableRef.current?.clientWidth + 'px'
-        for (let i = 0; i < dragging!.length; i++) {
-          new Draggabilly(dragging![i], {
-            axis: 'x',
-          })
-            .on('dragStart', () => {
-              left = (dragging![i]).closest('th');
-              const div = document.createElement('div');
-              div.className = 'bg';
-              (dragging![i]).closest('tr')!.appendChild(div);
-              const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
-              indexLeft = th.indexOf(left) + 1;
-              left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
-              wLeft = parseFloat(left.style.width);
-              table = tableRef.current?.querySelector('table');
-              wTable = parseFloat(table!.style.width);
+        setTimeout(() => {
+          let left: HTMLTableCellElement | null;
+          let table = tableRef.current?.querySelector('table');
+          let indexLeft: number;
+          let wLeft: number;
+          let wTable: number;
+          const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
+          const cols = tableRef.current?.querySelectorAll('col');
+          for (let i = 0; i < cols!.length; i++) {
+            if (!cols![i].style.width) cols![i].style.width = cols![i].clientWidth + 'px';
+          }
+          table!.style.width = tableRef.current?.clientWidth + 'px';
+          for (let i = 0; i < dragging!.length; i++) {
+            new Draggabilly(dragging![i], {
+              axis: 'x',
             })
-            .on('dragMove', (_, __, moveVector) => {
-              const p = moveVector.x * 0.6;
-              left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
-              left.style.width = wLeft + p + 'px';
-              left.style.minWidth = wLeft + p + 'px';
-              table!.style.width = wTable + p + 'px';
-            })
-            .on('dragEnd', () => {
-              dragging![i].style.left = '';
-              setTimeout(() => { (dragging![i]).closest('tr')!.querySelector('.bg')!.remove(); });
-            });
-
-        }
-      }, 10);
+              .on('dragStart', () => {
+                left = dragging![i].closest('th');
+                const div = document.createElement('div');
+                div.className = 'bg';
+                dragging![i].closest('tr')!.appendChild(div);
+                const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
+                indexLeft = th.indexOf(left) + 1;
+                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+                wLeft = parseFloat(left.style.width);
+                table = tableRef.current?.querySelector('table');
+                wTable = parseFloat(table!.style.width);
+              })
+              .on('dragMove', (_, __, moveVector) => {
+                const p = moveVector.x * 0.6;
+                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+                left.style.width = wLeft + p + 'px';
+                left.style.minWidth = wLeft + p + 'px';
+                table!.style.width = wTable + p + 'px';
+              })
+              .on('dragEnd', () => {
+                dragging![i].style.left = '';
+                setTimeout(() => {
+                  dragging![i].closest('tr')!.querySelector('.bg')!.remove();
+                });
+              });
+          }
+        }, 10);
     }, [data, result?.data]);
 
     const onChange = (request?: PaginationQuery, changeNavigate = true) => {
@@ -430,8 +431,8 @@ export const DataTable = forwardRef(
               [sorts.field as string]: sorts.order === 'ascend' ? 'ASC' : sorts.order === 'descend' ? 'DESC' : '',
             }
           : sorts?.field
-          ? null
-          : sorts;
+            ? null
+            : sorts;
 
       if (tempFullTextSearch !== params.fullTextSearch) tempPageIndex = 1;
       const tempParams = cleanObjectKeyNull({
@@ -455,53 +456,46 @@ export const DataTable = forwardRef(
         : [];
     return (
       <div ref={tableRef} className={classNames(className, 'intro-x')}>
-        {!!showSearch || !!leftHeader || !!rightHeader && (
-          <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
-            {showSearch ? (
-              <div className="relative">
-                <input
-                  id={idTable.current + '_input_search'}
-                  className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
-                  defaultValue={params.fullTextSearch}
-                  type="text"
-                  placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
-                  onChange={() => {
-                    clearTimeout(timeoutSearch.current);
-                    timeoutSearch.current = setTimeout(
-                      () =>
+        {!!showSearch ||
+          !!leftHeader ||
+          (!!rightHeader && (
+            <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
+              {showSearch ? (
+                <div className="relative">
+                  <input
+                    id={idTable.current + '_input_search'}
+                    className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
+                    defaultValue={params.fullTextSearch}
+                    type="text"
+                    placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
+                    onChange={() => {
+                      clearTimeout(timeoutSearch.current);
+                      timeoutSearch.current = setTimeout(
+                        () =>
+                          handleTableChange(
+                            undefined,
+                            params.filter,
+                            params.sorts as SorterResult<any>,
+                            (
+                              document.getElementById(idTable.current + '_input_search') as HTMLInputElement
+                            ).value.trim(),
+                          ),
+                        500,
+                      );
+                    }}
+                    onKeyUp={(e) => {
+                      if (e.key === 'Enter')
                         handleTableChange(
                           undefined,
                           params.filter,
                           params.sorts as SorterResult<any>,
                           (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                        ),
-                      500,
-                    );
-                  }}
-                  onKeyUp={(e) => {
-                    if (e.key === 'Enter')
-                      handleTableChange(
-                        undefined,
-                        params.filter,
-                        params.sorts as SorterResult<any>,
-                        (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                      );
-                  }}
-                />
-                {!params.fullTextSearch ? (
-                  <Search
-                    className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
-                    onClick={() => {
-                      if (params.fullTextSearch) {
-                        (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
-                        handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
-                      }
+                        );
                     }}
                   />
-                ) : (
-                  !!params.fullTextSearch && (
-                    <Times
-                      className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
+                  {!params.fullTextSearch ? (
+                    <Search
+                      className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
                       onClick={() => {
                         if (params.fullTextSearch) {
                           (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
@@ -509,16 +503,27 @@ export const DataTable = forwardRef(
                         }
                       }}
                     />
-                  )
-                )}
-              </div>
-            ) : (
-              <div />
-            )}
-            {!!leftHeader && <div className={'mt-2 sm:mt-0'}>{leftHeader}</div>}
-            {!!rightHeader && <div className={'mt-2 sm:mt-0'}>{rightHeader}</div>}
-          </div>
-        )}
+                  ) : (
+                    !!params.fullTextSearch && (
+                      <Times
+                        className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
+                        onClick={() => {
+                          if (params.fullTextSearch) {
+                            (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
+                            handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
+                          }
+                        }}
+                      />
+                    )
+                  )}
+                </div>
+              ) : (
+                <div />
+              )}
+              {!!leftHeader && <div className={'mt-2 sm:mt-0'}>{leftHeader}</div>}
+              {!!rightHeader && <div className={'mt-2 sm:mt-0'}>{rightHeader}</div>}
+            </div>
+          ))}
         {subHeader && subHeader(result?.count)}
         {!!showList && (
           <Fragment>
@@ -592,7 +597,7 @@ type Type = {
   xScroll?: number;
   yScroll?: number;
   emptyText?: JSX.Element | string;
-  onRow?: (data: any) => { onDoubleClick?: () => void, onClick?: () => void };
+  onRow?: (data: any) => { onDoubleClick?: () => void; onClick?: () => void };
   pageSizeOptions?: number[];
   pageSizeRender?: (sizePage: number) => number | string;
   pageSizeWidth?: string;
@@ -601,5 +606,5 @@ type Type = {
   className?: string;
   facade?: any;
   data?: any[];
-  formatData?: (data: any) => any[]
+  formatData?: (data: any) => any[];
 };

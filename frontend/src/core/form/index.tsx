@@ -18,7 +18,19 @@ import { convertFormValue } from '@utils';
 import { EFormRuleType, EFormType, FormItem, FormModel } from '@models';
 import { GlobalFacade } from '@store';
 import { Check, Times } from '@svgs';
-import { Addable, Chips, DatePicker, Mask, Password, Select, SelectTable, SelectTag, Tab, TableTransfer, TreeSelect } from './input';
+import {
+  Addable,
+  Chips,
+  DatePicker,
+  Mask,
+  Password,
+  Select,
+  SelectTable,
+  SelectTag,
+  Tab,
+  TableTransfer,
+  TreeSelect,
+} from './input';
 import { Upload } from '../upload';
 import { Button } from '../button';
 import { Editor } from '../editor';
@@ -188,8 +200,16 @@ export const Form = ({
         return (
           <DateAntDesign.RangePicker
             onCalendarChange={(date) => {
-              form.setFieldValue(item.name, date?.filter((i) => !!i));
-              formItem.onChange && formItem.onChange(date?.filter((i) => !!i), form, reRender);
+              form.setFieldValue(
+                item.name,
+                date?.filter((i) => !!i),
+              );
+              formItem.onChange &&
+                formItem.onChange(
+                  date?.filter((i) => !!i),
+                  form,
+                  reRender,
+                );
             }}
             onOpenChange={(open) => {
               if (!open && form.getFieldValue(item.name)?.length < 2) form.resetFields([item.name]);
@@ -220,8 +240,16 @@ export const Form = ({
           <TimePicker.RangePicker
             minuteStep={10}
             onCalendarChange={(date) => {
-              form.setFieldValue(item.name, date?.filter((i) => !!i));
-              formItem.onChange && formItem.onChange(date?.filter((i) => !!i), form, reRender);
+              form.setFieldValue(
+                item.name,
+                date?.filter((i) => !!i),
+              );
+              formItem.onChange &&
+                formItem.onChange(
+                  date?.filter((i) => !!i),
+                  form,
+                  reRender,
+                );
             }}
             onOpenChange={(open) => {
               if (!open && form.getFieldValue(item.name)?.length < 2) form.resetFields([item.name]);
@@ -462,9 +490,7 @@ export const Form = ({
                       if (!value || /^0$|^-?[1-9]\d*(\.\d+)?$/.test(value)) {
                         if (/^0$|^-?[1-9]\d*(\.\d+)?$/.test(value)) {
                           if (parseFloat(value) > rule.value) {
-                            return Promise.reject(
-                              t(rule.message || 'components.form.ruleMax', { max: rule.value }),
-                            );
+                            return Promise.reject(t(rule.message || 'components.form.ruleMax', { max: rule.value }));
                           }
                         }
                       }
@@ -514,9 +540,7 @@ export const Form = ({
                 rules.push(() => ({
                   validator(_: any, value: any) {
                     if (value?.trim().length > 500) {
-                      return Promise.reject(
-                        t(rule.message || 'components.form.ruleMaxLength', { max: 500 }),
-                      );
+                      return Promise.reject(t(rule.message || 'components.form.ruleMaxLength', { max: 500 }));
                     }
                     return Promise.resolve();
                   },
@@ -657,7 +681,8 @@ export const Form = ({
                 !!column?.formItem?.condition(values[column.name], form, index, values)) && (
                 <div
                   className={classNames(
-                    'col-span-12 ' + (column?.formItem?.type || EFormType.text) +
+                    'col-span-12 ' +
+                      (column?.formItem?.type || EFormType.text) +
                       (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
                       (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
                   )}

@@ -35,8 +35,8 @@ export const Upload = ({
           };
         })
       : typeof value === 'string'
-      ? [{ [keyImage]: value }]
-      : value || [],
+        ? [{ [keyImage]: value }]
+        : value || [],
   );
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export const Upload = ({
             };
           })
         : typeof value === 'string'
-        ? [{ [keyImage]: value }]
-        : value || [];
+          ? [{ [keyImage]: value }]
+          : value || [];
     if (
       JSON.stringify(listFiles) !== JSON.stringify(tempData) &&
       listFiles.filter((item: any) => item.status === 'uploading').length === 0

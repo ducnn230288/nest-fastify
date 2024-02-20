@@ -183,7 +183,7 @@ const Page = () => {
                                     render: (text) => dayjs(text).format(formatDate),
                                   },
                                 },
-                              ]
+                              ],
                             },
                           },
                         },

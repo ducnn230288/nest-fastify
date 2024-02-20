@@ -261,13 +261,10 @@ const Layout = ({ children }: PropsWithChildren) => {
       )}
       <section
         id={'main'}
-        className={classNames(
-          'px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative',
-          {
-            'ml-64': !isCollapsed && isDesktop,
-            'ml-16': isCollapsed && isDesktop,
-          },
-        )}
+        className={classNames('px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative', {
+          'ml-64': !isCollapsed && isDesktop,
+          'ml-16': isCollapsed && isDesktop,
+        })}
       >
         <div className={'h-[calc(100vh-6rem)]'}>
           <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
@@ -284,9 +281,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           {children}
         </div>
 
-        <footer className="text-center pt-1.5 w-full">
-          {t('layout.footer', { year: new Date().getFullYear() })}
-        </footer>
+        <footer className="text-center pt-1.5 w-full">{t('layout.footer', { year: new Date().getFullYear() })}</footer>
       </section>
     </main>
   );

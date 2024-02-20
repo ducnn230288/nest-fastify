@@ -44,7 +44,7 @@ const Context = () => {
 
   return (
     <Styling>
-      <ConfigProvider  theme={{ token: { controlHeight: 38 }}} locale={locale}>
+      <ConfigProvider theme={{ token: { controlHeight: 38 } }} locale={locale}>
         <Router />
       </ConfigProvider>
     </Styling>

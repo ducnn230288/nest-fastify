@@ -185,7 +185,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   // test address
   it('Create [CREATE /api/address]', async () => {
-    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(AddressProvince).make());
+    province = await BaseTest.moduleFixture!.get(ProvinceService).create(
+      await factoryManager.get(AddressProvince).make(),
+    );
 
     district = await BaseTest.moduleFixture!.get(DistrictService).create(
       await factoryManager.get(AddressDistrict).make({
