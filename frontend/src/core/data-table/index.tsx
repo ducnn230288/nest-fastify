@@ -456,9 +456,7 @@ export const DataTable = forwardRef(
         : [];
     return (
       <div ref={tableRef} className={classNames(className, 'intro-x')}>
-        {!!showSearch ||
-          !!leftHeader ||
-          (!!rightHeader && (
+        {(!!showSearch || !!leftHeader || !!rightHeader) && (
             <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
               {showSearch ? (
                 <div className="relative">
@@ -523,7 +521,7 @@ export const DataTable = forwardRef(
               {!!leftHeader && <div className={'mt-2 sm:mt-0'}>{leftHeader}</div>}
               {!!rightHeader && <div className={'mt-2 sm:mt-0'}>{rightHeader}</div>}
             </div>
-          ))}
+          )}
         {subHeader && subHeader(result?.count)}
         {!!showList && (
           <Fragment>
