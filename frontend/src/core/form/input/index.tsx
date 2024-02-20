@@ -1,5 +1,6 @@
 import Chips from './chips';
 import DatePicker from './date-picker';
+import Editor from './editor';
 import Password from './password';
 import Mask from './mask';
 import SelectTag from './select-tag';
@@ -10,4 +11,4 @@ import TableTransfer from './table-transfer';
 import Addable from './addable';
 import Tab from './tab';
 
-export { Chips, DatePicker, Password, Mask, SelectTag, Select, SelectTable, TreeSelect, TableTransfer, Addable, Tab };
+export { Chips, DatePicker, Editor, Password, Mask, SelectTag, Select, SelectTable, TreeSelect, TableTransfer, Addable, Tab };

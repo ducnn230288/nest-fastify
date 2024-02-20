@@ -21,6 +21,7 @@ import { Check, Times } from '@svgs';
 import {
   Addable,
   Chips,
+  Editor,
   DatePicker,
   Mask,
   Password,
@@ -33,7 +34,6 @@ import {
 } from './input';
 import { Upload } from '../upload';
 import { Button } from '../button';
-import { Editor } from '../editor';
 
 export const Form = ({
   className,
@@ -125,7 +125,12 @@ export const Form = ({
           />
         );
       case EFormType.editor:
-        return <Editor />;
+        return <Editor
+          disabled={!!formItem.disabled && formItem.disabled(values, form)}
+          placeholder={
+            t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
+          }
+        />;
       case EFormType.upload:
         return <Upload multiple={!!formItem.mode} />;
       case EFormType.tableTransfer:
