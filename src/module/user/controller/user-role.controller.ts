@@ -55,7 +55,7 @@ import {
   UserRoleService,
 } from '@service';
 
-@Headers('user-role')
+@Headers('user/role')
 export class UserRoleController {
   constructor(private readonly service: UserRoleService) {}
 

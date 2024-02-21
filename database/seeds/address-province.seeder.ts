@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 
 import { AddressDistrict, AddressProvince, AddressWard } from '@model';
 
-export class ProvinceSeeder implements Seeder {
+export class AddressProvinceSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
     const repository = dataSource.getRepository(AddressProvince);
     const listData: AddressProvince[] = [

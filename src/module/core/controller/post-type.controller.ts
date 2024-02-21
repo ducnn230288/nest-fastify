@@ -12,7 +12,7 @@ import {
   P_POST_TYPE_UPDATE,
 } from '@service';
 
-@Headers('post-type')
+@Headers('post/type')
 export class PostTypeController {
   constructor(private readonly service: PostTypeService) {}
 

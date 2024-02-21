@@ -12,7 +12,7 @@ import {
   P_DATA_TYPE_UPDATE,
 } from '@service';
 
-@Headers('data-type')
+@Headers('data/type')
 export class DataTypeController {
   constructor(private readonly service: DataTypeService) {}
 

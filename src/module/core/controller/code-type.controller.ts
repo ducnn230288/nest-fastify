@@ -19,7 +19,7 @@ import {
   P_CODE_TYPE_DELETE,
 } from '@service';
 
-@Headers('code-type')
+@Headers('code/type')
 export class CodeTypeController {
   constructor(private readonly service: CodeTypeService) {}
 

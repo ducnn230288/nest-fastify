@@ -3,18 +3,18 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Headers, PaginationQueryDto } from '@shared';
 
-import { ListProvinceResponseDto } from '@dto';
-import { ProvinceService } from '@service';
+import { ListWardResponseDto } from '@dto';
+import { AddressWardService } from '@service';
 
-@Headers('province')
-export class ProvinceController {
-  constructor(private readonly service: ProvinceService) {}
+@Headers('address/ward')
+export class AddressWardController {
+  constructor(private readonly service: AddressWardService) {}
 
   @Get()
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
-  ): Promise<ListProvinceResponseDto> {
+  ): Promise<ListWardResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List success'),

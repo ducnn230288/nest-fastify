@@ -6,7 +6,7 @@ import { BaseService } from '@shared';
 import { AddressDistrict } from '@model';
 
 @Injectable()
-export class DistrictService extends BaseService<AddressDistrict> {
+export class AddressDistrictService extends BaseService<AddressDistrict> {
   constructor(
     @InjectRepository(AddressDistrict)
     public repo: Repository<AddressDistrict>,
