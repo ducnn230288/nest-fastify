@@ -91,7 +91,7 @@ const Page = () => {
                 type: id ? EFormType.hidden : EFormType.treeSelect,
                 list: loopMapSelect(postTypeFacade?.tree),
               },
-            }
+            },
           ]}
           extendButton={(form) => (
             <Button

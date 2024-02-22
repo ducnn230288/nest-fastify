@@ -11,4 +11,17 @@ import TableTransfer from './table-transfer';
 import Addable from './addable';
 import Tab from './tab';
 
-export { Chips, DatePicker, Editor, Password, Mask, SelectTag, Select, SelectTable, TreeSelect, TableTransfer, Addable, Tab };
+export {
+  Chips,
+  DatePicker,
+  Editor,
+  Password,
+  Mask,
+  SelectTag,
+  Select,
+  SelectTable,
+  TreeSelect,
+  TableTransfer,
+  Addable,
+  Tab,
+};

@@ -75,4 +75,3 @@ export class PostTypeService extends BaseService<PostType> {
     return null;
   }
 }
-

@@ -15,7 +15,6 @@ import { Post } from '@model';
 @Unique(['code'])
 @Tree('materialized-path')
 export class PostType extends Base {
-
   /**
    * The name of the PostType.
    * @type {string}

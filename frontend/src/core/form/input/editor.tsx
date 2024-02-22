@@ -12,9 +12,6 @@ const Component = ({
   placeholder: string;
   disabled: boolean;
 }) => {
-
-  return (
-    <SunEditor setContents={value} onChange={onChange} placeholder={placeholder} disable={disabled} />
-  );
+  return <SunEditor setContents={value} onChange={onChange} placeholder={placeholder} disable={disabled} />;
 };
 export default Component;

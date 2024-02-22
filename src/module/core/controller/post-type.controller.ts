@@ -17,7 +17,6 @@ import {
  */
 @Headers('post/type')
 export class PostTypeController {
-
   /**
    * Constructor to initialize PostTypeController with PostTypeService
    * @param service - An instance of PostTypeService

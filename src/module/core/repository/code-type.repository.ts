@@ -9,7 +9,6 @@ import { CodeType } from '@model';
  */
 @Injectable()
 export class CodeTypeRepository extends BaseRepository<CodeType> {
-
   /**
    * Constructor for CodeTypeRepository class.
    * @param dataSource The data source used for retrieving data.

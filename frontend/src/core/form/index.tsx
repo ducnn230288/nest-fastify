@@ -125,12 +125,14 @@ export const Form = ({
           />
         );
       case EFormType.editor:
-        return <Editor
-          disabled={!!formItem.disabled && formItem.disabled(values, form)}
-          placeholder={
-            t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
-          }
-        />;
+        return (
+          <Editor
+            disabled={!!formItem.disabled && formItem.disabled(values, form)}
+            placeholder={
+              t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
+            }
+          />
+        );
       case EFormType.upload:
         return <Upload multiple={!!formItem.mode} />;
       case EFormType.tableTransfer:

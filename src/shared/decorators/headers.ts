@@ -16,4 +16,8 @@ export function Headers(
   );
 }
 
-const capitalizeFirstLetter = (string: string): string => string.split('/').map((i) => i.charAt(0).toUpperCase() + i.slice(1)).join(' ');
+const capitalizeFirstLetter = (string: string): string =>
+  string
+    .split('/')
+    .map((i) => i.charAt(0).toUpperCase() + i.slice(1))
+    .join(' ');

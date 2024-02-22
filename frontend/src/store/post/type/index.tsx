@@ -8,34 +8,39 @@ import { Post } from '../';
 const name = 'PostType';
 const action = {
   ...new Action<PostType>(name),
-  getTree: createAsyncThunk(name + '/getTree', async () =>
-    await API.get<PostType>(`${routerLinks(name, 'api')}/tree`)),
+  getTree: createAsyncThunk(name + '/getTree', async () => await API.get<PostType>(`${routerLinks(name, 'api')}/tree`)),
 };
-export const postTypeSlice = createSlice(new Slice<PostType>(action, { keepUnusedDataFor: 9999 }, builder => {
-  builder.addCase(
-    action.getTree.pending,
-    (
-      state: StatePostType<PostType>,
-      action: PayloadAction<undefined, string, { arg: PostType; requestId: string; requestStatus: 'pending' }>,
-    ) => {
-      state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
-      state.queryParams = JSON.stringify(action.meta.arg);
-      state.isLoading = true;
-      state.status = EStatusState.getTreePending;
-    },
-  )
-    .addCase(action.getTree.fulfilled, (state: StatePostType<PostType>, action: PayloadAction<Responses<PostType[]>>) => {
-      if (action.payload.data) {
-        state.tree = action.payload.data;
-        state.status = EStatusState.getTreeFulfilled;
-      } else state.status = EStatusState.idle;
-      state.isLoading = false;
-    })
-    .addCase(action.getTree.rejected, (state: StatePostType<PostType>) => {
-      state.status = EStatusState.getTreeRejected;
-      state.isLoading = false;
-    })
-}));
+export const postTypeSlice = createSlice(
+  new Slice<PostType>(action, { keepUnusedDataFor: 9999 }, (builder) => {
+    builder
+      .addCase(
+        action.getTree.pending,
+        (
+          state: StatePostType<PostType>,
+          action: PayloadAction<undefined, string, { arg: PostType; requestId: string; requestStatus: 'pending' }>,
+        ) => {
+          state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
+          state.queryParams = JSON.stringify(action.meta.arg);
+          state.isLoading = true;
+          state.status = EStatusState.getTreePending;
+        },
+      )
+      .addCase(
+        action.getTree.fulfilled,
+        (state: StatePostType<PostType>, action: PayloadAction<Responses<PostType[]>>) => {
+          if (action.payload.data) {
+            state.tree = action.payload.data;
+            state.status = EStatusState.getTreeFulfilled;
+          } else state.status = EStatusState.idle;
+          state.isLoading = false;
+        },
+      )
+      .addCase(action.getTree.rejected, (state: StatePostType<PostType>) => {
+        state.status = EStatusState.getTreeRejected;
+        state.isLoading = false;
+      });
+  }),
+);
 export const PostTypeFacade = () => {
   const dispatch = useAppDispatch();
   return {

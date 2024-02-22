@@ -20,7 +20,6 @@ export const P_CODE_TYPE_DELETE = 'f16e2bc7-12b9-446e-b53b-a2597ca0ad3a';
  * CodeTypeService class that extends BaseService for managing CodeType entities.
  */
 export class CodeTypeService extends BaseService<CodeType> {
-
   /**
    * Constructor for CodeTypeService class.
    * @param repo The CodeTypeRepository used for data access.

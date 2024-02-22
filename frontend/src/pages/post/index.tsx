@@ -65,7 +65,7 @@ const Page = () => {
           dataTableRef?.current?.onChange(request);
         }}
         className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
-        style={{paddingLeft: index.split('.').length * 16}}
+        style={{ paddingLeft: index.split('.').length * 16 }}
       >
         {index}. {data.name}
       </div>
@@ -122,7 +122,9 @@ const Page = () => {
               {postTypeFacade.tree?.map((data, index) => (
                 <Fragment key={data.id}>
                   {renderPostType(data, (index + 1).toString())}
-                  {data.children?.map((item, i) => renderPostType(item, `${(index + 1).toString()}.${(i + 1).toString()}`))}
+                  {data.children?.map((item, i) =>
+                    renderPostType(item, `${(index + 1).toString()}.${(i + 1).toString()}`),
+                  )}
                 </Fragment>
               ))}
             </div>

@@ -9,7 +9,6 @@ import { BaseRepository } from '@shared';
  */
 @Injectable()
 export class PostTypeRepository extends BaseRepository<PostType> {
-
   /**
    * Constructor for PostTypeRepository class
    * @param dataSource - The data source for PostTypeRepository

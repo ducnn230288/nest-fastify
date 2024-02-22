@@ -14,7 +14,6 @@ import { MaxGroup, Base } from '@shared';
 @Entity({ schema: 'core' })
 @Unique(['code'])
 export class CodeType extends Base {
-
   /**
    * The name of the CodeType.
    */
