@@ -2,11 +2,16 @@ import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { PostType } from '@model';
+import { IsOptional, IsString } from 'class-validator';
 
 /**
  * Represents a DTO for creating a new post type.
  */
-export class CreatePostTypeRequestDto extends PickType(PostType, ['name', 'code'] as const) {}
+export class CreatePostTypeRequestDto extends PickType(PostType, ['name', 'code'] as const) {
+  @IsString()
+  @IsOptional()
+  idChildren: string;
+}
 
 /**
  * Represents a DTO for updating an existing post type.

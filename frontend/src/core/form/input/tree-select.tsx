@@ -145,6 +145,7 @@ const Component = ({ formItem, placeholder, onChange, value, form, disabled, sho
           {originNode}
         </Fragment>
       )}
+      treeDefaultExpandAll={!!formItem.list}
       labelInValue={true}
       value={value}
       disabled={disabled}

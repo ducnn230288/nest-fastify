@@ -99,7 +99,7 @@ export class PostTypeController {
   ): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.createTree(body),
     };
   }
 

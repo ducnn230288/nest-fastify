@@ -1,18 +1,49 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppDispatch, useTypedSelector, Action, Slice, State } from '@store';
-import { CommonEntity, PaginationQuery } from '@models';
+
+import { CommonEntity, EStatusState, PaginationQuery, Responses } from '@models';
+import { API, routerLinks } from '@utils';
 import { Post } from '../';
 
 const name = 'PostType';
-const action = new Action<PostType>(name);
-export const postTypeSlice = createSlice(new Slice<PostType>(action, { keepUnusedDataFor: 9999 }));
+const action = {
+  ...new Action<PostType>(name),
+  getTree: createAsyncThunk(name + '/getTree', async () =>
+    await API.get<PostType>(`${routerLinks(name, 'api')}/tree`)),
+};
+export const postTypeSlice = createSlice(new Slice<PostType>(action, { keepUnusedDataFor: 9999 }, builder => {
+  builder.addCase(
+    action.getTree.pending,
+    (
+      state: StatePostType<PostType>,
+      action: PayloadAction<undefined, string, { arg: PostType; requestId: string; requestStatus: 'pending' }>,
+    ) => {
+      state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
+      state.queryParams = JSON.stringify(action.meta.arg);
+      state.isLoading = true;
+      state.status = EStatusState.getTreePending;
+    },
+  )
+    .addCase(action.getTree.fulfilled, (state: StatePostType<PostType>, action: PayloadAction<Responses<PostType[]>>) => {
+      if (action.payload.data) {
+        state.tree = action.payload.data;
+        state.status = EStatusState.getTreeFulfilled;
+      } else state.status = EStatusState.idle;
+      state.isLoading = false;
+    })
+    .addCase(action.getTree.rejected, (state: StatePostType<PostType>) => {
+      state.status = EStatusState.getTreeRejected;
+      state.isLoading = false;
+    })
+}));
 export const PostTypeFacade = () => {
   const dispatch = useAppDispatch();
   return {
-    ...useTypedSelector((state) => state[action.name] as State<PostType>),
-    set: (values: State<PostType>) => dispatch(action.set(values)),
+    ...useTypedSelector((state) => state[action.name] as StatePostType<PostType>),
+    set: (values: StatePostType<PostType>) => dispatch(action.set(values)),
     get: (params: PaginationQuery<PostType>) => dispatch(action.get(params)),
-    getById: ({ id, keyState = 'isVisible' }: { id: string; keyState?: keyof State<PostType> }) =>
+    getTree: () => dispatch(action.getTree()),
+    getById: ({ id, keyState = 'isVisible' }: { id: string; keyState?: keyof StatePostType<PostType> }) =>
       dispatch(action.getById({ id, keyState })),
     post: (values: PostType) => dispatch(action.post(values)),
     put: (values: PostType) => dispatch(action.put(values)),
@@ -20,7 +51,9 @@ export const PostTypeFacade = () => {
     delete: (id: string) => dispatch(action.delete(id)),
   };
 };
-
+interface StatePostType<T> extends State<T> {
+  tree?: PostType[];
+}
 export class PostType extends CommonEntity {
   constructor(
     public name: string,
@@ -29,6 +62,7 @@ export class PostType extends CommonEntity {
     public createdAt?: string,
     public updatedAt?: string,
     public items?: Post[],
+    public children?: PostType[],
   ) {
     super();
   }

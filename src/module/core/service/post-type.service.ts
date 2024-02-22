@@ -4,6 +4,8 @@ import { I18nContext } from 'nestjs-i18n';
 import { BaseService } from '@shared';
 import { PostType } from '@model';
 import { PostRepository, PostTypeRepository } from '@repository';
+import { DeepPartial } from 'typeorm/common/DeepPartial';
+import { CreatePostTypeRequestDto } from '@dto';
 
 export const P_POST_TYPE_LISTED = 'efa34c52-8c9a-444d-a82b-8bec109dbab5';
 export const P_POST_TYPE_CREATE = '87cb77c4-565c-43ec-bffc-fbaf5077c2be';
@@ -33,6 +35,23 @@ export class PostTypeService extends BaseService<PostType> {
    */
   async findTree(): Promise<PostType[]> {
     return this.repo.getTree();
+  }
+
+  /**
+   * Asynchronously creates a PostType entity along with its parent-child relationship in the database.
+   * @param body - The partial data of the CreatePostTypeRequestDto to create the PostType entity.
+   * @returns A Promise that resolves to the created PostType entity or null if creation fails.
+   */
+  async createTree(body: DeepPartial<CreatePostTypeRequestDto>): Promise<PostType | null> {
+    let data = await this.create(body);
+    if (data && body.idChildren) {
+      const parent = await this.findOne(body.idChildren, []);
+      if (parent) {
+        data.parent = parent;
+        data = await this.repo.save(data);
+      }
+    }
+    return data;
   }
 
   /**

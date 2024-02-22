@@ -65,7 +65,7 @@ export class FormItem {
   type?: EFormType;
   col?: number;
   condition?: (value: string, form: FormInstance, index: number, values: any) => boolean;
-  list?: CheckboxOptionType[];
+  list?: any[];
   rules?: FormItemRule[];
   mode?: EFormModeSelect;
   tab?: string;
