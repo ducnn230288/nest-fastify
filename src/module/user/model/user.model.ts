@@ -30,7 +30,7 @@ import { UserRole, Code, Address, Booking, UserTeam, QuestionTest, Task } from '
 import { Example, MaxGroup, OnlyUpdateGroup, Base, setImage } from '@shared';
 import { TaskTimesheet } from '../../member/model/task-timesheet.model';
 
-@Entity()
+@Entity({ schema: 'user' })
 export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })

@@ -8,7 +8,7 @@ import { Data } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
 import { IEditor } from '@dto';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class DataTranslation extends Base {
   @Column()
   @ApiProperty({ example: 'en', description: '' })

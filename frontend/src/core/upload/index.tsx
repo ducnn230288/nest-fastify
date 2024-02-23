@@ -2,12 +2,11 @@ import React, { Fragment, PropsWithChildren, useEffect, useRef, useState } from 
 import { Popconfirm } from 'antd';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { nanoid } from 'nanoid';
 
-import { API, keyToken } from '@utils';
+import { API, keyToken, uuidv4 } from '@utils';
+import { Arrow, Paste, Times, UploadSVG } from '@svgs';
 import { Button } from '../button';
 import { Message } from '../message';
-import { Arrow, Paste, Times, UploadSVG } from '@svgs';
 
 export const Upload = ({
   value = [],
@@ -100,7 +99,7 @@ export const Upload = ({
         type: file.type,
         originFileObj: file,
         thumbUrl,
-        id: nanoid(),
+        id: uuidv4(),
         percent: 0,
         status: 'uploading',
       };

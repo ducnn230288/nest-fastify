@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 import { CodeType, User } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['code'])
 export class Code extends Base {
   @Column()

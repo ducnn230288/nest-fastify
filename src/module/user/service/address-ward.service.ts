@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { BaseService } from '@shared';
-import { Ward } from '@model';
+import { AddressWard } from '@model';
 
 @Injectable()
-export class WardService extends BaseService<Ward> {
+export class AddressWardService extends BaseService<AddressWard> {
   constructor(
-    @InjectRepository(Ward)
-    public repo: Repository<Ward>,
+    @InjectRepository(AddressWard)
+    public repo: Repository<AddressWard>,
   ) {
     super(repo);
     this.listQuery = ['name', 'code', 'codeDistrict'];

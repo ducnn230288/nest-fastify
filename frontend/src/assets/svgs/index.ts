@@ -1,25 +1,52 @@
-export { ReactComponent as Arrow } from './arrow.svg';
-export { ReactComponent as Booking } from './booking.svg';
-export { ReactComponent as Calendar } from './calendar.svg';
-export { ReactComponent as Check } from './check.svg';
-export { ReactComponent as CheckCircle } from './check-circle.svg';
-export { ReactComponent as CheckSquare } from './check-square.svg';
-export { ReactComponent as Cog } from './cog.svg';
-export { ReactComponent as Copy } from './copy.svg';
-export { ReactComponent as Disable } from './disable.svg';
-export { ReactComponent as DoubleArrow } from './double-arrow.svg';
-export { ReactComponent as Edit } from './edit.svg';
-export { ReactComponent as Eye } from './eye.svg';
-export { ReactComponent as EyeSlash } from './eye-slash.svg';
-export { ReactComponent as User } from './user-circle.svg';
-export { ReactComponent as Paste } from './paste.svg';
-export { ReactComponent as Plus } from './plus.svg';
-export { ReactComponent as Search } from './search.svg';
-export { ReactComponent as Spinner } from './spinner.svg';
-export { ReactComponent as Times } from './times.svg';
-export { ReactComponent as Trash } from './trash.svg';
-export { ReactComponent as UploadSVG } from './upload.svg';
-export { ReactComponent as Key } from './key.svg';
-export { ReactComponent as Out } from './out.svg';
-export { ReactComponent as Logo } from './logo.svg';
-export { ReactComponent as Coffee } from './coffee-solid.svg';
+import Arrow from './arrow.svg';
+
+import Calendar from './calendar.svg';
+import Check from './check.svg';
+import CheckCircle from './check-circle.svg';
+import CheckSquare from './check-square.svg';
+import Cog from './cog.svg';
+import Copy from './copy.svg';
+import Disable from './disable.svg';
+import DoubleArrow from './double-arrow.svg';
+import Edit from './edit.svg';
+import Eye from './eye.svg';
+import EyeSlash from './eye-slash.svg';
+import User from './user-circle.svg';
+import Paste from './paste.svg';
+import Plus from './plus.svg';
+import Search from './search.svg';
+import Spinner from './spinner.svg';
+import Times from './times.svg';
+import Trash from './trash.svg';
+import UploadSVG from './upload.svg';
+import Key from './key.svg';
+import Out from './out.svg';
+import Logo from './logo.svg';
+import Coffee from './coffee-solid.svg';
+
+export {
+  Arrow,
+  Calendar,
+  Check,
+  CheckCircle,
+  CheckSquare,
+  Cog,
+  Copy,
+  Disable,
+  DoubleArrow,
+  Edit,
+  Eye,
+  EyeSlash,
+  User,
+  Paste,
+  Plus,
+  Search,
+  Spinner,
+  Times,
+  Trash,
+  UploadSVG,
+  Key,
+  Out,
+  Logo,
+  Coffee,
+};

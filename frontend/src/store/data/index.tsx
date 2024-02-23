@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { useAppDispatch, useTypedSelector, Action, Slice, State, TLanguage } from '@store';
+import { useAppDispatch, useTypedSelector, Action, Slice, State } from '@store';
 import { CommonEntity, PaginationQuery } from '@models';
 import { DataType } from './type';
 
@@ -32,7 +32,7 @@ export class Data extends CommonEntity {
     public item?: DataType,
     public translations?: {
       id: string;
-      language?: TLanguage;
+      language?: string;
       name: string;
       description?: string;
       position?: string;

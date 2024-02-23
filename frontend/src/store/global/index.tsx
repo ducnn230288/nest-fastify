@@ -57,13 +57,13 @@ const action = {
     if (message) Message.success({ text: message });
     return true;
   }),
-  resetPassword: createAsyncThunk(name + '/reset-password', async (values: resetPassword) => {
+  resetPassword: createAsyncThunk(name + '/reset-password', async (values: ResetPassword) => {
     const { message } = await API.post(`${routerLinks(name, 'api')}/reset-password`, values);
     if (message) Message.success({ text: message });
     return true;
   }),
 };
-interface resetPassword {
+interface ResetPassword {
   password?: string;
   retypedPassword?: string;
   passwordOld?: string;
@@ -104,7 +104,7 @@ export class User extends CommonEntity {
     super();
   }
 }
-const checkLanguage = (language: TLanguage) => {
+const checkLanguage = (language: string) => {
   const formatDate = language === 'vn' ? 'DD-MM-YYYY' : 'DD-MM-YYYY';
   const locale = language === 'vn' ? viVN : enUS;
   dayjs.locale(language === 'vn' ? 'vi' : language);
@@ -149,7 +149,7 @@ export const globalSlice = createSlice({
   name: action.name,
   initialState,
   reducers: {
-    setLanguage: (state: State, action: PayloadAction<TLanguage>) => {
+    setLanguage: (state: State, action: PayloadAction<string>) => {
       if (action.payload !== state.language) {
         const { language, formatDate, locale } = checkLanguage(action.payload);
         i18n.changeLanguage(language);
@@ -305,7 +305,7 @@ export const globalSlice = createSlice({
         action.resetPassword.pending,
         (
           state: State,
-          action: PayloadAction<undefined, string, { arg: resetPassword; requestId: string; requestStatus: 'pending' }>,
+          action: PayloadAction<undefined, string, { arg: ResetPassword; requestId: string; requestStatus: 'pending' }>,
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
@@ -325,12 +325,11 @@ export const globalSlice = createSlice({
       });
   },
 });
-export type TLanguage = 'vn' | 'en';
 
 interface State {
   [selector: string]: any;
   user?: User;
-  data?: resetPassword;
+  data?: ResetPassword & User;
   routeLanguage?: Record<string, string>;
   isLoading?: boolean;
   isVisible?: boolean;
@@ -339,7 +338,7 @@ interface State {
   titleOption?: Record<string, string | undefined>;
   pathname?: string;
   formatDate?: string;
-  language?: TLanguage;
+  language?: string;
   breadcrumbs?: Breadcrumb[];
   locale?: typeof viVN | typeof enUS;
 }
@@ -354,7 +353,7 @@ export const GlobalFacade = () => {
     login: (values: { password: string; email: string }) => dispatch(action.login(values)),
     forgottenPassword: (values: { email: string }) => dispatch(action.forgottenPassword(values)),
     otpConfirmation: (values: { email: string; otp: string }) => dispatch(action.otpConfirmation(values)),
-    resetPassword: (values: resetPassword) => dispatch(action.resetPassword(values)),
-    setLanguage: (value: TLanguage) => dispatch(globalSlice.actions.setLanguage(value)),
+    resetPassword: (values: ResetPassword) => dispatch(action.resetPassword(values)),
+    setLanguage: (value: string) => dispatch(globalSlice.actions.setLanguage(value)),
   };
 };

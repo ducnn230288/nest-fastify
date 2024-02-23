@@ -4,12 +4,11 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeor
 import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { Address } from '@model';
-import { District } from '@model';
+import { Address, AddressDistrict } from '@model';
 
-@Entity()
+@Entity({ schema: 'user' })
 @Unique(['code'])
-export class Ward extends Base {
+export class AddressWard extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })
   @Expose()
@@ -28,9 +27,9 @@ export class Ward extends Base {
   @IsString()
   codeDistrict: string;
 
-  @ManyToOne(() => District, (district) => district.wardItem, { eager: false })
+  @ManyToOne(() => AddressDistrict, (district) => district.wardItem, { eager: false })
   @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
-  public districtItem?: District;
+  public districtItem?: AddressDistrict;
 
   @OneToMany(() => Address, (address) => address.wardItem, { eager: false })
   @Expose({ groups: [MaxGroup] })

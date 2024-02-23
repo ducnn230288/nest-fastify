@@ -7,23 +7,23 @@ import { appConfig } from '@config';
 import {
   AddressController,
   AuthController,
-  DistrictController,
-  ProvinceController,
+  AddressDistrictController,
+  AddressProvinceController,
   UserController,
   UserRoleController,
-  WardController,
+  AddressWardController,
 } from '@controller';
-import { Address, District, Province, User, UserRole, Ward } from '@model';
+import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   AddressService,
   AuthService,
-  DistrictService,
+  AddressDistrictService,
   EmailService,
   FileService,
-  ProvinceService,
+  AddressProvinceService,
   UserRoleService,
   UserService,
-  WardService,
+  AddressWardService,
 } from '@service';
 import { FileRepository, UserRepository, DayoffRepository, UserTeamRepository } from '@repository';
 
@@ -43,15 +43,15 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, Province, District, Ward, Address]),
+    TypeOrmModule.forFeature([User, UserRole, AddressProvince, AddressDistrict, AddressWard, Address]),
   ],
   controllers: [
     AuthController,
     UserRoleController,
     UserController,
-    ProvinceController,
-    DistrictController,
-    WardController,
+    AddressProvinceController,
+    AddressDistrictController,
+    AddressWardController,
     AddressController,
   ],
   providers: [
@@ -64,9 +64,9 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserRoleService,
     FileRepository,
     FileService,
-    ProvinceService,
-    DistrictService,
-    WardService,
+    AddressProvinceService,
+    AddressDistrictService,
+    AddressWardService,
     AddressService,
     UserTeamRepository,
     DayoffRepository,
@@ -78,9 +78,9 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     UserRoleService,
     FileRepository,
     FileService,
-    ProvinceService,
-    DistrictService,
-    WardService,
+    AddressProvinceService,
+    AddressDistrictService,
+    AddressWardService,
     AddressService,
   ],
 })

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { nanoid } from 'nanoid';
 import dayjs, { Dayjs } from 'dayjs';
 import Draggabilly from 'draggabilly';
 import { gsap } from 'gsap';
-import { Arrow } from '@svgs';
 import classNames from 'classnames';
+
+import { Arrow } from '@svgs';
+import { uuidv4 } from '@utils';
 
 export enum ETaskPriority {
   Normal = -1,
@@ -36,7 +37,7 @@ export const Gantt = ({
   }[];
 }) => {
   const widthMonthYear = 110;
-  const id = useRef('gantt-' + nanoid());
+  const id = useRef('gantt-' + uuidv4());
   useEffect(() => {
     dayjs.locale('vi');
 
@@ -190,12 +191,11 @@ export const Gantt = ({
   const handleHover = (e: any) => {
     if (e.target) {
       const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!) + 1;
-      ['left', 'right'].forEach(
-        (className) =>
-          document
-            .querySelector(`#${id.current} .${className} tbody > tr:nth-of-type(${index})`)
-            ?.querySelectorAll('td')
-            .forEach((td: HTMLTableCellElement) => td.classList.toggle('bg-blue-100')),
+      ['left', 'right'].forEach((className) =>
+        document
+          .querySelector(`#${id.current} .${className} tbody > tr:nth-of-type(${index})`)
+          ?.querySelectorAll('td')
+          .forEach((td: HTMLTableCellElement) => td.classList.toggle('bg-blue-100')),
       );
     }
   };

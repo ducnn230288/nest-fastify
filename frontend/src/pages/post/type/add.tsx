@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import slug from 'slug';
 
 import { GlobalFacade, PostType, PostTypeFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { lang, loopMapSelect, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
@@ -17,6 +17,7 @@ const Page = () => {
   const isReload = useRef(false);
   const param = JSON.parse(postTypeFacade.queryParams || '{}');
   useEffect(() => {
+    if (!postTypeFacade.tree) postTypeFacade.getTree();
     if (id) postTypeFacade.getById({ id });
     else postTypeFacade.set({ data: undefined });
     set({
@@ -27,7 +28,7 @@ const Page = () => {
       ],
     });
     return () => {
-      isReload.current && postTypeFacade.get(param);
+      isReload.current && postTypeFacade.getTree();
     };
   }, [id]);
 
@@ -37,7 +38,7 @@ const Page = () => {
     switch (postTypeFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
-        postTypeFacade.get(JSON.parse(postTypeFacade.queryParams || '{}'));
+        postTypeFacade.getTree();
         if (Object.keys(param).length > 0) isReload.current = true;
 
         if (isBack.current) handleBack();
@@ -81,6 +82,14 @@ const Page = () => {
               formItem: {
                 rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
                 type: id ? EFormType.hidden : EFormType.text,
+              },
+            },
+            {
+              title: 'Là nhánh con',
+              name: 'idChildren',
+              formItem: {
+                type: id ? EFormType.hidden : EFormType.treeSelect,
+                list: loopMapSelect(postTypeFacade?.tree),
               },
             },
           ]}

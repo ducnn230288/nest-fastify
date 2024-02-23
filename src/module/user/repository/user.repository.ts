@@ -36,6 +36,7 @@ export class UserRepository extends BaseRepository<User> {
       .andWhere('base.id=:id', { id })
       .andWhere('base.email=:email', { email })
       .leftJoinAndSelect('base.role', 'role')
+      .leftJoinAndSelect('base.position', 'position')
       .getOne();
   }
 

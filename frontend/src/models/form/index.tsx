@@ -24,6 +24,7 @@ export enum EFormType {
   tag = 'tag',
   chips = 'chips',
   select = 'select',
+  selectTable = 'select_table',
   treeSelect = 'tree_select',
   otp = 'otp',
   switch = 'switch',
@@ -64,7 +65,7 @@ export class FormItem {
   type?: EFormType;
   col?: number;
   condition?: (value: string, form: FormInstance, index: number, values: any) => boolean;
-  list?: CheckboxOptionType[];
+  list?: any[];
   rules?: FormItemRule[];
   mode?: EFormModeSelect;
   tab?: string;

@@ -5,11 +5,11 @@ import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { Address } from '@model';
-import { Province, Ward } from '@model';
+import { AddressProvince, AddressWard } from '@model';
 
-@Entity()
+@Entity({ schema: 'user' })
 @Unique(['code'])
-export class District extends Base {
+export class AddressDistrict extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })
   @Expose()
@@ -28,15 +28,15 @@ export class District extends Base {
   @IsString()
   codeProvince: string;
 
-  @ManyToOne(() => Province, (province) => province.districtItem, { eager: false })
+  @ManyToOne(() => AddressProvince, (province) => province.districtItem, { eager: false })
   @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
-  public provinceItem?: Province;
+  public provinceItem?: AddressProvince;
 
   @OneToMany(() => Address, (address) => address.districtItem, { eager: false })
   @Expose({ groups: [MaxGroup] })
   item?: Address;
 
-  @OneToMany(() => Ward, (ward) => ward.districtItem, { eager: false })
+  @OneToMany(() => AddressWard, (ward) => ward.districtItem, { eager: false })
   @Expose({ groups: [MaxGroup] })
-  wardItem?: Ward[];
+  wardItem?: AddressWard[];
 }

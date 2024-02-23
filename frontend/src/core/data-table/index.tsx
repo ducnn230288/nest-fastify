@@ -1,33 +1,21 @@
 import React, { forwardRef, Fragment, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { nanoid } from 'nanoid';
-import { Checkbox, CheckboxOptionType, DatePicker, Popover, Radio, Spin, Table } from 'antd';
+import { Checkbox, CheckboxOptionType, DatePicker, Radio, Spin, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
+import Draggabilly from 'draggabilly';
 
 import { Button } from '../button';
 import { Pagination } from '../pagination';
 import { DataTableModel, PaginationQuery, TableGet, TableRefObject } from '@models';
-import { cleanObjectKeyNull, getSizePageByHeight } from '@utils';
+import { cleanObjectKeyNull, getSizePageByHeight, uuidv4 } from '@utils';
 import { Calendar, CheckCircle, CheckSquare, Search, Times } from '@svgs';
 import { SorterResult } from 'antd/lib/table/interface';
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { RangePicker } = DatePicker;
-const checkTextToShort = (text: string) => {
-  return text?.toString()?.length < 50 ? (
-    text
-  ) : (
-    <span>
-      {text?.toString()?.substring(0, 40)}
-      <Popover trigger="hover" overlayClassName="table-tooltip" content={text}>
-        ...
-      </Popover>
-    </span>
-  );
-};
 
 export const getQueryStringParams = (query: string) => {
   return query
@@ -60,7 +48,7 @@ export const DataTable = forwardRef(
       save = true,
       searchPlaceholder,
       subHeader,
-      xScroll,
+      xScroll = 1000,
       yScroll,
       emptyText = 'No Data',
       onRow,
@@ -68,10 +56,11 @@ export const DataTable = forwardRef(
       pageSizeRender = (sizePage: number) => sizePage + ' / page',
       pageSizeWidth = '115px',
       paginationDescription = (from: number, to: number, total: number) => from + '-' + to + ' of ' + total + ' items',
-      idElement = 'temp-' + nanoid(),
+      idElement = 'temp-' + uuidv4(),
       className = 'data-table',
       facade = {},
       data,
+      formatData = (data) => data,
       ...prop
     }: Type,
     ref: Ref<TableRefObject>,
@@ -94,6 +83,7 @@ export const DataTable = forwardRef(
         ? { ...defaultRequest, ...getQueryStringParams(location.search) }
         : defaultRequest,
     );
+    const tableRef = useRef<HTMLDivElement>(null);
 
     const scroll = useRef<{ x?: number; y?: number }>({ x: xScroll, y: yScroll });
     useEffect(() => {
@@ -128,9 +118,55 @@ export const DataTable = forwardRef(
           }
         });
       }
-
       return () => localStorage.removeItem(idTable.current);
     }, []);
+
+    useEffect(() => {
+      if (data?.length || result?.data?.length)
+        setTimeout(() => {
+          let left: HTMLTableCellElement | null;
+          let table = tableRef.current?.querySelector('table');
+          let indexLeft: number;
+          let wLeft: number;
+          let wTable: number;
+          const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
+          const cols = tableRef.current?.querySelectorAll('col');
+          for (let i = 0; i < cols!.length; i++) {
+            if (!cols![i].style.width) cols![i].style.width = cols![i].clientWidth + 'px';
+          }
+          table!.style.width = tableRef.current?.clientWidth + 'px';
+          for (let i = 0; i < dragging!.length; i++) {
+            new Draggabilly(dragging![i], {
+              axis: 'x',
+            })
+              .on('dragStart', () => {
+                left = dragging![i].closest('th');
+                const div = document.createElement('div');
+                div.className = 'bg';
+                dragging![i].closest('tr')!.appendChild(div);
+                const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
+                indexLeft = th.indexOf(left) + 1;
+                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+                wLeft = parseFloat(left.style.width);
+                table = tableRef.current?.querySelector('table');
+                wTable = parseFloat(table!.style.width);
+              })
+              .on('dragMove', (_, __, moveVector) => {
+                const p = moveVector.x * 0.6;
+                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+                left.style.width = wLeft + p + 'px';
+                left.style.minWidth = wLeft + p + 'px';
+                table!.style.width = wTable + p + 'px';
+              })
+              .on('dragEnd', () => {
+                dragging![i].style.left = '';
+                setTimeout(() => {
+                  dragging![i].closest('tr')!.querySelector('.bg')!.remove();
+                });
+              });
+          }
+        }, 10);
+    }, [data, result?.data]);
 
     const onChange = (request?: PaginationQuery, changeNavigate = true) => {
       if (request) {
@@ -223,7 +259,7 @@ export const DataTable = forwardRef(
           </Spin>
         );
       },
-      filterIcon: () => <CheckCircle className="h-4 w-4 fill-gray-600" />,
+      filterIcon: () => <CheckCircle className="h-3.5 w-3.5 fill-gray-600" />,
     });
     // noinspection JSUnusedGlobalSymbols
     const getColumnSearchCheckbox = (filters: any, key: any, get: TableGet = {}) => ({
@@ -269,7 +305,7 @@ export const DataTable = forwardRef(
         );
       },
       filterIcon: (filtered: boolean) => (
-        <CheckSquare className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <CheckSquare className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
     });
     // noinspection JSUnusedGlobalSymbols
@@ -292,7 +328,7 @@ export const DataTable = forwardRef(
         </div>
       ),
       filterIcon: (filtered: boolean) => (
-        <Search className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <Search className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
       filterDropdownOpen: !!filterDropdownOpen[key],
       onFilterDropdownOpenChange: (visible: boolean) => {
@@ -326,7 +362,7 @@ export const DataTable = forwardRef(
         </div>
       ),
       filterIcon: (filtered: boolean) => (
-        <Calendar className={classNames('h-4 w-4', { 'fill-[#3699FF]': filtered, 'fill-gray-600': !filtered })} />
+        <Calendar className={classNames('h-3.5 w-3.5', { 'fill-teal-900': filtered, 'fill-gray-600': !filtered })} />
       ),
     });
     cols.current = columns
@@ -367,7 +403,6 @@ export const DataTable = forwardRef(
         if (item?.sorter && sorts && sorts[col!.name!])
           item.defaultSortOrder =
             sorts[col!.name!] === 'ASC' ? 'ascend' : sorts[col!.name!] === 'DESC' ? 'descend' : '';
-        if (!item?.render) item!.render = (text: string) => text && checkTextToShort(text);
         if (item && !item?.onCell)
           item.onCell = (record) => ({
             className: record?.id && record?.id === (id || facade?.data?.id) ? '!bg-teal-100' : '',
@@ -376,6 +411,7 @@ export const DataTable = forwardRef(
         return {
           title: t(col.title || ''),
           dataIndex: col.name,
+          ellipsis: true,
           ...item,
         };
       });
@@ -412,60 +448,50 @@ export const DataTable = forwardRef(
     if (!data) data = result?.data;
     const loopData = (array?: any[]): any[] =>
       array
-        ? array.map((item) => ({
+        ? formatData(array).map((item) => ({
             ...item,
-            key: item.id || nanoid(),
+            key: item.id || uuidv4(),
             children: item.children && loopData(item.children),
           }))
         : [];
     return (
-      <div className={classNames(className, 'intro-x')}>
-        <div className="lg:flex justify-between mb-2.5 gap-y-2.5 responsive-header supplier-tab4 store-tab3 flex-wrap form-index-supplier form-tab">
-          {showSearch ? (
-            <div className="relative">
-              <input
-                id={idTable.current + '_input_search'}
-                className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
-                defaultValue={params.fullTextSearch}
-                type="text"
-                placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
-                onChange={() => {
-                  clearTimeout(timeoutSearch.current);
-                  timeoutSearch.current = setTimeout(
-                    () =>
+      <div ref={tableRef} className={classNames(className, 'intro-x')}>
+        {(!!showSearch || !!leftHeader || !!rightHeader) && (
+          <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
+            {showSearch ? (
+              <div className="relative">
+                <input
+                  id={idTable.current + '_input_search'}
+                  className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
+                  defaultValue={params.fullTextSearch}
+                  type="text"
+                  placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
+                  onChange={() => {
+                    clearTimeout(timeoutSearch.current);
+                    timeoutSearch.current = setTimeout(
+                      () =>
+                        handleTableChange(
+                          undefined,
+                          params.filter,
+                          params.sorts as SorterResult<any>,
+                          (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
+                        ),
+                      500,
+                    );
+                  }}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter')
                       handleTableChange(
                         undefined,
                         params.filter,
                         params.sorts as SorterResult<any>,
                         (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                      ),
-                    500,
-                  );
-                }}
-                onKeyUp={(e) => {
-                  if (e.key === 'Enter')
-                    handleTableChange(
-                      undefined,
-                      params.filter,
-                      params.sorts as SorterResult<any>,
-                      (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                    );
-                }}
-              />
-              {!params.fullTextSearch ? (
-                <Search
-                  className="w-4 h-4 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
-                  onClick={() => {
-                    if (params.fullTextSearch) {
-                      (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
-                      handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
-                    }
+                      );
                   }}
                 />
-              ) : (
-                !!params.fullTextSearch && (
-                  <Times
-                    className="w-4 h-4 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
+                {!params.fullTextSearch ? (
+                  <Search
+                    className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
                     onClick={() => {
                       if (params.fullTextSearch) {
                         (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
@@ -473,20 +499,42 @@ export const DataTable = forwardRef(
                       }
                     }}
                   />
-                )
-              )}
-            </div>
-          ) : (
-            <div />
-          )}
-          {!!leftHeader && <div className={'mt-2 sm:mt-0'}>{leftHeader}</div>}
-          {!!rightHeader && <div className={'mt-2 sm:mt-0'}>{rightHeader}</div>}
-        </div>
+                ) : (
+                  !!params.fullTextSearch && (
+                    <Times
+                      className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
+                      onClick={() => {
+                        if (params.fullTextSearch) {
+                          (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
+                          handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
+                        }
+                      }}
+                    />
+                  )
+                )}
+              </div>
+            ) : (
+              <div />
+            )}
+            {!!leftHeader && <div className={'mt-2 sm:mt-0'}>{leftHeader}</div>}
+            {!!rightHeader && <div className={'mt-2 sm:mt-0'}>{rightHeader}</div>}
+          </div>
+        )}
         {subHeader && subHeader(result?.count)}
         {!!showList && (
           <Fragment>
             <Table
               onRow={onRow}
+              components={{
+                header: {
+                  cell: ({ children, ...restProps }: { children: React.ReactNode }) => (
+                    <th {...restProps}>
+                      {children}
+                      <span className="dragging"></span>
+                    </th>
+                  ),
+                },
+              }}
               locale={{
                 emptyText: (
                   <div className="bg-gray-100 text-gray-400 py-4">{t(`components.datatable.${emptyText}`)}</div>
@@ -500,7 +548,6 @@ export const DataTable = forwardRef(
               onChange={(pagination, filters, sorts) =>
                 handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
               }
-              showSorterTooltip={false}
               scroll={scroll.current}
               size="small"
               {...prop}
@@ -546,7 +593,7 @@ type Type = {
   xScroll?: number;
   yScroll?: number;
   emptyText?: JSX.Element | string;
-  onRow?: (data: any) => { onDoubleClick?: () => void };
+  onRow?: (data: any) => { onDoubleClick?: () => void; onClick?: () => void };
   pageSizeOptions?: number[];
   pageSizeRender?: (sizePage: number) => number | string;
   pageSizeWidth?: string;
@@ -555,4 +602,5 @@ type Type = {
   className?: string;
   facade?: any;
   data?: any[];
+  formatData?: (data: any) => any[];
 };

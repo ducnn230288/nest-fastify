@@ -1,7 +1,20 @@
-/// <reference types="vite/client" />
 declare module '*.svg' {
-  import React = require('react');
-  export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-  const src: string;
-  export default src;
+  import * as React from 'react';
+
+  const ReactComponent: React.FunctionComponent<
+    React.ComponentProps<'svg'> & { title?: string }
+  >;
+
+  export default ReactComponent;
+}
+/// <reference types="vite/client" />
+interface ImportMetaEnv {
+  readonly VITE_URL_SOCKET: string
+  readonly VITE_URL_API: string
+  readonly VITE_URL_LANGUAGES: string
+  readonly VITE_URL_LANGUAGE: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
 }
