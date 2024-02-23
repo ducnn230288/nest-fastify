@@ -38,7 +38,6 @@ export class DataService extends BaseService<Data> {
   /**
    *
    * @param body
-   * @param i18n
    * @returns Data
    *
    */
@@ -52,7 +51,6 @@ export class DataService extends BaseService<Data> {
    *
    * @param id
    * @param body
-   * @param i18n
    * @returns Data
    *
    */

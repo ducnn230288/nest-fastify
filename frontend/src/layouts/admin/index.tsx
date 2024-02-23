@@ -196,7 +196,7 @@ const Layout = ({ children }: PropsWithChildren) => {
               'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
             })}
             onClick={() => {
-              set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+              set_isCollapsed(!isCollapsed); set_isDesktop(isDesktop);
             }}
           >
             <span className="line" />
@@ -237,7 +237,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
           })}
           onClick={() => {
-            set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+            set_isCollapsed(!isCollapsed); set_isDesktop(isDesktop);
           }}
         >
           <Arrow

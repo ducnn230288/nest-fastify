@@ -335,7 +335,7 @@
           onsubmit="setTimeout(() => {
             if(window._FORMSTATUS_['send-email-contact']){
               API.post('api/auth/send-email-contact', window._FORM_['send-email-contact']).then(e => {
-                Message.success({text: e.message}).then((e) => location.reload());
+                Message.success({text: e.message}).then(() => location.reload());
               })
             }
           })"

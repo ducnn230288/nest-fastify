@@ -58372,8 +58372,8 @@ export class AddressProvinceSeeder implements Seeder {
               .getOne();
 
               if (!wardExits) {
-                let newWard = repoWard.create(ward);
-                newWard = await repoWard.save(ward);
+                repoWard.create(ward);
+                await repoWard.save(ward);
               }
             }
           }

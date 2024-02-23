@@ -191,7 +191,7 @@ export const Avatar = ({
   const getFirstLetter = (text: string, numberLetter = 1) => {
     text = text.trim();
     if (text.split(' ').length === 1) {
-      return text.substr(0, numberLetter);
+      return text.substring(0, numberLetter);
     } else {
       let letter = '';
       text.split(' ').map((item: string, index: number) => {
