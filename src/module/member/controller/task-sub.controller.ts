@@ -47,7 +47,7 @@ export class TaskSubController {
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TaskSubResponeDto> {
     return {
-      message: i18n.t('common.Get Detail success'),
+      message: i18n.t('common.Get Detail Success'),
       data: await this.service.findOne(id, []),
     };
   }
@@ -63,7 +63,7 @@ export class TaskSubController {
     @Body(new SerializerBody()) body: UpdateTaskSubRequestDto,
   ): Promise<TaskSubResponeDto> {
     return {
-      message: i18n.t('common.Update success'),
+      message: i18n.t('common.Update Success'),
       data: await this.service.update(id, body),
     };
   }
@@ -76,7 +76,7 @@ export class TaskSubController {
   @Delete(':id')
   async delete(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TaskSubResponeDto> {
     return {
-      message: i18n.t('common.Delete success'),
+      message: i18n.t('common.Delete Success'),
       data: await this.service.remove(id),
     };
   }

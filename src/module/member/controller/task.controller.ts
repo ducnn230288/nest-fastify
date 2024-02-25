@@ -69,7 +69,7 @@ export class TaskController {
   @Get(':id')
   async getOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<TaskResponseDto> {
     return {
-      message: i18n.t('common.Get Detail success'),
+      message: i18n.t('common.Get Detail Success'),
       data: await this.service.findOne(id, ['taskSubs']),
     };
   }
@@ -90,7 +90,7 @@ export class TaskController {
     const data = await this.service.updateTask(id, status, body);
 
     return {
-      message: i18n.t('common.Update data success'),
+      message: i18n.t('common.Update Success'),
       data: data,
     };
   }
@@ -107,7 +107,7 @@ export class TaskController {
     if (task?.status === ETaskStatus.Processing)
       throw new BadRequestException(i18n.t('common.Task status is processing. Cannot delete.'));
     return {
-      message: i18n.t('common.Delete data success'),
+      message: i18n.t('common.Delete Success'),
       data: await this.service.remove(id),
     };
   }

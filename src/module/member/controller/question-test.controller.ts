@@ -53,7 +53,7 @@ export class QuestionTestController {
   @Get(':id')
   async findOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionTestResponseDto> {
     return {
-      message: i18n.t('common.Get Detail success'),
+      message: i18n.t('common.Get Detail Success'),
       data: await this.service.findOne(id, []),
     };
   }
@@ -66,7 +66,7 @@ export class QuestionTestController {
   @Delete(':id')
   async delete(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<QuestionTestResponseDto> {
     return {
-      message: i18n.t('common.Delete success'),
+      message: i18n.t('common.Delete Success'),
       data: await this.service.remove(id),
     };
   }

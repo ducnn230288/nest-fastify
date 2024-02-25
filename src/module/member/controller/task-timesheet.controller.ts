@@ -62,7 +62,7 @@ export class TaskTimesheetController {
       paginationQuery.where = [{ userId: user.id }];
     const [data, count] = await this.service.findAllWithDayOff(paginationQuery);
     return {
-      message: i18n.t('common.Get Detail success'),
+      message: i18n.t('common.Get Detail Success'),
       data: data,
       count: count,
     };
@@ -94,7 +94,7 @@ export class TaskTimesheetController {
     const data = await this.service.findOneWithDayOff(id);
 
     return {
-      message: i18n.t('common.Get Detail success'),
+      message: i18n.t('common.Get Detail Success'),
       data: data,
     };
   }

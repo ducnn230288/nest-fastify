@@ -23,6 +23,7 @@ import Key from './key.svg';
 import Out from './out.svg';
 import Logo from './logo.svg';
 import Coffee from './coffee-solid.svg';
+import Booking from './booking.svg';
 
 export {
   Arrow,
@@ -49,4 +50,5 @@ export {
   Out,
   Logo,
   Coffee,
+  Booking,
 };
