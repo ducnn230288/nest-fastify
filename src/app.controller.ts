@@ -1,9 +1,9 @@
-import { Get, Controller, Render, Res, Param, Inject, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Render, Res, Param, UseInterceptors } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import { FastifyReply } from 'fastify';
 import dayjs from 'dayjs';
-import { Cache } from 'cache-manager';
-import { CacheInterceptor, CACHE_MANAGER } from '@nestjs/cache-manager';
+// import { Cache } from 'cache-manager'; CACHE_MANAGER Inject
+import { CacheInterceptor,  } from '@nestjs/cache-manager';
 
 import { DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';

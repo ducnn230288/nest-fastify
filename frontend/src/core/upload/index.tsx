@@ -34,9 +34,7 @@ export const Upload = ({
             status: 'done',
           };
         })
-      : typeof value === 'string'
-        ? [{ [keyImage]: value }]
-        : value || [],
+      : value || [],
   );
 
   useEffect(() => {
@@ -49,9 +47,7 @@ export const Upload = ({
               status: 'done',
             };
           })
-        : typeof value === 'string'
-          ? [{ [keyImage]: value }]
-          : value || [];
+        : value || [];
     if (
       JSON.stringify(listFiles) !== JSON.stringify(tempData) &&
       listFiles.filter((item: any) => item.status === 'uploading').length === 0
@@ -75,7 +71,7 @@ export const Upload = ({
     for (let i = 0; i < target.files.length; i++) {
       const file = target.files[i];
       if (maxSize && file.size > maxSize * 1024 * 1024) {
-        Message.error({
+        await Message.error({
           text: `${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}mb): ${t('components.form.ruleMaxSize', {
             max: maxSize,
           })}`,
@@ -314,7 +310,7 @@ export const Upload = ({
 };
 type Type = PropsWithChildren<{
   value?: any[];
-  onChange?: (values: any[]) => void;
+  onChange?: (values: any[]) => any;
   deleteFile?: any;
   showBtnDelete?: (file: any) => boolean;
   method?: string;

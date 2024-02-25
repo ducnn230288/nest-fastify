@@ -35,18 +35,14 @@ export abstract class BaseService<T extends ObjectLiteral> {
    * @param paginationQuery string or object describing the error condition.
    */
   async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
-    // eslint-disable-next-line prefer-const
-    // let cache = await this.managerCache.get<T>('findAll');
-
-    const { where, perPage, page, fullTextSearch } = paginationQuery;
-    let { sorts } = paginationQuery;
+    const { sorts, where, perPage, page, fullTextSearch } = paginationQuery;
 
     const filter =
       typeof paginationQuery.filter === 'string' ? JSON.parse(paginationQuery.filter) : paginationQuery.filter;
     const skip = typeof paginationQuery.skip === 'string' ? JSON.parse(paginationQuery.skip) : paginationQuery.skip;
     const extend =
       typeof paginationQuery.extend === 'string' ? JSON.parse(paginationQuery.extend) : paginationQuery.extend;
-    if (typeof sorts === 'string') sorts = JSON.parse(sorts);
+
     let request = this.repo
       .createQueryBuilder('base')
       .orderBy('base.createdAt', 'DESC')
@@ -153,7 +149,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
       });
     }
     if (perPage !== undefined && page !== undefined)
-      request = request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
+      request = request.take(perPage || 10);
     const res: [T[], number] = await request.getManyAndCount();
     if (extend && Object.keys(extend).length) {
       let isGet = false;
@@ -188,12 +184,6 @@ export abstract class BaseService<T extends ObjectLiteral> {
         res[1] = res[0].length;
       }
     }
-
-    // if (!cache) {
-    //   await this.managerCache.set('findAll', [res[0], res[1]]);
-    // }
-    // console.log(cache);
-
     return [res[0], res[1]];
   }
 

@@ -29,7 +29,7 @@ const action = {
       values,
     );
     if (data) {
-      if (message) Message.success({ text: message });
+      if (message) await Message.success({ text: message });
       localStorage.setItem(keyToken, data?.accessToken);
       localStorage.setItem(keyRefreshToken, data?.refreshToken);
     }
@@ -41,7 +41,7 @@ const action = {
       values,
     );
     if (data) {
-      if (message) Message.success({ text: message });
+      if (message) await Message.success({ text: message });
       localStorage.setItem(keyToken, data?.accessToken);
       localStorage.setItem(keyRefreshToken, data?.refreshToken);
     }
@@ -49,17 +49,17 @@ const action = {
   }),
   forgottenPassword: createAsyncThunk(name + '/forgotten-password', async (values: { email: string }) => {
     const { message } = await API.post(`${routerLinks(name, 'api')}/forgotten-password`, values);
-    if (message) Message.success({ text: message });
+    if (message) await Message.success({ text: message });
     return true;
   }),
   otpConfirmation: createAsyncThunk(name + '/otp-confirmation', async (values: { email: string; otp: string }) => {
     const { message } = await API.post(`${routerLinks(name, 'api')}/otp-confirmation`, values);
-    if (message) Message.success({ text: message });
+    if (message) await Message.success({ text: message });
     return true;
   }),
   resetPassword: createAsyncThunk(name + '/reset-password', async (values: ResetPassword) => {
     const { message } = await API.post(`${routerLinks(name, 'api')}/reset-password`, values);
-    if (message) Message.success({ text: message });
+    if (message) await Message.success({ text: message });
     return true;
   }),
 };

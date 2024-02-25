@@ -1,5 +1,7 @@
+import React from 'react';
 import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
+
 export enum EFormType {
   onlyNumber = 'only_number',
   hidden = 'hidden',
@@ -79,7 +81,7 @@ export class FormItem {
   initialValues?: { start: string; end: string };
   convert?: (data: any) => any;
   onChange?: (value: any, form: FormInstance, reRender: any) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement, Element>, form: FormInstance, name: string) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>, form: FormInstance, name: string) => void;
   disabledDate?: (current: any, form: FormInstance) => boolean;
   showTime?: boolean;
   picker?: EFormPickerDate;
@@ -105,7 +107,7 @@ export class FormItem {
   isTable?: boolean;
   showRemove?: any;
   idCheck?: any;
-  firstLoad?: (data: any) => void;
+  firstLoad?: (data: any) => any;
   notDefaultValid?: boolean;
   render?: (form: FormInstance, values: any, generateForm: void, index: number, reRender: void) => JSX.Element;
 }
@@ -138,5 +140,5 @@ export class FormApi {
 export class FormModalRefObject {
   handleEdit?: (item?: { id?: string }, isGet?: boolean) => Promise<void>;
   handleDelete?: (id: string) => Promise<any>;
-  form?: FormInstance<any>;
+  form?: FormInstance;
 }

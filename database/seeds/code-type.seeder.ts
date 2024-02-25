@@ -1,11 +1,10 @@
-import { Seeder, SeederFactoryManager } from 'typeorm-extension';
+import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
 import { Code, CodeType } from '@model';
-import { appConfig } from '@config';
 
 export class CodeTypeSeeder implements Seeder {
-  async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
+  async run(dataSource: DataSource): Promise<void> {
     const listData: CodeType[] = [
       {
         name: 'Position',

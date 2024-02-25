@@ -38,7 +38,7 @@ const Component = ({
   };
   useEffect(() => {
     if (formItem.firstLoad) {
-      facade.get(formItem.firstLoad());
+      facade.get(formItem.firstLoad(value));
     }
   }, []);
 

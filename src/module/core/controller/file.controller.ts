@@ -83,55 +83,51 @@ export class FileController {
     @Param('name') name: string,
     @Res({ passthrough: true }) res: FastifyReply,
   ): Promise<StreamableFile | undefined> {
-    try {
-      const filePath = join(process.cwd(), appConfig.UPLOAD_LOCATION, `${userId}/${name}`);
-      if (!existsSync(filePath)) throw new BadRequestException();
-      const { size } = statSync(filePath);
-      const contentType = mime.contentType(filePath.split('.').pop());
-      const header = {
-        'Content-Type': contentType,
-        'Content-Length': size,
-      };
-      // if (filter.download === true) {
-      //   header['Content-Disposition'] = contentDisposition(filePath);
+    const filePath = join(process.cwd(), appConfig.UPLOAD_LOCATION, `${userId}/${name}`);
+    if (!existsSync(filePath)) throw new BadRequestException();
+    const { size } = statSync(filePath);
+    const contentType = mime.contentType(filePath.split('.').pop());
+    const header = {
+      'Content-Type': contentType,
+      'Content-Length': size,
+    };
+    // if (filter.download === true) {
+    //   header['Content-Disposition'] = contentDisposition(filePath);
+    // }
+    if (contentType.includes('video')) {
+      // const videoRange = headers.range;
+      // const CHUNK_SIZE = 10 * 10 ** 6; // 10 MB
+      // if (videoRange) {
+      //   const start = Number(videoRange.replace(/\D/g, ''));
+      //   const end = Math.min(start + CHUNK_SIZE, size - 1);
+      //   const contentLength = end - start + 1;
+      //   const readStreamfile = createReadStream(filePath, {
+      //     start,
+      //     end,
+      //   });
+      //   const head = {
+      //     'Accept-Ranges': 'bytes',
+      //     'Content-Type': contentType,
+      //     'Content-Range': `bytes ${start}-${end}/${size}`,
+      //     'Content-Length': contentLength,
+      //   };
+      //   res.status(HttpStatus.PARTIAL_CONTENT).headers(head); //206
+      //   return new StreamableFile(readStreamfile);
+      // } else {
+      //   const head = {
+      //     'Accept-Ranges': 'bytes',
+      //     'Content-Type': contentType,
+      //     'Content-Length': size,
+      //   };
+      //   res.status(HttpStatus.OK).headers(head); //200
+      //   // createReadStream(videoPath).pipe(res);
+      //   const readStreamfile = createReadStream(filePath);
+      //   return new StreamableFile(readStreamfile);
       // }
-      if (contentType.includes('video')) {
-        // const videoRange = headers.range;
-        // const CHUNK_SIZE = 10 * 10 ** 6; // 10 MB
-        // if (videoRange) {
-        //   const start = Number(videoRange.replace(/\D/g, ''));
-        //   const end = Math.min(start + CHUNK_SIZE, size - 1);
-        //   const contentLength = end - start + 1;
-        //   const readStreamfile = createReadStream(filePath, {
-        //     start,
-        //     end,
-        //   });
-        //   const head = {
-        //     'Accept-Ranges': 'bytes',
-        //     'Content-Type': contentType,
-        //     'Content-Range': `bytes ${start}-${end}/${size}`,
-        //     'Content-Length': contentLength,
-        //   };
-        //   res.status(HttpStatus.PARTIAL_CONTENT).headers(head); //206
-        //   return new StreamableFile(readStreamfile);
-        // } else {
-        //   const head = {
-        //     'Accept-Ranges': 'bytes',
-        //     'Content-Type': contentType,
-        //     'Content-Length': size,
-        //   };
-        //   res.status(HttpStatus.OK).headers(head); //200
-        //   // createReadStream(videoPath).pipe(res);
-        //   const readStreamfile = createReadStream(filePath);
-        //   return new StreamableFile(readStreamfile);
-        // }
-      } else {
-        res.headers(header);
-        const file = createReadStream(filePath);
-        return new StreamableFile(file);
-      }
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    } else {
+      res.headers(header);
+      const file = createReadStream(filePath);
+      return new StreamableFile(file);
     }
   }
 
