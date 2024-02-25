@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { BaseRepository } from '@shared';
 import { Task, TaskTimesheet, TaskWork } from '@model';
 import { I18nContext } from 'nestjs-i18n';
-import { TaskWorkRequest } from '../dto/task-timesheet.dto';
+import { TaskWorkRequest } from '@dto';
 
 @Injectable()
 export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {

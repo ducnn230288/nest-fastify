@@ -1,15 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
-import {
-  CodeService,
-  P_TASK_CREATE,
-  P_TASK_DELETE,
-  P_TASK_DETAIL,
-  P_TASK_LISTED,
-  P_TASK_UPDATE,
-  TaskService,
-} from '@service';
+import { CodeService, P_TASK_CREATE, P_TASK_DELETE, P_TASK_LISTED, P_TASK_UPDATE, TaskService } from '@service';
 import { CreateTaskRequestDto, ListTaskResponseDto, TaskResponseDto, UpdateTaskRequestDto } from '@dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { ETaskStatus, User } from '@model';
@@ -33,7 +24,7 @@ export class TaskController {
     @AuthUser() user: User,
   ): Promise<TaskResponseDto> {
     if (!body.code) {
-      const [result, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
+      const [_, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
       body.code = body.projectCode + `_${total < 10 ? '0' + total : total}`;
     }
     const task = await this.service.createTask(body, user);

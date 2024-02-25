@@ -1,48 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 import dayjs from 'dayjs';
 
-import { Booking, GlobalFacade, BookingFacade, CodeFacade, CodeTypeFacade, TimeSheetFacade, TaskFacade } from '@store';
+import { Booking, TimeSheetFacade, TaskFacade } from '@store';
 import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
-import { title } from 'process';
-import { Addable } from '@core/form/input';
+import { EFormRuleType, EFormType } from '@models';
 const Page = () => {
-  const [projectname, setProjectName] = useState([]);
-  const [taskname, setTaskName] = useState([]);
-  const { id, date, typeCode } = useParams();
+  const { id, date } = useParams();
   const timesheetFacade = TimeSheetFacade();
-  const { set } = GlobalFacade();
-  const isReload = useRef(false);
-  const param = JSON.parse(timesheetFacade.queryParams || '{}');
-  const taskFacade=TaskFacade()
+  const taskFacade = TaskFacade();
 
   useEffect(() => {
-    if (id) { taskFacade.getById({id})
-       
-        // console.log(data?.works?.[0]?.task?.project?.name )
-        // const transformed = data?.works?.map((work: { task: { project: { name: any; }; }; }) => ({
-        //   name: work?.task?.project?.name,
-        //   label: work?.task?.project?.name,
-        // })) || [];
-        // setProjectName(transformed);
-        // const transformedtask =data?.works?.map((work: { task: { name: any; }; }) => ({
-        //   value: work?.task?.name,
-        //   label: work?.task?.name,
-        // })) || [];
-        // setTaskName(transformedtask);
-      
-   
+    if (id) {
+      taskFacade.getById({ id });
+
+      // console.log(data?.works?.[0]?.task?.project?.name )
+      // const transformed = data?.works?.map((work: { task: { project: { name: any; }; }; }) => ({
+      //   name: work?.task?.project?.name,
+      //   label: work?.task?.project?.name,
+      // })) || [];
+      // setProjectName(transformed);
+      // const transformedtask =data?.works?.map((work: { task: { name: any; }; }) => ({
+      //   value: work?.task?.name,
+      //   label: work?.task?.name,
+      // })) || [];
+      // setTaskName(transformedtask);
     }
   }, [id]);
-  console.log(taskFacade)
+  console.log(taskFacade);
   const navigate = useNavigate();
   const isBack = useRef(true);
-  
+
   const handleBack = () => navigate(`/${lang}${routerLinks('TimeSheet')}`);
   const handleSubmit = (values: Booking) => {
     values.startTime = dayjs(values.time![0].format('HH:mm') + ' ' + date).toISOString();
@@ -51,7 +43,7 @@ const Page = () => {
     // if (id) timesheetFacade.put({ ...values, typeCode, id });
     // else timesheetFacade.post({ ...values, typeCode });
   };
-  
+
   const { t } = useTranslation();
   return (
     <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl'}>
@@ -64,17 +56,15 @@ const Page = () => {
               title: 'Project',
               name: 'Project',
               formItem: {
-                  type: EFormType.addable,
-                  rules: [{ type: EFormRuleType.required }],
-                  col: 6,
-                  column:[{
-                    title:"managerId",
-                    name:"managerId",
-                    formItem:{
-                      render:(text:any,item)=> <div>{text}</div>
-                    }
-                  }]
-                  
+                type: EFormType.addable,
+                rules: [{ type: EFormRuleType.required }],
+                col: 6,
+                column: [
+                  {
+                    title: 'managerId',
+                    name: 'managerId',
+                  },
+                ],
               },
             },
             {
@@ -110,11 +100,11 @@ const Page = () => {
               }}
             />
           )}
-            handSubmit={handleSubmit}
-            disableSubmit={timesheetFacade.isLoading}
-            handCancel={handleBack}
-            textCancel='Trở về'
-            textSubmit='Check in'
+          handSubmit={handleSubmit}
+          disableSubmit={timesheetFacade.isLoading}
+          handCancel={handleBack}
+          textCancel="Trở về"
+          textSubmit="Check in"
         />
       </Spin>
     </div>

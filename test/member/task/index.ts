@@ -1,6 +1,4 @@
 import { faker } from '@faker-js/faker';
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
@@ -8,36 +6,16 @@ import { useSeederFactoryManager } from 'typeorm-extension';
 import { BaseTest } from '@test';
 import {
   CreateDayoffRequestDto,
-  CreateUserRequestDto,
-  TaskRequest,
-  UpdateTaskRequestDto,
   CheckInRequestDto,
   CheckOutRequestDto,
   CreateTaskSubRequestDto,
   UpdateTaskSubRequestDto,
 } from '@dto';
-import {
-  CreateTaskRequestDto,
-  CreateTaskTimesheetRequestDto,
-  CreateTaskWorkRequestDto,
-  UpdateTaskWorkRequestDto,
-  TaskWorkResponseDto,
-} from '@dto';
+import { CreateTaskRequestDto } from '@dto';
 import '@factories';
 import dayjs from 'dayjs';
-import { DayOff, User, Task, CodeType, Code, TaskTimesheet, TaskWork, UserRole, ETaskStatus, TaskSub } from '@model';
-import {
-  TaskService,
-  CodeService,
-  CodeTypeService,
-  UserService,
-  UserRoleService,
-  P_TASKTIMESHEET_LISTED,
-  P_TASK_CREATE,
-  DayoffService,
-  TaskSubService,
-} from '@service';
-import c from 'config';
+import { User, Task, CodeType, Code, TaskTimesheet, TaskWork, ETaskStatus, TaskSub } from '@model';
+import { TaskService, CodeService, CodeTypeService, UserService, TaskSubService } from '@service';
 import { Example } from '@shared';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
@@ -46,7 +24,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   const factoryManager = useSeederFactoryManager();
   let dataTask: CreateTaskRequestDto;
   let resultTask: Task | null;
-  let dataTaskUpdate: UpdateTaskRequestDto;
 
   let resultUser: User | null;
   let user: User;
@@ -61,7 +38,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let resultTaskTimesheet: TaskTimesheet;
 
   let dataDayoff: CreateDayoffRequestDto;
-  let resultDayoff: DayOff | null;
 
   let resultTaskWork: TaskWork;
 
@@ -82,10 +58,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     resultUser = res.body.data;
 
     if (type) {
-      const dataUser = await factoryManager.get(User).make({
-        managerId: resultUser?.id,
-      });
-
       user = (await BaseTest.moduleFixture!.get(UserService).create({
         ...(await factoryManager.get(User).make({
           managerId: resultUser?.id,

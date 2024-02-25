@@ -183,8 +183,8 @@ const Page = () => {
                   placement="left"
                   title={t('Bạn có muốn duyệt?')}
                   onConfirm={() => {
-                    dayoffFacade.putStatus({ id: data.id, status: 1 }),
-                      navigate(`/${lang}${routerLinks('DayOff/List')}?${new URLSearchParams(param).toString()}`);
+                    dayoffFacade.putStatus({ id: data.id, status: 1 });
+                    navigate(`/${lang}${routerLinks('DayOff/List')}?${new URLSearchParams(param).toString()}`);
                   }}
                   okText={t('components.datatable.ok')}
                   cancelText={t('components.datatable.cancel')}

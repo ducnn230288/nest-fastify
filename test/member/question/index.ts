@@ -1,22 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import '@factories';
 import { BaseTest } from '@test';
-import { CreateDayoffRequestDto, GetAllQuestionRequestDto, UpdateQuestionRequestDto } from '@dto';
-import { DayOff, User, Task, Question, CodeType, Code, QuestionTest } from '@model';
-import { CodeService, CodeTypeService, QuestionService, QuestionTestService, UserService } from '@service';
-import { CreateTaskRequestDto, CreateQuestionRequestDto } from '@dto';
+import { Question, CodeType, Code, QuestionTest } from '@model';
+import { CodeService, CodeTypeService, QuestionService } from '@service';
+import { CreateQuestionRequestDto } from '@dto';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));
 
   const factoryManager = useSeederFactoryManager();
   let dataQuestion: CreateQuestionRequestDto;
-  let dataQuestionUpdate: UpdateQuestionRequestDto;
   let codeType;
   let code;
   let resultQuestion: Question | null;

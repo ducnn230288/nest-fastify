@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsBoolean, IsString, MaxLength } from 'class-validator';

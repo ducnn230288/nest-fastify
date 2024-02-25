@@ -1,10 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { TaskSub } from '@model';
-import { BaseService, PaginationQueryDto } from '@shared';
+import { BaseService } from '@shared';
 
 export const P_TASKSUB_LISTED = '80668128-7e1d-46ef-95d1-bb4cff742f99';
 export const P_TASKSUB_CREATE = '80668128-7e1d-46ef-95d1-bb4cff742f98';

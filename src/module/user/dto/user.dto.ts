@@ -123,6 +123,8 @@ export class UpdateUserRequestDto extends PickType(User, [
   'roleCode',
   'managerId',
   'teams',
+  'dateOff',
+  'isDisabled',
 ] as const) {
   @ApiProperty({ example: [faker.string.uuid()], description: '' })
   @IsOptional()

@@ -24,7 +24,7 @@ export class QuestionTest extends Base {
   // @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: {}, description: '' })
   @IsOptional()
-  answer?: object | any;
+  answer?: string;
 
   @Column({ name: 'user_id' })
   @IsString()

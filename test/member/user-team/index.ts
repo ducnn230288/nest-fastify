@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { faker } from '@faker-js/faker';
 import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
@@ -10,7 +8,6 @@ import { CreateTeamRequestDto, UpdateTeamRequestDto } from '@dto';
 import { User, UserRole, UserTeam } from '@model';
 import { P_USER_TEAM_CREATE, UserRoleService, UserService } from '@service';
 import { Example } from '@shared';
-import c from 'config';
 
 export const testCase = (type?: string, permissions: string[] = []): void => {
   beforeAll(() => BaseTest.initBeforeAll(type, permissions));

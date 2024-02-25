@@ -92,7 +92,7 @@ export class UserRepository extends BaseRepository<User> {
    *
    * @returns User
    *
-   * @param managerId
+   * @param ids
    */
   async getManyByArrayId(ids: string[]): Promise<User[]> {
     return await this.createQueryBuilder('base').where(`base.id IN (:...ids)`, { ids }).withDeleted().getMany();

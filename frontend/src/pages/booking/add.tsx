@@ -13,7 +13,7 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 const Page = () => {
   const { id, date, typeCode } = useParams();
   const bookingFacade = BookingFacade();
-  
+
   const { set } = GlobalFacade();
   const isReload = useRef(false);
   const param = JSON.parse(bookingFacade.queryParams || '{}');

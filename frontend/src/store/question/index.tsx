@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { useAppDispatch, useTypedSelector, Action, Slice, State, TLanguage } from '@store';
+import { useAppDispatch, useTypedSelector, Action, Slice, State } from '@store';
 import { CommonEntity, PaginationQuery } from '@models';
 import { Code } from './type';
 

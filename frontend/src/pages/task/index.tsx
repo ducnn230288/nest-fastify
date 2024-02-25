@@ -8,14 +8,11 @@ import { TaskFacade } from '@store';
 const Page = () => {
   const taskFacade = TaskFacade();
 
-  
   useEffect(() => {
-    if(!taskFacade?.result?.data) 
-      taskFacade.get({})   
+    if (!taskFacade?.result?.data) taskFacade.get({});
+  }, [taskFacade?.result]);
 
-  },[taskFacade?.result])
-
-  if(taskFacade?.result?.data) {
+  if (taskFacade?.result?.data) {
     const dataTask = taskFacade.result?.data;
     const task =
       dataTask &&
@@ -31,45 +28,41 @@ const Page = () => {
         level: data.level,
         startDate: dayjs(data.start),
         success: data.success,
-        
       }));
 
     const event = [
-    {
-      name: 'New Year holiday',
-      startDate: dayjs('2015-07-15'),
-      endDate: dayjs('2015-07-16'),
-    },
-    {
-      name: 'Christmas holidays',
-      startDate: dayjs('2015-08-15'),
-      endDate: dayjs('2015-08-15'),
-    },
-    {
-      name: 'Q-1 Release',
-      startDate: dayjs('2015-07-09'),
-    },
-    // {
-    //   name: 'Q-2 Release',
-    //   startDate: dayjs('2015-07-30'),
-    // },
-    // {
-    //   name: 'Q-3 Release',
-    //   startDate: dayjs('2015-08-10'),
-    // },
+      {
+        name: 'New Year holiday',
+        startDate: dayjs('2015-07-15'),
+        endDate: dayjs('2015-07-16'),
+      },
+      {
+        name: 'Christmas holidays',
+        startDate: dayjs('2015-08-15'),
+        endDate: dayjs('2015-08-15'),
+      },
+      {
+        name: 'Q-1 Release',
+        startDate: dayjs('2015-07-09'),
+      },
+      // {
+      //   name: 'Q-2 Release',
+      //   startDate: dayjs('2015-07-30'),
+      // },
+      // {
+      //   name: 'Q-3 Release',
+      //   startDate: dayjs('2015-08-10'),
+      // },
     ];
-    
 
-    
-    
-  return (
-    <Fragment>
-      <div className="h-full pb-10">
-        <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
-        <Gantt data={task} event={event} />
-      </div>
-    </Fragment>
-  );
+    return (
+      <Fragment>
+        <div className="h-full pb-10">
+          <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
+          <Gantt data={task} event={event} />
+        </div>
+      </Fragment>
+    );
   }
 };
 

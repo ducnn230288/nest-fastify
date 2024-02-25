@@ -55,6 +55,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
   /**
    *
    * @param staffId
+   * @param type
    * @returns DayOff[]
    *
    */

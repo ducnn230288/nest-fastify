@@ -1,5 +1,5 @@
 import { PartialType, PickType } from '@nestjs/swagger';
-import { TaskSub } from '../model/task-sub.model';
+import { TaskSub } from '@model';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 
 export class TaskSubResponeDto extends PartialType(DefaultResponsesDto) {

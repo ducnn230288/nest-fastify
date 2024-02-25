@@ -23,20 +23,19 @@ export const TaskFacade = () => {
 
 export class Task extends CommonEntity {
   constructor(
-    public  id:string,
-    public  name:string,
-    public  level:number,
-    public  start?:string,
-    public  assignee?:string,
-    public  status?:number,
-    public  priority?:number,
-    public  planned?:number,
-    public  work?:number,
-    public  startDate?:Dayjs,
-    public  endDate?: Dayjs,
-    public  percent?:number,
-    public  success?:string,
-    
+    public id: string,
+    public name: string,
+    public level: number,
+    public start?: string,
+    public assignee?: string,
+    public status?: number,
+    public priority?: number,
+    public planned?: number,
+    public work?: number,
+    public startDate?: Dayjs,
+    public endDate?: Dayjs,
+    public percent?: number,
+    public success?: string,
   ) {
     super();
   }

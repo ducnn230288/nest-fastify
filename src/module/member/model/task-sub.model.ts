@@ -1,5 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
-import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID } from 'class-validator';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';

@@ -3,7 +3,7 @@ import { URLSearchParamsInit } from 'react-router-dom/dist/dom';
 
 import { keyRole } from '@utils';
 import './index.less';
-import { Cog, User, Coffee, Booking, Times, Eye } from '@svgs';
+import { Cog, User, Coffee, Booking, Eye } from '@svgs';
 
 const Layout: IMenu[] = [
   {

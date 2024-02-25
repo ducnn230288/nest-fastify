@@ -46,7 +46,7 @@ import {
   bookingSlice,
   TimeSheetSlice,
   questionSlice,
-  taskSlice
+  taskSlice,
 } from './';
 const rootReducer = combineReducers({
   [globalSlice.name]: globalSlice.reducer,

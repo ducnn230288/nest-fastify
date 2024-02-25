@@ -1,5 +1,5 @@
-import { Brackets, ObjectLiteral, Repository } from 'typeorm';
-import { BadRequestException, Inject } from '@nestjs/common';
+import { Brackets, ObjectLiteral } from 'typeorm';
+import { BadRequestException } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
@@ -148,8 +148,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         request = request.orderBy('base.' + key, sorts![key]);
       });
     }
-    if (perPage !== undefined && page !== undefined)
-      request = request.take(perPage || 10);
+    if (perPage !== undefined && page !== undefined) request = request.take(perPage || 10);
     const res: [T[], number] = await request.getManyAndCount();
     if (extend && Object.keys(extend).length) {
       let isGet = false;

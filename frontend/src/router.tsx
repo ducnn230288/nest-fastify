@@ -202,12 +202,12 @@ const pages = [
         title: 'TimeSheet',
       },
       {
-        path: routerLinks('TimeSheet')+'/:id'+'/checkin' ,
+        path: routerLinks('TimeSheet') + '/:id' + '/checkin',
         component: React.lazy(() => import('@pages/timesheet/checkin')),
         title: 'checkin',
       },
       {
-        path: routerLinks('Task')+'/:id' ,
+        path: routerLinks('Task') + '/:id',
         component: React.lazy(() => import('@pages/timesheet/checkin')),
         title: 'checkin',
       },

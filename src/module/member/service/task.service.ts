@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Task, User } from '@model';
 import { BaseService } from '@shared';
 import { TaskRepository, UserRepository } from '@repository';
-import { CreateTaskRequestDto, UpdateTaskRequestDto } from '../dto/task.dto';
+import { CreateTaskRequestDto, UpdateTaskRequestDto } from '@dto';
 import { I18nContext } from 'nestjs-i18n';
 import { ETaskStatus } from '@model';
 

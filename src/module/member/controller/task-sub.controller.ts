@@ -1,10 +1,9 @@
-import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 
-import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
+import { Auth, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { P_TASKSUB_CREATE, P_TASKSUB_DELETE, P_TASKSUB_LISTED, TaskSubService } from '@service';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateTaskSubRequestDto, ListTaskSubResponeDto, TaskSubResponeDto, UpdateTaskSubRequestDto } from '@dto';
-import { User } from '@model';
 
 @Headers('task-sub')
 export class TaskSubController {

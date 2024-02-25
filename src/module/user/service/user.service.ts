@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { parse } from 'json2csv';
 import { Readable } from 'stream';
 
-import { CreateUserRequestDto } from '@dto';
+import { CreateUserRequestDto, UpdateUserRequestDto } from '@dto';
 import { User } from '@model';
 import { DayoffRepository, UserRepository, UserTeamRepository } from '@repository';
 import { BaseService, getImages } from '@shared';
@@ -84,7 +84,12 @@ export class UserService extends BaseService<User> {
    */
   async updateAllDaysOff(dateLeave?: string): Promise<null> {
     const data = await this.repo.createQueryBuilder('base').getMany();
-    data.forEach((item) => this.update(item.id!, { ...item, dateLeave: dateLeave || (item.dateLeave || 0) + 1 }));
+    data.forEach((item) =>
+      this.update(item.id!, {
+        ...item,
+        dateLeave: dateLeave !== undefined ? parseInt(dateLeave) : (item.dateLeave || 0) + 1,
+      }),
+    );
     return null;
   }
 
@@ -96,7 +101,7 @@ export class UserService extends BaseService<User> {
    * @returns User
    *
    */
-  async update(id: string, body: any, callBack?: (data: User) => Promise<User>): Promise<User | null> {
+  async update(id: string, body: UpdateUserRequestDto, callBack?: (data: User) => Promise<User>): Promise<User | null> {
     const i18n = I18nContext.current()!;
     let oldData: User | null = null;
     if (id) {
@@ -170,7 +175,7 @@ export class UserService extends BaseService<User> {
     const dataCSV = await Promise.all(
       data.map(async (item) => {
         return {
-          'Họ và Tên': item?.name.toString(),
+          'Họ và Tên': item?.name?.toString(),
           ID: item?.id,
           Nhóm: item?.teams?.map((item) => item.name).join(', '),
           'Ngày nghỉ còn': item.dateOff,

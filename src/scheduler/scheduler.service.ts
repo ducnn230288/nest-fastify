@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { FileService, UserService, TaskService } from '@service';
-// import { CronJob } from 'cron';
 
 @Injectable()
 export class SchedulerService {
@@ -10,7 +9,6 @@ export class SchedulerService {
     public fileService: FileService,
     public userService: UserService,
     public taskSeivice: TaskService,
-    private schedulerRegistry: SchedulerRegistry,
   ) {}
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async clearFiles(): Promise<void> {

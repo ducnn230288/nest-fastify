@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, Res, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 // import { Response } from 'express';
 import {
@@ -10,14 +9,11 @@ import {
 } from '@dto';
 import { User } from '@model';
 import { Auth, AuthUser, Headers, MaxGroup, SerializerBody, PaginationQueryDto } from '@shared';
-import { TaskTimesheetService, P_TASKTIMESHEET_LISTED, P_TASKTIMESHEET_DELETE, TaskService } from '@service';
+import { TaskTimesheetService, P_TASKTIMESHEET_LISTED, P_TASKTIMESHEET_DELETE } from '@service';
 
 @Headers('task-timesheet')
 export class TaskTimesheetController {
-  constructor(
-    private readonly service: TaskTimesheetService,
-    private readonly taskService: TaskService,
-  ) {}
+  constructor(private readonly service: TaskTimesheetService) {}
 
   @Auth({
     summary: 'Check In',

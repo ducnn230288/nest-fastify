@@ -35,7 +35,7 @@ export class User extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })
   @IsString()
-  name: string;
+  name?: string;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
@@ -89,19 +89,19 @@ export class User extends Base {
   @IsString()
   @MinLength(8)
   @MaxLength(12)
-  phoneNumber!: string;
+  phoneNumber?: string;
 
   @Column()
   @ApiProperty({ example: faker.date.birthdate(), description: '' })
   @IsDateString()
-  dob: Date;
+  dob?: Date;
 
   @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @Column({ nullable: true, name: 'role_code' })
   @Expose()
@@ -140,7 +140,7 @@ export class User extends Base {
   @Expose()
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()
-  readonly dateOff: number;
+  dateOff?: number;
 
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)

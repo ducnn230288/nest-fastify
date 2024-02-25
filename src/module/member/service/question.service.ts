@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Question } from '@model';
 
 import { BaseService } from '@shared';
-import { QuestionRepository } from '../repository/question.repository';
+import { QuestionRepository } from '@repository';
 import '@factories';
 import { I18nContext } from 'nestjs-i18n';
 
@@ -21,25 +21,10 @@ export class QuestionService extends BaseService<Question> {
     this.listJoinCount = [];
   }
 
-  // async createMany(code: Code): Promise<Question[]> {
-  //   const datas: Question[] = [];
-  //   const factoryManager = useSeederFactoryManager();
-
-  //   for (let i = 0; i < 19; i++) {
-  //     const data = await factoryManager.get(Question).make({
-  //       level: 1,
-  //       typeCode: code?.code,
-  //     });
-  //     datas.push((await this.create(data)) as Question);
-  //   }
-  //   return datas;
-  // }
-
   async getManyQuestionForTest(level: number, typeCode: string): Promise<[Question[], number]> {
     const i18n = I18nContext.current()!;
     if (!level || !typeCode) throw new BadRequestException(i18n.t('Common.Data level or typeCode not found'));
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [questions, total] = await this.findAll({ where: [{ level }, { typeCode }] });
+    const [questions] = await this.findAll({ where: [{ level }, { typeCode }] });
 
     for (let i = questions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

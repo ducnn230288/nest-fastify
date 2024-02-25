@@ -585,7 +585,7 @@ export const Gantt = ({
 type TTask = {
   id: string;
   name: string;
-  start?:string;
+  start?: string;
   assignee?: string;
   status?: string;
   priority?: string;

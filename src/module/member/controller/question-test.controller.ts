@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { CreateQuestionTestRequestDto, ListQuestionTestResponseDto, QuestionTestResponseDto } from '@dto';
-import {
-  P_QUESTION_TEST_CREATE,
-  P_QUESTION_TEST_DETAIL,
-  P_QUESTION_TEST_LISTED,
-  P_QUESTION_TEST_DELETE,
-  QuestionTestService,
-} from '@service';
+import { P_QUESTION_TEST_LISTED, P_QUESTION_TEST_DELETE, QuestionTestService } from '@service';
 import { User } from '@model';
 
 @Headers('question-test')

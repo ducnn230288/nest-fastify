@@ -26,17 +26,14 @@ export class QuestionTestService extends BaseService<QuestionTest> {
     this.listJoinCount = [];
   }
 
-  async saveAnswer(body: CreateQuestionTestRequestDto, user: User): Promise<QuestionTest | number | any> {
+  async saveAnswer(body: CreateQuestionTestRequestDto, user: User): Promise<QuestionTest | null> {
     const { answer } = body;
     let point = 0;
 
-    // Lặp qua câu trả lời, mỗi câu đúng được 10đ
-    for (const [key, value] of Object.entries(answer)) {
+    for (const [key, value] of Object.entries({ answer })) {
       const question = await this.questionServive.findOne(key);
       if (question && question?.correct === value) point += 1;
     }
-    // Lưu đáp án
-    const data = await this.create({ userId: user.id, answer, point });
-    return data;
+    return await this.create({ userId: user.id, answer, point });
   }
 }
