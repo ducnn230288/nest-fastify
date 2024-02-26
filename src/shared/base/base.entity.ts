@@ -18,7 +18,7 @@ export abstract class Base {
   @Column({ nullable: true, type: 'timestamp', name: 'is_disabled' })
   @IsDateString()
   @IsOptional()
-  isDisabled?: Date | null;
+  isDisabled?: Date;
 
   @CreateDateColumn({ name: 'created_at' })
   @IsDateString()

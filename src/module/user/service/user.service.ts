@@ -54,7 +54,7 @@ export class UserService extends BaseService<User> {
    */
   async update(
     id: string,
-    body: UpdateUserRequestDto | { isDisabled: Date | null },
+    body: UpdateUserRequestDto | { isDisabled?: Date },
     callBack?: (data: User) => Promise<User>,
   ): Promise<User | null> {
     const oldData = await this.findOne(id, []);

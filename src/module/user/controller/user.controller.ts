@@ -85,7 +85,7 @@ export class UserController {
   ): Promise<UserResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : undefined }),
     };
   }
 
