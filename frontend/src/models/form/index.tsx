@@ -10,6 +10,7 @@ export enum EFormType {
   name = 'name',
   tab = 'tab',
   addable = 'addable',
+  cascader = 'cascader',
   editor = 'editor',
   upload = 'upload',
   tableTransfer = 'table_transfer',
