@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 import { Base } from '@shared';
 import { Task } from './task.model';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class TaskSub extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })

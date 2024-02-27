@@ -21,7 +21,7 @@ export enum ETaskStatus {
   Complete = 1,
 }
 
-@Entity()
+@Entity({ schema: 'member' })
 export class Task extends Base {
   @Column({ nullable: true, name: 'project_code' })
   @Expose()

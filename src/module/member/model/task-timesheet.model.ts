@@ -7,7 +7,7 @@ import { IsDateString, IsString, IsUUID, IsOptional } from 'class-validator';
 import { TaskWork, User } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class TaskTimesheet extends Base {
   @Column()
   @ApiProperty({ example: faker.date.past(), description: '' })

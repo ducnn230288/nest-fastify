@@ -7,7 +7,7 @@ import { IsNumber, IsOptional, IsUUID } from 'class-validator';
 import { Task, TaskTimesheet } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class TaskWork extends Base {
   @Column({ nullable: true, type: 'real' })
   @Expose()

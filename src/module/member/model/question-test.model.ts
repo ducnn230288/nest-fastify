@@ -7,7 +7,7 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { User } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class QuestionTest extends Base {
   @Column({ nullable: true, type: 'real' })
   @Expose()

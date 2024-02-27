@@ -1,2 +1,3 @@
 CREATE SCHEMA "user";
 CREATE SCHEMA "core";
+CREATE SCHEMA "member";

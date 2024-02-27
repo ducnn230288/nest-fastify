@@ -7,7 +7,7 @@ import { Expose, Type } from 'class-transformer';
 import { Base } from '@shared';
 import { User, Code, CodeType } from '@model';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class Booking extends Base {
   @Column()
   @ApiProperty({ example: faker.lorem.text(), description: '' })

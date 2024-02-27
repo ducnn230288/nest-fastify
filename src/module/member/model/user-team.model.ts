@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 import { Base } from '@shared';
 import { User } from '@model';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class UserTeam extends Base {
   @Column()
   @ApiProperty({ example: faker.person.jobType(), description: '' })

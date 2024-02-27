@@ -5,7 +5,7 @@ import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-@Entity()
+@Entity({ schema: 'member' })
 export class Comment extends Base {
   @Column()
   @ApiProperty({ example: faker.lorem.paragraph(), default: '' })

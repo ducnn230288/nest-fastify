@@ -7,7 +7,7 @@ import { Expose, Type } from 'class-transformer';
 import { MaxGroup, Base } from '@shared';
 import { User } from '@model';
 
-@Entity()
+@Entity({ schema: 'member' })
 @Unique(['code'])
 export class DayOff extends Base {
   @Column()
