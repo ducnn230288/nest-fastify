@@ -17,7 +17,7 @@ export class AddressWardController {
   ): Promise<ListWardResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };

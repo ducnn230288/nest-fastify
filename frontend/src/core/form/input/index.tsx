@@ -1,4 +1,5 @@
 import Chips from './chips';
+import Cascader from './cascader';
 import DatePicker from './date-picker';
 import Editor from './editor';
 import Password from './password';
@@ -13,6 +14,7 @@ import Tab from './tab';
 
 export {
   Chips,
+  Cascader,
   DatePicker,
   Editor,
   Password,

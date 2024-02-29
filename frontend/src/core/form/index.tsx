@@ -20,6 +20,7 @@ import { GlobalFacade } from '@store';
 import { Check, Times } from '@svgs';
 import {
   Addable,
+  Cascader,
   Chips,
   Editor,
   DatePicker,
@@ -344,6 +345,18 @@ export const Form = ({
       case EFormType.treeSelect:
         return (
           <TreeSelect
+            formItem={formItem}
+            showSearch={formItem.showSearch}
+            form={form}
+            disabled={!!formItem.disabled && formItem.disabled(values, form)}
+            placeholder={
+              t(formItem.placeholder || '') || t('components.form.Choose') + ' ' + t(item.title)!.toLowerCase()
+            }
+          />
+        );
+      case EFormType.cascader:
+        return (
+          <Cascader
             formItem={formItem}
             showSearch={formItem.showSearch}
             form={form}
