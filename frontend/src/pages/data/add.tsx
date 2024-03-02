@@ -162,7 +162,7 @@ const Page = () => {
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
-              className={'md:min-w-[12rem] justify-center out-line'}
+              className={'md:min-w-48 justify-center out-line'}
               onClick={() => {
                 form.submit();
                 isBack.current = false;

@@ -354,7 +354,7 @@ export const DataTable = forwardRef(
                 className={'w-full justify-center !py-0'}
               />
             )}
-            format={['DD/MM/YYYY', 'DD/MM/YY']}
+            format={['DD-MM-YYYY', 'DD-MM-YY']}
             value={!!selectedKeys && selectedKeys.length && [dayjs(selectedKeys[0]), dayjs(selectedKeys[1])]}
             onChange={(e) => setSelectedKeys(e)}
           />

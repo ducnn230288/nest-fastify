@@ -266,7 +266,7 @@ const Page = () => {
                       extendButton={() => (
                         <Button
                           text={t('components.datatable.cancel')}
-                          className={'md:min-w-[8rem] justify-center out-line max-sm:w-3/5'}
+                          className={'md:min-w-32 justify-center out-line max-sm:w-3/5'}
                           onClick={() => {
                             navigate(`/${lang}${routerLinks('MyProfile')}`);
                           }}

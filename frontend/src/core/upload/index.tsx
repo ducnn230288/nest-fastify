@@ -34,7 +34,7 @@ export const Upload = ({
             status: 'done',
           };
         })
-      : value || [],
+      : [value] || [],
   );
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const Upload = ({
               status: 'done',
             };
           })
-        : value || [];
+        : [value] || [];
     if (
       JSON.stringify(listFiles) !== JSON.stringify(tempData) &&
       listFiles.filter((item: any) => item.status === 'uploading').length === 0

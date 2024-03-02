@@ -729,7 +729,7 @@ export const Form = ({
         {handCancel && (
           <Button
             text={t(textCancel)}
-            className={'sm:min-w-[11rem] justify-center out-line !border-black w-3/5 sm:w-auto'}
+            className={'sm:min-w-44 justify-center out-line !border-black w-3/5 sm:w-auto'}
             onClick={handCancel}
           />
         )}
@@ -740,7 +740,7 @@ export const Form = ({
             id={idSubmit}
             onClick={() => form && form.submit()}
             disabled={disableSubmit}
-            className={'sm:min-w-[11rem] justify-center w-3/5 sm:w-auto '}
+            className={'sm:min-w-44 justify-center w-3/5 sm:w-auto '}
           />
         )}
       </div>

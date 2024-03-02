@@ -239,6 +239,7 @@ const Page = () => {
                             )}
                           >
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t(
                                 !data.isDisabled
@@ -266,7 +267,7 @@ const Page = () => {
                           </Tooltip>
                         )}
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <Tooltip title={t('routes.admin.Layout.Edit')}>
+                          <Tooltip destroyTooltipOnHide={true} title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
                               onClick={() =>
@@ -281,6 +282,7 @@ const Page = () => {
                         {user?.role?.permissions?.includes(keyRole.P_USER_DELETE) && (
                           <Tooltip title={t('routes.admin.Layout.Delete')}>
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t('components.datatable.areYouSureWant')}
                               onConfirm={() => dataTableRef?.current?.handleDelete(data.id)}

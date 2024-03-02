@@ -102,7 +102,7 @@ const Page = () => {
                 col: 6,
                 type: EFormType.password,
                 condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -115,11 +115,12 @@ const Page = () => {
                 condition: (value: string, form, index: number, values) => !values?.id,
                 rules: [
                   { type: EFormRuleType.required },
+                  { type: EFormRuleType.min, value: 8 },
                   {
                     type: EFormRuleType.custom,
                     validator: ({ getFieldValue }) => ({
                       validator(rule, value: string) {
-                        if (!value || getFieldValue('password') === value) {
+                        if (!value || (getFieldValue('password') === value && value.length >= 8)) {
                           return Promise.resolve();
                         }
                         return Promise.reject(t('components.form.ruleConfirmPassword'));
@@ -196,7 +197,7 @@ const Page = () => {
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
-              className={'md:min-w-[12rem] justify-center out-line'}
+              className={'md:min-w-48 justify-center out-line'}
               onClick={() => {
                 form.submit();
                 isBack.current = false;

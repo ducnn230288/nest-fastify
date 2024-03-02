@@ -35,7 +35,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
    * @param paginationQuery string or object describing the error condition.
    */
   async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
-    const { sorts, where, perPage, page, fullTextSearch } = paginationQuery;
+    const { where, perPage, page, fullTextSearch } = paginationQuery;
 
     const filter =
       typeof paginationQuery.filter === 'string' ? JSON.parse(paginationQuery.filter) : paginationQuery.filter;
@@ -143,6 +143,8 @@ export abstract class BaseService<T extends ObjectLiteral> {
       });
     }
 
+    let { sorts } = paginationQuery;
+    if (typeof sorts === 'string') sorts = JSON.parse(sorts);
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
         request = request.orderBy('base.' + key, sorts![key]);
