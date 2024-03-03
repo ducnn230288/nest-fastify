@@ -204,20 +204,13 @@ const Layout = ({ children }: PropsWithChildren) => {
             <span className="line" />
           </div>
 
-          <a href="/vn/dashboard" className="flex items-center">
+          <a href="/vn/dashboard" className="flex items-center group">
             <Logo
-              className={classNames('w-12 mr-3 rounded bg-slate-200', {
+              className={classNames('w-12 mr-3 text-white', {
                 'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
                 'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
               })}
             />
-            {/* <img
-              src={Logo}
-              className={classNames('w-12 mr-3 rounded ', {
-                'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
-                'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
-              })}
-            ></img> */}
             <div
               id={'name-application'}
               className={classNames(

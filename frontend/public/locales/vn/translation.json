@@ -118,7 +118,7 @@
     }
   },
   "layout": {
-    "footer": "Công ty cổ phần Công nghệ Ari. ©{{year}}"
+    "footer": "Công ty cổ phần React. ©{{year}}"
   },
   "routes": {
     "auth": {
@@ -132,7 +132,7 @@
         "New password": "Mật khẩu mới",
         "Enter new password": "Nhập mật khẩu mới",
         "Account": "Chưa có tài khoản? ",
-        "Welcome": "Chào mừng bạn đến với Web Member Ari"
+        "Welcome": "Chào mừng bạn đến với Web React"
       },
       "reset-password": {
         "Recovery Email": "Email khôi phục",
