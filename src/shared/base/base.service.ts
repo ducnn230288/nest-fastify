@@ -83,7 +83,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
           Object.keys(filter).forEach((key) => {
             if (typeof filter[key] === 'object' && filter[key]?.length > 0) {
               if (dayjs(filter[key][0]).isValid()) {
-                qb = qb.andWhere(`"${key}" BETWEEN :startDate AND :endDate`, {
+                qb = qb.andWhere(`base."${key}" BETWEEN :startDate AND :endDate`, {
                   startDate: filter[key][0],
                   endDate: filter[key][1],
                 });
@@ -104,7 +104,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
             Object.keys(skip).forEach((key) => {
               if (typeof skip[key] === 'object' && skip[key].length > 0) {
                 if (dayjs(skip[key][0]).isValid()) {
-                  qb = qb.andWhere(`"${key}" NOT BETWEEN :startDate AND :endDate`, {
+                  qb = qb.andWhere(`"base.${key}" NOT BETWEEN :startDate AND :endDate`, {
                     startDate: skip[key][0],
                     endDate: skip[key][1],
                   });

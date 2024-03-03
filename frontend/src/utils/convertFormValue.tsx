@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FormModel } from '@models';
+import { EFormModeSelect, FormModel } from '@models';
 
 export const convertFormValue = (columns: FormModel[], values: { [selector: string]: any }, exportData = true) => {
   columns
@@ -17,6 +17,8 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
               if (!item.formItem?.mode && values[item.name].length > 0) values[item.name] = values[item.name][0].url;
               else if (values[item.name].length > 1) {
                 values[item.name] = values[item.name].filter((_item: any) => _item.status === 'done' || !_item.status);
+              } else if (values[item.name].length == 0 && item.formItem?.mode != EFormModeSelect.multiple) {
+                values[item.name] = null;
               }
             }
             break;

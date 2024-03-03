@@ -19,7 +19,7 @@ export class UserRole extends Base {
   @IsString()
   name: string;
 
-  @Column({ default: false, name: 'is_system_admin' })
+  @Column({ default: false }) // , name: 'is_system_admin'
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()
   isSystemAdmin: boolean;

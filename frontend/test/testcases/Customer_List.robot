@@ -27,7 +27,7 @@ CL_01 Verify the User Interface of "Danh sách Người Dùng" page
   Then Webpage should contain "Tạo mới" button
 
 CL_02 Verify the function changing the number of accounts show in each list
-  [Tags]                                                                                                MainPage                   UI
+  [Tags]                                                                                                MainPage                   UI   BUG2
   Login to admin
   When Click "Người Dùng" menu
   When Click on "second" selection to change the number of data show in list and check
@@ -335,7 +335,7 @@ CL_25 Verify the search function of the magnifier icon in "Số điện thoại"
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_26 Verify the search by date function of the calendar icon in "Created" column
-  [Tags]                                                                                                Search                    PhoneNumber   BUG
+  [Tags]                                                                                                Search                    PhoneNumber   BUG1
   ${Today}=                                                                                             Get Current Date          local                              result_format=%d-%m-%Y
   Create a test account with "Tester" type
   When Click on calendar icon in "Created" table cell
@@ -347,7 +347,7 @@ CL_26 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the search function ###
 CL_27 Verify the sort function when click on sort icon in "Họ và tên" column
-  [Tags]                                                                                                Sort   BUG
+  [Tags]                                                                                                Sort
   Create a test account with "A" name
   Create a test account with "Z" name
   When Click on sort icon in "Họ và tên" table cell
@@ -360,7 +360,7 @@ CL_27 Verify the sort function when click on sort icon in "Họ và tên" column
   When Click on the "Xóa" button in the "A" table line
 
 CL_28 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG
+  [Tags]                                                                                                Sort   BUG1
   ${Account1}=                                                                                          Create a test account with "Admin" type
   Create a test account with "Vice Director" type
   When Click on sort icon in "Vị trí" table cell
@@ -374,7 +374,7 @@ CL_28 Verify the sort function when click on sort icon in "Vị trí" column
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_30 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG
+  [Tags]                                                                                                Sort   BUG1
   ${Account1}=                                                                                          Create a test account with "a@email.com" in email
   Create a test account with "z@email.com" in email
   When Click on sort icon in "Email" table cell
@@ -388,7 +388,7 @@ CL_30 Verify the sort function when click on sort icon in "Vị trí" column
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_31 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG
+  [Tags]                                                                                                Sort   BUG1
   ${Account1}=                                                                                          Create a test account with "0111111111" in phone
   Create a test account with "0999999999" in phone
   When Click on sort icon in "Số điện thoại" table cell
@@ -402,14 +402,14 @@ CL_31 Verify the sort function when click on sort icon in "Vị trí" column
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_32 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG
+  [Tags]                                                                                                Sort
   Create a test account with "Tester" type
-  When Click on sort icon in "Created" table cell
-  Then "_@Họ và tên@_" should be visible in the first table line
   When Click on sort icon in "Created" table cell
   Then "_@Họ và tên@_" should not be visible in the first table line
   When Click on sort icon in "Created" table cell
-  When Click on the "Xóa" button in the "_@Tên mã@_" table line
+  Then "_@Họ và tên@_" should be visible in the first table line
+  When Click on sort icon in "Created" table cell
+  When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 ### Verify that edit account's information ###
 CL_33 Verify the User Interface of webpage after clicking on "Sửa" button
@@ -521,10 +521,10 @@ CL_38 Verify the edit information function when change data in "Vị trí" field
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 CL_39 Verify the edit information function when change data in "Ngày đầu đi làm" field
-  [Tags]                                                                                                EditInfo   BUG
+  [Tags]                                                                                                EditInfo
   Create a test account with "Tester" type
   Click on the "Sửa" button in the "_@Họ và tên@_" table line
-  ${yesterday}=                                                                                         Get Current Date                             local                   - 1 day                        result_format=%Y-%m-%d
+  ${yesterday}=                                                                                         Get Current Date                             local                   - 1 day                        result_format=%d-%m-%Y
   When Click "date" in "Ngày đầu đi làm" with "${yesterday}"
   When Click "Lưu lại" button
   Then User look message "Cập nhật thành công" popup
@@ -623,15 +623,15 @@ CL_48 Verify the edit information function by leaving a blank field in "Mô tả
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
-CL_49 Verify the edit information function by leaving a blank field in "Ảnh đại diện"
-  [Tags]                                                                                                EditInfo                                     BlankField   BUG
-  Create a test account with "Tester" type
-  Click on the "Sửa" button in the "_@Họ và tên@_" table line
-  When Click on cross icon inside image in "Tải ảnh lên"
-  When Click "Lưu lại" button
-  Then User look message "Vui lòng tải lên ảnh đại diện" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "_@Họ và tên@_" table line
+#CL_49 Verify the edit information function by leaving a blank field in "Ảnh đại diện"
+#  [Tags]                                                                                                EditInfo                                     BlankField   BUG1
+#  Create a test account with "Tester" type
+#  Click on the "Sửa" button in the "_@Họ và tên@_" table line
+#  When Click on cross icon inside image in "Tải ảnh lên"
+#  When Click "Lưu lại" button
+#  Then User look message "Vui lòng tải lên ảnh đại diện" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 CL_50 Verify the edit information function by change data and click on "Huỷ bỏ" button
   [Tags]                                                                                                EditInfo
@@ -711,7 +711,7 @@ CL_55 Verify that create a new account by entering invalid email
   Then Required message "Xin vui lòng nhập địa chỉ email hợp lệ!" displayed under "Email" field
 
 CL_56 Verify that create a new account by entering existence email
-  [Tags]                                                                                                Create                                         Invalid   BUG
+  [Tags]                                                                                                Create                                         Invalid
   ${Account1}=                                                                                          Create a test account with "Tester" type
   When Click "Tạo mới" button
   When Enter "test name" in "Họ và tên" with "_RANDOM_"

@@ -6,7 +6,7 @@ Library                 DateTime
 
 *** Variables ***
 ${BROWSER}              chromium
-${HEADLESS}             ${True}
+${HEADLESS}             ${False}
 ${BROWSER_TIMEOUT}      6 seconds
 ${SHOULD_TIMEOUT}       0.1 seconds
 
@@ -466,7 +466,7 @@ Click "${type}" in "${name}" with "${text}"
   ${element}=               Get Element Form Item By Name     ${name}                       //input
   Click                     ${element}
   Wait Until Keyword Succeeds                                 ${SHOULD_TIMEOUT}             ${SHOULD_TIMEOUT}     Fill Text             ${element}                  ${text}                       True
-  ${d_text}=                Get Regexp Matches                ${text}                       (..)-(..)-            1
+  ${d_text}=                Get Regexp Matches                ${text}                       (.+)-(..)-            1
   ${m_text}=                Get Regexp Matches                ${text}                       (..)-(..)-            2
   ${y_text}=                Get Regexp Matches                ${text}                       (..)-(..)-(.+)        3
   ${after_text}=            Catenate                          SEPARATOR=-                   ${y_text[0]}          ${m_text[0]}          ${d_text[0]}
@@ -596,7 +596,7 @@ Click on calendar icon in "${name}" table cell
 
 Click on sort icon in "${name}" table cell
   #Click                     //th[@aria-label = "${name}"]//div[@class='ant-table-column-sorters']
-  Click                      //span[text()="${name}"]//ancestor::div[@class='ant-table-column-sorters']
+  Click                      //span[text()="${name}"]//ancestor::div[contains(@class,'ant-table-column-sorters')]
   Wait Until Element Spin
 
 The list of radio is empty

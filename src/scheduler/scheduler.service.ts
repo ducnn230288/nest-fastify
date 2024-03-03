@@ -13,7 +13,7 @@ export class SchedulerService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async clearFiles(): Promise<void> {
     this.logger.verbose(`Clear Files successfully`);
-    const [list] = await this.fileService.findAll({ filter: { status: 0 } });
+    const [list] = await this.fileService.findAll({ filter: '{ status: 0 }' });
     for (const data of list) {
       if (data) await this.fileService.removeFile(data);
     }
