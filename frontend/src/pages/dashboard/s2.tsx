@@ -153,7 +153,7 @@ const Page = () => {
   const s2Options: any = {
     width: 1200,
     height: 480,
-    // hierarchyType: 'tree',
+    hierarchyType: 'tree',
     tooltip: {
       operation: {
         trend: true,
@@ -162,6 +162,9 @@ const Page = () => {
     },
     interaction: {
       selectedCellsSpotlight: true,
+      autoResetSheetStyle: true,
+      hoverHighlight: true,
+      hoverAfterScroll: true,
     },
     style: {
       layoutWidthType: 'colAdaptive',
@@ -316,7 +319,6 @@ const Page = () => {
         height: false,
       }}
       header={{
-        title: 'Comparison table',
         advancedSortCfg: {
           open: true,
           sortParams,
