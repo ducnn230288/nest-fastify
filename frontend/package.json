@@ -16,6 +16,8 @@
     "update-all": "npx -p npm-check-updates ncu -u && npm install"
   },
   "dependencies": {
+    "@antv/s2": "^1.54.6",
+    "@antv/s2-react": "^1.46.3",
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.14.1",
     "antd-input-otp": "^2.0.5",
