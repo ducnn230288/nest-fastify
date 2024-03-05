@@ -3,8 +3,10 @@ import { Checkbox, CheckboxOptionType, DatePicker, Radio, Spin, Table } from 'an
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import classNames from 'classnames';
 import Draggabilly from 'draggabilly';
+dayjs.extend(utc);
 
 import { Button } from '../button';
 import { Pagination } from '../pagination';
@@ -356,7 +358,12 @@ export const DataTable = forwardRef(
             )}
             format={['DD-MM-YYYY', 'DD-MM-YY']}
             value={!!selectedKeys && selectedKeys.length && [dayjs(selectedKeys[0]), dayjs(selectedKeys[1])]}
-            onChange={(e) => setSelectedKeys(e)}
+            onChange={(e: any[]) => {
+              setSelectedKeys([
+                e[0].startOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+                e[1].endOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
+              ]);
+            }}
           />
           {groupButton(confirm, clearFilters, key, selectedKeys)}
         </div>

@@ -76,7 +76,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         });
       });
     }
-    // console.log(request.getQuery());
+
     if (filter && Object.keys(filter).length) {
       request = request.andWhere(
         new Brackets((qb) => {

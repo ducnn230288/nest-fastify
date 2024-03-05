@@ -335,7 +335,7 @@ CL_25 Verify the search function of the magnifier icon in "Số điện thoại"
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_26 Verify the search by date function of the calendar icon in "Created" column
-  [Tags]                                                                                                Search                    PhoneNumber   BUG1
+  [Tags]                                                                                                Search                    PhoneNumber
   ${Today}=                                                                                             Get Current Date          local                              result_format=%d-%m-%Y
   Create a test account with "Tester" type
   When Click on calendar icon in "Created" table cell
@@ -360,7 +360,7 @@ CL_27 Verify the sort function when click on sort icon in "Họ và tên" column
   When Click on the "Xóa" button in the "A" table line
 
 CL_28 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG1
+  [Tags]                                                                                                Sort   BUG2
   ${Account1}=                                                                                          Create a test account with "Admin" type
   Create a test account with "Vice Director" type
   When Click on sort icon in "Vị trí" table cell
@@ -374,7 +374,7 @@ CL_28 Verify the sort function when click on sort icon in "Vị trí" column
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_30 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG1
+  [Tags]                                                                                                Sort   BUG2
   ${Account1}=                                                                                          Create a test account with "a@email.com" in email
   Create a test account with "z@email.com" in email
   When Click on sort icon in "Email" table cell
@@ -388,7 +388,7 @@ CL_30 Verify the sort function when click on sort icon in "Vị trí" column
   When Click on the "Xóa" button in the "${Account1}" table line
 
 CL_31 Verify the sort function when click on sort icon in "Vị trí" column
-  [Tags]                                                                                                Sort   BUG1
+  [Tags]                                                                                                Sort   BUG2
   ${Account1}=                                                                                          Create a test account with "0111111111" in phone
   Create a test account with "0999999999" in phone
   When Click on sort icon in "Số điện thoại" table cell
@@ -624,7 +624,7 @@ CL_48 Verify the edit information function by leaving a blank field in "Mô tả
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 #CL_49 Verify the edit information function by leaving a blank field in "Ảnh đại diện"
-#  [Tags]                                                                                                EditInfo                                     BlankField   BUG1
+#  [Tags]                                                                                                EditInfo                                     BlankField   BUG
 #  Create a test account with "Tester" type
 #  Click on the "Sửa" button in the "_@Họ và tên@_" table line
 #  When Click on cross icon inside image in "Tải ảnh lên"
