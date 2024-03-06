@@ -640,7 +640,7 @@ Heading of separated group should contain "${text}" inner text
   END
 
 Webpage should contain "${name}" input field
-  ${element}=               Get Element                       //label[@title="${name}"]//ancestor::div[contains(@class,"ant-row")]//div[@class='ant-form-item-control-input']
+  ${element}=               Get Element                       (//label[@title="${name}"]//ancestor::div[contains(@class,"ant-row")]//div[@class='ant-form-item-control-input'])[1]
   ${count}=                 Get Element Count                 ${element}
   Should Be True            ${count} >= 1
 

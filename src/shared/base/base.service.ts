@@ -147,12 +147,14 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (typeof sorts === 'string') sorts = JSON.parse(sorts);
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
-        request = request.orderBy('base.' + key, sorts![key]);
+        const checkKey = key.split('.');
+        request = request.orderBy(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, sorts![key]);
       });
     }
-    if (perPage !== undefined && page !== undefined)
-      request = request.take(perPage || 10);
+    if (perPage !== undefined && page !== undefined) request = request.take(perPage || 10);
+
     const res: [T[], number] = await request.getManyAndCount();
+
     if (extend && Object.keys(extend).length) {
       let isGet = false;
       const request = this.repo.createQueryBuilder('base').andWhere(

@@ -275,6 +275,7 @@ export const Upload = ({
 
             {showBtnDelete(file) && (
               <Popconfirm
+                destroyTooltipOnHide={true}
                 placement="left"
                 title={t('components.datatable.areYouSureWant')}
                 onConfirm={async () => {

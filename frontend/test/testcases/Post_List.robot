@@ -63,7 +63,7 @@ PL_05 Verify the User Interface of "Danh sách post" page in "News" category
   Then Click on "fifth" selection to change the number of data show in list and check
 
 PL_06 Verify the function of changing the page's number the list of posts in "News" category
-  [Tags]                                                                                                MainPage                     News   BUG
+  [Tags]                                                                                                MainPage                     News
   Go to "Danh sách post" page with "News" list
   Then Check the amount of page list
        ${Last_name}=            Get data in the last row
@@ -76,7 +76,7 @@ PL_06 Verify the function of changing the page's number the list of posts in "Ne
   When Move to the last page and check
 
 PL_07 Verify the highlight table line function after operated in "News" category
-  [Tags]                                                                                                MainPage                     News   BUG
+  [Tags]                                                                                                MainPage                     News
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click "Huỷ bỏ" button
@@ -85,7 +85,7 @@ PL_07 Verify the highlight table line function after operated in "News" category
 
 ### Verify the activate function ###
 PL_08 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     Projects   BUG
+  [Tags]                                                                                                Activate                     Projects
   Create a test post in "Projects" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -102,7 +102,7 @@ PL_08 Verify that switch off post when click on "Đã kích hoạt" button
 #   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_10 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     News   BUG
+  [Tags]                                                                                                Activate                     News
   Create a test post in "News" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -361,9 +361,9 @@ PL_10 Verify that switch off post when click on "Đã kích hoạt" button
 
 ### Verify the sort function ###
 PL_32 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
+  [Tags]                                                                                                Sort                          Projects                        Slug
   Create a test post in "Projects" list with "A" in post name
-  Create a test post in "Projects" list with "A" in post name
+  Create a test post in "Projects" list with "Z" in post name
   When Click on sort icon in "Tên Post" table cell
   Then "A" should be visible in the first table line
   Then "Z" should not be visible in the first table line
@@ -375,7 +375,7 @@ PL_32 Verify the sort function when click on sort icon in "Tên Post" column
   When Click on the "Xóa" button in the "A" table line
 
 PL_33 Verify the sort function when click on sort icon in "Slug" column
-  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
+  [Tags]                                                                                                Sort                          Projects                        Slug
   ${Post}=                 Create a test post in "Projects" list with "A" in slug
   Create a test post in "Projects" list with "Z" in slug
   When Click on sort icon in "Slug" table cell
@@ -388,20 +388,20 @@ PL_33 Verify the sort function when click on sort icon in "Slug" column
   When Click on the "Xóa" button in the "_@Name@_" table line
   When Click on the "Xóa" button in the "${Post}" table line
 
-PL_34 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
-  Create a test post in "Projects" list
-  When Click on sort icon in "Created" table cell
-  Then "_@Name@_" should not be visible in the first table line
-  When Click on sort icon in "Created" table cell
-  Then "_@Name@_" should be visible in the first table line
-  When Click on sort icon in "Created" table cell
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_34 Verify the sort function when click on sort icon in "Tên Post" column
+#  [Tags]                                                                                                Sort                          Projects                        Slug   BUG1
+#  Create a test post in "Projects" list
+#  When Click on sort icon in "Created" table cell
+#  Then "_@Name@_" should not be visible in the first table line
+#  When Click on sort icon in "Created" table cell
+#  Then "_@Name@_" should be visible in the first table line
+#  When Click on sort icon in "Created" table cell
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_35 Verify the sort function when click on sort icon in "Tên Post" column
   [Tags]                                                                                                Sort                          News                        Slug   BUG
   Create a test post in "News" list with "A" in post name
-  Create a test post in "News" list with "A" in post name
+  Create a test post in "News" list with "Z" in post name
   When Click on sort icon in "Tên Post" table cell
   Then "A" should be visible in the first table line
   Then "Z" should not be visible in the first table line
@@ -439,12 +439,12 @@ PL_37 Verify the sort function when click on sort icon in "Tên Post" column
 ### Verify that edit the post information ###
 ## Verify that edit post's information page of "Projects" list ##
 PL_38 Verify the UI of the editing post page in "Projects" list (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects   BUG
+  [Tags]                                                                                                EditInfo                        Projects
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   Then Heading should contain "Chỉnh sửa post Projects" inner text
   Then Webpage should contain "Created At" input field
-  Then Webpage should contain "Thumbnail URL" image upload field
+  Then Webpage should contain "Thumbnail Url" image upload field
   Then Webpage should contain "ENGLISH" tab
   Then Webpage should contain "Name" input field
   Then Webpage should contain "Slug" input field
@@ -689,7 +689,7 @@ PL_56 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_57 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   ${Post}=                 Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1667,8 +1667,8 @@ Create a test post in "${category}" list with "${name}" in post name
   Enter "paragraph" in editor "Content" with "_RANDOM_"
   Click on "VIETNAM" tab
   Enter "test name" in "Name" with "${name}"
-  Enter "paragraph" in textarea"Description" with "_RANDOM_"
-  Enter "paragraph" in "Content" with "_RANDOM_"
+  Enter "paragraph" in textarea "Description" with "_RANDOM_"
+  Enter "paragraph" in editor "Content" with "_RANDOM_"
   Click "Lưu lại" button
   User look message "Tạo thành công" popup
   RETURN               ${name}

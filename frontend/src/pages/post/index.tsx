@@ -84,6 +84,7 @@ const Page = () => {
         {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
           <Tooltip title={t('routes.admin.Layout.Delete')}>
             <Popconfirm
+              destroyTooltipOnHide={true}
               placement="left"
               title={t('components.datatable.areYouSureWant')}
               onConfirm={() => postTypeFacade.delete(data.id!)}
@@ -157,11 +158,11 @@ const Page = () => {
               columns={[
                 {
                   title: 'routes.admin.Post.Name',
-                  name: 'translations',
+                  name: 'translations.name',
                   tableItem: {
                     filter: { type: ETableFilterType.search },
                     sorter: true,
-                    render: (text: string, item: any) => (
+                    render: (_: string, item: any) => (
                       <Avatar
                         src={item.thumbnailUrl}
                         text={
@@ -177,12 +178,12 @@ const Page = () => {
                 },
                 {
                   title: 'Slug',
-                  name: 'translations',
+                  name: 'translations.slug',
                   tableItem: {
                     filter: { type: ETableFilterType.search },
                     sorter: true,
-                    render: (text) =>
-                      text.length ? text?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug : '',
+                    render: (_: string, item: any) =>
+                      item.translations.length ? item.translations?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug : '',
                   },
                 },
                 {
@@ -209,6 +210,7 @@ const Page = () => {
                             )}
                           >
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t(
                                 !data.isDisabled
@@ -248,6 +250,7 @@ const Page = () => {
                         {user?.role?.permissions?.includes(keyRole.P_POST_DELETE) && (
                           <Tooltip title={t('routes.admin.Layout.Delete')}>
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t('components.datatable.areYouSureWant')}
                               onConfirm={() => dataTableRef?.current?.handleDelete!(data.id)}

@@ -170,6 +170,7 @@ const Page = () => {
                             )}
                           >
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t(
                                 !data.isDisabled
@@ -209,6 +210,7 @@ const Page = () => {
                         {user?.role?.permissions?.includes(keyRole.P_DATA_DELETE) && (
                           <Tooltip title={t('routes.admin.Layout.Delete')}>
                             <Popconfirm
+                              destroyTooltipOnHide={true}
                               placement="left"
                               title={t('components.datatable.areYouSureWant')}
                               onConfirm={() => dataTableRef?.current?.handleDelete!(data.id)}

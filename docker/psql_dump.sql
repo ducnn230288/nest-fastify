@@ -537,7 +537,6 @@ COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updated
 
 COPY core.post_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary", mpath, parent_id) FROM stdin;
 7b2fd64b-baef-467e-99c2-974680bdf62f	\N	\N	2024-03-06 09:51:06.111226	2024-03-06 09:51:06.111226	News	news	t	7b2fd64b-baef-467e-99c2-974680bdf62f.	\N
-f93c1f3c-8617-44c6-9d72-e27b71007b2e	\N	\N	2024-03-06 09:51:06.115779	2024-03-06 09:51:06.115779	News 1	news1	f	7b2fd64b-baef-467e-99c2-974680bdf62f.f93c1f3c-8617-44c6-9d72-e27b71007b2e.	7b2fd64b-baef-467e-99c2-974680bdf62f
 f5873b76-676a-43d8-bb22-d7775b693b29	\N	\N	2024-03-06 09:51:06.119162	2024-03-06 09:51:06.119162	Projects	projects	t	f5873b76-676a-43d8-bb22-d7775b693b29.	\N
 \.
 
