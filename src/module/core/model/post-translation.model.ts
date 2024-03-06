@@ -59,6 +59,6 @@ export class PostTranslation extends Base {
   postId?: string;
 
   @ManyToOne(() => Post, (data) => data.translations, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'post_id' })
+  @JoinColumn()
   public post?: Post;
 }

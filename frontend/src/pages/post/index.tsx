@@ -182,7 +182,7 @@ const Page = () => {
                     filter: { type: ETableFilterType.search },
                     sorter: true,
                     render: (text) =>
-                      text?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug || '',
+                      text.length ? text?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug : '',
                   },
                 },
                 {

@@ -644,7 +644,7 @@ CL_50 Verify the edit information function by change data and click on "Huỷ b�
 
 ### Verify the delete account function ###
 CL_51 Verify the delete account function
-  [Tags]                                                                                                Delete
+  [Tags]                                                                                                Delete    BUG
   Create a test account with "Tester" type
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
   Then User look message "Xóa thành công" popup

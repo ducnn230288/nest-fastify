@@ -6,8 +6,8 @@ Library                 DateTime
 
 *** Variables ***
 ${BROWSER}              chromium
-${HEADLESS}             ${False}
-${BROWSER_TIMEOUT}      60 seconds
+${HEADLESS}             ${True}
+${BROWSER_TIMEOUT}      6 seconds
 ${SHOULD_TIMEOUT}       0.1 seconds
 
 ${URL_DEFAULT}          %{HOST_ADDRESS=http://localhost:4000}
@@ -152,11 +152,11 @@ Enter "${type}" in "${name}" with "${text}"
 Enter "${type}" in editor "${name}" with "${text}"
   Wait Until Element Spin
   ${text}=                  Get Random Text                   ${type}                       ${text}
-  ${element}=               Get Element Form Item By Name     ${name}                       //*[contains(@class,'ce-paragraph')]
+  ${element}=               Get Element Form Item By Name     ${name}                       //*[contains(@class,'sun-editor-editable')]
   Click                     ${element}
   Clear Text                ${element}
   Fill Text                 ${element}                        ${text}                       True
-  ${elementS}=              Get Element Form Item By Name     ${name}                       //*[contains(@class,'ce-paragraph') and contains(text(),'${text}')]
+  ${elementS}=              Get Element Form Item By Name     ${name}                       //*[contains(@class,'sun-editor-editable')]/*[contains(text(),'${text}')]
   Wait Until Element Is Existent                              ${elementS}
   Sleep                     ${SHOULD_TIMEOUT}
   ${condition}=             Get Text                          ${element}

@@ -6,12 +6,12 @@ Library                DateTime
 
 *** Test Cases ***
 ### Link to testcases https://docs.google.com/spreadsheets/d/1R_jW5GBVBaMy7YgNKJQ2Ha5xW12Vn0nRzOHE0-OsyF8/edit#gid=1857962472 ###
-PL_01 Verify the User Interface of "Danh sách Post" page
+PL_01 Verify the User Interface of "Danh sách post" page
   [Tags]                                                                                                MainPage                   UI                     Smoketest
   Login to admin
   When Click "Thiết lập" menu
   When Click "Post" sub menu to "/#/vn/setting/post"
-  Then Heading should contain "Danh sách Post" inner text
+  Then Heading should contain "Danh sách post" inner text
   Then Confirm locating exactly in "Post" page of "Thiết lập" menu
   Then Webpage should contain the list data from database
   Then Webpage should contain the search function
@@ -21,7 +21,7 @@ PL_01 Verify the User Interface of "Danh sách Post" page
   Then Webpage should contain "Post Type" group
   Then Webpage should contain "Tạo mới" button
 
-PL_02 Verify the User Interface of "Danh sách Post" page in "Projects" category
+PL_02 Verify the User Interface of "Danh sách post" page in "Projects" category
   [Tags]                                                                                                MainPage                     Projects
   Login to admin
   When Click "Thiết lập" menu
@@ -33,7 +33,7 @@ PL_02 Verify the User Interface of "Danh sách Post" page in "Projects" category
 
 PL_03 Verify the function of changing the page's number the list of posts in "Projects" category
   [Tags]                                                                                                MainPage                     Projects
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   Then Check the amount of page list
        ${Last_name}=            Get data in the last row
   When Create a test post in "Project" list
@@ -52,7 +52,7 @@ PL_04 Verify the highlight table line function after operated in "Projects" cate
   Then "_@Name@_" table line should be highlighted
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_05 Verify the User Interface of "Danh sách Post" page in "News" category
+PL_05 Verify the User Interface of "Danh sách post" page in "News" category
   [Tags]                                                                                                MainPage                     News
   Login to admin
   When Click "Thiết lập" menu
@@ -63,8 +63,8 @@ PL_05 Verify the User Interface of "Danh sách Post" page in "News" category
   Then Click on "fifth" selection to change the number of data show in list and check
 
 PL_06 Verify the function of changing the page's number the list of posts in "News" category
-  [Tags]                                                                                                MainPage                     News
-  Go to "Danh sách Post" page with "News" list
+  [Tags]                                                                                                MainPage                     News   BUG
+  Go to "Danh sách post" page with "News" list
   Then Check the amount of page list
        ${Last_name}=            Get data in the last row
   When Create a test post in "Project" list
@@ -76,7 +76,7 @@ PL_06 Verify the function of changing the page's number the list of posts in "Ne
   When Move to the last page and check
 
 PL_07 Verify the highlight table line function after operated in "News" category
-  [Tags]                                                                                                MainPage                     News
+  [Tags]                                                                                                MainPage                     News   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click "Huỷ bỏ" button
@@ -85,7 +85,7 @@ PL_07 Verify the highlight table line function after operated in "News" category
 
 ### Verify the activate function ###
 PL_08 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     Projects
+  [Tags]                                                                                                Activate                     Projects   BUG
   Create a test post in "Projects" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -102,7 +102,7 @@ PL_08 Verify that switch off post when click on "Đã kích hoạt" button
 #   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_10 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     News
+  [Tags]                                                                                                Activate                     News   BUG
   Create a test post in "News" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -361,7 +361,7 @@ PL_10 Verify that switch off post when click on "Đã kích hoạt" button
 
 ### Verify the sort function ###
 PL_32 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          Projects                        Slug
+  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
   Create a test post in "Projects" list with "A" in post name
   Create a test post in "Projects" list with "A" in post name
   When Click on sort icon in "Tên Post" table cell
@@ -375,7 +375,7 @@ PL_32 Verify the sort function when click on sort icon in "Tên Post" column
   When Click on the "Xóa" button in the "A" table line
 
 PL_33 Verify the sort function when click on sort icon in "Slug" column
-  [Tags]                                                                                                Sort                          Projects                        Slug
+  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
   ${Post}=                 Create a test post in "Projects" list with "A" in slug
   Create a test post in "Projects" list with "Z" in slug
   When Click on sort icon in "Slug" table cell
@@ -389,7 +389,7 @@ PL_33 Verify the sort function when click on sort icon in "Slug" column
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_34 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          Projects                        Slug
+  [Tags]                                                                                                Sort                          Projects                        Slug   BUG
   Create a test post in "Projects" list
   When Click on sort icon in "Created" table cell
   Then "_@Name@_" should not be visible in the first table line
@@ -399,7 +399,7 @@ PL_34 Verify the sort function when click on sort icon in "Tên Post" column
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_35 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          News                        Slug
+  [Tags]                                                                                                Sort                          News                        Slug   BUG
   Create a test post in "News" list with "A" in post name
   Create a test post in "News" list with "A" in post name
   When Click on sort icon in "Tên Post" table cell
@@ -413,7 +413,7 @@ PL_35 Verify the sort function when click on sort icon in "Tên Post" column
   When Click on the "Xóa" button in the "A" table line
 
 PL_36 Verify the sort function when click on sort icon in "Slug" column
-  [Tags]                                                                                                Sort                          News                        Slug
+  [Tags]                                                                                                Sort                          News                        Slug   BUG
   ${Post}=                 Create a test post in "News" list with "A" in slug
   Create a test post in "News" list with "Z" in slug
   When Click on sort icon in "Slug" table cell
@@ -427,7 +427,7 @@ PL_36 Verify the sort function when click on sort icon in "Slug" column
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_37 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          News                        Slug
+  [Tags]                                                                                                Sort                          News                        Slug   BUG
   Create a test post in "News" list
   When Click on sort icon in "Created" table cell
   Then "_@Name@_" should not be visible in the first table line
@@ -439,7 +439,7 @@ PL_37 Verify the sort function when click on sort icon in "Tên Post" column
 ### Verify that edit the post information ###
 ## Verify that edit post's information page of "Projects" list ##
 PL_38 Verify the UI of the editing post page in "Projects" list (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects
+  [Tags]                                                                                                EditInfo                        Projects   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   Then Heading should contain "Chỉnh sửa post Projects" inner text
@@ -503,7 +503,7 @@ PL_40 Verity that change the post's information by entering the valid data in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_41 Verity that change the post's information by entering the valid data in "Tên Post" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -514,7 +514,7 @@ PL_41 Verity that change the post's information by entering the valid data in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_42 Verity that change the post's information by entering the valid data in "Name" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   ${Post}=                            Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -528,7 +528,7 @@ PL_42 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_43 Verity that change the post's information by entering the valid data in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -542,7 +542,7 @@ PL_43 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_44 Verity that change the post's information by entering the valid data in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -556,7 +556,7 @@ PL_44 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_45 Verity that change the post's information by entering the valid data in "Mô tả" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -570,7 +570,7 @@ PL_45 Verity that change the post's information by entering the valid data in "M
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_46 Verity that change the post's information by entering the valid data in "Description" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -584,7 +584,7 @@ PL_46 Verity that change the post's information by entering the valid data in "D
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_47 Verity that change the post's information by entering the valid data in "Nội dung" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -598,7 +598,7 @@ PL_47 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_48 Verity that change the post's information by entering the valid data in "Content" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid
+  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -612,7 +612,7 @@ PL_48 Verity that change the post's information by entering the valid data in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_49 Verity that change the post's information by entering the existent data in "Name" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Invalid
+  [Tags]                                                                                                EditInfo                        Projects                      Invalid   BUG
   ${Post}=                   Create a test post in "Projects" list
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "${Post}" table line
@@ -625,7 +625,7 @@ PL_49 Verity that change the post's information by entering the existent data in
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_50 Verity that change the post's information by entering the same data in "Name" field of 2 tab
-  [Tags]                                                                                                EditInfo                        Projects                      Invalid
+  [Tags]                                                                                                EditInfo                        Projects                      Invalid   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -645,7 +645,7 @@ PL_51 Verify the "Huỷ bỏ" button in the edit post's information page
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_52 Verify the "Huỷ bỏ" button in the edit post's information page
-  [Tags]                                                                                                EditInfo                        Projects                      Button
+  [Tags]                                                                                                EditInfo                        Projects                      Button   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Enter "test name" in "Name" with "_RANDOM_"
@@ -658,7 +658,7 @@ PL_52 Verify the "Huỷ bỏ" button in the edit post's information page
 #   [Tags]                                                                                                EditInfo                        Projects                      Button
 
 PL_54 Verity that change the post's information by leaving the blank field in "Created At" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon in select "Created At"
@@ -668,7 +668,7 @@ PL_54 Verity that change the post's information by leaving the blank field in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_55 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon inside image in "Thumbnail Url"
@@ -689,7 +689,7 @@ PL_56 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_57 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   ${Post}=                 Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -700,7 +700,7 @@ PL_57 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_58 Verity that change the post's information by leaving the blank field in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -710,7 +710,7 @@ PL_58 Verity that change the post's information by leaving the blank field in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_59 Verity that change the post's information by leaving the blank field in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1085,7 +1085,7 @@ PL_89 Verity that change the post's information by leaving the blank field in "C
 ## Verify that create post page of "Projects" list ##
 PL_90 Verify the UI of the creating post page in "Projects" list
   [Tags]                                                                                                Create                       Projects                      UI
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post Projects" inner text
   When Webpage should contain "Created At" input field
@@ -1101,7 +1101,7 @@ PL_90 Verify the UI of the creating post page in "Projects" list
 
 # PL_90_02 Verify the UI of the creating post page in "Projects" list
 #   [Tags]                                                                                                Create                        Projects                      UI
-#   Go to "Danh sách Post" page with "Projects" list
+#   Go to "Danh sách post" page with "Projects" list
 #   When Click "Tạo mới" button
 #   When Heading should contain "Chỉnh sửa post Projects" inner text
 #   When Webpage should contain "Created At" input field
@@ -1117,7 +1117,7 @@ PL_90 Verify the UI of the creating post page in "Projects" list
 
 PL_91 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       Projects                      Valid
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1136,7 +1136,7 @@ PL_91 Verity that create the new post by entering the valid data
 
 PL_92 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       Projects                      Invalid
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1155,7 +1155,7 @@ PL_92 Verity that create the new post by entering the valid data
 
 PL_92_02 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       Projects                      Invalid
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1172,7 +1172,7 @@ PL_92_02 Verity that create the new post by entering the valid data
 
 PL_93 Verify the "Huỷ bỏ" button in the create new post page
   [Tags]                                                                                                Create                       Projects                      Button
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1189,7 +1189,7 @@ PL_93 Verify the "Huỷ bỏ" button in the create new post page
 
 PL_94 Verify the "Lưu lại" button in the create new post page
   [Tags]                                                                                                Create                       Projects                      Button
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1211,7 +1211,7 @@ PL_94 Verify the "Lưu lại" button in the create new post page
 
 PL_96 Verity that create the new post by leaving the blank field in "Created At" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Select file in "Thumbnail Url" with "image.jpg"
   When Click on "ENGLISH" tab
@@ -1227,7 +1227,7 @@ PL_96 Verity that create the new post by leaving the blank field in "Created At"
 
 PL_97 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1243,7 +1243,7 @@ PL_97 Verity that create the new post by leaving the blank field in "Thumbnail U
 
 PL_98 Verity that create the new post by leaving the blank field in "Tên Post" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1258,7 +1258,7 @@ PL_98 Verity that create the new post by leaving the blank field in "Tên Post" 
 
 PL_99 Verity that create the new post by leaving the blank field in "Name" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "VIETNAM" tab
@@ -1273,7 +1273,7 @@ PL_99 Verity that create the new post by leaving the blank field in "Name" field
 
 PL_100 Verity that create the new post by leaving the blank field in "Mô tả" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1289,7 +1289,7 @@ PL_100 Verity that create the new post by leaving the blank field in "Mô tả" 
 
 PL_101 Verity that create the new post by leaving the blank field in "Description" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1305,7 +1305,7 @@ PL_101 Verity that create the new post by leaving the blank field in "Descriptio
 
 PL_102 Verity that create the new post by leaving the blank field in "Nội dung" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1321,7 +1321,7 @@ PL_102 Verity that create the new post by leaving the blank field in "Nội dung
 
 PL_103 Verity that create the new post by leaving the blank field in "Content" field
   [Tags]                                                                                                Create                       Projects                      BlankField
-  Go to "Danh sách Post" page with "Projects" list
+  Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1338,7 +1338,7 @@ PL_103 Verity that create the new post by leaving the blank field in "Content" f
 ## Verify that create post page of "News" list ##
 PL_104 Verify the UI of the creating post page in "News" list
   [Tags]                                                                                                Create                       News                      UI
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post News" inner text
   When Webpage should contain "Created At" input field
@@ -1354,7 +1354,7 @@ PL_104 Verify the UI of the creating post page in "News" list
 
 # PL_104_02 Verify the UI of the creating post page in "News" list
 #   [Tags]                                                                                                Create                        News                      UI
-#   Go to "Danh sách Post" page with "News" list
+#   Go to "Danh sách post" page with "News" list
 #   When Click "Tạo mới" button
 #   When Heading should contain "Chỉnh sửa post News" inner text
 #   When Webpage should contain "Created At" input field
@@ -1370,7 +1370,7 @@ PL_104 Verify the UI of the creating post page in "News" list
 
 PL_105 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       News                      Valid
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1389,7 +1389,7 @@ PL_105 Verity that create the new post by entering the valid data
 
 PL_106 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       News                      Invalid
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1408,7 +1408,7 @@ PL_106 Verity that create the new post by entering the valid data
 
 PL_106_02 Verity that create the new post by entering the valid data
   [Tags]                                                                                                Create                       News                      Invalid
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1425,7 +1425,7 @@ PL_106_02 Verity that create the new post by entering the valid data
 
 PL_107 Verify the "Huỷ bỏ" button in the create new post page
   [Tags]                                                                                                Create                       News                      Button
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1442,7 +1442,7 @@ PL_107 Verify the "Huỷ bỏ" button in the create new post page
 
 PL_108 Verify the "Lưu lại" button in the create new post page
   [Tags]                                                                                                Create                       News                      Button
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1464,7 +1464,7 @@ PL_108 Verify the "Lưu lại" button in the create new post page
 
 PL_110 Verity that create the new post by leaving the blank field in "Created At" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Select file in "Thumbnail Url" with "image.jpg"
   When Click on "ENGLISH" tab
@@ -1480,7 +1480,7 @@ PL_110 Verity that create the new post by leaving the blank field in "Created At
 
 PL_111 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1496,7 +1496,7 @@ PL_111 Verity that create the new post by leaving the blank field in "Thumbnail 
 
 PL_112 Verity that create the new post by leaving the blank field in "Tên Post" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1511,7 +1511,7 @@ PL_112 Verity that create the new post by leaving the blank field in "Tên Post"
 
 PL_113 Verity that create the new post by leaving the blank field in "Name" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "VIETNAM" tab
@@ -1526,7 +1526,7 @@ PL_113 Verity that create the new post by leaving the blank field in "Name" fiel
 
 PL_114 Verity that create the new post by leaving the blank field in "Mô tả" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1542,7 +1542,7 @@ PL_114 Verity that create the new post by leaving the blank field in "Mô tả" 
 
 PL_115 Verity that create the new post by leaving the blank field in "Description" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1558,7 +1558,7 @@ PL_115 Verity that create the new post by leaving the blank field in "Descriptio
 
 PL_116 Verity that create the new post by leaving the blank field in "Nội dung" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1574,7 +1574,7 @@ PL_116 Verity that create the new post by leaving the blank field in "Nội dung
 
 PL_117 Verity that create the new post by leaving the blank field in "Content" field
   [Tags]                                                                                                Create                       News                      BlankField
-  Go to "Danh sách Post" page with "News" list
+  Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
   When Click on "ENGLISH" tab
@@ -1618,7 +1618,7 @@ PL_121 Verify the cancel action button when delete post
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 *** Keywords ***
-Go to "Danh sách Post" page with "${category}" list
+Go to "Danh sách post" page with "${category}" list
   Login to admin
   Click "Thiết lập" menu
   Click "Post" sub menu to "/#/vn/setting/post"
@@ -1631,7 +1631,7 @@ Create a test post in "${category}" list
     Select on the "${category}" item line
     Click "Tạo mới" button
   ELSE
-    Go to "Danh sách Post" page with "${category}" list
+    Go to "Danh sách post" page with "${category}" list
     Click "Tạo mới" button
   END
   Click "date" in "Created At" with "today"
@@ -1656,7 +1656,7 @@ Create a test post in "${category}" list with "${name}" in post name
     Select on the "${category}" item line
     Click "Tạo mới" button
   ELSE
-    Go to "Danh sách Post" page with "${category}" list
+    Go to "Danh sách post" page with "${category}" list
     Click "Tạo mới" button
   END
   Click "date" in "Created At" with "today"
@@ -1679,7 +1679,7 @@ Create a test post in "${category}" list with ${slug} in slug
     Select on the "${category}" item line
     Click "Tạo mới" button
   ELSE
-    Go to "Danh sách Post" page with "${category}" list
+    Go to "Danh sách post" page with "${category}" list
     Click "Tạo mới" button
   END
   Click "date" in "Created At" with "today"

@@ -42,7 +42,7 @@ AI_03 Verify the User Interface of "ĐỔI MẬT KHẨU" tab
 
 ### Verify that change the account information by interacting with "THÔNG TIN TÀI KHOẢN" page ###
 AI_04 Verify the change account's information by editing in "Họ và tên" field
-  [Tags]                                                                                                ChangeInfo
+  [Tags]                                                                                                ChangeInfo    BUG
   Go to "THÔNG TIN TÀI KHOẢN" page
   When Enter "test name" in "Họ và tên" with "_RANDOM_"
   When Click "Lưu lại" button
@@ -52,7 +52,7 @@ AI_04 Verify the change account's information by editing in "Họ và tên" fiel
   When Click "Lưu lại" button
 
 AI_05 Verify the change account's information by editing in "Email" field
-  [Tags]                                                                                                ChangeInfo
+  [Tags]                                                                                                ChangeInfo    BUG
   Go to "THÔNG TIN TÀI KHOẢN" page
   When Enter "email" in "Email" with "_RANDOM_"
   When Click "Lưu lại" button
@@ -62,7 +62,7 @@ AI_05 Verify the change account's information by editing in "Email" field
   When Click "Lưu lại" button
 
 AI_06 Verify the change account's information by editing in "Số điện thoại" field
-  [Tags]                                                                                                ChangeInfo
+  [Tags]                                                                                                ChangeInfo    BUG
   Go to "THÔNG TIN TÀI KHOẢN" page
   When Enter "phone" in "Số điện thoại" with "_RANDOM_"
   When Click "Lưu lại" button
@@ -72,7 +72,7 @@ AI_06 Verify the change account's information by editing in "Số điện thoạ
   When Click "Lưu lại" button
 
 AI_07 Verify the change account's information by editing in "Ngày sinh" field
-  [Tags]                                                                                                ChangeInfo
+  [Tags]                                                                                                ChangeInfo    BUG
   Go to "THÔNG TIN TÀI KHOẢN" page
   When Click "date" in "Ngày sinh" with "_RANDOM_"
   When Click "Lưu lại" button
