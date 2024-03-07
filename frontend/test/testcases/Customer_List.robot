@@ -347,7 +347,7 @@ CL_26 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the search function ###
 CL_27 Verify the sort function when click on sort icon in "Họ và tên" column
-  [Tags]                                                                                                Sort
+  [Tags]                                                                                                Sort  BUG
   Create a test account with "A" name
   Create a test account with "Z" name
   When Click on sort icon in "Họ và tên" table cell

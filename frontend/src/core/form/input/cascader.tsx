@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Fragment, useCallback, useRef } from 'react';
-import { Cascader, Checkbox, FormInstance } from 'antd';
+import { Cascader, FormInstance } from 'antd';
 import { Button } from '../../button';
 import { API } from '@utils';
 import { Times } from '@svgs';
 
 const Component = ({ formItem, placeholder, onChange, value, form, disabled, showSearch = true }: Type) => {
   const [_list, set_list] = useState(formItem.list || []);
-  const [checkAll, set_checkAll] = useState(false);
+  // const [checkAll, set_checkAll] = useState(false);
   const allValue = useRef<any>([]);
 
   const loadData = useCallback(
@@ -21,8 +21,8 @@ const Component = ({ formItem, placeholder, onChange, value, form, disabled, sho
             const { data } = await API.get<any>(url, {}, params);
             const listData = data.data.map(formItem.api.format);
             if (formItem.mode === 'multiple' && value?.length) {
-              const array = formItem.api.convertData ? formItem.api.convertData(listData) : listData;
-              set_checkAll(array.length === value.length);
+              // const array = formItem.api.convertData ? formItem.api.convertData(listData) : listData;
+              // set_checkAll(array.length === value.length);
             }
             set_list(listData);
           }
@@ -44,8 +44,8 @@ const Component = ({ formItem, placeholder, onChange, value, form, disabled, sho
     }
     if ((_list.length === 0 && formItem.api) || formItem.renderList) await loadData('');
 
-    if (value?.length > 0 && value?.length === allValue.current.length) set_checkAll(true);
-    else set_checkAll(false);
+    // if (value?.length > 0 && value?.length === allValue.current.length) set_checkAll(true);
+    // else set_checkAll(false);
   }, [formItem, loadData, _list, allValue, value, onChange]);
 
   useEffect(() => {

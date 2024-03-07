@@ -196,7 +196,8 @@ const Layout = ({ children }: PropsWithChildren) => {
               'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
             })}
             onClick={() => {
-              set_isCollapsed(!isCollapsed); set_isDesktop(isDesktop);
+              set_isCollapsed(!isCollapsed);
+              set_isDesktop(isDesktop);
             }}
           >
             <span className="line" />
@@ -230,7 +231,8 @@ const Layout = ({ children }: PropsWithChildren) => {
             'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
           })}
           onClick={() => {
-            set_isCollapsed(!isCollapsed); set_isDesktop(isDesktop);
+            set_isCollapsed(!isCollapsed);
+            set_isDesktop(isDesktop);
           }}
         >
           <Arrow
@@ -260,8 +262,9 @@ const Layout = ({ children }: PropsWithChildren) => {
         })}
       >
         <div className={'h-[calc(100vh-6rem)]'}>
-          {!isDesktop &&
-            <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>}
+          {!isDesktop && (
+            <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
+          )}
           <div className={'flex items-center text-xs mt-0.5 pb-5 sm:hidden'}>
             {breadcrumbs?.map((item, i) => (
               <Fragment key={i}>

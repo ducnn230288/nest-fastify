@@ -361,7 +361,7 @@ export const DataTable = forwardRef(
             onChange={(e: any[]) => {
               setSelectedKeys([
                 e[0].startOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-                e[1].endOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
+                e[1].endOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
               ]);
             }}
           />

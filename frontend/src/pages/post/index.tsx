@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Popconfirm, Select, Spin, Tooltip } from 'antd';
+import { Select, Spin } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -12,6 +12,8 @@ import { GlobalFacade, PostFacade, PostType, PostTypeFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { Avatar } from '@core/avatar';
+import { PopConfirm } from '@core/pop-confirm';
+import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -71,7 +73,7 @@ const Page = () => {
       </div>
       <div className="w-16 flex justify-end gap-1">
         {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_UPDATE) && (
-          <Tooltip title={t('routes.admin.Layout.Edit')}>
+          <ToolTip title={t('routes.admin.Layout.Edit')}>
             <button
               className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
               title={t('routes.admin.Layout.Edit') || ''}
@@ -79,17 +81,13 @@ const Page = () => {
             >
               <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
             </button>
-          </Tooltip>
+          </ToolTip>
         )}
         {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
-          <Tooltip title={t('routes.admin.Layout.Delete')}>
-            <Popconfirm
-              destroyTooltipOnHide={true}
-              placement="left"
+          <ToolTip title={t('routes.admin.Layout.Delete')}>
+            <PopConfirm
               title={t('components.datatable.areYouSureWant')}
               onConfirm={() => postTypeFacade.delete(data.id!)}
-              okText={t('components.datatable.ok')}
-              cancelText={t('components.datatable.cancel')}
             >
               <button
                 className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}
@@ -97,8 +95,8 @@ const Page = () => {
               >
                 <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
               </button>
-            </Popconfirm>
-          </Tooltip>
+            </PopConfirm>
+          </ToolTip>
         )}
       </div>
     </div>
@@ -183,7 +181,11 @@ const Page = () => {
                     filter: { type: ETableFilterType.search },
                     sorter: true,
                     render: (_: string, item: any) =>
-                      item.translations.length ? item.translations?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug : '',
+                      item.translations.length
+                        ? item.translations?.filter(
+                            (item: any) => item?.language === localStorage.getItem('i18nextLng'),
+                          )[0].slug
+                        : '',
                   },
                 },
                 {
@@ -204,22 +206,18 @@ const Page = () => {
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_POST_UPDATE) && (
-                          <Tooltip
+                          <ToolTip
                             title={t(
                               data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
                             )}
                           >
-                            <Popconfirm
-                              destroyTooltipOnHide={true}
-                              placement="left"
+                            <PopConfirm
                               title={t(
                                 !data.isDisabled
                                   ? 'components.datatable.areYouSureWantDisable'
                                   : 'components.datatable.areYouSureWantEnable',
                               )}
                               onConfirm={() => postFacade.putDisable({ id: data.id, disable: !data.isDisabled })}
-                              okText={t('components.datatable.ok')}
-                              cancelText={t('components.datatable.cancel')}
                             >
                               <button
                                 title={
@@ -234,34 +232,30 @@ const Page = () => {
                                   <Check className="icon-cud bg-green-600 hover:bg-green-400" />
                                 )}
                               </button>
-                            </Popconfirm>
-                          </Tooltip>
+                            </PopConfirm>
+                          </ToolTip>
                         )}
                         {user?.role?.permissions?.includes(keyRole.P_POST_UPDATE) && (
-                          <Tooltip title={t('routes.admin.Layout.Edit')}>
+                          <ToolTip title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
                               onClick={() => navigate(`/${lang}${routerLinks('Post')}/${data.type}/${data.id}/edit`)}
                             >
                               <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                             </button>
-                          </Tooltip>
+                          </ToolTip>
                         )}
                         {user?.role?.permissions?.includes(keyRole.P_POST_DELETE) && (
-                          <Tooltip title={t('routes.admin.Layout.Delete')}>
-                            <Popconfirm
-                              destroyTooltipOnHide={true}
-                              placement="left"
+                          <ToolTip title={t('routes.admin.Layout.Delete')}>
+                            <PopConfirm
                               title={t('components.datatable.areYouSureWant')}
                               onConfirm={() => dataTableRef?.current?.handleDelete!(data.id)}
-                              okText={t('components.datatable.ok')}
-                              cancelText={t('components.datatable.cancel')}
                             >
                               <button title={t('routes.admin.Layout.Delete') || ''}>
                                 <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
                               </button>
-                            </Popconfirm>
-                          </Tooltip>
+                            </PopConfirm>
+                          </ToolTip>
                         )}
                       </div>
                     ),

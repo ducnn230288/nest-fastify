@@ -1,5 +1,4 @@
 import React, { Fragment, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { Popconfirm } from 'antd';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -7,6 +6,7 @@ import { API, keyToken, uuidv4 } from '@utils';
 import { Arrow, Paste, Times, UploadSVG } from '@svgs';
 import { Button } from '../button';
 import { Message } from '../message';
+import { PopConfirm } from '@core/pop-confirm';
 
 export const Upload = ({
   value = [],
@@ -34,7 +34,9 @@ export const Upload = ({
             status: 'done',
           };
         })
-      : (value ? [value] : []),
+      : value
+        ? [value]
+        : [],
   );
   console.log(listFiles);
   useEffect(() => {
@@ -47,7 +49,9 @@ export const Upload = ({
               status: 'done',
             };
           })
-        : (value ? [value] : []);
+        : value
+          ? [value]
+          : [];
     if (
       JSON.stringify(listFiles) !== JSON.stringify(tempData) &&
       listFiles.filter((item: any) => item.status === 'uploading').length === 0
@@ -274,9 +278,7 @@ export const Upload = ({
             )}
 
             {showBtnDelete(file) && (
-              <Popconfirm
-                destroyTooltipOnHide={true}
-                placement="left"
+              <PopConfirm
                 title={t('components.datatable.areYouSureWant')}
                 onConfirm={async () => {
                   if (deleteFile && file?.id) {
@@ -287,8 +289,6 @@ export const Upload = ({
                   }
                   onChange && onChange(listFiles.filter((_item: any) => _item.id !== file.id));
                 }}
-                okText={t('components.datatable.ok')}
-                cancelText={t('components.datatable.cancel')}
               >
                 <Button
                   icon={<Times className={'h-3 w-3 fill-red-400 hover:fill-white'} />}
@@ -301,7 +301,7 @@ export const Upload = ({
                     },
                   )}
                 />
-              </Popconfirm>
+              </PopConfirm>
             )}
           </div>
         ))}
