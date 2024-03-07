@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Tree, TreeSelect } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 import { keyRole, lang, routerLinks } from '@utils';
-import { GlobalFacade, PostFacade, PostType, PostTypeFacade } from '@store';
+import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { Avatar } from '@core/avatar';
@@ -52,55 +52,6 @@ const Page = () => {
   if (!request.filter || typeof request?.filter === 'string') request.filter = JSON.parse(request?.filter || '{}');
   const { t } = useTranslation();
   const dataTableRef = useRef<TableRefObject>(null);
-  const renderPostType = (data: PostType, index: string) => (
-    <div
-      key={index}
-      className={classNames(
-        { 'bg-gray-100': request.filter.type === data.code },
-        'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-      )}
-    >
-      <div
-        onClick={() => {
-          if (request.filter.type !== data.code) request.filter.type = data.code;
-          else delete request.filter.type;
-          dataTableRef?.current?.onChange(request);
-        }}
-        className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
-        style={{ paddingLeft: index.split('.').length * 16 }}
-      >
-        {index}. {data.name}
-      </div>
-      <div className="w-16 flex justify-end gap-1">
-        {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_UPDATE) && (
-          <ToolTip title={t('routes.admin.Layout.Edit')}>
-            <button
-              className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
-              title={t('routes.admin.Layout.Edit') || ''}
-              onClick={() => navigate(`/${lang}${routerLinks('PostType')}/${data.id}/edit`)}
-            >
-              <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
-            </button>
-          </ToolTip>
-        )}
-        {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
-          <ToolTip title={t('routes.admin.Layout.Delete')}>
-            <PopConfirm
-              title={t('components.datatable.areYouSureWant')}
-              onConfirm={() => postTypeFacade.delete(data.id!)}
-            >
-              <button
-                className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}
-                title={t('routes.admin.Layout.Delete') || ''}
-              >
-                <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
-              </button>
-            </PopConfirm>
-          </ToolTip>
-        )}
-      </div>
-    </div>
-  );
 
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
@@ -118,20 +69,63 @@ const Page = () => {
           </div>
           <Spin spinning={postTypeFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
-              {postTypeFacade.tree?.map((data, index) => (
-                <Fragment key={data.id}>
-                  {renderPostType(data, (index + 1).toString())}
-                  {data.children?.map((item, i) =>
-                    renderPostType(item, `${(index + 1).toString()}.${(i + 1).toString()}`),
+              <Tree
+                blockNode
+                autoExpandParent
+                defaultExpandAll
+                treeData={postTypeFacade.tree}
+                titleRender={(data: any) => (<div
+                  className={classNames(
+                    { 'bg-gray-100': request.filter.type === data.code },
+                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
                   )}
-                </Fragment>
-              ))}
+                >
+                  <div
+                    onClick={() => {
+                      if (request.filter.type !== data.code) request.filter.type = data.code;
+                      else delete request.filter.type;
+                      dataTableRef?.current?.onChange(request);
+                    }}
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                  >
+                    {data.name}
+                  </div>
+                  <div className="w-16 flex justify-end gap-1">
+                    {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_UPDATE) && (
+                      <ToolTip title={t('routes.admin.Layout.Edit')}>
+                        <button
+                          className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
+                          title={t('routes.admin.Layout.Edit') || ''}
+                          onClick={() => navigate(`/${lang}${routerLinks('PostType')}/${data.id}/edit`)}
+                        >
+                          <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
+                        </button>
+                      </ToolTip>
+                    )}
+                    {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
+                      <ToolTip title={t('routes.admin.Layout.Delete')}>
+                        <PopConfirm
+                          title={t('components.datatable.areYouSureWant')}
+                          onConfirm={() => postTypeFacade.delete(data.id!)}
+                        >
+                          <button
+                            className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}
+                            title={t('routes.admin.Layout.Delete') || ''}
+                          >
+                            <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
+                          </button>
+                        </PopConfirm>
+                      </ToolTip>
+                    )}
+                  </div>
+                </div>)}
+              />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">
-              <Select
+              <TreeSelect
                 value={request.filter.type}
                 className={'w-full'}
-                options={postTypeFacade.tree?.map((data) => ({ label: data.name, value: data.code }))}
+                treeData={postTypeFacade.tree}
                 onChange={(e) => {
                   if (request.filter.type !== e) request.filter.type = e;
                   else delete request.filter.type;

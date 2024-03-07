@@ -106,3 +106,14 @@ export const uuidv4 = () => {
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 };
+export const mapTreeObject = (item: any) => {
+  return {
+    ...item,
+    title: item?.name,
+    key: item?.code || item?.id,
+    value: item?.code || item?.id,
+    isLeaf: !item?.children?.length,
+    expanded: true,
+    children: !item?.children ? null : item?.children?.map((i: any) => mapTreeObject(i)),
+  } as any;
+}

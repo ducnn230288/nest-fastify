@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppDispatch, useTypedSelector, Action, Slice, State } from '@store';
 
 import { CommonEntity, EStatusState, PaginationQuery, Responses } from '@models';
-import { API, routerLinks } from '@utils';
+import { API, mapTreeObject, routerLinks } from '@utils';
 import { Post } from '../';
 
 const name = 'PostType';
@@ -29,7 +29,7 @@ export const postTypeSlice = createSlice(
         action.getTree.fulfilled,
         (state: StatePostType<PostType>, action: PayloadAction<Responses<PostType[]>>) => {
           if (action.payload.data) {
-            state.tree = action.payload.data;
+            state.tree = action.payload.data.map((i) => mapTreeObject(i));
             state.status = EStatusState.getTreeFulfilled;
           } else state.status = EStatusState.idle;
           state.isLoading = false;
