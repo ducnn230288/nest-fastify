@@ -37,7 +37,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/data/type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/data/type')
+      .get('/api/data/type?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
@@ -96,7 +96,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/data]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/data')
+      .get('/api/data?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 

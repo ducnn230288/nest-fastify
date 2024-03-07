@@ -28,7 +28,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .post('/api/post/type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataType as CreatePostTypeRequestDto)
+      .send(dataType)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     if (type) {
@@ -39,7 +39,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/post/type]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post/type')
+      .get('/api/post/type?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
@@ -94,7 +94,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/post]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/post')
+      .get('/api/post?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

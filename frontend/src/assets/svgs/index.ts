@@ -1,5 +1,4 @@
 import Arrow from './arrow.svg';
-
 import Calendar from './calendar.svg';
 import Check from './check.svg';
 import CheckCircle from './check-circle.svg';

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Spin, Tree, TreeSelect } from 'antd';
+import { Spin, Tree, TreeSelect } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -9,7 +9,7 @@ import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 import { keyRole, lang, routerLinks } from '@utils';
 import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { Avatar } from '@core/avatar';
 import { PopConfirm } from '@core/pop-confirm';
@@ -71,8 +71,10 @@ const Page = () => {
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
               <Tree
                 blockNode
+                showLine
                 autoExpandParent
                 defaultExpandAll
+                switcherIcon={<Arrow className={'w-4 h-4'} />}
                 treeData={postTypeFacade.tree}
                 titleRender={(data: any) => (<div
                   className={classNames(

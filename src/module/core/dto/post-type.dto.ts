@@ -10,7 +10,7 @@ import { IsOptional, IsString } from 'class-validator';
 export class CreatePostTypeRequestDto extends PickType(PostType, ['name', 'code'] as const) {
   @IsString()
   @IsOptional()
-  idChildren: string;
+  idChildren?: string;
 }
 
 /**

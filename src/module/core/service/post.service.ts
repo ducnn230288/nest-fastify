@@ -31,7 +31,7 @@ export class PostService extends BaseService<Post> {
   async findArrayCode(types: string[]): Promise<{ [p: string]: Post[] }> {
     const tempData: { [key: string]: Post[] } = {};
     for (const type of types) {
-      tempData[type] = (await this.findAll({ filter: "{ type, isDisabled: 'NULL' }", sorts: "{ createdAt: 'DESC' }" }))[0];
+      tempData[type] = (await this.findAll({ filter: '{"isDisabled":"NULL"}', sorts: '{"createdAt":"DESC"}' }))[0];
     }
     return tempData;
   }
