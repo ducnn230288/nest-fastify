@@ -36,7 +36,7 @@ CL_02 Verify the function changing the number of accounts show in each list
   When Click on "fifth" selection to change the number of data show in list and check
 
 CL_03 Verify the function of changing the page's number the list of account
-  [Tags]                                                                                                MainPage                   UI
+  [Tags]                                                                                                MainPage                   UI   BUG2
   Go to "Danh sách Người Dùng" page
   Then Check the amount of page list
   ${Last_name}=                 Get data in the last row
@@ -347,7 +347,7 @@ CL_26 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the search function ###
 CL_27 Verify the sort function when click on sort icon in "Họ và tên" column
-  [Tags]                                                                                                Sort  BUG
+  [Tags]                                                                                                Sort  BUG2
   Create a test account with "A" name
   Create a test account with "Z" name
   When Click on sort icon in "Họ và tên" table cell
@@ -452,7 +452,7 @@ CL_35 Verify the edit information function when change data in "Email" field
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 CL_35_02 Verify the edit information function when change data in "Email" field with existence email
-  [Tags]                                                                                                EditInfo   BUG
+  [Tags]                                                                                                EditInfo
   ${Account1}=                                                                                          Create a test account with "Tester" type
   Create a test account with "Tester" type
   Click on the "Sửa" button in the "${Account1}" table line
@@ -474,7 +474,7 @@ CL_36 Verify the edit information function when change data in "Số điện tho
   When Click on the "Xóa" button in the "_@Họ và tên@_" table line
 
 CL_36_02 Verify the edit information function when change data in "Số điện thoại" field with existence phone number
-  [Tags]                                                                                                EditInfo   BUG
+  [Tags]                                                                                                EditInfo
   ${Account1}=                                                                                          Create a test account with "Tester" type
   Create a test account with "Tester" type
   Click on the "Sửa" button in the "${Account1}" table line
@@ -798,7 +798,7 @@ CL_60 Verify that create a new account by entering invalid phone number
   Then User look message "Vui lòng nhập số điện thoại hợp lệ" popup
 
 CL_61 Verify that create a new account by entering exitstence phone number
-  [Tags]                                                                                                Create                                         Invalid   BUG
+  [Tags]                                                                                                Create                                         Invalid
   Go to "Danh sách Người Dùng" page
   ${Account1}=                                                                                          Create a test account with "Tester" type
   When Click "Tạo mới" button

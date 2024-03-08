@@ -62,16 +62,12 @@ export class UserService extends BaseService<User> {
   ): Promise<User | null> {
     const i18n = I18nContext.current()!;
 
-    // @ts-ignore
-    if (body?.email) {
-      // @ts-ignore
+    if (body instanceof UpdateUserRequestDto && body?.email) {
       const existingUser = await this.repo.getDataByEmail(body.email, id);
       if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
     }
 
-    // @ts-ignore
-    if (body?.phoneNumber) {
-      // @ts-ignore
+    if (body instanceof UpdateUserRequestDto && body?.phoneNumber) {
       const existingPhoneNumber = await this.repo.getDataByPhoneNumber(body.phoneNumber, id);
       if (existingPhoneNumber) throw new BadRequestException(i18n.t('common.Auth.Phone number is already taken'));
     }
