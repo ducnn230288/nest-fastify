@@ -57,12 +57,29 @@ export class UserRepository extends BaseRepository<User> {
   /**
    *
    * @param email
+   * @param id
    * @returns User
    *
    */
-  async getDataByEmail(email: string): Promise<User | null> {
-    return await this.createQueryBuilder('base').andWhere('base.email=:email', { email }).getOne();
+  async getDataByEmail(email: string, id?: string): Promise<User | null> {
+    const request = this.createQueryBuilder('base').andWhere('base.email=:email', { email });
+    if (id) request.andWhere('base.id!=:id', {id});
+    return await request.getOne();
   }
+
+  /**
+   *
+   * @param phoneNumber
+   * @param id
+   * @returns User
+   *
+   */
+  async getDataByPhoneNumber(phoneNumber: string, id?: string): Promise<User | null> {
+    const request = this.createQueryBuilder('base').andWhere('base.phoneNumber=:phoneNumber', { phoneNumber });
+    if (id) request.andWhere('base.id!=:id', {id});
+    return await request.getOne();
+  }
+
 
   /**
    *

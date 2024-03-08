@@ -9,6 +9,7 @@
   "Auth": {
     "Invalid credentials for user": "Invalid credentials for user {email}",
     "Email is already taken": "Email is already taken",
+    "Phone number is already taken": "Phone number is already taken",
     "Passwords are not identical": "Passwords are not identical",
     "Password do not match": "Password do not match!",
     "Invalid email": "Invalid email!",

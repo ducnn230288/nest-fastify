@@ -43,7 +43,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     const extend =
       typeof paginationQuery.extend === 'string' ? JSON.parse(paginationQuery.extend) : paginationQuery.extend;
 
-    let request = this.repo
+    const request = this.repo
       .createQueryBuilder('base')
       .orderBy('base.createdAt', 'DESC')
       .withDeleted()
@@ -70,7 +70,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         Object.keys(item).forEach((key) => {
           const checkKey = key.split('.');
           // request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
-          request = request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
+          request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
             [key]: item[key],
           });
         });
@@ -78,7 +78,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     }
 
     if (filter && Object.keys(filter).length) {
-      request = request.andWhere(
+      request.andWhere(
         new Brackets((qb) => {
           Object.keys(filter).forEach((key) => {
             if (typeof filter[key] === 'object' && filter[key]?.length > 0) {
@@ -124,7 +124,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
       );
     }
     if (fullTextSearch && this.listQuery.length) {
-      request = request.andWhere(
+      request.andWhere(
         new Brackets((qb) => {
           this.listQuery.forEach((key) => {
             if (!filter || !filter[key]) {
@@ -139,7 +139,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
     if (this.listJoinCount.length) {
       this.listJoinCount.forEach((item) => {
-        request = request.loadRelationCountAndMap('base.' + item.name, 'base.' + item.key);
+        request.loadRelationCountAndMap('base.' + item.name, 'base.' + item.key);
       });
     }
 
@@ -148,10 +148,10 @@ export abstract class BaseService<T extends ObjectLiteral> {
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
         const checkKey = key.split('.');
-        request = request.orderBy(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, sorts![key]);
+        request.orderBy(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, sorts![key]);
       });
     }
-    if (perPage !== undefined && page !== undefined) request = request.take(perPage || 10);
+    if (perPage !== undefined && page !== undefined) request.take(perPage || 10);
 
     const res: [T[], number] = await request.getManyAndCount();
 
