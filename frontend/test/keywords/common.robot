@@ -7,7 +7,7 @@ Library                 DateTime
 *** Variables ***
 ${BROWSER}              chromium
 ${HEADLESS}             ${True}
-${BROWSER_TIMEOUT}      60 seconds
+${BROWSER_TIMEOUT}      6 seconds
 ${SHOULD_TIMEOUT}       0.1 seconds
 
 ${URL_DEFAULT}          %{HOST_ADDRESS=http://localhost:4000}
@@ -301,7 +301,12 @@ The status button in the "${name}" table line change to "${status}"
 ###  -----  Tree  -----  ###
 Get Element Tree By Name
   [Arguments]               ${name}                           ${xpath}=${EMPTY}
-  RETURN                  xpath=//*[contains(@class, "ant-tree-node-content-wrapper") and @title = "${name}"]/*[contains(@class, "group")]${xpath}
+  RETURN                    xpath=//*[contains(@class, "ant-tree-node-content-wrapper") and @title = "${name}"]//*[contains(@class, "group")]${xpath}
+
+Click on "${name}" tree
+  Wait Until Element Spin
+  ${element}=               Get Element Tree By Name          ${name}
+  Click                     ${element}
 
 Click on the "${name}" tree to delete
   Wait Until Element Spin
@@ -470,7 +475,7 @@ Click "${type}" in "${name}" with "${text}"
   ${m_text}=                Get Regexp Matches                ${text}                       (..)-(..)-            2
   ${y_text}=                Get Regexp Matches                ${text}                       (..)-(..)-(.+)        3
   ${after_text}=            Catenate                          SEPARATOR=-                   ${y_text[0]}          ${m_text[0]}          ${d_text[0]}
-  Click                     //td[@title = "${after_text}"]/div
+  Click With Options        //td[@title = "${after_text}"]/div    force=True
   ${cnt}=                   Get Length                        ${text}
   IF  ${cnt} > 0
   Set Global Variable       ${STATE["${name}"]}               ${text}

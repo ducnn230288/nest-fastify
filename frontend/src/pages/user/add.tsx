@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
+import dayjs from 'dayjs';
 
 import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
 import { lang, routerLinks } from '@utils';
@@ -145,6 +146,9 @@ const Page = () => {
                 col: 6,
                 type: EFormType.date,
                 rules: [{ type: EFormRuleType.required }],
+                disabledDate: (current) => {
+                  return current && current >= dayjs().startOf('day');
+                },
               },
             },
             {

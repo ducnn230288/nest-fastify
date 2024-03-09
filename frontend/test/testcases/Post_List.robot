@@ -399,7 +399,7 @@ PL_33 Verify the sort function when click on sort icon in "Slug" column
 #  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_35 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          News                        Slug   BUG
+  [Tags]                                                                                                Sort                          News                        Slug
   Create a test post in "News" list with "A" in post name
   Create a test post in "News" list with "Z" in post name
   When Click on sort icon in "Tên Post" table cell
@@ -413,7 +413,7 @@ PL_35 Verify the sort function when click on sort icon in "Tên Post" column
   When Click on the "Xóa" button in the "A" table line
 
 PL_36 Verify the sort function when click on sort icon in "Slug" column
-  [Tags]                                                                                                Sort                          News                        Slug   BUG
+  [Tags]                                                                                                Sort                          News                        Slug
   ${Post}=                 Create a test post in "News" list with "A" in slug
   Create a test post in "News" list with "Z" in slug
   When Click on sort icon in "Slug" table cell
@@ -678,7 +678,7 @@ PL_55 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_56 Verity that change the post's information by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   ${Post}=                 Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -689,7 +689,7 @@ PL_56 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_57 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   ${Post}=                 Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -740,7 +740,7 @@ PL_61 Verity that change the post's information by leaving the blank field in "D
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_62 Verity that change the post's information by leaving the blank field in "Nội dung" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -750,7 +750,7 @@ PL_62 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_63 Verity that change the post's information by leaving the blank field in "Content" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -761,7 +761,7 @@ PL_63 Verity that change the post's information by leaving the blank field in "C
 
 ## Verify that edit post's information page of "News" list ##
 PL_64 Verify the UI of the editing post page in "News" list (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News
+  [Tags]                                                                                                EditInfo                        News   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   Then Heading should contain "Chỉnh sửa post News" inner text
@@ -836,7 +836,7 @@ PL_67 Verity that change the post's information by entering the valid data in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_68 Verity that change the post's information by entering the valid data in "Name" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   ${Post}=                            Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -850,7 +850,7 @@ PL_68 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_69 Verity that change the post's information by entering the valid data in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -864,7 +864,7 @@ PL_69 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_70 Verity that change the post's information by entering the valid data in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -878,7 +878,7 @@ PL_70 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_71 Verity that change the post's information by entering the valid data in "Mô tả" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -892,7 +892,7 @@ PL_71 Verity that change the post's information by entering the valid data in "M
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_72 Verity that change the post's information by entering the valid data in "Description" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -906,7 +906,7 @@ PL_72 Verity that change the post's information by entering the valid data in "D
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_73 Verity that change the post's information by entering the valid data in "Nội dung" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -920,7 +920,7 @@ PL_73 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_74 Verity that change the post's information by entering the valid data in "Content" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid
+  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -934,7 +934,7 @@ PL_74 Verity that change the post's information by entering the valid data in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_76 Verity that change the post's information by entering the existent data in "Name" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Invalid
+  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG
   ${Post}=                   Create a test post in "News" list
   Create a test post in "News" list
   When Click on the "Sửa" button in the "${Post}" table line
@@ -947,7 +947,7 @@ PL_76 Verity that change the post's information by entering the existent data in
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_76 Verity that change the post's information by entering the same data in "Name" field of 2 tab
-  [Tags]                                                                                                EditInfo                        News                      Invalid
+  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -967,7 +967,7 @@ PL_77 Verify the "Huỷ bỏ" button in the edit post's information page
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_78 Verify the "Huỷ bỏ" button in the edit post's information page
-  [Tags]                                                                                                EditInfo                        News                      Button
+  [Tags]                                                                                                EditInfo                        News                      Button   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Enter "test name" in "Name" with "_RANDOM_"
@@ -980,7 +980,7 @@ PL_78 Verify the "Huỷ bỏ" button in the edit post's information page
 #   [Tags]                                                                                                EditInfo                        News                      Button
 
 PL_80 Verity that change the post's information by leaving the blank field in "Created At" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon in select "Created At"
@@ -990,7 +990,7 @@ PL_80 Verity that change the post's information by leaving the blank field in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_81 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon inside image in "Thumbnail Url"
@@ -1000,7 +1000,7 @@ PL_81 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_82 Verity that change the post's information by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   ${Post}=                 Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -1011,7 +1011,7 @@ PL_82 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_83 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   ${Post}=                 Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1022,7 +1022,7 @@ PL_83 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_84 Verity that change the post's information by leaving the blank field in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -1032,7 +1032,7 @@ PL_84 Verity that change the post's information by leaving the blank field in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_85 Verity that change the post's information by leaving the blank field in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1042,7 +1042,7 @@ PL_85 Verity that change the post's information by leaving the blank field in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_86 Verity that change the post's information by leaving the blank field in "Mô tả" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -1062,7 +1062,7 @@ PL_87 Verity that change the post's information by leaving the blank field in "D
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_88 Verity that change the post's information by leaving the blank field in "Nội dung" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -1072,7 +1072,7 @@ PL_88 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_89 Verity that change the post's information by leaving the blank field in "Content" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField
+  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1084,7 +1084,7 @@ PL_89 Verity that change the post's information by leaving the blank field in "C
 ### Verify that create the post ###
 ## Verify that create post page of "Projects" list ##
 PL_90 Verify the UI of the creating post page in "Projects" list
-  [Tags]                                                                                                Create                       Projects                      UI
+  [Tags]                                                                                                Create                       Projects                      UI   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post Projects" inner text
@@ -1135,7 +1135,7 @@ PL_91 Verity that create the new post by entering the valid data
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_92 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       Projects                      Invalid
+  [Tags]                                                                                                Create                       Projects                      Invalid   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1154,7 +1154,7 @@ PL_92 Verity that create the new post by entering the valid data
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_92_02 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       Projects                      Invalid
+  [Tags]                                                                                                Create                       Projects                      Invalid   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1188,7 +1188,7 @@ PL_93 Verify the "Huỷ bỏ" button in the create new post page
   Then "_@Name@_" should not be visible in the table line
 
 PL_94 Verify the "Lưu lại" button in the create new post page
-  [Tags]                                                                                                Create                       Projects                      Button
+  [Tags]                                                                                                Create                       Projects                      Button   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1210,7 +1210,7 @@ PL_94 Verify the "Lưu lại" button in the create new post page
 #   [Tags]                                                                                                Create                       Projects                      Button
 
 PL_96 Verity that create the new post by leaving the blank field in "Created At" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1226,7 +1226,7 @@ PL_96 Verity that create the new post by leaving the blank field in "Created At"
   Then User look message "Xin vui lòng nhập ngày tạo" popup
 
 PL_97 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1242,7 +1242,7 @@ PL_97 Verity that create the new post by leaving the blank field in "Thumbnail U
   Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
 
 PL_98 Verity that create the new post by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1257,7 +1257,7 @@ PL_98 Verity that create the new post by leaving the blank field in "Tên Post" 
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
 PL_99 Verity that create the new post by leaving the blank field in "Name" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1272,7 +1272,7 @@ PL_99 Verity that create the new post by leaving the blank field in "Name" field
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
 PL_100 Verity that create the new post by leaving the blank field in "Mô tả" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1288,7 +1288,7 @@ PL_100 Verity that create the new post by leaving the blank field in "Mô tả" 
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_101 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1304,7 +1304,7 @@ PL_101 Verity that create the new post by leaving the blank field in "Descriptio
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_102 Verity that create the new post by leaving the blank field in "Nội dung" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1320,7 +1320,7 @@ PL_102 Verity that create the new post by leaving the blank field in "Nội dung
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_103 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       Projects                      BlankField
+  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1337,7 +1337,7 @@ PL_103 Verity that create the new post by leaving the blank field in "Content" f
 
 ## Verify that create post page of "News" list ##
 PL_104 Verify the UI of the creating post page in "News" list
-  [Tags]                                                                                                Create                       News                      UI
+  [Tags]                                                                                                Create                       News                      UI   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post News" inner text
@@ -1388,7 +1388,7 @@ PL_105 Verity that create the new post by entering the valid data
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_106 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       News                      Invalid
+  [Tags]                                                                                                Create                       News                      Invalid   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1407,7 +1407,7 @@ PL_106 Verity that create the new post by entering the valid data
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_106_02 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       News                      Invalid
+  [Tags]                                                                                                Create                       News                      Invalid   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1463,7 +1463,7 @@ PL_108 Verify the "Lưu lại" button in the create new post page
 #   [Tags]                                                                                                Create                       News                      Button
 
 PL_110 Verity that create the new post by leaving the blank field in "Created At" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Select file in "Thumbnail Url" with "image.jpg"
@@ -1479,7 +1479,7 @@ PL_110 Verity that create the new post by leaving the blank field in "Created At
   Then User look message "Xin vui lòng nhập ngày tạo" popup
 
 PL_111 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1495,7 +1495,7 @@ PL_111 Verity that create the new post by leaving the blank field in "Thumbnail 
   Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
 
 PL_112 Verity that create the new post by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1510,7 +1510,7 @@ PL_112 Verity that create the new post by leaving the blank field in "Tên Post"
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
 PL_113 Verity that create the new post by leaving the blank field in "Name" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1525,7 +1525,7 @@ PL_113 Verity that create the new post by leaving the blank field in "Name" fiel
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
 PL_114 Verity that create the new post by leaving the blank field in "Mô tả" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1541,7 +1541,7 @@ PL_114 Verity that create the new post by leaving the blank field in "Mô tả" 
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_115 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1557,7 +1557,7 @@ PL_115 Verity that create the new post by leaving the blank field in "Descriptio
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_116 Verity that create the new post by leaving the blank field in "Nội dung" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1573,7 +1573,7 @@ PL_116 Verity that create the new post by leaving the blank field in "Nội dung
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_117 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       News                      BlankField
+  [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1590,7 +1590,7 @@ PL_117 Verity that create the new post by leaving the blank field in "Content" f
 
 ### Verify that delete post ###
 PL_118 Verify the delete post function
-  [Tags]                                                                                                Create                       Projects                      Delete
+  [Tags]                                                                                                Create                       Projects                      Delete   BUG
   Create a test post in "Projects" list
   When Click on the "Xóa" button in the "_@Name@_" table line
   Then User look message "Xóa thành công" popup
@@ -1611,7 +1611,7 @@ PL_120 Verify the delete post function
   Then "_@Name@_" should not be visible in the table line
 
 PL_121 Verify the cancel action button when delete post
-  [Tags]                                                                                                Create                       News                      Delete
+  [Tags]                                                                                                Create                       News                      Delete   BUG
   Create a test post in "News" list
   When Click on the "Xóa" button in the "_@Name@_" table line with cancel
   Then "_@Name@_" should be visible in the table line

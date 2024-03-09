@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Tree } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
 import classNames from 'classnames';
 
-import { lang, routerLinks } from '@utils';
+import { keyRole, lang, routerLinks } from '@utils';
 import { GlobalFacade, ParameterFacade } from '@store';
 import { createSearchParams } from 'react-router-dom';
 import { Form } from '@core/form';
 import { getQueryStringParams } from '@core/data-table';
 import { EFormType } from '@models';
+import { Arrow, Edit, Trash } from '@svgs';
+import { ToolTip } from '@core/tooltip';
+import { PopConfirm } from '@core/pop-confirm';
 
 const Page = () => {
   const { set } = GlobalFacade();
@@ -50,9 +53,24 @@ const Page = () => {
           </div>
           <Spin spinning={parameterFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
-              {parameterFacade.result?.data?.map((data, index) => (
-                <div
-                  key={data.id}
+              <Tree
+                blockNode
+                showLine
+                autoExpandParent
+                defaultExpandAll
+                switcherIcon={<Arrow className={'w-4 h-4'} />}
+                treeData={parameterFacade.result?.data?.map((item: any) => ({
+                  title: item?.code.toLowerCase()
+                    .split(' ')
+                    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' '),
+                  key: item?.code,
+                  value: item?.code,
+                  isLeaf: true,
+                  expanded: true,
+                  children: [],
+                }))}
+                titleRender={(data: any) => (<div
                   className={classNames(
                     { 'bg-gray-100': request.code === data.code },
                     'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
@@ -62,16 +80,16 @@ const Page = () => {
                     onClick={() => {
                       navigate({
                         pathname: `/${lang}${routerLinks('Parameter')}`,
-                        search: `?${createSearchParams({ code: data.code! })}`,
+                        search: `?${createSearchParams({ code: data.value! })}`,
                       });
-                      parameterFacade.getById({ id: data.code! });
+                      parameterFacade.getById({ id: data.value! });
                     }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
                   >
-                    {index + 1}. <span className={'capitalize'}>{data.code}</span>
+                    {data.title}
                   </div>
-                </div>
-              ))}
+                </div>)}
+              />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">
               <Select

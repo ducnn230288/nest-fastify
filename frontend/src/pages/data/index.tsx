@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Tree } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 import { keyRole, lang, routerLinks } from '@utils';
 import { DataFacade, DataTypeFacade, GlobalFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { Avatar } from '@core/avatar';
 import { PopConfirm } from '@core/pop-confirm';
@@ -73,25 +73,37 @@ const Page = () => {
           </div>
           <Spin spinning={dataTypeFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
-              {dataTypeFacade.result?.data?.map((data, index) => (
-                <div
-                  key={data.id}
+              <Tree
+                blockNode
+                showLine
+                autoExpandParent
+                defaultExpandAll
+                switcherIcon={<Arrow className={'w-4 h-4'} />}
+                treeData={dataTypeFacade.result?.data?.map((item: any) => ({
+                  title: item?.name,
+                  key: item?.code,
+                  value: item?.code,
+                  isLeaf: true,
+                  expanded: true,
+                  children: [],
+                }))}
+                titleRender={(data: any) => (<div
                   className={classNames(
-                    { 'bg-gray-100': request.filter.type === data.code },
+                    { 'bg-gray-100': request.filter.type === data.value },
                     'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
                   )}
                 >
                   <div
                     onClick={() => {
-                      request.filter.type = data.code;
+                      request.filter.type = data.value;
                       dataTableRef?.current?.onChange(request);
                     }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
                   >
-                    {index + 1}. {data.name}
+                    {data.title}
                   </div>
-                </div>
-              ))}
+                </div>)}
+              />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">
               <Select

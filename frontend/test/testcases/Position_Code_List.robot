@@ -7,7 +7,7 @@ Library                DateTime
 *** Test Cases ***
 ### Link to testcases https://docs.google.com/spreadsheets/d/1R_jW5GBVBaMy7YgNKJQ2Ha5xW12Vn0nRzOHE0-OsyF8/edit#gid=778615548 ###
 PC_01 Verify the User Interface of "Danh sách Mã" page
-  [Tags]                                                                                                MainPage                   UI                     Smoketest
+  [Tags]                                                                                                MainPage                   UI                     Smoketest    BUG
   Login to admin
   When Click "Thiết lập" menu
   When Click "Mã" sub menu to "/#/vn/setting/code"
@@ -22,7 +22,7 @@ PC_01 Verify the User Interface of "Danh sách Mã" page
   Then Webpage should contain "Tạo mới" button
 
 PC_02 Verify the function changing the number of codes show in each list
-  [Tags]                                                                                                MainPage                   UI
+  [Tags]                                                                                                MainPage                   UI    BUG
   Login to admin
   When Click "Thiết lập" menu
   When Click "Mã" sub menu to "/#/vn/setting/code"
@@ -55,7 +55,7 @@ PC_04 Verify the highlight table line function after operated
 
 ### Verify the activate function ###
 PC_05 Verify that switch off code when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate
+  [Tags]                                                                                                Activate    BUG
   Create a test data
   When Click on the "Đã kích hoạt" button in the "_@Tên mã@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -63,7 +63,7 @@ PC_05 Verify that switch off code when click on "Đã kích hoạt" button
   When Click on the "Xóa" button in the "_@Tên mã@_" table line
 
 PC_06 Verify that activate code when click on "Đã vô hiệu hóa" button
-  [Tags]                                                                                                Activate
+  [Tags]                                                                                                Activate    BUG
   Create a test data
   When Click on the "Đã kích hoạt" button in the "_@Tên mã@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -148,7 +148,7 @@ PC_12 Verify the search function of the magnifier icon in "Mã" column when canc
   When Click on the "Xóa" button in the "T1" table line
 
 PC_13 Verify the search function of the magnifier icon in "Tên mã" column
-  [Tags]                                                                                                Search                                Name
+  [Tags]                                                                                                Search                                Name    BUG
   ${Name}=                                                                                              Create a test data
   Create a test data
   When Click on magnifier icon in "Tên mã" table cell
@@ -162,7 +162,7 @@ PC_13 Verify the search function of the magnifier icon in "Tên mã" column
   When Click on the "Xóa" button in the "${Name}" table line
 
 PC_14 Verify the search function of the magnifier icon in "Mã" column when cancel action with "Cài lại" button
-  [Tags]                                                                                                Search                                Name
+  [Tags]                                                                                                Search                                Name    BUG
   Create a test data
   When Click on magnifier icon in "Tên mã" table cell
   When Enter "text" in search box placeholder "Tìm kiếm" with "_RANDOM_"
@@ -174,7 +174,7 @@ PC_14 Verify the search function of the magnifier icon in "Mã" column when canc
   When Click on the "Xóa" button in the "_@Tên loại@_" table line
 
 PC_15 Verify the search function of the magnifier icon in "Tên mã" column when cancel action with "Cài lại" button
-  [Tags]                                                                                                Search                                Name
+  [Tags]                                                                                                Search                                Name    BUG
   ${Name}=                                                                                              Create a test data
   Create a test data
   When Click on magnifier icon in "Tên mã" table cell
@@ -189,7 +189,7 @@ PC_15 Verify the search function of the magnifier icon in "Tên mã" column when
   When Click on the "Xóa" button in the "${Name}" table line
 
 PC_16 Verify the search by date function of the calendar icon in "Created" column
-  [Tags]                                                                                                Search                                Created
+  [Tags]                                                                                                Search                                Created    BUG
   ${Name}=                                                                                              Create a test data
   Create a test data
   When Click on calendar icon in "Created" table cell
@@ -201,7 +201,7 @@ PC_16 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the sort function ###
 PC_17 Verify the sort function when click on sort icon in "Mã" column
-  [Tags]                                                                                                Sort
+  [Tags]                                                                                                Sort    BUG
   Create a test data with "A" code name
   Create a test data with "Z" code name
   When Click on sort icon in "Mã" table cell
@@ -215,7 +215,7 @@ PC_17 Verify the sort function when click on sort icon in "Mã" column
   When Click on the "Xóa" button in the "A" table line
 
 PC_18 Verify the sort function when click on sort icon in "Tên mã" column
-  [Tags]                                                                                                Sort
+  [Tags]                                                                                                Sort    BUG
   Create a test data with "A" code name
   Create a test data with "Z" code name
   When Click on sort icon in "Tên mã" table cell
@@ -229,7 +229,7 @@ PC_18 Verify the sort function when click on sort icon in "Tên mã" column
   When Click on the "Xóa" button in the "A" table line
 
 PC_19 Verify the sort function when click on sort icon in "Created" column
-  [Tags]                                                                                                Sort
+  [Tags]                                                                                                Sort    BUG
   ${Data}=                                                                                              Create a test data
   Create a test data
   When Click on sort icon in "Created" table cell
@@ -242,7 +242,7 @@ PC_19 Verify the sort function when click on sort icon in "Created" column
 
 ### Verify that edit the code's information ###
 PC_20 Verify the User Interface in edit code's information page
-  [Tags]                                                                                                EditInfo                                UI
+  [Tags]                                                                                                EditInfo                                UI    BUG
   Create a test data
   When Click on the "Sửa" button in the "_@Tên mã@_" table line
   Then Heading should contain "Chỉnh sửa mã Position" inner text
@@ -308,7 +308,7 @@ PC_25 Verity that change the code's information by leaving the blank field in "M
 
 ### Verify that create a new position code ###
 PC_26 Verify the User Interface in code creation page
-  [Tags]                                                                                                Create                                  UI
+  [Tags]                                                                                                Create                                  UI    BUG
   Go to "Danh sách Mã" page
   When Click "Thêm mới" button
   Then Heading should contain "Thêm mới mã Position" inner text
@@ -320,7 +320,7 @@ PC_26 Verify the User Interface in code creation page
   Then Webpage should contain "Huỷ bỏ" button
 
 PC_27 Verify that create a new position code with valid data
-  [Tags]                                                                                                Create                                  Valid
+  [Tags]                                                                                                Create                                  Valid    BUG
   Go to "Danh sách Mã" page
   When Click "Thêm mới" button
   When Enter "test name" in "Tên mã" with "_RANDOM_"
@@ -362,7 +362,7 @@ PC_30 Verify the create function when leave a blank field in "Mô tả"
 
 ### Verify the delete code function ###
 PC_31 Verify the delete code function
-  [Tags]                                                                                                Delete
+  [Tags]                                                                                                Delete    BUG
   Create a test data
   When Click on the "Xóa" button in the "_@Tên mã@_" table line
   Then User look message "Xóa thành công" popup
