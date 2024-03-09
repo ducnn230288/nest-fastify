@@ -318,7 +318,7 @@ DL_30 Verify that switch off data type when click on "Đã kích hoạt" button
 ### Verify the search function ###
 ### Verify the search function in "Partner" list ###
 DL_32 Verify the function of input search box
-  [Tags]                                                                                                Search                     Partner
+  [Tags]                                                                                                Search                     Partner    BUG
   Create a test data type in "Partner" list with "DataType1" in data name
   Create a test data type in "Partner" list with "DataType2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "DataType1"
@@ -329,7 +329,7 @@ DL_32 Verify the function of input search box
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_33 Verify the function of input search box with the code name that was not existed
-  [Tags]                                                                                                Search                     Partner
+  [Tags]                                                                                                Search                     Partner    BUG
   Create a test data type in "Partner" list
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
   Then Table line should show empty
@@ -338,7 +338,7 @@ DL_33 Verify the function of input search box with the code name that was not ex
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_34 Verify the function of input search box when cancel action
-  [Tags]                                                                                                Search                     Partner
+  [Tags]                                                                                                Search                     Partner    BUG
   Create a test data type in "Partner" list with "Data1" in data name
   Create a test data type in "Partner" list with "Data2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "Data1"
@@ -350,7 +350,7 @@ DL_34 Verify the function of input search box when cancel action
   When Click on the "Xóa" button in the "Data1" table line
 
 DL_35 Verify the search function of the magnifier icon in "Name" column
-  [Tags]                                                                                                Search                     Partner
+  [Tags]                                                                                                Search                     Partner    BUG
   Create a test data type in "Partner" list with "DataType1" in data name
   Create a test data type in "Partner" list with "DataType2" in data name
   When Click on magnifier icon in "Name" table cell
@@ -363,7 +363,7 @@ DL_35 Verify the search function of the magnifier icon in "Name" column
   When Click on the "Xóa" button in the "Data2" table line
 
 DL_36 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Name" cell
-  [Tags]                                                                                                Search                     Partner
+  [Tags]                                                                                                Search                     Partner    BUG
   ${Data1}=                                                                                             Create a test data type in "Partner" list
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Name" table cell
@@ -377,7 +377,7 @@ DL_36 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_37 Verify the search function of the magnifier icon in "Name" column by entering a "Name" that was not existed
-  [Tags]                                                                                                Search                     Partner                DataName
+  [Tags]                                                                                                Search                     Partner                DataName    BUG
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Name" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
@@ -388,7 +388,7 @@ DL_37 Verify the search function of the magnifier icon in "Name" column by enter
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_38 Verify the search function of the magnifier icon in "Order" column
-  [Tags]                                                                                                Search                     Partner                Order
+  [Tags]                                                                                                Search                     Partner                Order    BUG
   Create a test data type in "Partner" list with "DataType1" in data name
   Create a test data type in "Partner" list with "DataType2" in data name
   When Click on magnifier icon in "Order" table cell
@@ -401,7 +401,7 @@ DL_38 Verify the search function of the magnifier icon in "Order" column
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_39 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Order" cell
-  [Tags]                                                                                                Search                     Partner                Order
+  [Tags]                                                                                                Search                     Partner                Order    BUG
   ${Data1}=                                                                                             Create a test data type in "Partner" list
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Order" table cell
@@ -415,7 +415,7 @@ DL_39 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_40 Verify the search function of the magnifier icon in "Name" column by entering a "Order" that was not existed
-  [Tags]                                                                                                Search                     Partner                Order
+  [Tags]                                                                                                Search                     Partner                Order    BUG
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Order" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
@@ -427,7 +427,7 @@ DL_40 Verify the search function of the magnifier icon in "Name" column by enter
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_41 Verify the search by date function of the calendar icon in "Created" column
-  [Tags]                                                                                                Search                     Partner                Order
+  [Tags]                                                                                                Search                     Partner                Order    BUG
   ${today}=                                                                                             Get Current Date             local                           result_format=%d/%m/%Y
   Create a test data type in "Partner" list
   When Click on calendar icon in "Created" table cell
@@ -439,7 +439,7 @@ DL_41 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the search function in "Tech" list ###
 DL_42 Verify the function of input search box
-  [Tags]                                                                                                Search                     Tech
+  [Tags]                                                                                                Search                     Tech    BUG
   Create a test data type in "Tech" list with "DataType1" in data name
   Create a test data type in "Tech" list with "DataType2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "DataType1"
@@ -450,7 +450,7 @@ DL_42 Verify the function of input search box
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_43 Verify the function of input search box with the code name that was not existed
-  [Tags]                                                                                                Search                     Tech
+  [Tags]                                                                                                Search                     Tech    BUG
   Create a test data type in "Tech" list
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
   Then Table line should show empty
@@ -459,7 +459,7 @@ DL_43 Verify the function of input search box with the code name that was not ex
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_44 Verify the function of input search box when cancel action
-  [Tags]                                                                                                Search                     Tech
+  [Tags]                                                                                                Search                     Tech    BUG
   Create a test data type in "Tech" list with "Data1" in data name
   Create a test data type in "Tech" list with "Data2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "Data1"
@@ -471,7 +471,7 @@ DL_44 Verify the function of input search box when cancel action
   When Click on the "Xóa" button in the "Data1" table line
 
 DL_45 Verify the search function of the magnifier icon in "Name" column
-  [Tags]                                                                                                Search                     Tech
+  [Tags]                                                                                                Search                     Tech    BUG
   Create a test data type in "Tech" list with "DataType1" in data name
   Create a test data type in "Tech" list with "DataType2" in data name
   When Click on magnifier icon in "Name" table cell
@@ -484,7 +484,7 @@ DL_45 Verify the search function of the magnifier icon in "Name" column
   When Click on the "Xóa" button in the "Data2" table line
 
 DL_46 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Name" cell
-  [Tags]                                                                                                Search                     Tech
+  [Tags]                                                                                                Search                     Tech    BUG
   ${Data1}=                                                                                             Create a test data type in "Tech" list
   Create a test data type in "Tech" list
   When Click on magnifier icon in "Name" table cell
@@ -498,7 +498,7 @@ DL_46 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_47 Verify the search function of the magnifier icon in "Name" column by entering a "Name" that was not existed
-  [Tags]                                                                                                Search                     Tech                DataName
+  [Tags]                                                                                                Search                     Tech                DataName    BUG
   Create a test data type in "Tech" list
   When Click on magnifier icon in "Name" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
@@ -509,7 +509,7 @@ DL_47 Verify the search function of the magnifier icon in "Name" column by enter
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_48 Verify the search function of the magnifier icon in "Order" column
-  [Tags]                                                                                                Search                     Tech                Order
+  [Tags]                                                                                                Search                     Tech                Order    BUG
   Create a test data type in "Tech" list with "DataType1" in data name
   Create a test data type in "Tech" list with "DataType2" in data name
   When Click on magnifier icon in "Order" table cell
@@ -522,7 +522,7 @@ DL_48 Verify the search function of the magnifier icon in "Order" column
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_49 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Order" cell
-  [Tags]                                                                                                Search                     Tech                Order
+  [Tags]                                                                                                Search                     Tech                Order    BUG
   ${Data1}=                                                                                             Create a test data type in "Tech" list
   Create a test data type in "Tech" list
   When Click on magnifier icon in "Order" table cell
@@ -536,7 +536,7 @@ DL_49 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_50 Verify the search function of the magnifier icon in "Name" column by entering a "Order" that was not existed
-  [Tags]                                                                                                Search                     Tech                Order
+  [Tags]                                                                                                Search                     Tech                Order    BUG
   Create a test data type in "Tech" list
   When Click on magnifier icon in "Order" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
@@ -559,7 +559,7 @@ DL_51 Verify the search by date function of the calendar icon in "Created" colum
 
 ### Verify the search function in "Member" list ###
 DL_52 Verify the function of input search box
-  [Tags]                                                                                                Search                     Member
+  [Tags]                                                                                                Search                     Member    BUG
   Create a test data type in "Member" list with "DataType1" in data name
   Create a test data type in "Member" list with "DataType2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "DataType1"
@@ -570,7 +570,7 @@ DL_52 Verify the function of input search box
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_53 Verify the function of input search box with the code name that was not existed
-  [Tags]                                                                                                Search                     Member
+  [Tags]                                                                                                Search                     Member    BUG
   Create a test data type in "Member" list
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
   Then Table line should show empty
@@ -579,7 +579,7 @@ DL_53 Verify the function of input search box with the code name that was not ex
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_54 Verify the function of input search box when cancel action
-  [Tags]                                                                                                Search                     Member
+  [Tags]                                                                                                Search                     Member    BUG
   Create a test data type in "Member" list with "Data1" in data name
   Create a test data type in "Member" list with "Data2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "Data1"
@@ -591,7 +591,7 @@ DL_54 Verify the function of input search box when cancel action
   When Click on the "Xóa" button in the "Data1" table line
 
 DL_55 Verify the search function of the magnifier icon in "Name" column
-  [Tags]                                                                                                Search                     Member
+  [Tags]                                                                                                Search                     Member    BUG
   Create a test data type in "Member" list with "DataType1" in data name
   Create a test data type in "Member" list with "DataType2" in data name
   When Click on magnifier icon in "Name" table cell
@@ -604,7 +604,7 @@ DL_55 Verify the search function of the magnifier icon in "Name" column
   When Click on the "Xóa" button in the "Data2" table line
 
 DL_56 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Name" cell
-  [Tags]                                                                                                Search                     Member
+  [Tags]                                                                                                Search                     Member    BUG
   ${Data1}=                                                                                             Create a test data type in "Member" list
   Create a test data type in "Member" list
   When Click on magnifier icon in "Name" table cell
@@ -618,7 +618,7 @@ DL_56 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_57 Verify the search function of the magnifier icon in "Name" column by entering a "Name" that was not existed
-  [Tags]                                                                                                Search                     Member                DataName
+  [Tags]                                                                                                Search                     Member                DataName    BUG
   Create a test data type in "Member" list
   When Click on magnifier icon in "Name" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
@@ -629,7 +629,7 @@ DL_57 Verify the search function of the magnifier icon in "Name" column by enter
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_58 Verify the search function of the magnifier icon in "Order" column
-  [Tags]                                                                                                Search                     Member                Order
+  [Tags]                                                                                                Search                     Member                Order    BUG
   Create a test data type in "Member" list with "DataType1" in data name
   Create a test data type in "Member" list with "DataType2" in data name
   When Click on magnifier icon in "Order" table cell
@@ -642,7 +642,7 @@ DL_58 Verify the search function of the magnifier icon in "Order" column
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_59 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Order" cell
-  [Tags]                                                                                                Search                     Member                Order
+  [Tags]                                                                                                Search                     Member                Order    BUG
   ${Data1}=                                                                                             Create a test data type in "Member" list
   Create a test data type in "Member" list
   When Click on magnifier icon in "Order" table cell
@@ -656,7 +656,7 @@ DL_59 Verify the "Cài lại" button after used the search function by clicking 
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_60 Verify the search function of the magnifier icon in "Name" column by entering a "Order" that was not existed
-  [Tags]                                                                                                Search                     Member                Order
+  [Tags]                                                                                                Search                     Member                Order    BUG
   Create a test data type in "Member" list
   When Click on magnifier icon in "Order" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"

@@ -208,10 +208,15 @@ Enter date in "${name}" with "${text}"
 
 Enter "${type}" in placeholder "${placeholder}" with "${text}"
   Wait Until Element Spin
-  ${text}=                   Get Random Text                   ${type}                       ${text}
+  IF    '${text}' == 'today'
+    ${text}=                Get Current Date                  local                         result_format=%d-%m-%Y
+  ELSE
+    ${text}=                   Get Random Text                   ${type}                       ${text}
+  END
   ${element}=                Get Element                       //input[contains(@placeholder, "${placeholder}")]
   Clear Text                 ${element}
   Fill Text                  ${element}                        ${text}
+  Keyboard Key               press                             Enter
   ${cnt}=                    Get Length                        ${text}
   IF  ${cnt} > 0
     Set Global Variable      \${STATE["${placeholder}"]}       ${text}
@@ -714,7 +719,7 @@ Webpage should contain the search function
 The status button in the "${name}" table line should change to "${text}"
   Wait Until Element Spin
   ${name}=                  Check Text                         ${name}
-  ${element}=               Get Element                        //span[contains(text(),'${name}')]//ancestor::tr//button[1]
+  ${element}=               Get Element                        //td[contains(text(),'${name}')]//ancestor::tr//button[1]
   ${content}=               Get Property                       ${element}                           title                   equal                ${text}
 
 Confirm locating exactly in "${name}" page of "${menu}" menu
