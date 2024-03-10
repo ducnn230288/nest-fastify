@@ -84,8 +84,7 @@ const Page = () => {
                 >
                   <div
                     onClick={() => {
-                      if (request.filter.type !== data.code) request.filter.type = data.code;
-                      else delete request.filter.type;
+                      request.filter.type = data.code;
                       dataTableRef?.current?.onChange(request);
                     }}
                     className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"

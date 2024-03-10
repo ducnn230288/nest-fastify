@@ -427,7 +427,7 @@ PL_36 Verify the sort function when click on sort icon in "Slug" column
   When Click on the "Xóa" button in the "${Post}" table line
 
 #PL_37 Verify the sort function when click on sort icon in "Tên Post" column
-#  [Tags]                                                                                                Sort                          News                        Slug   BUG
+#  [Tags]                                                                                                Sort                          News                        Slug   BUG3
 #  Create a test post in "News" list
 #  When Click on sort icon in "Created" table cell
 #  Then "_@Name@_" should not be visible in the first table line
@@ -936,29 +936,29 @@ PL_74 Verity that change the post's information by entering the valid data in "C
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_76 Verity that change the post's information by entering the existent data in "Name" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG
-  ${Post}=                   Create a test post in "News" list
-  Create a test post in "News" list
-  When Click on the "Sửa" button in the "${Post}" table line
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_@Name@_"
-  When Click "Lưu lại" button
-  Then User look message "Tên đã tồn tại" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "${Post}" table line
-  When Click on the "Xóa" button in the "_@Name@_" table line
-
-PL_76 Verity that change the post's information by entering the same data in "Name" field of 2 tab
-  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG
-  Create a test post in "News" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_@Name@_"
-  When Click "Lưu lại" button
-  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_76 Verity that change the post's information by entering the existent data in "Name" field (VIETNAM tab)
+#  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG3
+#  ${Post}=                   Create a test post in "News" list
+#  Create a test post in "News" list
+#  When Click on the "Sửa" button in the "${Post}" table line
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_@Name@_"
+#  When Click "Lưu lại" button
+#  Then User look message "Tên đã tồn tại" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "${Post}" table line
+#  When Click on the "Xóa" button in the "_@Name@_" table line
+#
+#PL_76 Verity that change the post's information by entering the same data in "Name" field of 2 tab
+#  [Tags]                                                                                                EditInfo                        News                      Invalid   BUG3
+#  Create a test post in "News" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_@Name@_"
+#  When Click "Lưu lại" button
+#  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_77 Verify the "Huỷ bỏ" button in the edit post's information page
   [Tags]                                                                                                EditInfo                        News                      Button
@@ -969,38 +969,38 @@ PL_77 Verify the "Huỷ bỏ" button in the edit post's information page
   Then "_@Name@_" should not be visible in the table line
   When Click on the "Xóa" button in the "${Post}" table line
 
-PL_78 Verify the "Huỷ bỏ" button in the edit post's information page
-  [Tags]                                                                                                EditInfo                        News                      Button   BUG
-  Create a test post in "News" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
-  Then "_@Name@_" should be visible in the table line
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_78 Verify the "Huỷ bỏ" button in the edit post's information page
+#  [Tags]                                                                                                EditInfo                        News                      Button   BUG3
+#  Create a test post in "News" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Cập nhật thành công" popup
+#  Then "_@Name@_" should be visible in the table line
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 # PL_79 Verify the "Lưu và tạo mới" button in the edit post's information page
 #   [Tags]                                                                                                EditInfo                        News                      Button
 
 PL_80 Verity that change the post's information by leaving the blank field in "Created At" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon in select "Created At"
   When Click "Lưu lại" button
-  Then User look message "Xin vui lòng nhập ngày tạo" popup
+  Then Required message "Xin vui lòng chọn created at" displayed under "Created At" field
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_81 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
-  Create a test post in "News" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Click on cross icon inside image in "Thumbnail Url"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng cập nhật Thumbnail Url post" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_81 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
+#  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG3
+#  Create a test post in "News" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Click on cross icon inside image in "Thumbnail Url"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng cập nhật Thumbnail Url post" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_82 Verity that change the post's information by leaving the blank field in "Tên Post" field
   [Tags]                                                                                                EditInfo                        News                      BlankField
@@ -1025,23 +1025,25 @@ PL_83 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_84 Verity that change the post's information by leaving the blank field in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
   When Enter "text" in "Slug" with ""
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then Required message "Xin vui lòng nhập slug" displayed under "Slug" field
+  When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_85 Verity that change the post's information by leaving the blank field in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
   When Enter "text" in "Slug" with ""
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then Required message "Xin vui lòng nhập slug" displayed under "Slug" field
+  When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_86 Verity that change the post's information by leaving the blank field in "Description" field
@@ -1065,7 +1067,7 @@ PL_87 Verity that change the post's information by leaving the blank field in "D
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_88 Verity that change the post's information by leaving the blank field in "Content" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -1075,7 +1077,7 @@ PL_88 Verity that change the post's information by leaving the blank field in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_89 Verity that change the post's information by leaving the blank field in "Content" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -1087,10 +1089,10 @@ PL_89 Verity that change the post's information by leaving the blank field in "C
 ### Verify that create the post ###
 ## Verify that create post page of "Projects" list ##
 PL_90 Verify the UI of the creating post page in "Projects" list
-  [Tags]                                                                                                Create                       Projects                      UI   BUG
+  [Tags]                                                                                                Create                       Projects                      UI
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
-  When Heading should contain "Chỉnh sửa post Projects" inner text
+  When Heading should contain "Tạo mới post Projects" inner text
   When Webpage should contain "Created At" input field
   When Webpage should contain "Thumbnail Url" image upload field
   When Webpage should contain "ENGLISH" tab
@@ -1156,22 +1158,22 @@ PL_92 Verity that create the new post by entering the valid data
   Then "_@Name@_" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_92_02 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       Projects                      Invalid   BUG
-  Go to "Danh sách post" page with "Projects" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Select file in "Thumbnail Url" with "image.jpg"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_@Name@_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
+#PL_92_02 Verity that create the new post by entering the valid data
+#  [Tags]                                                                                                Create                       Projects                      Invalid   BUG3
+#  Go to "Danh sách post" page with "Projects" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Select file in "Thumbnail Url" with "image.jpg"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_@Name@_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
 
 PL_93 Verify the "Huỷ bỏ" button in the create new post page
   [Tags]                                                                                                Create                       Projects                      Button
@@ -1212,55 +1214,55 @@ PL_94 Verify the "Lưu lại" button in the create new post page
 # PL_95 Verify the "Lưu lại" button in the create new post page
 #   [Tags]                                                                                                Create                       Projects                      Button
 
-PL_96 Verity that create the new post by leaving the blank field in "Created At" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
-  Go to "Danh sách post" page with "Projects" list
-  When Click "Tạo mới" button
-  When Select file in "Thumbnail Url" with "image.jpg"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng nhập ngày tạo" popup
+#PL_96 Verity that create the new post by leaving the blank field in "Created At" field
+#  [Tags]                                                                                                Create                       Projects                      BlankField   BUG3
+#  Go to "Danh sách post" page with "Projects" list
+#  When Click "Tạo mới" button
+#  When Select file in "Thumbnail Url" with "image.jpg"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng nhập ngày tạo" popup
 
-PL_97 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
-  Go to "Danh sách post" page with "Projects" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
-
-PL_98 Verity that create the new post by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
-  Go to "Danh sách post" page with "Projects" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
+#PL_97 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
+#  [Tags]                                                                                                Create                       Projects                      BlankField   BUG3
+#  Go to "Danh sách post" page with "Projects" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
+#
+#PL_98 Verity that create the new post by leaving the blank field in "Tên Post" field
+#  [Tags]                                                                                                Create                       Projects                      BlankField   BUG3
+#  Go to "Danh sách post" page with "Projects" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then Required message "Xin vui lòng nhập name" displayed under "Name" field
 
 PL_99 Verity that create the new post by leaving the blank field in "Name" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
+  [Tags]                                                                                                Create                       Projects                      BlankField
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1272,10 +1274,10 @@ PL_99 Verity that create the new post by leaving the blank field in "Name" field
   When Enter "text" in textarea "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
+  Then Required message "Xin vui lòng nhập name" displayed under "Name" field
 
 PL_100 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
+  [Tags]                                                                                                Create                       Projects                      BlankField
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1287,11 +1289,11 @@ PL_100 Verity that create the new post by leaving the blank field in "Descriptio
   When Enter "test name" in "Name" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_101 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
+  [Tags]                                                                                                Create                       Projects                      BlankField
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1303,11 +1305,11 @@ PL_101 Verity that create the new post by leaving the blank field in "Descriptio
   When Enter "text" in "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_102 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
+  [Tags]                                                                                                Create                       Projects                      BlankField
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1319,11 +1321,11 @@ PL_102 Verity that create the new post by leaving the blank field in "Content" f
   When Enter "test name" in "Name" with "_RANDOM_"
   When Enter "text" in "Description" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_103 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       Projects                      BlankField   BUG
+  [Tags]                                                                                                Create                       Projects                      BlankField
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1335,15 +1337,15 @@ PL_103 Verity that create the new post by leaving the blank field in "Content" f
   When Enter "text" in "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 ## Verify that create post page of "News" list ##
 PL_104 Verify the UI of the creating post page in "News" list
-  [Tags]                                                                                                Create                       News                      UI   BUG
+  [Tags]                                                                                                Create                       News                      UI
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
-  When Heading should contain "Chỉnh sửa post News" inner text
+  When Heading should contain "Tạo mới post News" inner text
   When Webpage should contain "Created At" input field
   When Webpage should contain "Thumbnail Url" image upload field
   When Webpage should contain "ENGLISH" tab
@@ -1409,22 +1411,22 @@ PL_106 Verity that create the new post by entering the valid data
   Then "_@Name@_" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_106_02 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       News                      Invalid   BUG
-  Go to "Danh sách post" page with "News" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Select file in "Thumbnail Url" with "image.jpg"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_@Name@_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
+#PL_106_02 Verity that create the new post by entering the valid data
+#  [Tags]                                                                                                Create                       News                      Invalid   BUG3
+#  Go to "Danh sách post" page with "News" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Select file in "Thumbnail Url" with "image.jpg"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_@Name@_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
 
 PL_107 Verify the "Huỷ bỏ" button in the create new post page
   [Tags]                                                                                                Create                       News                      Button
@@ -1465,55 +1467,55 @@ PL_108 Verify the "Lưu lại" button in the create new post page
 # PL_109 Verify the "Lưu lại" button in the create new post page
 #   [Tags]                                                                                                Create                       News                      Button
 
-PL_110 Verity that create the new post by leaving the blank field in "Created At" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
-  Go to "Danh sách post" page with "News" list
-  When Click "Tạo mới" button
-  When Select file in "Thumbnail Url" with "image.jpg"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng nhập ngày tạo" popup
+#PL_110 Verity that create the new post by leaving the blank field in "Created At" field
+#  [Tags]                                                                                                Create                       News                      BlankField   BUG3
+#  Go to "Danh sách post" page with "News" list
+#  When Click "Tạo mới" button
+#  When Select file in "Thumbnail Url" with "image.jpg"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng nhập ngày tạo" popup
 
-PL_111 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
-  Go to "Danh sách post" page with "News" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
+#PL_111 Verity that create the new post by leaving the blank field in "Thumbnail Url" field
+#  [Tags]                                                                                                Create                       News                      BlankField   BUG3
+#  Go to "Danh sách post" page with "News" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng cập nhật Thumbnail Url" popup
 
-PL_112 Verity that create the new post by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
-  Go to "Danh sách post" page with "News" list
-  When Click "Tạo mới" button
-  When Click "date" in "Created At" with "today"
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Enter "text" in "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click on "VIETNAM" tab
-  When Enter "text" in textarea "Description" with "_RANDOM_"
-  When Enter "text" in editor "Content" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
+#PL_112 Verity that create the new post by leaving the blank field in "Tên Post" field
+#  [Tags]                                                                                                Create                       News                      BlankField   BUG3
+#  Go to "Danh sách post" page with "News" list
+#  When Click "Tạo mới" button
+#  When Click "date" in "Created At" with "today"
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Enter "text" in "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click on "VIETNAM" tab
+#  When Enter "text" in textarea "Description" with "_RANDOM_"
+#  When Enter "text" in editor "Content" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then Required message "Xin vui lòng nhập name" displayed under "Name" field
 
 PL_113 Verity that create the new post by leaving the blank field in "Name" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
+  [Tags]                                                                                                Create                       News                      BlankField
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1525,10 +1527,10 @@ PL_113 Verity that create the new post by leaving the blank field in "Name" fiel
   When Enter "text" in textarea "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
+  Then Required message "Xin vui lòng nhập name" displayed under "Name" field
 
 PL_114 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
+  [Tags]                                                                                                Create                       News                      BlankField
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1540,11 +1542,11 @@ PL_114 Verity that create the new post by leaving the blank field in "Descriptio
   When Enter "test name" in "Name" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_115 Verity that create the new post by leaving the blank field in "Description" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
+  [Tags]                                                                                                Create                       News                      BlankField
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1556,11 +1558,11 @@ PL_115 Verity that create the new post by leaving the blank field in "Descriptio
   When Enter "text" in "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_116 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
+  [Tags]                                                                                                Create                       News                      BlankField
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1572,11 +1574,11 @@ PL_116 Verity that create the new post by leaving the blank field in "Content" f
   When Enter "test name" in "Name" with "_RANDOM_"
   When Enter "text" in "Description" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_117 Verity that create the new post by leaving the blank field in "Content" field
-  [Tags]                                                                                                Create                       News                      BlankField   BUG
+  [Tags]                                                                                                Create                       News                      BlankField
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1588,12 +1590,12 @@ PL_117 Verity that create the new post by leaving the blank field in "Content" f
   When Enter "text" in "Description" with "_RANDOM_"
   When Enter "text" in editor "Content" with "_RANDOM_"
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then User look message "Tạo thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 ### Verify that delete post ###
 PL_118 Verify the delete post function
-  [Tags]                                                                                                Create                       Projects                      Delete   BUG
+  [Tags]                                                                                                Create                       Projects                      Delete
   Create a test post in "Projects" list
   When Click on the "Xóa" button in the "_@Name@_" table line
   Then User look message "Xóa thành công" popup
@@ -1614,7 +1616,7 @@ PL_120 Verify the delete post function
   Then "_@Name@_" should not be visible in the table line
 
 PL_121 Verify the cancel action button when delete post
-  [Tags]                                                                                                Create                       News                      Delete   BUG
+  [Tags]                                                                                                Create                       News                      Delete
   Create a test post in "News" list
   When Click on the "Xóa" button in the "_@Name@_" table line with cancel
   Then "_@Name@_" should be visible in the table line

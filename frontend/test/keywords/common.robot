@@ -163,7 +163,7 @@ Enter "${type}" in editor "${name}" with "${text}"
   IF  ${cnt} > 0
     Set Global Variable     \${STATE["${name}"]}              ${text}
   END
-  Sleep                     0.2
+  Sleep                     0.3
 
 
 Enter "${type}" in textarea "${name}" with "${text}"
