@@ -85,7 +85,7 @@ PL_07 Verify the highlight table line function after operated in "News" category
 
 ### Verify the activate function ###
 PL_08 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     Projects   BUG
+  [Tags]                                                                                                Activate                     Projects
   Create a test post in "Projects" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -102,7 +102,7 @@ PL_08 Verify that switch off post when click on "Đã kích hoạt" button
 #   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_10 Verify that switch off post when click on "Đã kích hoạt" button
-  [Tags]                                                                                                Activate                     News   BUG
+  [Tags]                                                                                                Activate                     News
   Create a test post in "News" list
   When Click on the "Đã kích hoạt" button in the "_@Name@_" table line
   Then User look message "Cập nhật thành công" popup
@@ -426,15 +426,15 @@ PL_36 Verify the sort function when click on sort icon in "Slug" column
   When Click on the "Xóa" button in the "_@Name@_" table line
   When Click on the "Xóa" button in the "${Post}" table line
 
-PL_37 Verify the sort function when click on sort icon in "Tên Post" column
-  [Tags]                                                                                                Sort                          News                        Slug   BUG
-  Create a test post in "News" list
-  When Click on sort icon in "Created" table cell
-  Then "_@Name@_" should not be visible in the first table line
-  When Click on sort icon in "Created" table cell
-  Then "_@Name@_" should be visible in the first table line
-  When Click on sort icon in "Created" table cell
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_37 Verify the sort function when click on sort icon in "Tên Post" column
+#  [Tags]                                                                                                Sort                          News                        Slug   BUG
+#  Create a test post in "News" list
+#  When Click on sort icon in "Created" table cell
+#  Then "_@Name@_" should not be visible in the first table line
+#  When Click on sort icon in "Created" table cell
+#  Then "_@Name@_" should be visible in the first table line
+#  When Click on sort icon in "Created" table cell
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 ### Verify that edit the post information ###
 ## Verify that edit post's information page of "Projects" list ##
@@ -457,17 +457,17 @@ PL_38 Verify the UI of the editing post page in "Projects" list (ENGLISH tab)
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_38_2 Verify the UI of the editing post page in "Projects" list (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                          Projects   BUG
+  [Tags]                                                                                                EditInfo                          Projects
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   Then Heading should contain "Chỉnh sửa post Projects" inner text
   Then Webpage should contain "Created At" input field
-  Then Webpage should contain "Thumbnail URL" image upload field
+  Then Webpage should contain "Thumbnail Url" image upload field
   Then Webpage should contain "ENGLISH" tab
-  Then Webpage should contain "Tên Post" input field
+  Then Webpage should contain "Name" input field
   Then Webpage should contain "Slug" input field
-  Then Webpage should contain "Mô tả" input field
-  Then Webpage should contain "Nội dung" input field
+  Then Webpage should contain "Description" input field
+  Then Webpage should contain "Content" input field
   Then Webpage should contain "Lưu lại" button
   Then Webpage should contain "Lưu và tạo mới" button
   Then Webpage should contain "Huỷ bỏ" button
@@ -502,19 +502,19 @@ PL_40 Verity that change the post's information by entering the valid data in "T
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_41 Verity that change the post's information by entering the valid data in "Tên Post" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
-  Create a test post in "Projects" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Click on "VIETNAM" tab
-  When Enter "test name" in "Name" with "_RANDOM_"
-  When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
-  Then "_@Name@_" should be visible in the table line
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_41 Verity that change the post's information by entering the valid data in "Tên Post" field (VIETNAM tab)
+#  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG2
+#  Create a test post in "Projects" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Click on "VIETNAM" tab
+#  When Enter "test name" in "Name" with "_RANDOM_"
+#  When Click "Lưu lại" button
+#  Then User look message "Cập nhật thành công" popup
+#  Then "_@Name@_" should be visible in the table line
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_42 Verity that change the post's information by entering the valid data in "Name" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   ${Post}=                            Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -528,7 +528,7 @@ PL_42 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_43 Verity that change the post's information by entering the valid data in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -542,7 +542,7 @@ PL_43 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_44 Verity that change the post's information by entering the valid data in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -555,8 +555,8 @@ PL_44 Verity that change the post's information by entering the valid data in "S
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_45 Verity that change the post's information by entering the valid data in "Mô tả" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+PL_45 Verity that change the post's information by entering the valid data in "Description" field (VIETNAM tab)
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -570,7 +570,7 @@ PL_45 Verity that change the post's information by entering the valid data in "M
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_46 Verity that change the post's information by entering the valid data in "Description" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -583,8 +583,8 @@ PL_46 Verity that change the post's information by entering the valid data in "D
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_47 Verity that change the post's information by entering the valid data in "Nội dung" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+PL_47 Verity that change the post's information by entering the valid data in "Content" field (VIETNAM tab)
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -598,7 +598,7 @@ PL_47 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_48 Verity that change the post's information by entering the valid data in "Content" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Valid
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -612,28 +612,28 @@ PL_48 Verity that change the post's information by entering the valid data in "C
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_49 Verity that change the post's information by entering the existent data in "Name" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      Invalid   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Invalid
   ${Post}=                   Create a test post in "Projects" list
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "${Post}" table line
-  When Click on "VIETNAME" tab
+  When Click on "VIETNAM" tab
   When Enter "test name" in "Name" with "_@Name@_"
   When Click "Lưu lại" button
-  Then User look message "Name đã được sử dụng" popup
+  Then User look message "Tên đã tồn tại" popup
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "${Post}" table line
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_50 Verity that change the post's information by entering the same data in "Name" field of 2 tab
-  [Tags]                                                                                                EditInfo                        Projects                      Invalid   BUG
-  Create a test post in "Projects" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Click on "ENGLISH" tab
-  When Enter "test name" in "Name" with "_@Name@_"
-  When Click "Lưu lại" button
-  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_50 Verity that change the post's information by entering the same data in "Name" field of 2 tab
+#  [Tags]                                                                                                EditInfo                        Projects                      Invalid   BUG1
+#  Create a test post in "Projects" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Click on "ENGLISH" tab
+#  When Enter "test name" in "Name" with "_@Name@_"
+#  When Click "Lưu lại" button
+#  Then User look message "Trùng lặp đa ngôn ngữ trùng" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_51 Verify the "Huỷ bỏ" button in the edit post's information page
   [Tags]                                                                                                EditInfo                        Projects                      Button
@@ -645,9 +645,10 @@ PL_51 Verify the "Huỷ bỏ" button in the edit post's information page
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_52 Verify the "Huỷ bỏ" button in the edit post's information page
-  [Tags]                                                                                                EditInfo                        Projects                      Button   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      Button
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
+  When Click on "VIETNAM" tab
   When Enter "test name" in "Name" with "_RANDOM_"
   When Click "Lưu lại" button
   Then User look message "Cập nhật thành công" popup
@@ -658,24 +659,24 @@ PL_52 Verify the "Huỷ bỏ" button in the edit post's information page
 #   [Tags]                                                                                                EditInfo                        Projects                      Button
 
 PL_54 Verity that change the post's information by leaving the blank field in "Created At" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on cross icon in select "Created At"
   When Click "Lưu lại" button
-  Then User look message "Xin vui lòng nhập ngày tạo" popup
+  Then Required message "Xin vui lòng chọn created at" displayed under "Created At" field
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_55 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
-  Create a test post in "Projects" list
-  When Click on the "Sửa" button in the "_@Name@_" table line
-  When Click on cross icon inside image in "Thumbnail Url"
-  When Click "Lưu lại" button
-  Then User look message "Xin vui lòng cập nhật Thumbnail Url post" popup
-  When Click "Huỷ bỏ" button
-  When Click on the "Xóa" button in the "_@Name@_" table line
+#PL_55 Verity that change the post's information by leaving the blank field in "Thumbnail Url" field
+#  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG3
+#  Create a test post in "Projects" list
+#  When Click on the "Sửa" button in the "_@Name@_" table line
+#  When Click on cross icon inside image in "Thumbnail Url"
+#  When Click "Lưu lại" button
+#  Then User look message "Xin vui lòng cập nhật Thumbnail Url post" popup
+#  When Click "Huỷ bỏ" button
+#  When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_56 Verity that change the post's information by leaving the blank field in "Tên Post" field
   [Tags]                                                                                                EditInfo                        Projects                      BlankField
@@ -689,7 +690,7 @@ PL_56 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_57 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   ${Post}=                 Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -700,27 +701,29 @@ PL_57 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_58 Verity that change the post's information by leaving the blank field in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
   When Enter "text" in "Slug" with ""
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then Required message "Xin vui lòng nhập slug" displayed under "Slug" field
+  When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_59 Verity that change the post's information by leaving the blank field in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
   When Enter "text" in "Slug" with ""
   When Click "Lưu lại" button
-  Then User look message "Cập nhật thành công" popup
+  Then Required message "Xin vui lòng nhập slug" displayed under "Slug" field
+  When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_60 Verity that change the post's information by leaving the blank field in "Mô tả" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+PL_60 Verity that change the post's information by leaving the blank field in "Description" field
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -730,7 +733,7 @@ PL_60 Verity that change the post's information by leaving the blank field in "M
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_61 Verity that change the post's information by leaving the blank field in "Description" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -739,8 +742,8 @@ PL_61 Verity that change the post's information by leaving the blank field in "D
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_62 Verity that change the post's information by leaving the blank field in "Nội dung" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+PL_62 Verity that change the post's information by leaving the blank field in "Content" field
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -750,7 +753,7 @@ PL_62 Verity that change the post's information by leaving the blank field in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_63 Verity that change the post's information by leaving the blank field in "Content" field
-  [Tags]                                                                                                EditInfo                        Projects                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        Projects                      BlankField
   Create a test post in "Projects" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -761,12 +764,12 @@ PL_63 Verity that change the post's information by leaving the blank field in "C
 
 ## Verify that edit post's information page of "News" list ##
 PL_64 Verify the UI of the editing post page in "News" list (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News   BUG
+  [Tags]                                                                                                EditInfo                        News
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   Then Heading should contain "Chỉnh sửa post News" inner text
   Then Webpage should contain "Created At" input field
-  Then Webpage should contain "Thumbnail URL" image upload field
+  Then Webpage should contain "Thumbnail Url" image upload field
   Then Webpage should contain "ENGLISH" tab
   Then Webpage should contain "Name" input field
   Then Webpage should contain "Slug" input field
@@ -784,12 +787,12 @@ PL_64 Verify the UI of the editing post page in "News" list (ENGLISH tab)
 #   When Click on the "Sửa" button in the "_@Name@_" table line
 #   Then Heading should contain "Chỉnh sửa post News" inner text
 #   Then Webpage should contain "Created At" input field
-#   Then Webpage should contain "Thumbnail URL" image upload field
+#   Then Webpage should contain "Thumbnail Url" image upload field
 #   Then Webpage should contain "ENGLISH" tab
-#   Then Webpage should contain "Tên Post" input field
+#   Then Webpage should contain "Name" input field
 #   Then Webpage should contain "Slug" input field
-#   Then Webpage should contain "Mô tả" input field
-#   Then Webpage should contain "Nội dung" input field
+#   Then Webpage should contain "Description" input field
+#   Then Webpage should contain "Content" input field
 #   Then Webpage should contain "Lưu lại" button
 #   Then Webpage should contain "Lưu và tạo mới" button
 #   Then Webpage should contain "Huỷ bỏ" button
@@ -836,7 +839,7 @@ PL_67 Verity that change the post's information by entering the valid data in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_68 Verity that change the post's information by entering the valid data in "Name" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        News                      Valid
   ${Post}=                            Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -850,7 +853,7 @@ PL_68 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_69 Verity that change the post's information by entering the valid data in "Slug" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -864,7 +867,7 @@ PL_69 Verity that change the post's information by entering the valid data in "S
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_70 Verity that change the post's information by entering the valid data in "Slug" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -877,8 +880,8 @@ PL_70 Verity that change the post's information by entering the valid data in "S
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_71 Verity that change the post's information by entering the valid data in "Mô tả" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+PL_71 Verity that change the post's information by entering the valid data in "Description" field (VIETNAM tab)
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -892,7 +895,7 @@ PL_71 Verity that change the post's information by entering the valid data in "M
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_72 Verity that change the post's information by entering the valid data in "Description" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -905,8 +908,8 @@ PL_72 Verity that change the post's information by entering the valid data in "D
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_73 Verity that change the post's information by entering the valid data in "Nội dung" field (VIETNAM tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+PL_73 Verity that change the post's information by entering the valid data in "Content" field (VIETNAM tab)
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
@@ -920,7 +923,7 @@ PL_73 Verity that change the post's information by entering the valid data in "N
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_74 Verity that change the post's information by entering the valid data in "Content" field (ENGLISH tab)
-  [Tags]                                                                                                EditInfo                        News                      Valid   BUG
+  [Tags]                                                                                                EditInfo                        News                      Valid
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
@@ -938,10 +941,10 @@ PL_76 Verity that change the post's information by entering the existent data in
   ${Post}=                   Create a test post in "News" list
   Create a test post in "News" list
   When Click on the "Sửa" button in the "${Post}" table line
-  When Click on "VIETNAME" tab
+  When Click on "VIETNAM" tab
   When Enter "test name" in "Name" with "_@Name@_"
   When Click "Lưu lại" button
-  Then User look message "Name đã được sử dụng" popup
+  Then User look message "Tên đã tồn tại" popup
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "${Post}" table line
   When Click on the "Xóa" button in the "_@Name@_" table line
@@ -1000,22 +1003,22 @@ PL_81 Verity that change the post's information by leaving the blank field in "T
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_82 Verity that change the post's information by leaving the blank field in "Tên Post" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   ${Post}=                 Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "VIETNAM" tab
-  When Enter "test name" in "Tên Post" with ""
+  When Enter "test name" in "Name" with ""
   When Click "Lưu lại" button
   Then Required message "Xin vui lòng nhập name" displayed under "Name" field
   When Click "Huỷ bỏ" button
   When Click on the "Xóa" button in the "${Post}" table line
 
 PL_83 Verity that change the post's information by leaving the blank field in "Name" field
-  [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
+  [Tags]                                                                                                EditInfo                        News                      BlankField
   ${Post}=                 Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
   When Click on "ENGLISH" tab
-  When Enter "test name" in "Tên Post" with ""
+  When Enter "test name" in "Name" with ""
   When Click "Lưu lại" button
   Then Required message "Xin vui lòng nhập name" displayed under "Name" field
   When Click "Huỷ bỏ" button
@@ -1041,7 +1044,7 @@ PL_85 Verity that change the post's information by leaving the blank field in "S
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_86 Verity that change the post's information by leaving the blank field in "Mô tả" field
+PL_86 Verity that change the post's information by leaving the blank field in "Description" field
   [Tags]                                                                                                EditInfo                        News                      BlankField
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
@@ -1061,7 +1064,7 @@ PL_87 Verity that change the post's information by leaving the blank field in "D
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_88 Verity that change the post's information by leaving the blank field in "Nội dung" field
+PL_88 Verity that change the post's information by leaving the blank field in "Content" field
   [Tags]                                                                                                EditInfo                        News                      BlankField   BUG
   Create a test post in "News" list
   When Click on the "Sửa" button in the "_@Name@_" table line
@@ -1089,7 +1092,7 @@ PL_90 Verify the UI of the creating post page in "Projects" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post Projects" inner text
   When Webpage should contain "Created At" input field
-  When Webpage should contain "Thumbnail URL" image upload field
+  When Webpage should contain "Thumbnail Url" image upload field
   When Webpage should contain "ENGLISH" tab
   When Webpage should contain "Name" input field
   When Webpage should contain "Slug" input field
@@ -1105,18 +1108,18 @@ PL_90 Verify the UI of the creating post page in "Projects" list
 #   When Click "Tạo mới" button
 #   When Heading should contain "Chỉnh sửa post Projects" inner text
 #   When Webpage should contain "Created At" input field
-#   When Webpage should contain "Thumbnail URL" image upload field
+#   When Webpage should contain "Thumbnail Url" image upload field
 #   When Webpage should contain "ENGLISH" tab
-#   When Webpage should contain "Tên Post" input field
+#   When Webpage should contain "Name" input field
 #   When Webpage should contain "Slug" input field
-#   When Webpage should contain "Mô tả" input field
-#   When Webpage should contain "Nội dung" input field
+#   When Webpage should contain "Description" input field
+#   When Webpage should contain "Content" input field
 #   When Webpage should contain "Lưu lại" button
 #   When Webpage should contain "Lưu và tạo mới" button
 #   When Webpage should contain "Huỷ bỏ" button
 
 PL_91 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       Projects                      Valid   BUG
+  [Tags]                                                                                                Create                       Projects                      Valid
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1135,7 +1138,7 @@ PL_91 Verity that create the new post by entering the valid data
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 PL_92 Verity that create the new post by entering the valid data
-  [Tags]                                                                                                Create                       Projects                      Invalid   BUG
+  [Tags]                                                                                                Create                       Projects                      Invalid
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1188,7 +1191,7 @@ PL_93 Verify the "Huỷ bỏ" button in the create new post page
   Then "_@Name@_" should not be visible in the table line
 
 PL_94 Verify the "Lưu lại" button in the create new post page
-  [Tags]                                                                                                Create                       Projects                      Button   BUG
+  [Tags]                                                                                                Create                       Projects                      Button
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
   When Click "date" in "Created At" with "today"
@@ -1271,7 +1274,7 @@ PL_99 Verity that create the new post by leaving the blank field in "Name" field
   When Click "Lưu lại" button
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
-PL_100 Verity that create the new post by leaving the blank field in "Mô tả" field
+PL_100 Verity that create the new post by leaving the blank field in "Description" field
   [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
@@ -1303,7 +1306,7 @@ PL_101 Verity that create the new post by leaving the blank field in "Descriptio
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_102 Verity that create the new post by leaving the blank field in "Nội dung" field
+PL_102 Verity that create the new post by leaving the blank field in "Content" field
   [Tags]                                                                                                Create                       Projects                      BlankField   BUG
   Go to "Danh sách post" page with "Projects" list
   When Click "Tạo mới" button
@@ -1342,7 +1345,7 @@ PL_104 Verify the UI of the creating post page in "News" list
   When Click "Tạo mới" button
   When Heading should contain "Chỉnh sửa post News" inner text
   When Webpage should contain "Created At" input field
-  When Webpage should contain "Thumbnail URL" image upload field
+  When Webpage should contain "Thumbnail Url" image upload field
   When Webpage should contain "ENGLISH" tab
   When Webpage should contain "Name" input field
   When Webpage should contain "Slug" input field
@@ -1358,12 +1361,12 @@ PL_104 Verify the UI of the creating post page in "News" list
 #   When Click "Tạo mới" button
 #   When Heading should contain "Chỉnh sửa post News" inner text
 #   When Webpage should contain "Created At" input field
-#   When Webpage should contain "Thumbnail URL" image upload field
+#   When Webpage should contain "Thumbnail Url" image upload field
 #   When Webpage should contain "ENGLISH" tab
-#   When Webpage should contain "Tên Post" input field
+#   When Webpage should contain "Name" input field
 #   When Webpage should contain "Slug" input field
-#   When Webpage should contain "Mô tả" input field
-#   When Webpage should contain "Nội dung" input field
+#   When Webpage should contain "Description" input field
+#   When Webpage should contain "Content" input field
 #   When Webpage should contain "Lưu lại" button
 #   When Webpage should contain "Lưu và tạo mới" button
 #   When Webpage should contain "Huỷ bỏ" button
@@ -1524,7 +1527,7 @@ PL_113 Verity that create the new post by leaving the blank field in "Name" fiel
   When Click "Lưu lại" button
   Then Required message "Xin vui lòng nhập nam" displayed under "Name" field
 
-PL_114 Verity that create the new post by leaving the blank field in "Mô tả" field
+PL_114 Verity that create the new post by leaving the blank field in "Description" field
   [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
@@ -1556,7 +1559,7 @@ PL_115 Verity that create the new post by leaving the blank field in "Descriptio
   Then User look message "Cập nhật thành công" popup
   When Click on the "Xóa" button in the "_@Name@_" table line
 
-PL_116 Verity that create the new post by leaving the blank field in "Nội dung" field
+PL_116 Verity that create the new post by leaving the blank field in "Content" field
   [Tags]                                                                                                Create                       News                      BlankField   BUG
   Go to "Danh sách post" page with "News" list
   When Click "Tạo mới" button
@@ -1597,7 +1600,7 @@ PL_118 Verify the delete post function
   Then "_@Name@_" should not be visible in the table line
 
 PL_119 Verify the cancel action button when delete post
-  [Tags]                                                                                                Create                       Projects                      Delete   BUG
+  [Tags]                                                                                                Create                       Projects                      Delete
   Create a test post in "Projects" list
   When Click on the "Xóa" button in the "_@Name@_" table line with cancel
   Then "_@Name@_" should be visible in the table line

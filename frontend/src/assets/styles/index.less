@@ -15,7 +15,7 @@
   &.out-line { @apply ~'!bg-transparent !border-teal-900 !text-teal-900 hover:!bg-teal-700 hover:!border-teal-700 hover:!text-white'; }
 }
 
-body { @apply text-sm overflow-x-hidden text-gray-700 bg-gray-100;
+body, .sun-editor-editable, .sun-editor {
   font-family:
     'Manrope',
     -apple-system,
@@ -27,9 +27,8 @@ body { @apply text-sm overflow-x-hidden text-gray-700 bg-gray-100;
     Droid Sans,
     Helvetica Neue,
     sans-serif;
-
 }
-
+body { @apply text-sm overflow-x-hidden text-gray-700 bg-gray-100; }
 * > {
   .loop-intro-x(9);
 }

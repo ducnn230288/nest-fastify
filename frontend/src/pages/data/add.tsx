@@ -44,7 +44,8 @@ const Page = () => {
 
   const handleBack = () => {
     dataFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
+
   };
 
   const handleSubmit = (values: Data) => {

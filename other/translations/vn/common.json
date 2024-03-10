@@ -15,7 +15,7 @@
     "User not found": "Người dùng {email} không tồn tại!"
   },
   "Data": {
-    "name is already taken": "Tên đã tồn tại"
+    "Name is already taken": "Tên đã tồn tại"
   },
   "user" : {
     "Other leave requests need approval": "Còn những yêu cầu nghỉ cần duyệt",

@@ -45,7 +45,7 @@ const Page = () => {
 
   const handleBack = () => {
     codeFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
   };
   const handleSubmit = (values: Code) => {
     if (id) codeFacade.put({ ...values, id, type });

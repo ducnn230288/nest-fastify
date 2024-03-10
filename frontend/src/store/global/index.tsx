@@ -24,7 +24,6 @@ const action = {
     return data || {};
   }),
   putProfile: createAsyncThunk(name + '/putProfile', async (values: User) => {
-    console.log(values);
     const { data, message } = await API.put<{ user: User; accessToken: string; refreshToken: string }>(
       `${routerLinks(name, 'api')}/profile`,
       values,

@@ -45,7 +45,7 @@ const Page = () => {
 
   const handleBack = () => {
     postFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Post')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('Post')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
   };
 
   const handleSubmit = (values: Post) => {
@@ -83,6 +83,7 @@ const Page = () => {
               formItem: {
                 col: 6,
                 type: EFormType.date,
+                rules: id ? [{ type: EFormRuleType.required }] : [],
               },
             },
             {

@@ -44,7 +44,8 @@ const Page = () => {
 
   const handleBack = () => {
     userFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), roleCode })}).toString()}`);
+
   };
   const handleSubmit = (values: User) => {
     if (id) userFacade.put({ ...values, id, roleCode });

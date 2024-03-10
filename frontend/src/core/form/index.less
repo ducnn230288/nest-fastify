@@ -20,7 +20,7 @@
       > label { @apply font-medium text-gray-600;
         &.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
           &::before { content: none; }
-          &::after { @apply contents text-red-600;
+          &::after { @apply contents text-red-600 visible;
             content: ' *' !important;
           }
         }

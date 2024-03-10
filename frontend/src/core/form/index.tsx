@@ -671,6 +671,8 @@ export const Form = ({
 
   return (
     <AntForm
+      scrollToFirstError={true}
+      requiredMark={true}
       className={classNames('p-2', className)}
       form={form}
       layout={!widthLabel ? 'vertical' : 'horizontal'}

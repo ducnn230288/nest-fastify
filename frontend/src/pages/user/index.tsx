@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Tree } from 'antd';
 
 import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
@@ -9,7 +9,7 @@ import { DataTable } from '@core/data-table';
 
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
@@ -74,53 +74,37 @@ const Page = () => {
           </div>
           <Spin spinning={userRoleFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
-              {userRoleFacade?.result?.data?.map((data, index) => (
-                <div
-                  key={data.id}
+              <Tree
+                blockNode
+                showLine
+                autoExpandParent
+                defaultExpandAll
+                switcherIcon={<Arrow className={'w-4 h-4'} />}
+                treeData={userRoleFacade.result?.data?.map((item: any) => ({
+                  title: item?.name,
+                  key: item?.code,
+                  value: item?.code,
+                  isLeaf: true,
+                  expanded: true,
+                  children: [],
+                }))}
+                titleRender={(data: any) => (<div
                   className={classNames(
-                    { 'bg-gray-100': request.filter.roleCode === data.code },
+                    { 'bg-gray-100': request.filter.roleCode === data.value },
                     'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
                   )}
                 >
                   <div
                     onClick={() => {
-                      request.filter.roleCode = data.code;
+                      request.filter.roleCode = data.value;
                       dataTableRef?.current?.onChange(request);
                     }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
                   >
-                    {index + 1}. {data.name}
+                    {data.title}
                   </div>
-                  {/*<span className="w-16 flex justify-end gap-1">*/}
-                  {/*  {user?.role?.permissions?.includes(keyRole.P_USER_ROLE_UPDATE) && (*/}
-                  {/*    <ToolTip title={t('routes.admin.Layout.Edit')}>*/}
-                  {/*      <button*/}
-                  {/*        className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}*/}
-                  {/*        title={t('routes.admin.Layout.Edit') || ''}*/}
-                  {/*        onClick={() => navigate(`/${lang}${routerLinks('Code')}/${data.id}/edit`)}*/}
-                  {/*      >*/}
-                  {/*        <Edit className="icon-cud bg-blue-600 hover:bg-blue-400" />*/}
-                  {/*      </button>*/}
-                  {/*    </ToolTip>*/}
-                  {/*  )}*/}
-                  {/*  {user?.role?.permissions?.includes(keyRole.P_USER_ROLE_DELETE) && (*/}
-                  {/*    <ToolTip title={t('routes.admin.Layout.Delete')}>*/}
-                  {/*      <Popconfirm*/}
-                  {/*        title={t('components.datatable.areYouSureWant')}*/}
-                  {/*        onConfirm={() => dataTableRef?.current?.handleDelete!(data.id || '')}*/}
-                  {/*      >*/}
-                  {/*        <button*/}
-                  {/*          className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}*/}
-                  {/*          title={t('routes.admin.Layout.Delete') || ''}*/}
-                  {/*        >*/}
-                  {/*          <Trash className="icon-cud bg-red-600 hover:bg-red-400" />*/}
-                  {/*        </button>*/}
-                  {/*      </Popconfirm>*/}
-                  {/*    </ToolTip>*/}
-                  {/*  )}*/}
-                  {/*</span>*/}
-                </div>
-              ))}
+                </div>)}
+              />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">
               <Select

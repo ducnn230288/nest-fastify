@@ -71,6 +71,9 @@ export class PostRepository extends BaseRepository<Post> {
       if (!data) {
         throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
       }
+      if (!data.createdAt) {
+        throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
+      }
       result = await this.save(data);
       if (translations) {
         result.translations = [];

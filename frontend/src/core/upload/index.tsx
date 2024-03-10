@@ -38,7 +38,6 @@ export const Upload = ({
         ? [value]
         : [],
   );
-  console.log(listFiles);
   useEffect(() => {
     const tempData =
       !multiple && value && typeof value === 'object'
