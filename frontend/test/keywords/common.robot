@@ -203,7 +203,7 @@ Enter "${type}" in placeholder "${placeholder}" with "${text}"
   ELSE
     ${text}=                   Get Random Text                   ${type}                       ${text}
   END
-  ${element}=                Get Element                       //input[contains(@placeholder, "${placeholder}")]
+  ${element}=                Get Element                       (//input[contains(@placeholder, "${placeholder}")])[last()]
   Clear Text                 ${element}
   Fill Text                  ${element}                        ${text}
   Keyboard Key               press                             Enter

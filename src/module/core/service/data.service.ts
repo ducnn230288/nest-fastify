@@ -19,6 +19,7 @@ export class DataService extends BaseService<Data> {
   ) {
     super(repo);
     this.listJoin = ['translations'];
+    this.listQuery = ['name'];
   }
 
   /**

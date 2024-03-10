@@ -318,7 +318,7 @@ DL_30 Verify that switch off data type when click on "Đã kích hoạt" button
 ### Verify the search function ###
 ### Verify the search function in "Partner" list ###
 DL_32 Verify the function of input search box
-  [Tags]                                                                                                Search                     Partner    BUG
+  [Tags]                                                                                                Search                     Partner
   Create a test data type in "Partner" list with "DataType1" in data name
   Create a test data type in "Partner" list with "DataType2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "DataType1"
@@ -329,7 +329,7 @@ DL_32 Verify the function of input search box
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_33 Verify the function of input search box with the code name that was not existed
-  [Tags]                                                                                                Search                     Partner    BUG
+  [Tags]                                                                                                Search                     Partner
   Create a test data type in "Partner" list
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
   Then Table line should show empty
@@ -338,7 +338,7 @@ DL_33 Verify the function of input search box with the code name that was not ex
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_34 Verify the function of input search box when cancel action
-  [Tags]                                                                                                Search                     Partner    BUG
+  [Tags]                                                                                                Search                     Partner
   Create a test data type in "Partner" list with "Data1" in data name
   Create a test data type in "Partner" list with "Data2" in data name
   When Enter "text" in placeholder "Tìm kiếm" with "Data1"
@@ -350,89 +350,86 @@ DL_34 Verify the function of input search box when cancel action
   When Click on the "Xóa" button in the "Data1" table line
 
 DL_35 Verify the search function of the magnifier icon in "Name" column
-  [Tags]                                                                                                Search                     Partner    BUG
-  Create a test data type in "Partner" list with "DataType1" in data name
-  Create a test data type in "Partner" list with "DataType2" in data name
-  When Click on magnifier icon in "Name" table cell
+  [Tags]                                                                                                Search                     Partner
+  Create a test data type in "Partner" list with "Data1" in data name
+  Create a test data type in "Partner" list with "Data2" in data name
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "Data1"
-  When Click "Tìm kiếm" button
   Then "Data1" should be visible in the table line
   Then "Data2" should not be visible in the table line
   When Click on the "Xóa" button in the "Data1" table line
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Click "Cài lại" button
   When Click on the "Xóa" button in the "Data2" table line
 
-DL_36 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Name" cell
-  [Tags]                                                                                                Search                     Partner    BUG
+DL_36 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Tên dữ liệu" cell
+  [Tags]                                                                                                Search                     Partner
   ${Data1}=                                                                                             Create a test data type in "Partner" list
   Create a test data type in "Partner" list
-  When Click on magnifier icon in "Name" table cell
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_@Name@_"
-  When Click "Tìm kiếm" button
   Then "_@Name@_" should be visible in the table line
   Then "${Data1}" should not be visible in the table line
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Click "Cài lại" button
   Then "${Data1}" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line
   When Click on the "Xóa" button in the "${Data1}" table line
 
-DL_37 Verify the search function of the magnifier icon in "Name" column by entering a "Name" that was not existed
-  [Tags]                                                                                                Search                     Partner                DataName    BUG
+DL_37 Verify the search function of the magnifier icon in "Tên dữ liệu" column by entering a "Tên dữ liệu" that was not existed
+  [Tags]                                                                                                Search                     Partner                DataName
   Create a test data type in "Partner" list
-  When Click on magnifier icon in "Name" table cell
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
-  When Click "Tìm kiếm" button
   Then Table line should show empty
+  When Click on magnifier icon in "Tên dữ liệu" table cell
   When Click "Cài lại" button
   Then "_@Name@_" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line
 
 DL_38 Verify the search function of the magnifier icon in "Order" column
-  [Tags]                                                                                                Search                     Partner                Order    BUG
-  Create a test data type in "Partner" list with "DataType1" in data name
+  [Tags]                                                                                                Search                     Partner                Order
+  ${Data1}=                                                                                             Create a test data type in "Partner" list with "9999" in order
   Create a test data type in "Partner" list with "DataType2" in data name
   When Click on magnifier icon in "Order" table cell
-  When Enter "text" in placeholder "Tìm kiếm" with "DataType1"
-  When Click "Tìm kiếm" button
-  Then "DataType1" should be visible in the table line
+  When Enter "number" in placeholder "Tìm kiếm" with "9999"
+  Then "${Data1}" should be visible in the table line
   Then "DataType2" should not be visible in the table line
-  When Click on the "Xóa" button in the "DataType1" table line
+  When Click on the "Xóa" button in the "${Data1}" table line
+  When Click on magnifier icon in "Order" table cell
   When Click "Cài lại" button
   When Click on the "Xóa" button in the "DataType2" table line
 
 DL_39 Verify the "Cài lại" button after used the search function by clicking on magnifier icon in "Order" cell
-  [Tags]                                                                                                Search                     Partner                Order    BUG
+  [Tags]                                                                                                Search                     Partner                Order
   ${Data1}=                                                                                             Create a test data type in "Partner" list
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Order" table cell
   When Enter "text" in placeholder "Tìm kiếm" with "_@Order@_"
-  When Click "Tìm kiếm" button
   Then "_@Name@_" should be visible in the table line
   Then "${Data1}" should not be visible in the table line
+  When Click on magnifier icon in "Order" table cell
   When Click "Cài lại" button
   Then "${Data1}" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line
   When Click on the "Xóa" button in the "${Data1}" table line
 
 DL_40 Verify the search function of the magnifier icon in "Name" column by entering a "Order" that was not existed
-  [Tags]                                                                                                Search                     Partner                Order    BUG
+  [Tags]                                                                                                Search                     Partner                Order
   Create a test data type in "Partner" list
   When Click on magnifier icon in "Order" table cell
-  When Enter "text" in placeholder "Tìm kiếm" with "_RANDOM_"
-  When Click "Tìm kiếm" button
+  When Enter "number" in placeholder "Tìm kiếm" with "_RANDOM_"
   Then Table line should show empty
-  When Click on the "Xóa" button in the "DataType1" table line
+  When Click on magnifier icon in "Order" table cell
   When Click "Cài lại" button
   Then "_@Name@_" should be visible in the table line
-  When Click on the "Xóa" button in the "DataType2" table line
 
 DL_41 Verify the search by date function of the calendar icon in "Created" column
-  [Tags]                                                                                                Search                     Partner                Order    BUG
-  ${today}=                                                                                             Get Current Date             local                           result_format=%d/%m/%Y
+  [Tags]                                                                                                Search                     Partner                Order
   Create a test data type in "Partner" list
   When Click on calendar icon in "Created" table cell
-  When Enter "date" in placeholder "Ngày bắt đầu" with "${today}"
-  When Enter "date" in placeholder "Ngày kết thúc" with "${today}"
+  When Enter "date" in placeholder "Ngày bắt đầu" with "today"
+  When Enter "date" in placeholder "Ngày kết thúc" with "today"
   When Click "Tìm kiếm" button
   Then "_@Name@_" should be visible in the table line
   When Click on the "Xóa" button in the "_@Name@_" table line

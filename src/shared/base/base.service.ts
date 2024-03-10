@@ -151,7 +151,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         request.orderBy(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, sorts![key]);
       });
     }
-    if (perPage !== undefined && page !== undefined) request.take(perPage || 10);
+    request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
 
     const res: [T[], number] = await request.getManyAndCount();
 
