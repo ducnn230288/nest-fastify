@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  database:
+    env_file:
+      - ../.env.test
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-init
+    ports:
+      - 5432:5432
+    restart: always
+
+  cache:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  server:
+    build:
+      context: ..
+      args:
+        - ENV=.test
+      dockerfile: docker/Dockerfile
+    environment:
+      HOST_ADDRESS: 'http://localhost:3000/administrator'
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - cache
+    command: npm run start:prod

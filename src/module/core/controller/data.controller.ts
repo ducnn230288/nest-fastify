@@ -28,7 +28,7 @@ export class DataController {
   ): Promise<ListDataResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
@@ -104,7 +104,7 @@ export class DataController {
   ): Promise<DataResponseDto> {
     return {
       message: i18n.t('common.Update Success'),
-      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : undefined }),
+      data: await this.service.update(id, { isDisabled: boolean === 'true' ? dayjs().toDate() : null }),
     };
   }
 

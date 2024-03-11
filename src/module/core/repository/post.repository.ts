@@ -43,7 +43,7 @@ export class PostRepository extends BaseRepository<Post> {
             .andWhere(`base.language=:language`, { language: item.language })
             .withDeleted()
             .getCount();
-          if (existingName) throw new BadRequestException(i18n.t('common.Post.name is already taken'));
+          if (existingName) throw new BadRequestException(i18n.t('common.Data.Name is already taken'));
 
           const data = await entityManager.save(entityManager.create(PostTranslation, { postId: result.id, ...item }));
           if (data) result.translations.push(data);
@@ -71,6 +71,9 @@ export class PostRepository extends BaseRepository<Post> {
       if (!data) {
         throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
       }
+      if (!data.createdAt) {
+        throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
+      }
       result = await this.save(data);
       if (translations) {
         result.translations = [];
@@ -82,7 +85,7 @@ export class PostRepository extends BaseRepository<Post> {
             .andWhere(`base.postId != :postId`, { postId: id })
             .withDeleted()
             .getCount();
-          if (existingName) throw new BadRequestException(i18n.t('common.Post.name is already taken'));
+          if (existingName) throw new BadRequestException(i18n.t('common.Data.Name is already taken'));
 
           const data = await entityManager.save(
             await entityManager.preload(PostTranslation, { postId: result.id, ...item }),

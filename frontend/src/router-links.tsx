@@ -22,15 +22,15 @@ export const routerLinks = (name: string, type?: string) => {
     [selector: string]: string;
   } = {
     Auth: '/auth',
-    CodeType: '/code-type',
+    CodeType: '/code/type',
     Code: '/code',
-    UserRole: '/user-role',
+    UserRole: '/user/role',
     User: '/user',
     Data: '/data',
-    DataType: '/data-type',
+    DataType: '/data/type',
     Post: '/post',
     Parameter: '/parameter',
-    PostType: '/post-type',
+    PostType: '/post/type',
   }; // 💬 generate api to here
 
   switch (type) {

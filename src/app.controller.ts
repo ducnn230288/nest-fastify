@@ -233,7 +233,6 @@ export class AppController {
             SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
             translation: {
               ...translation,
-              content: this.renderEditor(translation!.content!.blocks),
             },
           };
         }),
@@ -258,6 +257,9 @@ export class AppController {
     };
   }
   */
+  @Get('/administrator')
+  @Render('administrator')
+  administrator(): void {}
 }
 
 interface ICommon {

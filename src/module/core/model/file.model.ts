@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
 import { IsOptional, IsString } from 'class-validator';
@@ -6,7 +6,7 @@ import { Exclude } from 'class-transformer';
 
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['url'])
 export class File extends Base {
   @Column()
@@ -35,7 +35,7 @@ export class File extends Base {
   @Exclude()
   status: number;
 
-  @Column({ name: 'user_id' })
+  @Column() // { name: 'user_id' }
   @Exclude()
   userId?: string;
 

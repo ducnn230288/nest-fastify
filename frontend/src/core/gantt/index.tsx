@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { nanoid } from 'nanoid';
 import dayjs, { Dayjs } from 'dayjs';
 import Draggabilly from 'draggabilly';
 import { gsap } from 'gsap';
-import { Arrow } from '@svgs';
 import classNames from 'classnames';
+
+import { Arrow } from '@svgs';
+import { uuidv4 } from '@utils';
 
 export const Gantt = ({
   widthColumnDay = 36,
@@ -24,7 +25,7 @@ export const Gantt = ({
   }[];
 }) => {
   const widthMonthYear = 110;
-  const id = useRef('gantt-' + nanoid());
+  const id = useRef('gantt-' + uuidv4());
   useEffect(() => {
     dayjs.locale('vi');
 
@@ -160,8 +161,9 @@ export const Gantt = ({
       (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
         document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
       document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
-        (document.querySelector(`#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`) as any)!.style.width =
-          e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
+        (document.querySelector(
+          `#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`,
+        ) as any)!.style.width = e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
       });
       document
         .querySelectorAll(`#${id.current} .overflow-scroll`)
@@ -177,12 +179,11 @@ export const Gantt = ({
   const handleHover = (e: any) => {
     if (e.target) {
       const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!) + 1;
-      ['left', 'right'].forEach(
-        (className) =>
-          document
-            .querySelector(`#${id.current} .${className} tbody > tr:nth-of-type(${index})`)
-            ?.querySelectorAll('td')
-            .forEach((td: HTMLTableCellElement) => td.classList.toggle('bg-blue-100')),
+      ['left', 'right'].forEach((className) =>
+        document
+          .querySelector(`#${id.current} .${className} tbody > tr:nth-of-type(${index})`)
+          ?.querySelectorAll('td')
+          .forEach((td: HTMLTableCellElement) => td.classList.toggle('bg-blue-100')),
       );
     }
   };
@@ -351,28 +352,21 @@ export const Gantt = ({
     );
   };
 
-  const widthGantt = (year: string, month: string) => (dayjs()
+  const widthGantt = (year: string, month: string) =>
+    (dayjs()
       .year(parseInt(year))
       .month(parseInt(month))
       .endOf('month')
       .diff(date.obj[year][month][date.obj[year][month].length - 1], 'days') < perRow
-      ? dayjs()
-        .year(parseInt(year))
-        .month(parseInt(month))
-        .endOf('month')
-        .diff(date.obj[year][month][0], 'days') >
-      date.obj[year][month][0].daysInMonth() - (widthMonthYear / widthColumnDay) * perRow
+      ? dayjs().year(parseInt(year)).month(parseInt(month)).endOf('month').diff(date.obj[year][month][0], 'days') >
+        date.obj[year][month][0].daysInMonth() - (widthMonthYear / widthColumnDay) * perRow
         ? date.obj[year][month][0].daysInMonth()
-        : dayjs()
-        .year(parseInt(year))
-        .month(parseInt(month))
-        .endOf('month')
-        .diff(date.obj[year][month][0], 'days') + 1
+        : dayjs().year(parseInt(year)).month(parseInt(month)).endOf('month').diff(date.obj[year][month][0], 'days') + 1
       : date.obj[year][month][date.obj[year][month].length - 1].diff(
-      date.obj[year][month][0].startOf('month'),
-      'days',
-    ) + perRow) *
-    (widthColumnDay / perRow) +
+          date.obj[year][month][0].startOf('month'),
+          'days',
+        ) + perRow) *
+      (widthColumnDay / perRow) +
     'px';
   return (
     <div id={id.current} className="relative">
@@ -461,7 +455,7 @@ export const Gantt = ({
                           key={index}
                           align={'left'}
                           className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
-                          style={{width: widthGantt(year, month)}}
+                          style={{ width: widthGantt(year, month) }}
                         >
                           {date.obj[year][month][0].format('MMMM')} {year}
                         </th>

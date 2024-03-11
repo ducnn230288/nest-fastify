@@ -48,7 +48,7 @@ import {
         port: appConfig.DATABASE_PORT,
         username: appConfig.DATABASE_USER,
         password: appConfig.DATABASE_PASSWORD,
-        database: appConfig.DATABASE_NAME,
+        database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
         autoLoadEntities: true,
         synchronize: appConfig.NODE_ENV !== 'prod',
         logging: ['error'],

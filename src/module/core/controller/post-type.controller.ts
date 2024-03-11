@@ -12,10 +12,23 @@ import {
   P_POST_TYPE_UPDATE,
 } from '@service';
 
-@Headers('post-type')
+/**
+ * Controller class for handling PostType related operations
+ */
+@Headers('post/type')
 export class PostTypeController {
+  /**
+   * Constructor to initialize PostTypeController with PostTypeService
+   * @param service - An instance of PostTypeService
+   */
   constructor(private readonly service: PostTypeService) {}
 
+  /**
+   * Find all PostType data with pagination
+   * @param i18n - I18nContext for internationalization
+   * @param paginationQuery - PaginationQueryDto for pagination options
+   * @returns ListPostTypeResponseDto with message, count, and data
+   */
   @Auth({
     summary: 'Get List data',
     permission: P_POST_TYPE_LISTED,
@@ -27,12 +40,17 @@ export class PostTypeController {
   ): Promise<ListPostTypeResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
   }
 
+  /**
+   * Find tree structure data of PostType
+   * @param i18n - I18nContext for internationalization
+   * @returns ListPostTypeResponseDto with message and data
+   */
   @Auth({
     summary: 'Get Tree data',
     permission: P_POST_TYPE_LISTED,
@@ -40,11 +58,17 @@ export class PostTypeController {
   @Get('tree')
   async findTree(@I18n() i18n: I18nContext): Promise<ListPostTypeResponseDto> {
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       data: await this.service.findTree(),
     };
   }
 
+  /**
+   * Find a specific PostType by id
+   * @param i18n - I18nContext for internationalization
+   * @param id - The id of the PostType to find
+   * @returns PostTypeResponseDto with message and data
+   */
   @Public({
     summary: 'Get Detail data',
     serializeOptions: { groups: [MaxGroup] },
@@ -57,6 +81,12 @@ export class PostTypeController {
     };
   }
 
+  /**
+   * Create a new PostType
+   * @param i18n - I18nContext for internationalization
+   * @param body - CreatePostTypeRequestDto containing the data for the new PostType
+   * @returns PostTypeResponseDto with message and data of the created PostType
+   */
   @Auth({
     summary: 'Create data',
     permission: P_POST_TYPE_CREATE,
@@ -68,10 +98,17 @@ export class PostTypeController {
   ): Promise<PostTypeResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.createTree(body),
     };
   }
 
+  /**
+   * Update an existing PostType by id
+   * @param i18n - I18nContext for internationalization
+   * @param id - The id of the PostType to update
+   * @param body - UpdatePostTypeRequestDto containing the updated data
+   * @returns PostTypeResponseDto with message and data of the updated PostType
+   */
   @Auth({
     summary: 'Update data',
     permission: P_POST_TYPE_UPDATE,
@@ -88,6 +125,13 @@ export class PostTypeController {
     };
   }
 
+  /**
+   * Update the disable status of a PostType
+   * @param i18n - I18nContext for internationalization
+   * @param id - The id of the PostType to update
+   * @param boolean - String indicating the disable status
+   * @returns PostTypeResponseDto with message and data of the updated PostType
+   */
   @Auth({
     summary: 'Update disable',
     permission: P_POST_TYPE_UPDATE,
@@ -104,6 +148,12 @@ export class PostTypeController {
     };
   }
 
+  /**
+   * Remove a PostType by id
+   * @param i18n - I18nContext for internationalization
+   * @param id - The id of the PostType to remove
+   * @returns PostTypeResponseDto with message and data of the removed PostType
+   */
   @Auth({
     summary: 'Delete data',
     permission: P_POST_TYPE_DELETE,

@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { MaxGroup, Base } from '@shared';
 import { Data } from '@model';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['code'])
 export class DataType extends Base {
   @Column()
@@ -23,7 +23,7 @@ export class DataType extends Base {
   @MaxLength(100)
   code: string;
 
-  @Column({ default: false, name: 'is_primary' })
+  @Column({ default: false }) // , name: 'is_primary'
   @Expose()
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()

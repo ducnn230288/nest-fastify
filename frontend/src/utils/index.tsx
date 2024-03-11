@@ -1,10 +1,6 @@
 import { CheckboxOptionType } from 'antd';
 import { keyToken, language, languages, linkApi } from './variable';
-import { gsap } from 'gsap';
-import LazyLoad from 'vanilla-lazyload';
-import React, { Fragment } from 'react';
 // @ts-ignore
-import GLightbox from 'glightbox';
 import { io } from 'socket.io-client';
 
 export * from './init/reportWebVitals';
@@ -61,55 +57,6 @@ export const loopMapSelect = (array?: any[], label = 'name', value = 'id'): Chec
 
 export const lang = languages.indexOf(location.hash.split('/')[1]) > -1 ? location.hash.split('/')[1] : language;
 
-export const animationSlide = (e: Element, delay: number) => {
-  const tl = gsap.timeline({ delay, defaults: { duration: 1, ease: 'power1.inOut' } });
-  const eGsap = e.querySelectorAll('.gsap');
-  const old = gsap.getTweensOf(eGsap);
-  if (old.length > 0) {
-    old.forEach((item) => item.kill());
-    return true;
-  }
-  eGsap.forEach((item) => {
-    if (item.classList.contains('left')) tl.from(item, { x: '-=10%', scale: '+=0.15', opacity: '-=1' }, '<0.25');
-    if (item.classList.contains('right')) tl.from(item, { x: '+=10%', scale: '+=0.15', opacity: '-=1' }, '<0.5');
-    if (item.classList.contains('top')) tl.from(item, { y: '-=50%', scale: '+=0.15', opacity: '-=1' }, '<0.25');
-    if (item.classList.contains('bottom')) tl.from(item, { y: '+=50%', scale: '+=0.15', opacity: '-=1' }, '<0.5');
-    if (item.classList.contains('zoom')) gsap.to(item, { scale: '+=0.1', duration: 20 });
-  });
-};
-export const lazyLoad = () =>
-  new LazyLoad({
-    callback_error: (el: any) => (el.src = 'https://via.placeholder.com/440x560/?text=Error'),
-  });
-
-export const renderEditorjs = (blocks: Record<string, object>[]) => {
-  setTimeout(() => {
-    GLightbox();
-    lazyLoad();
-  }, 0);
-  const Heading = ({ level, children, ...props }: any) => React.createElement('h'.concat(level), props, children);
-
-  return (
-    <div className="html-render">
-      {blocks!.map((subItem: any, subIndex: number) => (
-        <Fragment key={subIndex}>
-          {subItem?.type === 'header' && (
-            <Heading level={subItem?.data.level} dangerouslySetInnerHTML={{ __html: subItem?.data?.text }} />
-          )}
-          {subItem?.type === 'paragraph' && <p dangerouslySetInnerHTML={{ __html: subItem?.data?.text }} />}
-          {subItem?.type === 'image' && (
-            <a className="image glightbox" href={subItem.data.file.url} data-description={subItem.data.caption}>
-              <img className={'lazy'} alt={subItem.data.caption} data-src={subItem.data.file.url} />
-              {subItem.data.caption && (
-                <span className={'caption'} dangerouslySetInnerHTML={{ __html: subItem.data.caption }} />
-              )}
-            </a>
-          )}
-        </Fragment>
-      ))}
-    </div>
-  );
-};
 export const arrayUnique = (array: any, key?: string) => {
   const a = array.concat();
   for (let i = 0; i < a.length; ++i) {
@@ -141,3 +88,32 @@ export const handleDownloadCSV = async (url: string, name: string = 'file-csv') 
     link.click();
   }
 };
+
+export const uuidv4 = () => {
+  let d = new Date().getTime(); //Timestamp
+  let d2 = (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) || 0; //Time in microseconds since page-load or 0 if unsupported
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    let r = Math.random() * 16; //random number between 0 and 16
+    if (d > 0) {
+      //Use timestamp until depleted
+      r = (d + r) % 16 | 0;
+      d = Math.floor(d / 16);
+    } else {
+      //Use microseconds since page-load if supported
+      r = (d2 + r) % 16 | 0;
+      d2 = Math.floor(d2 / 16);
+    }
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+};
+export const mapTreeObject = (item: any) => {
+  return {
+    ...item,
+    title: item?.name,
+    key: item?.code || item?.id,
+    value: item?.code || item?.id,
+    isLeaf: !item?.children?.length,
+    expanded: true,
+    children: !item?.children ? null : item?.children?.map((i: any) => mapTreeObject(i)),
+  } as any;
+}

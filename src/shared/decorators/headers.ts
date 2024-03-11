@@ -10,8 +10,14 @@ export function Headers(
 ) => void {
   return applyDecorators(
     Controller('/api/' + name),
-    ApiTags(name),
+    ApiTags(capitalizeFirstLetter(name)),
     ApiHeader({ name: 'Accept-Language' }),
     UseInterceptors(ClassSerializerInterceptor),
   );
 }
+
+const capitalizeFirstLetter = (string: string): string =>
+  string
+    .split('/')
+    .map((i) => i.charAt(0).toUpperCase() + i.slice(1))
+    .join(' ');

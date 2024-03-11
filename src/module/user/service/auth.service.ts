@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 // import { S3 } from 'aws-sdk';
@@ -26,7 +26,7 @@ export const P_AUTH_DELETE_IMAGE_TEMP = '11cc566b-b109-49f8-983f-84ff08f9849e';
 
 @Injectable()
 export class AuthService extends BaseService<User> {
-  private logger = new Logger('AuthService');
+  // private logger = new Logger('AuthService');
   constructor(
     public readonly repo: UserRepository,
     private readonly jwtService: JwtService,
@@ -40,7 +40,6 @@ export class AuthService extends BaseService<User> {
    *
    * @param userId
    * @param refreshToken
-   * @param i18n
    * @returns void
    *
    */
@@ -142,6 +141,8 @@ export class AuthService extends BaseService<User> {
 
   /**
    *
+   * @param email
+   * @param otp
    * @param body
    * @returns boolean
    *

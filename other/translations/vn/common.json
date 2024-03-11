@@ -1,20 +1,21 @@
 {
   "Success": "Thành công",
-  "Get List success": "Lấy Danh sách thành công",
+  "Get List Success": "Lấy Danh sách thành công",
   "Get Detail Success": "Lấy chi tiết thành công",
   "Create Success": "Tạo thành công",
   "Update Success": "Cập nhật thành công",
   "Delete Success": "Xóa thành công",
   "Auth": {
     "Invalid credentials for user": "Thông tin đăng nhập không hợp lệ cho người dùng {email}",
-    "email is already taken": "Email này đã được sử dụng",
+    "Email is already taken": "Địa chỉ email đã được sử dụng",
+    "Phone number is already taken": "Số điện thoại đã được sử dụng",
     "Passwords are not identical": "Mật khẩu không giống nhau",
     "Password do not match": "Mật khẩu không khớp!",
     "Invalid email": "Email không hợp lệ!",
     "User not found": "Người dùng {email} không tồn tại!"
   },
   "Data": {
-    "name is already taken": "Tên đã tồn tại"
+    "Name is already taken": "Tên đã tồn tại"
   },
   "user" : {
     "Other leave requests need approval": "Còn những yêu cầu nghỉ cần duyệt",

@@ -1,15 +1,7 @@
 import { DataSource } from 'typeorm';
 import { runSeeder, Seeder } from 'typeorm-extension';
 
-import {
-  CodeTypeSeeder,
-  DataTypeSeeder,
-  ParameterSeeder,
-  PostTypeSeeder,
-  UserSeeder,
-  ProvinceSeeder,
-  ProductSeeder,
-} from './seeds';
+import { CodeTypeSeeder, DataTypeSeeder, ParameterSeeder, PostTypeSeeder, UserSeeder, AddressProvinceSeeder, ProductSeeder } from './seeds';
 
 export class MainSeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
@@ -18,7 +10,7 @@ export class MainSeeder implements Seeder {
     await runSeeder(dataSource, ParameterSeeder);
     await runSeeder(dataSource, PostTypeSeeder);
     await runSeeder(dataSource, UserSeeder);
-    await runSeeder(dataSource, ProvinceSeeder);
+    await runSeeder(dataSource, AddressProvinceSeeder);
     await runSeeder(dataSource, ProductSeeder);
   }
 }

@@ -12,7 +12,7 @@ import {
   P_DATA_TYPE_UPDATE,
 } from '@service';
 
-@Headers('data-type')
+@Headers('data/type')
 export class DataTypeController {
   constructor(private readonly service: DataTypeService) {}
 
@@ -27,7 +27,7 @@ export class DataTypeController {
   ): Promise<ListDataTypeResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };

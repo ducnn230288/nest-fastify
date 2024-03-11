@@ -3,9 +3,9 @@ import { MultipartFile } from '@fastify/multipart';
 
 import { I18nContext } from 'nestjs-i18n';
 import fs, { promises as fsAsync } from 'fs';
-import { pipeline, Readable } from 'stream';
+// import { pipeline, Readable } from 'stream';
 import dayjs from 'dayjs';
-import util from 'util';
+// import util from 'util';
 import sharp from 'sharp';
 import { join } from 'path';
 
@@ -23,7 +23,7 @@ export const P_FILE_DELETE = 'e21ac25b-1651-443e-9834-e593789807c9';
 @Injectable()
 export class FileService extends BaseService<File> {
   private logger = new Logger('FileService');
-  private pump = util.promisify(pipeline);
+  // private pump = util.promisify(pipeline);
   constructor(public repo: FileRepository) {
     super(repo);
   }
@@ -136,16 +136,16 @@ export class FileService extends BaseService<File> {
   // readFile(filepath: string, transform: Transform, onData: (data) => Promise<void>, onEnd: () => Promise<void>) {
   //   fs.createReadStream(filepath).pipe(transform).on('data', onData).on('end', onEnd);
   // }
-  private static async streamToBuffer(stream: Readable): Promise<Buffer> {
-    const buffer: Uint8Array[] = [];
-
-    return new Promise((resolve, reject) =>
-      stream
-        .on('error', (error) => reject(error))
-        .on('data', (data) => buffer.push(data))
-        .on('end', () => resolve(Buffer.concat(buffer))),
-    );
-  }
+  // private static async streamToBuffer(stream: Readable): Promise<Buffer> {
+  //   const buffer: Uint8Array[] = [];
+  //
+  //   return new Promise((resolve, reject) =>
+  //     stream
+  //       .on('error', (error) => reject(error))
+  //       .on('data', (data) => buffer.push(data))
+  //       .on('end', () => resolve(Buffer.concat(buffer))),
+  //   );
+  // }
   private renameFile(filename: string): string {
     const name = filename.split('.')[0];
     // const fileExtName = extname(filename);

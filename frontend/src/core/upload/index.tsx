@@ -1,13 +1,12 @@
 import React, { Fragment, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { Popconfirm } from 'antd';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { nanoid } from 'nanoid';
 
-import { API, keyToken } from '@utils';
+import { API, keyToken, uuidv4 } from '@utils';
+import { Arrow, Paste, Times, UploadSVG } from '@svgs';
 import { Button } from '../button';
 import { Message } from '../message';
-import { Arrow, Paste, Times, UploadSVG } from '@svgs';
+import { PopConfirm } from '@core/pop-confirm';
 
 export const Upload = ({
   value = [],
@@ -35,11 +34,10 @@ export const Upload = ({
             status: 'done',
           };
         })
-      : typeof value === 'string'
-      ? [{ [keyImage]: value }]
-      : value || [],
+      : value
+        ? [value]
+        : [],
   );
-
   useEffect(() => {
     const tempData =
       !multiple && value && typeof value === 'object'
@@ -50,9 +48,9 @@ export const Upload = ({
               status: 'done',
             };
           })
-        : typeof value === 'string'
-        ? [{ [keyImage]: value }]
-        : value || [];
+        : value
+          ? [value]
+          : [];
     if (
       JSON.stringify(listFiles) !== JSON.stringify(tempData) &&
       listFiles.filter((item: any) => item.status === 'uploading').length === 0
@@ -76,7 +74,7 @@ export const Upload = ({
     for (let i = 0; i < target.files.length; i++) {
       const file = target.files[i];
       if (maxSize && file.size > maxSize * 1024 * 1024) {
-        Message.error({
+        await Message.error({
           text: `${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}mb): ${t('components.form.ruleMaxSize', {
             max: maxSize,
           })}`,
@@ -100,7 +98,7 @@ export const Upload = ({
         type: file.type,
         originFileObj: file,
         thumbUrl,
-        id: nanoid(),
+        id: uuidv4(),
         percent: 0,
         status: 'uploading',
       };
@@ -279,8 +277,7 @@ export const Upload = ({
             )}
 
             {showBtnDelete(file) && (
-              <Popconfirm
-                placement="left"
+              <PopConfirm
                 title={t('components.datatable.areYouSureWant')}
                 onConfirm={async () => {
                   if (deleteFile && file?.id) {
@@ -291,8 +288,6 @@ export const Upload = ({
                   }
                   onChange && onChange(listFiles.filter((_item: any) => _item.id !== file.id));
                 }}
-                okText={t('components.datatable.ok')}
-                cancelText={t('components.datatable.cancel')}
               >
                 <Button
                   icon={<Times className={'h-3 w-3 fill-red-400 hover:fill-white'} />}
@@ -305,7 +300,7 @@ export const Upload = ({
                     },
                   )}
                 />
-              </Popconfirm>
+              </PopConfirm>
             )}
           </div>
         ))}
@@ -315,7 +310,7 @@ export const Upload = ({
 };
 type Type = PropsWithChildren<{
   value?: any[];
-  onChange?: (values: any[]) => void;
+  onChange?: (values: any[]) => any;
   deleteFile?: any;
   showBtnDelete?: (file: any) => boolean;
   method?: string;

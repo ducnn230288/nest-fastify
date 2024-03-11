@@ -45,7 +45,7 @@ const Page = () => {
 
   const handleBack = () => {
     codeFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
   };
   const handleSubmit = (values: Code) => {
     if (id) codeFacade.put({ ...values, id, type });
@@ -109,7 +109,7 @@ const Page = () => {
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
-              className={'md:min-w-[12rem] justify-center out-line'}
+              className={'md:min-w-48 justify-center out-line'}
               onClick={() => {
                 form.submit();
                 isBack.current = false;

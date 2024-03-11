@@ -2,7 +2,7 @@ import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
-import { Address, District, Province, User, UserRole, Ward } from '@model';
+import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   CreateUserRoleRequestDto,
   UpdateUserRoleRequestDto,
@@ -10,7 +10,14 @@ import {
   CreateAddressRequestDto,
   UpdateAddressRequestDto,
 } from '@dto';
-import { DistrictService, P_USER_CREATE, ProvinceService, UserRoleService, UserService, WardService } from '@service';
+import {
+  AddressDistrictService,
+  P_USER_CREATE,
+  AddressProvinceService,
+  UserRoleService,
+  UserService,
+  AddressWardService,
+} from '@service';
 import { Example } from '@shared';
 import '@factories';
 import { BaseTest } from '@test';
@@ -34,12 +41,12 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   let dataAddressUpdate: UpdateAddressRequestDto;
   let resultAddress: Address | null;
 
-  // User-role: 7 api test
-  it('Create [POST /api/user-role]', async () => {
+  // user/role: 7 api test
+  it('Create [POST /api/user/role]', async () => {
     dataRole = await factoryManager.get(UserRole).make({ permissions: [P_USER_CREATE] });
 
     const { body } = await request(BaseTest.server)
-      .post('/api/user-role')
+      .post('/api/user/role')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataRole)
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
@@ -50,45 +57,45 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Get all [GET /api/user-role]', async () => {
+  it('Get all [GET /api/user/role]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user-role')
+      .get('/api/user/role?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataRole));
   });
 
-  it('Get one [GET /api/user-role/:id]', async () => {
+  it('Get one [GET /api/user/role/:id]', async () => {
     if (!type) resultRole = await BaseTest.moduleFixture!.get(UserRoleService).create(dataRole);
     const { body } = await request(BaseTest.server)
-      .get('/api/user-role/' + resultRole?.id)
+      .get('/api/user/role/' + resultRole?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data).toEqual(jasmine.objectContaining(dataRole));
   });
 
-  it('Get one [GET /api/user-role/permission]', async () => {
+  it('Get one [GET /api/user/role/permission]', async () => {
     await request(BaseTest.server)
-      .get('/api/user-role/permission')
+      .get('/api/user/role/permission?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
   });
 
-  it('Update one [PUT /api/user-role/:id]', async () => {
+  it('Update one [PUT /api/user/role/:id]', async () => {
     dataUpdateRole = await factoryManager.get(UserRole).make({ code: resultRole?.code });
 
     const { body } = await request(BaseTest.server)
-      .put('/api/user-role/' + resultRole?.id)
+      .put('/api/user/role/' + resultRole?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdateRole)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateRole));
   });
 
-  it('Update one [PUT /api/user-role/:id/disable/:boolean]', async () => {
+  it('Update one [PUT /api/user/role/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
-      .put('/api/user-role/' + resultRole?.id + '/disable' + '/true')
+      .put('/api/user/role/' + resultRole?.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send()
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
@@ -123,7 +130,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/user]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user')
+      .get('/api/user?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -185,16 +192,18 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   // test address
   it('Create [CREATE /api/address]', async () => {
-    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
+    province = await BaseTest.moduleFixture!.get(AddressProvinceService).create(
+      await factoryManager.get(AddressProvince).make(),
+    );
 
-    district = await BaseTest.moduleFixture!.get(DistrictService).create(
-      await factoryManager.get(District).make({
+    district = await BaseTest.moduleFixture!.get(AddressDistrictService).create(
+      await factoryManager.get(AddressDistrict).make({
         codeProvince: province?.code,
       }),
     );
 
-    ward = await BaseTest.moduleFixture!.get(WardService).create(
-      await factoryManager.get(Ward).make({
+    ward = await BaseTest.moduleFixture!.get(AddressWardService).create(
+      await factoryManager.get(AddressWard).make({
         codeDistrict: district?.code,
       }),
     );
@@ -217,7 +226,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/address]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/address')
+      .get('/api/address?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     expect(body.data[0]).toEqual(jasmine.objectContaining(dataAddress));
@@ -261,9 +270,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
   });
 
-  it('Delete one [DELETE /api/user-role/:id]', async () => {
+  it('Delete one [DELETE /api/user/role/:id]', async () => {
     const { body } = await request(BaseTest.server)
-      .delete('/api/user-role/' + resultRole?.id)
+      .delete('/api/user/role/' + resultRole?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateRole));

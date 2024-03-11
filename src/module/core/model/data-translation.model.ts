@@ -8,7 +8,7 @@ import { Data } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
 import { IEditor } from '@dto';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class DataTranslation extends Base {
   @Column()
   @ApiProperty({ example: 'en', description: '' })
@@ -38,9 +38,9 @@ export class DataTranslation extends Base {
     default: {},
   })
   @Expose({ groups: [MaxGroup] })
-  @ApiProperty({ example: [], description: '' })
+  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()
-  content?: { blocks: IEditor[] };
+  content?: string;
   @BeforeInsert()
   @BeforeUpdate()
   beforeContent?(): void {
@@ -51,13 +51,13 @@ export class DataTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column({ name: 'data_id' })
+  @Column() // { name: 'data_id' }
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()
   dataId?: string;
 
   @ManyToOne(() => Data, (data) => data.translations, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'data_id' })
+  @JoinColumn()
   public data?: Data;
 }

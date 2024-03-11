@@ -1,12 +1,12 @@
 import React from 'react';
 import { DatePicker, FormInstance } from 'antd';
 import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
+import { uuidv4 } from '@utils';
 
 const Component = ({
   form,
   name,
-  id = 'date-picker-' + nanoid(),
+  id = 'date-picker-' + uuidv4(),
   onChange,
   format,
   disabledDate,

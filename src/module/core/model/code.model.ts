@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 import { CodeType, User } from '@model';
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 @Unique(['code'])
 export class Code extends Base {
   @Column()
@@ -37,7 +37,7 @@ export class Code extends Base {
   public item?: CodeType;
 
   @OneToMany(() => User, (user) => user.position)
-  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
   @Type(() => User)
   users?: User[];
 }

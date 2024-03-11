@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  database:
+    env_file:
+      - ../.env.prod
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-init
+    volumes:
+      - database:/database
+    ports:
+      - 5432:5432
+    restart: always
+
+  cache:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - cache:/data
+
+  server:
+    build:
+      context: ..
+      args:
+        - PROD=true
+        - ENV=.prod
+      dockerfile: docker/Dockerfile
+    env_file:
+      - ../.env.prod
+    environment:
+      REDIS_HOST: 'cache'
+      DATABASE_HOST: 'database'
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+      - cache
+    command: npm run start:prod
+
+volumes:
+  database:
+  cache:

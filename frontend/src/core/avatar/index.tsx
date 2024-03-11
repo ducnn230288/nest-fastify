@@ -86,13 +86,13 @@ export const Avatar = ({
         c1 && c1 != 'c'
           ? pSBCr(c1)
           : P
-          ? {
-              r: 0,
-              g: 0,
-              b: 0,
-              a: -1,
-            }
-          : { r: 255, g: 255, b: 255, a: -1 }),
+            ? {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: -1,
+              }
+            : { r: 255, g: 255, b: 255, a: -1 }),
       (p = P ? p * -1 : p),
       (P = 1 - p);
     if (!f || !t) return '';
@@ -191,7 +191,7 @@ export const Avatar = ({
   const getFirstLetter = (text: string, numberLetter = 1) => {
     text = text.trim();
     if (text.split(' ').length === 1) {
-      return text.substr(0, numberLetter);
+      return text.substring(0, numberLetter);
     } else {
       let letter = '';
       text.split(' ').map((item: string, index: number) => {

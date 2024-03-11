@@ -19,10 +19,23 @@ import {
   P_CODE_TYPE_DELETE,
 } from '@service';
 
-@Headers('code-type')
+/**
+ * Controller for handling CRUD operations related to CodeType entities
+ */
+@Headers('code/type')
 export class CodeTypeController {
+  /**
+   * Constructor for CodeTypeController
+   * @param service Instance of CodeTypeService for handling business logic
+   */
   constructor(private readonly service: CodeTypeService) {}
 
+  /**
+   * Retrieve a list of CodeType entities with pagination
+   * @param i18n I18nContext object for internationalization
+   * @param paginationQuery Object containing pagination query parameters
+   * @returns Promise<ListCodeTypeResponseDto> List of CodeType entities with total count
+   */
   @Auth({
     summary: 'Get List data',
     permission: P_CODE_TYPE_LISTED,
@@ -34,12 +47,18 @@ export class CodeTypeController {
   ): Promise<ListCodeTypeResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
   }
 
+  /**
+   * Retrieve a single CodeType entity by code
+   * @param i18n I18nContext object for internationalization
+   * @param code CodeType identifier
+   * @returns Promise<CodeTypeRelationshipResponseDto> CodeType entity with relationships
+   */
   @Auth({
     summary: 'Get Detail data',
     serializeOptions: { groups: [MaxGroup] },
@@ -53,6 +72,12 @@ export class CodeTypeController {
     };
   }
 
+  /**
+   * Create a new CodeType entity
+   * @param i18n I18nContext object for internationalization
+   * @param body Data for creating a new CodeType entity
+   * @returns Promise<CodeTypeResponseDto> Created CodeType entity
+   */
   @Auth({
     summary: 'Create data',
     permission: P_CODE_TYPE_CREATE,
@@ -60,7 +85,6 @@ export class CodeTypeController {
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
-
     @Body(new SerializerBody([MaxGroup])) body: CreateCodeTypeRequestDto,
   ): Promise<CodeTypeResponseDto> {
     return {
@@ -69,6 +93,13 @@ export class CodeTypeController {
     };
   }
 
+  /**
+   * Update an existing CodeType entity
+   * @param i18n I18nContext object for internationalization
+   * @param id Identifier of the CodeType entity to update
+   * @param body Data for updating the CodeType entity
+   * @returns Promise<CodeTypeResponseDto> Updated CodeType entity
+   */
   @Auth({
     summary: 'Update data',
     permission: P_CODE_TYPE_UPDATE,
@@ -76,7 +107,6 @@ export class CodeTypeController {
   @Put(':id')
   async update(
     @I18n() i18n: I18nContext,
-
     @Param('id') id: string,
     @Body(new SerializerBody()) body: UpdateCodeTypeRequestDto,
   ): Promise<CodeTypeResponseDto> {
@@ -86,6 +116,13 @@ export class CodeTypeController {
     };
   }
 
+  /**
+   * Update the 'isDisabled' property of a CodeType entity
+   * @param i18n I18nContext object for internationalization
+   * @param id Identifier of the CodeType entity to update
+   * @param boolean Flag indicating whether to disable the entity
+   * @returns Promise<CodeTypeResponseDto> Updated CodeType entity
+   */
   @Auth({
     summary: 'Update disable',
     permission: P_CODE_TYPE_UPDATE,
@@ -102,6 +139,12 @@ export class CodeTypeController {
     };
   }
 
+  /**
+   * Delete a CodeType entity
+   * @param i18n I18nContext object for internationalization
+   * @param id Identifier of the CodeType entity to delete
+   * @returns Promise<CodeTypeResponseDto> Deleted CodeType entity
+   */
   @Auth({
     summary: 'Delete data',
     permission: P_CODE_TYPE_DELETE,

@@ -7,14 +7,14 @@ import { Expose } from 'class-transformer';
 import { PostType, PostTranslation } from '@model';
 import { MaxGroup, Base, setImage } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class Post extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
   @IsString()
   type: string;
 
-  @Column({ nullable: true, name: 'thumbnail_url' })
+  @Column({ nullable: true }) // , name: 'thumbnail_url'
   @ApiProperty({ example: faker.image.url(), description: '' })
   @IsString()
   @IsOptional()

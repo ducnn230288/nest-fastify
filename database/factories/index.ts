@@ -7,10 +7,10 @@ export * from './post-type.factory';
 export * from './post.factory';
 export * from './user-role.factory';
 export * from './user.factory';
-export * from './adress.factory';
-export * from './province.factory';
-export * from './district.factory';
-export * from './ward.factory';
+export * from './address.factory';
+export * from './address-province.factory';
+export * from './address-district.factory';
+export * from './address-ward.factory';
 
 export * from './product-category.factory';
 export * from './product-store.factory';

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
+import dayjs from 'dayjs';
 
 import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
 import { lang, routerLinks } from '@utils';
@@ -43,7 +44,8 @@ const Page = () => {
 
   const handleBack = () => {
     userFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), roleCode })}).toString()}`);
+
   };
   const handleSubmit = (values: User) => {
     if (id) userFacade.put({ ...values, id, roleCode });
@@ -102,7 +104,7 @@ const Page = () => {
                 col: 6,
                 type: EFormType.password,
                 condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -115,11 +117,12 @@ const Page = () => {
                 condition: (value: string, form, index: number, values) => !values?.id,
                 rules: [
                   { type: EFormRuleType.required },
+                  { type: EFormRuleType.min, value: 8 },
                   {
                     type: EFormRuleType.custom,
                     validator: ({ getFieldValue }) => ({
                       validator(rule, value: string) {
-                        if (!value || getFieldValue('password') === value) {
+                        if (!value || (getFieldValue('password') === value && value.length >= 8)) {
                           return Promise.resolve();
                         }
                         return Promise.reject(t('components.form.ruleConfirmPassword'));
@@ -144,6 +147,9 @@ const Page = () => {
                 col: 6,
                 type: EFormType.date,
                 rules: [{ type: EFormRuleType.required }],
+                disabledDate: (current) => {
+                  return current && current >= dayjs().startOf('day');
+                },
               },
             },
             {
@@ -153,8 +159,6 @@ const Page = () => {
                 col: 6,
                 type: EFormType.select,
                 rules: [{ type: EFormRuleType.required }],
-                convert: (data) =>
-                  data?.map ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item)) : data,
                 get: {
                   facade: CodeFacade,
                   params: (fullTextSearch: string) => ({
@@ -198,7 +202,7 @@ const Page = () => {
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
-              className={'md:min-w-[12rem] justify-center out-line'}
+              className={'md:min-w-48 justify-center out-line'}
               onClick={() => {
                 form.submit();
                 isBack.current = false;

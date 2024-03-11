@@ -6,10 +6,9 @@
   &:not(.ant-select-customize-input) .ant-select-selector { @apply rounded-xl border px-4 border-solid border-gray-300~'py-1.5 min-h-[2.5rem]' items-center h-10; }
   &-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector { @apply border-teal-300; }
   &-single {
-    &.ant-select-show-arrow .ant-select-selection-item { @apply pr-4 h-7; }
+    &.ant-select-show-arrow .ant-select-selection-item { @apply pr-4; }
     &:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input { @apply h-9; }
   }
-  &-clear .anticon { @apply relative~'-top-0.5'; }
   &-multiple .ant-select-selection-item { @apply bg-teal-100 rounded-xl py-1 px-2 my-0 -ml-1~'min-h-[1.88rem]'; }
 }
 
@@ -21,7 +20,7 @@
       > label { @apply font-medium text-gray-600;
         &.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
           &::before { content: none; }
-          &::after { @apply contents text-red-600;
+          &::after { @apply contents text-red-600 visible;
             content: ' *' !important;
           }
         }

@@ -55,7 +55,7 @@ import {
   UserRoleService,
 } from '@service';
 
-@Headers('user-role')
+@Headers('user/role')
 export class UserRoleController {
   constructor(private readonly service: UserRoleService) {}
 
@@ -70,7 +70,7 @@ export class UserRoleController {
   ): Promise<ListUserRoleResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };

@@ -44,6 +44,7 @@ export class TableGet {
   format?: (item: any) => CheckboxOptionType;
   params?: (fullTextSearch: string, value?: any) => any;
   data?: any;
+  column?: DataTableModel[];
 }
 
 export class TableItemFilterList {

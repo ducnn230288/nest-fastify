@@ -5,7 +5,7 @@ import { IsOptional, IsString } from 'class-validator';
 
 import { Base } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class Parameter extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })

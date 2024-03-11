@@ -173,7 +173,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <main>
       {contextHolder}
-      <div className="leading-5 leading-10" />
+      <div className="leading-10" />
       <div className="h-16 relative">
         <div className="absolute top-0 left-0 right-0">
           <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
@@ -196,7 +196,8 @@ const Layout = ({ children }: PropsWithChildren) => {
               'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
             })}
             onClick={() => {
-              set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+              set_isCollapsed(!isCollapsed);
+              set_isDesktop(isDesktop);
             }}
           >
             <span className="line" />
@@ -204,20 +205,13 @@ const Layout = ({ children }: PropsWithChildren) => {
             <span className="line" />
           </div>
 
-          <a href="/vn/dashboard" className="flex items-center">
+          <a href="/vn/dashboard" className="flex items-center group">
             <Logo
-              className={classNames('w-12 mr-3 rounded bg-slate-200', {
+              className={classNames('w-12 mr-3 text-white', {
                 'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
                 'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
               })}
             />
-            {/* <img
-              src={Logo}
-              className={classNames('w-12 mr-3 rounded ', {
-                'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
-                'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
-              })}
-            ></img> */}
             <div
               id={'name-application'}
               className={classNames(
@@ -237,7 +231,8 @@ const Layout = ({ children }: PropsWithChildren) => {
             'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
           })}
           onClick={() => {
-            set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+            set_isCollapsed(!isCollapsed);
+            set_isDesktop(isDesktop);
           }}
         >
           <Arrow
@@ -261,16 +256,15 @@ const Layout = ({ children }: PropsWithChildren) => {
       )}
       <section
         id={'main'}
-        className={classNames(
-          'px-2 sm:px-0 h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out z-10 relative',
-          {
-            'ml-64': !isCollapsed && isDesktop,
-            'ml-16': isCollapsed && isDesktop,
-          },
-        )}
+        className={classNames('px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative', {
+          'ml-64': !isCollapsed && isDesktop,
+          'ml-16': isCollapsed && isDesktop,
+        })}
       >
-        <div className={' pb-10'}>
-          <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
+        <div className={'h-[calc(100vh-6rem)]'}>
+          {!isDesktop && (
+            <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
+          )}
           <div className={'flex items-center text-xs mt-0.5 pb-5 sm:hidden'}>
             {breadcrumbs?.map((item, i) => (
               <Fragment key={i}>
@@ -284,9 +278,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           {children}
         </div>
 
-        <footer className="text-center pt-1.5 w-full -mt-8">
-          {t('layout.footer', { year: new Date().getFullYear() })}
-        </footer>
+        <footer className="text-center pt-1.5 w-full">{t('layout.footer', { year: new Date().getFullYear() })}</footer>
       </section>
     </main>
   );

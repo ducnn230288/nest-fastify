@@ -36,8 +36,11 @@ export class UserService extends BaseService<User> {
       throw new BadRequestException(i18n.t('common.Auth.Passwords are not identical'));
 
     const existingUser = await this.repo.getDataByEmail(body.email!);
-
     if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
+
+    const existingPhoneNumber = await this.repo.getDataByPhoneNumber(body.phoneNumber!);
+    if (existingPhoneNumber) throw new BadRequestException(i18n.t('common.Auth.Phone number is already taken'));
+
     const data = await super.create(body);
     if (data?.avatar) await this.fileService.activeFiles([data?.avatar]);
     await this.fileService.activeFiles(getImages<User>(['avatar'], data)[0]);
@@ -54,9 +57,21 @@ export class UserService extends BaseService<User> {
    */
   async update(
     id: string,
-    body: UpdateUserRequestDto | { isDisabled: Date | null },
+    body: UpdateUserRequestDto | { isDisabled?: Date | null },
     callBack?: (data: User) => Promise<User>,
   ): Promise<User | null> {
+    const i18n = I18nContext.current()!;
+
+    if (body instanceof UpdateUserRequestDto && body?.email) {
+      const existingUser = await this.repo.getDataByEmail(body.email, id);
+      if (existingUser) throw new BadRequestException(i18n.t('common.Auth.Email is already taken'));
+    }
+
+    if (body instanceof UpdateUserRequestDto && body?.phoneNumber) {
+      const existingPhoneNumber = await this.repo.getDataByPhoneNumber(body.phoneNumber, id);
+      if (existingPhoneNumber) throw new BadRequestException(i18n.t('common.Auth.Phone number is already taken'));
+    }
+
     const oldData = await this.findOne(id, []);
     const data = await super.update(id, body, callBack);
     const [listFilesActive, listFilesRemove] = getImages<User>(['thumbnailUrl'], data, [], oldData);

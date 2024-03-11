@@ -1,5 +1,7 @@
+import React from 'react';
 import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
+
 export enum EFormType {
   onlyNumber = 'only_number',
   hidden = 'hidden',
@@ -8,6 +10,7 @@ export enum EFormType {
   name = 'name',
   tab = 'tab',
   addable = 'addable',
+  cascader = 'cascader',
   editor = 'editor',
   upload = 'upload',
   tableTransfer = 'table_transfer',
@@ -24,6 +27,7 @@ export enum EFormType {
   tag = 'tag',
   chips = 'chips',
   select = 'select',
+  selectTable = 'select_table',
   treeSelect = 'tree_select',
   otp = 'otp',
   switch = 'switch',
@@ -64,7 +68,7 @@ export class FormItem {
   type?: EFormType;
   col?: number;
   condition?: (value: string, form: FormInstance, index: number, values: any) => boolean;
-  list?: CheckboxOptionType[];
+  list?: any[];
   rules?: FormItemRule[];
   mode?: EFormModeSelect;
   tab?: string;
@@ -78,7 +82,7 @@ export class FormItem {
   initialValues?: { start: string; end: string };
   convert?: (data: any) => any;
   onChange?: (value: any, form: FormInstance, reRender: any) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement, Element>, form: FormInstance, name: string) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>, form: FormInstance, name: string) => void;
   disabledDate?: (current: any, form: FormInstance) => boolean;
   showTime?: boolean;
   picker?: EFormPickerDate;
@@ -104,7 +108,7 @@ export class FormItem {
   isTable?: boolean;
   showRemove?: any;
   idCheck?: any;
-  firstLoad?: (data: any) => void;
+  firstLoad?: (data: any) => any;
   notDefaultValid?: boolean;
   render?: (form: FormInstance, values: any, generateForm: void, index: number, reRender: void) => JSX.Element;
 }
@@ -137,5 +141,5 @@ export class FormApi {
 export class FormModalRefObject {
   handleEdit?: (item?: { id?: string }, isGet?: boolean) => Promise<void>;
   handleDelete?: (id: string) => Promise<any>;
-  form?: FormInstance<any>;
+  form?: FormInstance;
 }

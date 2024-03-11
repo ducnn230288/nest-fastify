@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  database:
+    env_file:
+      - ../.env
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-database
+    volumes:
+      - database:/database
+    ports:
+      - 5432:5432
+    restart: always
+
+  cache:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - cache:/data
+
+networks:
+  database:
+    driver: bridge
+
+volumes:
+  database:
+  cache:

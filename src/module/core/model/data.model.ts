@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { DataType, DataTranslation } from '@model';
 import { MaxGroup, Base, setImage } from '@shared';
 
-@Entity()
+@Entity({ schema: 'core' })
 export class Data extends Base {
   @Column()
   @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
