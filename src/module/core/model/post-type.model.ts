@@ -40,7 +40,7 @@ export class PostType extends Base {
    * Indicates if the PostType is the primary one.
    * @type {boolean}
    */
-  @Column({ default: false, name: 'is_primary' })
+  @Column({ default: false }) // , name: 'is_primary'
   @Expose()
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()

@@ -59,7 +59,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/user/role]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user/role')
+      .get('/api/user/role?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -77,7 +77,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get one [GET /api/user/role/permission]', async () => {
     await request(BaseTest.server)
-      .get('/api/user/role/permission')
+      .get('/api/user/role/permission?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
   });
@@ -131,7 +131,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/user]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/user')
+      .get('/api/user?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
@@ -227,7 +227,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Get all [GET /api/address]', async () => {
     const { body } = await request(BaseTest.server)
-      .get('/api/address')
+      .get('/api/address?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
     expect(body.data[0]).toEqual(jasmine.objectContaining(dataAddress));

@@ -16,6 +16,8 @@
     "update-all": "npx -p npm-check-updates ncu -u && npm install"
   },
   "dependencies": {
+    "@antv/s2": "^1.54.6",
+    "@antv/s2-react": "^1.46.3",
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.14.1",
     "antd-input-otp": "^2.0.5",
@@ -54,7 +56,7 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "postcss": "^8.4.35",

@@ -35,7 +35,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
    * @param paginationQuery string or object describing the error condition.
    */
   async findAll(paginationQuery: PaginationQueryDto): Promise<[T[], number]> {
-    const { sorts, where, perPage, page, fullTextSearch } = paginationQuery;
+    const { where, perPage, page, fullTextSearch } = paginationQuery;
 
     const filter =
       typeof paginationQuery.filter === 'string' ? JSON.parse(paginationQuery.filter) : paginationQuery.filter;
@@ -43,7 +43,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
     const extend =
       typeof paginationQuery.extend === 'string' ? JSON.parse(paginationQuery.extend) : paginationQuery.extend;
 
-    let request = this.repo
+    const request = this.repo
       .createQueryBuilder('base')
       .orderBy('base.createdAt', 'DESC')
       .withDeleted()
@@ -70,20 +70,20 @@ export abstract class BaseService<T extends ObjectLiteral> {
         Object.keys(item).forEach((key) => {
           const checkKey = key.split('.');
           // request = request.andWhere(`base.${key}=:${key}`, { [key]: item[key] });
-          request = request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
+          request.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}=:${key}`, {
             [key]: item[key],
           });
         });
       });
     }
-    // console.log(request.getQuery());
+
     if (filter && Object.keys(filter).length) {
-      request = request.andWhere(
+      request.andWhere(
         new Brackets((qb) => {
           Object.keys(filter).forEach((key) => {
             if (typeof filter[key] === 'object' && filter[key]?.length > 0) {
               if (dayjs(filter[key][0]).isValid()) {
-                qb = qb.andWhere(`"${key}" BETWEEN :startDate AND :endDate`, {
+                qb = qb.andWhere(`base."${key}" BETWEEN :startDate AND :endDate`, {
                   startDate: filter[key][0],
                   endDate: filter[key][1],
                 });
@@ -104,7 +104,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
             Object.keys(skip).forEach((key) => {
               if (typeof skip[key] === 'object' && skip[key].length > 0) {
                 if (dayjs(skip[key][0]).isValid()) {
-                  qb = qb.andWhere(`"${key}" NOT BETWEEN :startDate AND :endDate`, {
+                  qb = qb.andWhere(`"base.${key}" NOT BETWEEN :startDate AND :endDate`, {
                     startDate: skip[key][0],
                     endDate: skip[key][1],
                   });
@@ -124,7 +124,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
       );
     }
     if (fullTextSearch && this.listQuery.length) {
-      request = request.andWhere(
+      request.andWhere(
         new Brackets((qb) => {
           this.listQuery.forEach((key) => {
             if (!filter || !filter[key]) {
@@ -139,17 +139,22 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
     if (this.listJoinCount.length) {
       this.listJoinCount.forEach((item) => {
-        request = request.loadRelationCountAndMap('base.' + item.name, 'base.' + item.key);
+        request.loadRelationCountAndMap('base.' + item.name, 'base.' + item.key);
       });
     }
 
+    let { sorts } = paginationQuery;
+    if (typeof sorts === 'string') sorts = JSON.parse(sorts);
     if (sorts && Object.keys(sorts).length) {
       Object.keys(sorts).forEach((key) => {
-        request = request.orderBy('base.' + key, sorts![key]);
+        const checkKey = key.split('.');
+        request.orderBy(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key}`, sorts![key]);
       });
     }
-    if (perPage !== undefined && page !== undefined) request = request.take(perPage || 10);
+    request.take(perPage || 10).skip((page !== undefined ? page - 1 : 0) * (perPage || 10));
+
     const res: [T[], number] = await request.getManyAndCount();
+
     if (extend && Object.keys(extend).length) {
       let isGet = false;
       const request = this.repo.createQueryBuilder('base').andWhere(

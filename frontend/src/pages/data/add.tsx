@@ -44,7 +44,8 @@ const Page = () => {
 
   const handleBack = () => {
     dataFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams(param).toString()}`);
+    navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
+
   };
 
   const handleSubmit = (values: Data) => {
@@ -162,7 +163,7 @@ const Page = () => {
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
-              className={'md:min-w-[12rem] justify-center out-line'}
+              className={'md:min-w-48 justify-center out-line'}
               onClick={() => {
                 form.submit();
                 isBack.current = false;

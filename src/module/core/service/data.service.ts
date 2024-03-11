@@ -19,6 +19,7 @@ export class DataService extends BaseService<Data> {
   ) {
     super(repo);
     this.listJoin = ['translations'];
+    this.listQuery = ['name'];
   }
 
   /**
@@ -30,7 +31,7 @@ export class DataService extends BaseService<Data> {
   async findArrayCode(types: string[]): Promise<{ [p: string]: Data[] }> {
     const tempData: { [key: string]: Data[] } = {};
     for (const type of types) {
-      tempData[type] = (await this.findAll({ filter: { type, isDisabled: 'NULL' }, sorts: { order: 'ASC' } }))[0];
+      tempData[type] = (await this.findAll({ filter: '{"isDisabled":"NULL"}', sorts: '{"createdAt":"DESC"}' }))[0];
     }
     return tempData;
   }

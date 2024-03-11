@@ -67,7 +67,7 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true, type: 'varchar', name: 'refresh_token' })
+  @Column({ nullable: true, type: 'varchar' }) // , name: 'refresh_token'
   @Exclude()
   refreshToken?: string | null;
   @BeforeUpdate()
@@ -84,7 +84,7 @@ export class User extends Base {
   @IsEmail()
   email?: string;
 
-  @Column({ name: 'phone_number' })
+  @Column() // { name: 'phone_number' }
   @ApiProperty({ example: faker.phone.number(), description: '' })
   @IsString()
   @MinLength(8)
@@ -103,18 +103,18 @@ export class User extends Base {
   @IsOptional()
   description?: string;
 
-  @Column({ nullable: true, name: 'role_code' })
+  @Column({ nullable: true }) // , name: 'role_code'
   @Expose()
   @IsString()
   @IsOptional()
   roleCode?: string;
 
   @ManyToOne(() => UserRole, (role) => role.users, { eager: true }) //
-  @JoinColumn({ name: 'role_code', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'roleCode', referencedColumnName: 'code' })
   @Type(() => UserRole)
   readonly role?: UserRole;
 
-  @Column({ nullable: true, name: 'position_code' })
+  @Column({ nullable: true }) // , name: 'position_code'
   @Expose()
   @ApiProperty({ example: 'DEV', description: '' })
   @IsString()
@@ -122,21 +122,21 @@ export class User extends Base {
   readonly positionCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
   readonly position?: Code;
 
-  @Column({ name: 'start_date' })
+  @Column() // { name: 'start_date' }
   @ApiProperty({ example: faker.date.past(), description: '' })
   @IsDateString()
   startDate?: Date;
 
-  @Column({ nullable: true, type: 'real', name: 'date_leave' })
+  @Column({ nullable: true, type: 'real' }) // , name: 'date_leave'
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsNumber()
   @IsOptional()
   dateLeave?: number;
 
-  @Column({ nullable: true, type: 'real', default: 0, name: 'date_off' })
+  @Column({ nullable: true, type: 'real', default: 0 }) // , name: 'date_off'
   @Expose()
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()

@@ -35,7 +35,7 @@ export class File extends Base {
   @Exclude()
   status: number;
 
-  @Column({ name: 'user_id' })
+  @Column() // { name: 'user_id' }
   @Exclude()
   userId?: string;
 

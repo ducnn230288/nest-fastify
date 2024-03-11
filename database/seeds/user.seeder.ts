@@ -91,8 +91,8 @@ import {
 export class UserSeeder implements Seeder {
   async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
     const dataRoleSuperAdmin: UserRole = {
-      name: 'Supper Admin',
-      code: 'supper_admin',
+      name: 'Super Admin',
+      code: 'super_admin',
       permissions: [
         P_AUTH_DELETE_IMAGE_TEMP,
 

@@ -140,7 +140,7 @@
     }
   },
   "layout": {
-    "footer": "Ari Technology Company Ltd. ©{{year}}"
+    "footer": "React Company Ltd. ©{{year}}"
   },
   "routes": {
     "auth": {

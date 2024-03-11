@@ -22,11 +22,11 @@ export class PaginationQueryDto {
 
   @IsOptional()
   @Transform(({ value }) => JSON.parse(value))
-  filter?: string | object;
+  filter?: string;
 
   @IsOptional()
   @Transform(({ value }) => JSON.parse(value))
-  sorts?: object;
+  sorts?: string;
 
   @IsOptional()
   @Transform(({ value }) => JSON.parse(value))

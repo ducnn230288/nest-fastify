@@ -39,9 +39,9 @@ export class PostTranslation extends Base {
     default: {},
   })
   @Expose({ groups: [MaxGroup] })
-  @ApiProperty({ example: [], description: '' })
+  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()
-  content?: { blocks: IEditor[] };
+  content?: string;
   @BeforeInsert()
   @BeforeUpdate()
   beforeContent?(): void {
@@ -52,13 +52,13 @@ export class PostTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column({ name: 'post_id' })
+  @Column() // { name: 'post_id' }
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()
   postId?: string;
 
   @ManyToOne(() => Post, (data) => data.translations, { eager: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'post_id' })
+  @JoinColumn()
   public post?: Post;
 }

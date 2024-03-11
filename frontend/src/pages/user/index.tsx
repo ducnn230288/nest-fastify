@@ -1,19 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Popconfirm, Select, Spin, Tooltip } from 'antd';
+import { Select, Spin, Tree } from 'antd';
 
 import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
+import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { PopConfirm } from '@core/pop-confirm';
+import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
   const userRoleFacade = UserRoleFacade();
@@ -72,56 +74,37 @@ const Page = () => {
           </div>
           <Spin spinning={userRoleFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
-              {userRoleFacade?.result?.data?.map((data, index) => (
-                <div
-                  key={data.id}
+              <Tree
+                blockNode
+                showLine
+                autoExpandParent
+                defaultExpandAll
+                switcherIcon={<Arrow className={'w-4 h-4'} />}
+                treeData={userRoleFacade.result?.data?.map((item: any) => ({
+                  title: item?.name,
+                  key: item?.code,
+                  value: item?.code,
+                  isLeaf: true,
+                  expanded: true,
+                  children: [],
+                }))}
+                titleRender={(data: any) => (<div
                   className={classNames(
-                    { 'bg-gray-100': request.filter.roleCode === data.code },
+                    { 'bg-gray-100': request.filter.roleCode === data.value },
                     'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
                   )}
                 >
                   <div
                     onClick={() => {
-                      request.filter.roleCode = data.code;
+                      request.filter.roleCode = data.value;
                       dataTableRef?.current?.onChange(request);
                     }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
                   >
-                    {index + 1}. {data.name}
+                    {data.title}
                   </div>
-                  {/*<span className="w-16 flex justify-end gap-1">*/}
-                  {/*  {user?.role?.permissions?.includes(keyRole.P_USER_ROLE_UPDATE) && (*/}
-                  {/*    <Tooltip title={t('routes.admin.Layout.Edit')}>*/}
-                  {/*      <button*/}
-                  {/*        className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}*/}
-                  {/*        title={t('routes.admin.Layout.Edit') || ''}*/}
-                  {/*        onClick={() => navigate(`/${lang}${routerLinks('Code')}/${data.id}/edit`)}*/}
-                  {/*      >*/}
-                  {/*        <Edit className="icon-cud bg-blue-600 hover:bg-blue-400" />*/}
-                  {/*      </button>*/}
-                  {/*    </Tooltip>*/}
-                  {/*  )}*/}
-                  {/*  {user?.role?.permissions?.includes(keyRole.P_USER_ROLE_DELETE) && (*/}
-                  {/*    <Tooltip title={t('routes.admin.Layout.Delete')}>*/}
-                  {/*      <Popconfirm*/}
-                  {/*        placement="left"*/}
-                  {/*        title={t('components.datatable.areYouSureWant')}*/}
-                  {/*        onConfirm={() => dataTableRef?.current?.handleDelete!(data.id || '')}*/}
-                  {/*        okText={t('components.datatable.ok')}*/}
-                  {/*        cancelText={t('components.datatable.cancel')}*/}
-                  {/*      >*/}
-                  {/*        <button*/}
-                  {/*          className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}*/}
-                  {/*          title={t('routes.admin.Layout.Delete') || ''}*/}
-                  {/*        >*/}
-                  {/*          <Trash className="icon-cud bg-red-600 hover:bg-red-400" />*/}
-                  {/*        </button>*/}
-                  {/*      </Popconfirm>*/}
-                  {/*    </Tooltip>*/}
-                  {/*  )}*/}
-                  {/*</span>*/}
-                </div>
-              ))}
+                </div>)}
+              />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">
               <Select
@@ -200,52 +183,6 @@ const Page = () => {
                   },
                 },
                 {
-                  title: 'routes.admin.team.Manager',
-                  name: 'manager',
-                  tableItem: {
-                    filter: {
-                      type: ETableFilterType.checkbox,
-                      name: 'positionCode',
-                      get: {
-                        facade: ManagerFacade,
-                        format: (item: any) => ({
-                          label: item.name,
-                          value: item.id,
-                        }),
-                        params: (fullTextSearch: string, value) => ({
-                          fullTextSearch,
-                          filter: { roleCode: 'manager' },
-                          extend: { id: value },
-                        }),
-                      },
-                    },
-                    sorter: true,
-                    render: (item) => item?.name,
-                  },
-                },
-                {
-                  title: 'routes.admin.user.Team',
-                  name: 'teams.id',
-                  tableItem: {
-                    filter: {
-                      type: ETableFilterType.checkbox,
-                      name: 'teams.id',
-                      get: {
-                        facade: UserTeamFacade,
-                        format: (item: any) => ({
-                          label: item.name,
-                          value: item.id,
-                        }),
-                        params: (fullTextSearch: string, value) => ({
-                          fullTextSearch,
-                          extend: { id: value },
-                        }),
-                      },
-                    },
-                    render: (data, item) => item.teams?.map((i: any) => i.name).join(','),
-                  },
-                },
-                {
                   title: 'Email',
                   name: 'email',
                   tableItem: {
@@ -279,21 +216,18 @@ const Page = () => {
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <Tooltip
+                          <ToolTip
                             title={t(
                               data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
                             )}
                           >
-                            <Popconfirm
-                              placement="left"
+                            <PopConfirm
                               title={t(
                                 !data.isDisabled
                                   ? 'components.datatable.areYouSureWantDisable'
                                   : 'components.datatable.areYouSureWantEnable',
                               )}
                               onConfirm={() => userFacade.putDisable({ id: data.id, disable: !data.isDisabled })}
-                              okText={t('components.datatable.ok')}
-                              cancelText={t('components.datatable.cancel')}
                             >
                               <button
                                 title={
@@ -308,11 +242,11 @@ const Page = () => {
                                   <Check className="icon-cud bg-green-600 hover:bg-green-400" />
                                 )}
                               </button>
-                            </Popconfirm>
-                          </Tooltip>
+                            </PopConfirm>
+                          </ToolTip>
                         )}
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <Tooltip title={t('routes.admin.Layout.Edit')}>
+                          <ToolTip destroyTooltipOnHide={true} title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
                               onClick={() =>
@@ -321,23 +255,20 @@ const Page = () => {
                             >
                               <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                             </button>
-                          </Tooltip>
+                          </ToolTip>
                         )}
 
                         {user?.role?.permissions?.includes(keyRole.P_USER_DELETE) && (
-                          <Tooltip title={t('routes.admin.Layout.Delete')}>
-                            <Popconfirm
-                              placement="left"
+                          <ToolTip title={t('routes.admin.Layout.Delete')}>
+                            <PopConfirm
                               title={t('components.datatable.areYouSureWant')}
                               onConfirm={() => dataTableRef?.current?.handleDelete(data.id)}
-                              okText={t('components.datatable.ok')}
-                              cancelText={t('components.datatable.cancel')}
                             >
                               <button title={t('routes.admin.Layout.Delete') || ''}>
                                 <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
                               </button>
-                            </Popconfirm>
-                          </Tooltip>
+                            </PopConfirm>
+                          </ToolTip>
                         )}
                       </div>
                     ),

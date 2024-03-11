@@ -11,20 +11,20 @@ export abstract class Base {
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   id?: string;
 
-  @DeleteDateColumn({ name: 'is_deleted' })
+  @DeleteDateColumn() // { name: 'is_deleted' }
   @Exclude()
   isDeleted?: Date;
 
-  @Column({ nullable: true, type: 'timestamp', name: 'is_disabled' })
+  @Column({ nullable: true, type: 'timestamp' }) // , name: 'is_disabled'
   @IsDateString()
   @IsOptional()
-  isDisabled?: Date;
+  isDisabled?: Date | null;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn() // { name: 'created_at' }
   @IsDateString()
   @IsOptional()
   createdAt?: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn() // { name: 'updated_at' }
   readonly updatedAt?: Date;
 }
