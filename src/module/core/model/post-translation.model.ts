@@ -39,9 +39,9 @@ export class PostTranslation extends Base {
     default: {},
   })
   @Expose({ groups: [MaxGroup] })
-  @ApiProperty({ example: [], description: '' })
+  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()
-  content?: { blocks: IEditor[] };
+  content?: string;
   @BeforeInsert()
   @BeforeUpdate()
   beforeContent?(): void {

@@ -8,19 +8,8 @@ export function setImage(value?: string, before = true): string | undefined {
   }
   return value;
 }
-export function setImageContent(value?: { blocks: IEditor[] }, before = true): { blocks: IEditor[] } | undefined {
-  if (value?.blocks) {
-    value.blocks = value?.blocks.map((item) => {
-      if (item.type === 'image') {
-        if (before && item?.data?.file?.url?.indexOf(appConfig.URL_FILE) === 0)
-          item.data.file.url = item.data.file.url.replace(appConfig.URL_FILE, '');
-        else if (!before && item?.data?.file?.url?.indexOf('http') === -1)
-          item.data.file.url = appConfig.URL_FILE + item.data.file.url;
-      }
-
-      return item;
-    });
-  }
+export function setImageContent(value?: string, before = true): string | undefined {
+  if (value) return value.replaceAll('src="' + (before ? appConfig.URL_FILE : ''), 'src="'+ (!before ? appConfig.URL_FILE : ''));
   return value;
 }
 export function getImages<T>(

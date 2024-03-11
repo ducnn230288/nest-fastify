@@ -77,7 +77,6 @@ export class AppController {
             SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
             translation: {
               ...translation,
-              content: this.renderEditor(translation!.content!.blocks),
             },
           };
         }),
@@ -190,7 +189,6 @@ export class AppController {
           translation: {
             ...translation,
             slug: url + translation!.slug,
-            content: this.renderEditor(translation!.content!.blocks),
           },
         },
       };
@@ -281,7 +279,6 @@ export class AppController {
               SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
               translation: {
                 ...translation,
-                content: this.renderEditor(translation!.content!.blocks),
               },
             };
           }),
@@ -377,24 +374,7 @@ export class AppController {
     };
   }
 
-  renderEditor(content: IEditor[]): string {
-    return content
-      .map(({ type, data }) => {
-        switch (type) {
-          case 'header':
-            return `<h${data.level}>${data.text}</h${data.level}>`;
-          case 'image':
-            return ` <a class="image glightbox" href=${data.file?.url} data-description=${
-              data.caption
-            }><img class="lazy" alt="${data.caption}" data-src="${data.file?.url}"/>${
-              data.caption ? '<span class="caption">' + data.caption + '</span>' : ''
-            }</a>`;
-          default:
-            return `<p>${data.text}</p>`;
-        }
-      })
-      .join('');
-  }
+
 }
 interface ICommon {
   title: string;
