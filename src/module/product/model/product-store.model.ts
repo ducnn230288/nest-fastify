@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { IsString, IsNumber, IsOptional, IsUUID, IsArray } from 'class-validator';
-import { Base, MaxGroup } from '@shared';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { Exclude, Expose } from 'class-transformer';
+import { Base } from '@shared';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Expose } from 'class-transformer';
 import { Order, Product, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity()
+@Entity({ schema: 'product' })
 export class ProductStore extends Base {
   @Column()
   @IsString()

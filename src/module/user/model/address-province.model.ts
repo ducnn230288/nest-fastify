@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { Address, AddressDistrict } from '@model';
+import { Address, AddressDistrict, OrderAddress } from '@model';
 
 @Entity({ schema: 'user' })
 @Unique(['code'])

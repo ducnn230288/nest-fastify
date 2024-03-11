@@ -4,6 +4,7 @@ import { SeederOptions } from 'typeorm-extension';
 import { appConfig, DbCustomLogger } from '@config';
 import { MainSeeder } from './main.seeder';
 import { Core1698359444654 } from './migrations/1698359444654-core';
+import { Product1710196497937 } from './migrations/1710196497937-product';
 import {
   Code,
   CodeType,
@@ -53,9 +54,6 @@ const options: DataSourceOptions & SeederOptions = {
     PostTranslation,
     PostType,
     File,
-    Province,
-    District,
-    Ward,
     ProductCategory,
     Order,
     Product,
@@ -63,7 +61,7 @@ const options: DataSourceOptions & SeederOptions = {
     OrderProduct,
     OrderAddress,
   ],
-  migrations: [Core1698359444654],
+  migrations: [Core1698359444654, Product1710196497937],
   seeds: [MainSeeder],
   factories: ['database/factories/**/*{.ts,.js}'],
   logging: ['error'],

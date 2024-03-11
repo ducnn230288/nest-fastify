@@ -7,7 +7,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { Base, MaxGroup } from '@shared';
 import { ProductCategory, OrderProduct, ProductStore } from '@model';
 
-@Entity()
+@Entity({ schema: 'product' })
 export class Product extends Base {
   @Column()
   @IsString()

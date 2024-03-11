@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { Base } from '@shared';
 import { Product } from '@model';
 
-@Entity()
+@Entity({ schema: 'product' })
 export class ProductCategory extends Base {
   @Column()
   @ApiProperty({ example: faker.person.fullName(), description: '' })

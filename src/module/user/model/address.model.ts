@@ -1,10 +1,9 @@
-import { AddressDistrict, AddressProvince, AddressWard, User } from '@model';
+import { AddressDistrict, AddressProvince, AddressWard, User, OrderAddress } from '@model';
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
 import { Base, MaxGroup } from '@shared';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Ward, OrderAddress } from '@model';
 import { IsOptional, IsString } from 'class-validator';
 
 @Entity({ schema: 'user' })

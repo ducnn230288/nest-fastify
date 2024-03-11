@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 import { Address, OrderAddress } from '@model';
 import { AddressProvince, AddressWard } from '@model';
 
-@Entity()
+@Entity({ schema: 'user' })
 @Unique(['code'])
 export class AddressDistrict extends Base {
   @Column()

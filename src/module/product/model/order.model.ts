@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker/locale/vi';
 import { IsOptional, IsUUID, IsString, IsNumber } from 'class-validator';
 import { customAlphabet } from 'nanoid';
 
-@Entity()
+@Entity({ schema: 'product' })
 export class Order extends Base {
   @Column({ name: 'user_id' })
   @IsUUID()

@@ -1,13 +1,13 @@
 import { Base } from '@shared';
 import { Type } from 'class-transformer';
-import { Column, OneToMany, Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsNumber, Max, Min } from 'class-validator';
 import { Order } from './order.model';
 import { Product } from './product.model';
 
-@Entity()
+@Entity({ schema: 'product' })
 export class OrderProduct extends Base {
   @Column({ name: 'product_id' })
   @ApiProperty({ example: faker.string.uuid(), description: '' })

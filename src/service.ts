@@ -16,9 +16,6 @@ export * from './module/user/service/address-ward.service';
 export * from './module/user/service/address.service';
 export * from './module/user/service/user.service';
 export * from './module/user/service/user-role.service';
-export * from './module/user/service/province.service';
-export * from './module/user/service/district.service';
-export * from './module/user/service/ward.service';
 
 export * from './module/user/service/address.service';
 
