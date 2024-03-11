@@ -40,7 +40,7 @@ export class ProductStore extends Base {
   @ApiProperty({ example: faker.image.url(), description: '' })
   avatar: string;
 
-  @Column({ name: 'user_id' })
+  @Column()//{ name: 'user_id' }
   @Expose()
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })

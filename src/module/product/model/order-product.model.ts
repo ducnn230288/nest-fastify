@@ -9,7 +9,7 @@ import { Product } from './product.model';
 
 @Entity({ schema: 'product' })
 export class OrderProduct extends Base {
-  @Column({ name: 'product_id' })
+  @Column() // { name: 'product_id' }
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   @Type(() => String)
@@ -19,7 +19,7 @@ export class OrderProduct extends Base {
   @Type(() => Product)
   readonly product?: Product;
 
-  @Column({ name: 'order_id' })
+  @Column() // { name: 'order_id' }
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
   @Type(() => String)

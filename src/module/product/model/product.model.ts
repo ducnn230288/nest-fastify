@@ -77,7 +77,7 @@ export class Product extends Base {
   @Expose()
   discount: number;
 
-  @Column({ name: 'product_category_id' })
+  @Column() // { name: 'product_category_id' }
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   productCategoryId: string;
@@ -86,10 +86,10 @@ export class Product extends Base {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  @JoinColumn({ name: 'product_category_id' })
+  @JoinColumn()
   public productCategory?: ProductCategory;
 
-  @Column({ name: 'product_store_id' })
+  @Column() // { name: 'product_store_id' }
   @ApiProperty({ example: faker.string.uuid() })
   @IsUUID()
   productStoreId: string;
@@ -98,7 +98,7 @@ export class Product extends Base {
     eager: false,
   })
   @Expose({ groups: [MaxGroup] })
-  @JoinColumn({ name: 'product_store_id' })
+  @JoinColumn()
   public productStore?: ProductStore;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
