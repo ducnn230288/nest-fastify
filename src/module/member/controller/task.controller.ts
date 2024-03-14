@@ -44,7 +44,7 @@ export class TaskController {
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
     @AuthUser() user: User,
   ): Promise<ListTaskResponseDto> {
-    paginationQuery.sorts = { order: 'ASC' };
+    paginationQuery.sorts = '{"order":"ASC"}';
     // if user is manager or have permission
     if (user.roleCode !== 'supper_admin' && user.role?.permissions?.includes(P_TASK_LISTED))
       paginationQuery.where = [{ managerId: user.id }];

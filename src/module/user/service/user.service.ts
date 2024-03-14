@@ -122,7 +122,7 @@ export class UserService extends BaseService<User> {
     }
 
     let oldData: User | null = null;
-    if (id) {
+    if (id && body instanceof UpdateUserRequestDto) {
       oldData = await this.findOne(id, []);
       if (body.managerId) {
         const user = await this.findOne(id, []);
