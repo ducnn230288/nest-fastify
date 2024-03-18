@@ -10,7 +10,7 @@ import { DataTable } from '@core/data-table';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
 import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { keyRole, lang, routerLinks } from '@utils';
+import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -19,15 +19,10 @@ import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
   const userRoleFacade = UserRoleFacade();
-  const { user, set, formatDate } = GlobalFacade();
+  const { user, formatDate } = GlobalFacade();
   useEffect(() => {
     if (!userRoleFacade?.result?.data) userRoleFacade.get({});
-    set({
-      breadcrumbs: [
-        { title: 'titles.User', link: '' },
-        { title: 'titles.User/List', link: '' },
-      ],
-    });
+    return () => { userFacade.set({isLoading: true, status: EStatusState.idle}) };
   }, []);
 
   const navigate = useNavigate();
@@ -38,7 +33,7 @@ const Page = () => {
     ) {
       navigate({
         pathname: `/${lang}${routerLinks('User')}`,
-        search: `?${createSearchParams({ filter: '{"roleCode":"staff"}' })}`,
+        search: `?${createSearchParams({ filter: '{"roleCode":"super_admin"}' })}`,
       });
       request.filter.roleCode = 'staff';
       dataTableRef?.current?.onChange(request);
@@ -47,6 +42,10 @@ const Page = () => {
 
   const userFacade = UserFacade();
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t( 'titles.User'),
+      [{ title: t('titles.User'), link: '' }, { title: t('titles.User/List'), link: '' }]
+    );
     switch (userFacade.status) {
       case EStatusState.deleteFulfilled:
       case EStatusState.putDisableFulfilled:
@@ -246,7 +245,7 @@ const Page = () => {
                           </ToolTip>
                         )}
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <ToolTip destroyTooltipOnHide={true} title={t('routes.admin.Layout.Edit')}>
+                          <ToolTip title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
                               onClick={() =>

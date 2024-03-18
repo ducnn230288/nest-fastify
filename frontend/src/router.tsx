@@ -1,10 +1,8 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import { Spin } from 'antd';
 import { routerLinks, lang, keyToken } from '@utils';
-import { useTranslation } from 'react-i18next';
-import { GlobalFacade } from '@store';
 
 const pages = [
   {
@@ -60,16 +58,6 @@ const pages = [
         path: routerLinks('Code'),
         component: React.lazy(() => import('@pages/code')),
         title: 'Code',
-      },
-      {
-        path: routerLinks('Code') + '/:type/add',
-        component: React.lazy(() => import('@pages/code/add')),
-        title: 'Code/Add',
-      },
-      {
-        path: routerLinks('Code') + '/:type/:id/edit',
-        component: React.lazy(() => import('@pages/code/add')),
-        title: 'Code/Edit',
       },
       {
         path: routerLinks('Data'),
@@ -157,21 +145,10 @@ const Layout = ({
 };
 
 const Page = ({
-  title = '',
   component: Comp,
 }: {
-  title: string;
   component: React.LazyExoticComponent<() => JSX.Element | undefined>;
-}) => {
-  const { t } = useTranslation();
-  const globalFacade = GlobalFacade();
-
-  useEffect(() => {
-    document.title = t('pages.' + title || '', globalFacade.titleOption || {});
-    globalFacade.set({ title });
-  }, [title, globalFacade.titleOption]);
-  return <Comp />;
-};
+}) => <Comp />;
 const Pages = () => {
   return (
     <HashRouter>
@@ -179,7 +156,7 @@ const Pages = () => {
         <Route path={'/:lang'}>
           {pages.map(({ layout, isPublic, child }, index) => (
             <Route key={index} element={<Layout layout={layout} isPublic={isPublic} />}>
-              {child.map(({ path = '', title = '', component }, subIndex: number) => (
+              {child.map(({ path = '', component }, subIndex: number) => (
                 <Route
                   key={path + subIndex}
                   path={'/:lang' + path}
@@ -194,7 +171,7 @@ const Pages = () => {
                       {typeof component === 'string' ? (
                         <Navigate to={'/' + lang + component} />
                       ) : (
-                        <Page title={title} component={component} />
+                        <Page component={component} />
                       )}
                     </Suspense>
                   }

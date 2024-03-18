@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 import dayjs from 'dayjs';
 
-import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { CodeFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
@@ -14,21 +14,21 @@ const Page = () => {
   const { id, roleCode } = useParams();
   const userFacade = UserFacade();
   const param = JSON.parse(userFacade.queryParams || `{"filter":"{\\"roleCode\\":\\"${roleCode}\\"}"}`);
-  const { set } = GlobalFacade();
   useEffect(() => {
     if (id) userFacade.getById({ id });
     else userFacade.set({ data: undefined });
-    set({
-      breadcrumbs: [
-        { title: 'titles.User', link: '' },
-        { title: id ? 'pages.User/Edit' : 'pages.User/Add', link: '' },
-      ],
-    });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t( id ? 'pages.User/Edit' : 'pages.User/Add'),
+      [
+        { title: t('titles.User'), link: '' },
+        { title:  t( id ? 'pages.User/Edit' : 'pages.User/Add'), link: '' },
+      ]
+    );
     switch (userFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -57,9 +57,6 @@ const Page = () => {
   }, []);
   useEffect(() => {
     if (userRoleFacade.result?.data?.length) {
-      set({
-        titleOption: { roleCode: userRoleFacade.result?.data?.filter((item) => item.code === roleCode)[0]?.name },
-      });
       if (!userRoleFacade?.result?.data?.filter((item) => item.code === roleCode).length) {
         navigate({
           pathname: location.hash

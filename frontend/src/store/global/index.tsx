@@ -70,11 +70,6 @@ interface ResetPassword {
   email?: string;
   otp?: string;
 }
-interface Breadcrumb {
-  title: string;
-  link: string;
-}
-
 export class User extends CommonEntity {
   constructor(
     public name?: string,
@@ -131,9 +126,7 @@ const initialState: State = {
   isLoading: false,
   isVisible: false,
   status: EStatusGlobal.idle,
-  title: '',
   pathname: '',
-  breadcrumbs: [],
   ...checkLanguage(lang),
 };
 export const globalSlice = createSlice({
@@ -325,12 +318,9 @@ interface State {
   isLoading?: boolean;
   isVisible?: boolean;
   status?: EStatusGlobal;
-  title?: string;
-  titleOption?: Record<string, string | undefined>;
   pathname?: string;
   formatDate?: string;
   language?: string;
-  breadcrumbs?: Breadcrumb[];
   locale?: typeof viVN | typeof enUS;
 }
 export const GlobalFacade = () => {

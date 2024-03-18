@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
-import { Data, DataFacade, DataTypeFacade, GlobalFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { Data, DataFacade, DataTypeFacade } from '@store';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
@@ -12,23 +12,23 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 const Page = () => {
   const { id, type } = useParams();
   const dataFacade = DataFacade();
-  const { set } = GlobalFacade();
   const param = JSON.parse(dataFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
   useEffect(() => {
     if (id) dataFacade.getById({ id });
     else dataFacade.set({ data: undefined });
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Data', link: '' },
-        { title: id ? 'pages.Data/Edit' : 'pages.Data/Add', link: '' },
-      ],
-    });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t( id ? 'pages.Data/Edit' : 'pages.Data/Add'),
+      [
+        { title: t('titles.Setting'), link: '' },
+        { title: t('titles.Data'), link: '' },
+        { title:  t( id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
+      ]
+    );
     switch (dataFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -59,7 +59,6 @@ const Page = () => {
   }, []);
   useEffect(() => {
     if (dataTypeFacade.result?.data?.length) {
-      set({ titleOption: { type: dataTypeFacade.result?.data?.filter((item) => item.code === type)[0]?.name } });
       if (!dataTypeFacade?.result?.data?.filter((item) => item.code === type).length) {
         navigate({
           pathname: location.hash

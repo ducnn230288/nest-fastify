@@ -8,6 +8,7 @@ import {
   Slider,
   Switch,
   TimePicker,
+  Spin,
 } from 'antd';
 import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,7 @@ export const Form = ({
   extendButton,
   idSubmit = 'idSubmit',
   disableSubmit = false,
+  spinning = false,
   formAnt,
 }: Type) => {
   const { t } = useTranslation();
@@ -670,83 +672,85 @@ export const Form = ({
   };
 
   return (
-    <AntForm
-      scrollToFirstError={true}
-      requiredMark={true}
-      className={classNames('p-2', className)}
-      form={form}
-      layout={!widthLabel ? 'vertical' : 'horizontal'}
-      onFinishFailed={(failed) =>
-        failed?.errorFields?.length && form?.scrollToField(failed?.errorFields[0].name, { behavior: 'smooth' })
-      }
-      onFinish={handFinish}
-      onValuesChange={async (objValue) => {
-        if (form && checkHidden) {
-          clearTimeout(timeout.current);
-          timeout.current = setTimeout(async () => {
-            for (const key in objValue) {
-              if (Object.prototype.hasOwnProperty.call(objValue, key))
-                columns.filter((_item: any) => _item.name === key);
-            }
-            refLoad.current = false;
-            set_columns(columns);
-            handleFilter();
-          }, 500);
+    <Spin spinning={spinning}>
+      <AntForm
+        scrollToFirstError={true}
+        requiredMark={true}
+        className={classNames(className)}
+        form={form}
+        layout={!widthLabel ? 'vertical' : 'horizontal'}
+        onFinishFailed={(failed) =>
+          failed?.errorFields?.length && form?.scrollToField(failed?.errorFields[0].name, { behavior: 'smooth' })
         }
-      }}
-    >
-      <div className={'group-input group-input-profile'}>
-        <div className={'grid gap-x-5 grid-cols-12 group-input'}>
-          {_columns.map(
-            (column: any, index: number) =>
-              (!column?.formItem?.condition ||
-                !!column?.formItem?.condition(values[column.name], form, index, values)) && (
-                <div
-                  className={classNames(
-                    'col-span-12 ' +
-                      (column?.formItem?.type || EFormType.text) +
-                      (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
-                      (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
-                  )}
-                  key={index}
-                >
-                  {generateForm(column, index)}
-                </div>
-              ),
-          )}
+        onFinish={handFinish}
+        onValuesChange={async (objValue) => {
+          if (form && checkHidden) {
+            clearTimeout(timeout.current);
+            timeout.current = setTimeout(async () => {
+              for (const key in objValue) {
+                if (Object.prototype.hasOwnProperty.call(objValue, key))
+                  columns.filter((_item: any) => _item.name === key);
+              }
+              refLoad.current = false;
+              set_columns(columns);
+              handleFilter();
+            }, 500);
+          }
+        }}
+      >
+        <div className={'group-input group-input-profile'}>
+          <div className={'grid gap-x-5 grid-cols-12 group-input'}>
+            {_columns.map(
+              (column: any, index: number) =>
+                (!column?.formItem?.condition ||
+                  !!column?.formItem?.condition(values[column.name], form, index, values)) && (
+                  <div
+                    className={classNames(
+                      'col-span-12 ' +
+                        (column?.formItem?.type || EFormType.text) +
+                        (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
+                        (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
+                    )}
+                    key={index}
+                  >
+                    {generateForm(column, index)}
+                  </div>
+                ),
+            )}
+          </div>
+
+          {extendForm && extendForm(values)}
         </div>
 
-        {extendForm && extendForm(values)}
-      </div>
-
-      <div
-        className={classNames('gap-2 flex sm:block', {
-          '!mt-5 items-center sm:flex-row': handCancel && handSubmit,
-          'md:inline-flex w-full justify-end': handSubmit,
-          'sm:w-auto text-center items-center sm:flex-row flex-col mt-5': handSubmit && extendButton,
-          '!w-full sm:inline-flex text-center justify-end items-center sm:flex-row mt-5':
-            !handSubmit && (handCancel || extendButton),
-        })}
-      >
-        {handCancel && (
-          <Button
-            text={t(textCancel)}
-            className={'sm:min-w-44 justify-center out-line !border-black w-3/5 sm:w-auto'}
-            onClick={handCancel}
-          />
-        )}
-        {extendButton && extendButton(form)}
-        {handSubmit && (
-          <Button
-            text={t(textSubmit)}
-            id={idSubmit}
-            onClick={() => form && form.submit()}
-            disabled={disableSubmit}
-            className={'sm:min-w-44 justify-center w-3/5 sm:w-auto '}
-          />
-        )}
-      </div>
-    </AntForm>
+        <div
+          className={classNames('gap-7 flex sm:block mt-2', {
+            'items-center sm:flex-row': handCancel && handSubmit,
+            'md:inline-flex w-full justify-end': handSubmit,
+            'sm:w-auto text-center items-center sm:flex-row flex-col': handSubmit && extendButton,
+            '!w-full sm:inline-flex text-center justify-end items-center sm:flex-row':
+              !handSubmit && (handCancel || extendButton),
+          })}
+        >
+          {handCancel && (
+            <Button
+              text={t(textCancel)}
+              className={'sm:min-w-32 justify-center out-line !border-black w-full sm:w-auto'}
+              onClick={handCancel}
+            />
+          )}
+          {extendButton && extendButton(form)}
+          {handSubmit && (
+            <Button
+              text={t(textSubmit)}
+              id={idSubmit}
+              onClick={() => form && form.submit()}
+              disabled={disableSubmit}
+              className={'sm:min-w-44 justify-center w-full sm:w-auto '}
+            />
+          )}
+        </div>
+      </AntForm>
+    </Spin>
   );
 };
 type Type = {
@@ -765,4 +769,5 @@ type Type = {
   extendButton?: (values: any) => JSX.Element;
   idSubmit?: string;
   disableSubmit?: boolean;
+  spinning?: boolean;
 };

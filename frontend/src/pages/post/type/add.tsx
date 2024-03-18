@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 import slug from 'slug';
 
-import { GlobalFacade, PostType, PostTypeFacade } from '@store';
-import { lang, loopMapSelect, routerLinks } from '@utils';
+import { PostType, PostTypeFacade } from '@store';
+import { lang, loopMapSelect, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
@@ -13,20 +13,12 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 const Page = () => {
   const { id } = useParams();
   const postTypeFacade = PostTypeFacade();
-  const { set } = GlobalFacade();
   const isReload = useRef(false);
   const param = JSON.parse(postTypeFacade.queryParams || '{}');
   useEffect(() => {
     if (!postTypeFacade.tree) postTypeFacade.getTree();
     if (id) postTypeFacade.getById({ id });
     else postTypeFacade.set({ data: undefined });
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Post', link: '' },
-        { title: id ? 'pages.Post/Edit' : 'pages.Post/Add', link: '' },
-      ],
-    });
     return () => {
       isReload.current && postTypeFacade.getTree();
     };
@@ -35,6 +27,13 @@ const Page = () => {
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t(id ? 'pages.Post/Edit' :  'pages.Post/Add'),
+      [
+        { title: t('titles.Setting'), link: '', },
+        { title: t('titles.Post'), link: '' },
+        { title:  t(id ? 'pages.Post/Edit' :  'pages.Post/Add'), link: '' }]
+    );
     switch (postTypeFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:

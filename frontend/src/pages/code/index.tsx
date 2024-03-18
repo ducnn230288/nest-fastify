@@ -1,50 +1,34 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Spin, Tree } from 'antd';
-import { useNavigate } from 'react-router';
+import { Drawer, Select, Spin, Tree } from 'antd';
 import classNames from 'classnames';
-import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import slug from 'slug';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { keyRole, lang, routerLinks } from '@utils';
-import { CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
+import { Form } from '@core/form';
+import { keyRole, renderTitleBreadcrumbs } from '@utils';
+import { Code, CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
 import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+import { EFormRuleType, EFormType, EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { PopConfirm } from '@core/pop-confirm';
 import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
-  const { user, set, formatDate } = GlobalFacade();
+  const { user, formatDate } = GlobalFacade();
   const codeTypeFacade = CodeTypeFacade();
   useEffect(() => {
     if (!codeTypeFacade.result?.data) codeTypeFacade.get({});
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Code', link: '' },
-      ],
-    });
+    return () => { codeFacade.set({isLoading: true, status: EStatusState.idle}) };
   }, []);
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (
-      codeTypeFacade?.result?.data?.length &&
-      !codeTypeFacade?.result?.data?.filter((item) => item.code === request.filter.type).length
-    ) {
-      navigate({
-        pathname: `/${lang}${routerLinks('Code')}`,
-        search: `?${createSearchParams({ filter: '{"type":"position"}' })}`,
-      });
-      request.filter.type = 'position';
-      dataTableRef?.current?.onChange(request);
-    }
-  }, [codeTypeFacade.result]);
 
   const codeFacade = CodeFacade();
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t('pages.Code'),
+      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Code'), link: '' }]
+    );
     switch (codeFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:
@@ -61,6 +45,53 @@ const Page = () => {
   const dataTableRef = useRef<TableRefObject>(null);
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
+      <Drawer
+        title={t(codeFacade.data ? 'pages.Code/Edit' : 'pages.Code/Add', { type: request.filter.type })}
+        onClose={() => codeFacade.set({ data: undefined, isVisible: false })}
+        open={codeFacade.isVisible}
+      >
+        <Form
+          spinning={codeFacade.isLoading}
+          values={{ ...codeFacade.data }}
+          className="intro-x"
+          columns={[
+            {
+              title: 'routes.admin.Code.Name',
+              name: 'name',
+              formItem: {
+                col: 6,
+                rules: [{ type: EFormRuleType.required }],
+                onBlur: (e, form) => {
+                  if (e.target.value && !form.getFieldValue('code')) {
+                    form.setFieldValue('code', slug(e.target.value).toUpperCase());
+                  }
+                },
+              },
+            },
+            {
+              title: 'titles.Code',
+              name: 'code',
+              formItem: {
+                col: 6,
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
+              },
+            },
+            {
+              title: 'routes.admin.user.Description',
+              name: 'description',
+              formItem: {
+                type: EFormType.textarea,
+              },
+            },
+          ]}
+          handSubmit={(values: Code) => {
+            if (codeFacade.data) codeFacade.put({ ...values, id: codeFacade.data.id, type: request.filter.type });
+            else codeFacade.post({ ...values, type: request.filter.type });
+          }}
+          disableSubmit={codeFacade.isLoading}
+          handCancel={() => codeFacade.set({ data: undefined, isVisible: false })}
+        />
+      </Drawer>
       <div className="col-span-12 md:col-span-4 lg:col-span-3 -intro-x">
         <div className="shadow rounded-xl w-full bg-white overflow-hidden">
           <div className="h-14 flex justify-between items-center border-b border-gray-100 px-4 py-2">
@@ -194,9 +225,7 @@ const Page = () => {
                           <ToolTip title={t('routes.admin.Layout.Edit')}>
                             <button
                               title={t('routes.admin.Layout.Edit') || ''}
-                              onClick={() =>
-                                navigate(`/${lang}${routerLinks('Code')}/${request.filter.type}/${data.id}/edit`)
-                              }
+                              onClick={() => codeFacade.getById({ id: data.id })}
                             >
                               <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                             </button>
@@ -225,7 +254,7 @@ const Page = () => {
                     <Button
                       icon={<Plus className="icon-cud !h-5 !w-5" />}
                       text={t('routes.admin.Layout.Add')}
-                      onClick={() => navigate(`/${lang}${routerLinks('Code')}/${request.filter.type}/add`)}
+                      onClick={() => codeFacade.set({ data: undefined, isVisible: true })}
                     />
                   )}
                 </div>

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
-import { DataType, DataTypeFacade, GlobalFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { DataType, DataTypeFacade } from '@store';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType } from '@models';
@@ -12,27 +12,25 @@ import { EStatusState, EFormRuleType } from '@models';
 const Page = () => {
   const { id } = useParams();
   const dataTypeFacade = DataTypeFacade();
-  const { set } = GlobalFacade();
   const isReload = useRef(false);
   const param = JSON.parse(dataTypeFacade.queryParams || '{}');
   useEffect(() => {
     if (id) dataTypeFacade.getById({ id });
     else dataTypeFacade.set({ data: undefined });
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Data', link: '' },
-        { title: id ? 'pages.Data/Edit' : 'pages.Data/Add', link: '' },
-      ],
-    });
-    return () => {
-      isReload.current && dataTypeFacade.get(param);
-    };
+    return () => { isReload.current && dataTypeFacade.get(param); };
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t(id ? t('pages.Data/Edit') : t('pages.Data/Add')),
+      [
+        { title: t('titles.Setting'), link: '' },
+        { title: t('titles.Data'), link: '' },
+        { title: t(id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
+      ]
+    );
     switch (dataTypeFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:

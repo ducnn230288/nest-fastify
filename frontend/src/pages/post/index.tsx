@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { keyRole, lang, routerLinks } from '@utils';
+import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
 import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
@@ -16,21 +16,19 @@ import { PopConfirm } from '@core/pop-confirm';
 import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
-  const { user, set, formatDate } = GlobalFacade();
+  const { user, formatDate } = GlobalFacade();
   const postTypeFacade = PostTypeFacade();
   useEffect(() => {
     if (!postTypeFacade.tree) postTypeFacade.getTree();
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Post', link: '' },
-      ],
-    });
+    return () => { postFacade.set({isLoading: true, status: EStatusState.idle}) };
   }, []);
 
   const navigate = useNavigate();
   const postFacade = PostFacade();
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t('titles.Post'),
+      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Post'), link: '' }]);
     switch (postFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:

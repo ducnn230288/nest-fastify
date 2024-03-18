@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { keyRole, lang, routerLinks } from '@utils';
+import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { DataFacade, DataTypeFacade, GlobalFacade } from '@store';
 import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
@@ -17,16 +17,11 @@ import { PopConfirm } from '@core/pop-confirm';
 import { ToolTip } from '@core/tooltip';
 
 const Page = () => {
-  const { user, set, formatDate } = GlobalFacade();
+  const { user, formatDate } = GlobalFacade();
   const dataTypeFacade = DataTypeFacade();
   useEffect(() => {
     if (!dataTypeFacade.result?.data) dataTypeFacade.get({});
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Data', link: '' },
-      ],
-    });
+    return () => { dataFacade.set({isLoading: true, status: EStatusState.idle}) };
   }, []);
 
   const navigate = useNavigate();
@@ -50,6 +45,10 @@ const Page = () => {
 
   const dataFacade = DataFacade();
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t('pages.Data'),
+      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Data'), link: '' }]
+    );
     switch (dataFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:

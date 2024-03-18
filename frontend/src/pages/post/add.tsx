@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router';
 import slug from 'slug';
 import { Spin } from 'antd';
 
-import { GlobalFacade, Post, PostFacade, PostTypeFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { Post, PostFacade, PostTypeFacade } from '@store';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
@@ -13,23 +13,22 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 const Page = () => {
   const { id, type } = useParams();
   const postFacade = PostFacade();
-  const { set } = GlobalFacade();
   const param = JSON.parse(postFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
   useEffect(() => {
     if (id) postFacade.getById({ id });
     else postFacade.set({ data: undefined });
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Post', link: '' },
-        { title: id ? 'pages.Post/Edit' : 'pages.Post/Add', link: '' },
-      ],
-    });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
+    renderTitleBreadcrumbs(
+      t(id ? 'pages.Post/Edit' :  'pages.Post/Add'),
+      [
+        { title: t('titles.Setting'), link: '', },
+        { title: t('titles.Post'), link: '' },
+        { title:  t(id ? 'pages.Post/Edit' :  'pages.Post/Add'), link: '' }]
+    );
     switch (postFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -59,7 +58,6 @@ const Page = () => {
   }, []);
   useEffect(() => {
     if (postTypeFacade.result?.data?.length) {
-      set({ titleOption: { type: postTypeFacade.result?.data?.filter((item) => item.code === type)[0]?.name } });
       if (!postTypeFacade?.result?.data?.filter((item) => item.code === type).length) {
         navigate({
           pathname: location.hash

@@ -10,7 +10,7 @@ export class Slice<T extends CommonEntity> {
   defaultState: State<T> = {
     result: {},
     data: undefined,
-    isLoading: false,
+    isLoading: true,
     isVisible: false,
     status: EStatusState.idle,
     queryParams: '',
@@ -40,10 +40,12 @@ export class Slice<T extends CommonEntity> {
             state: State<T>,
             action: PayloadAction<undefined, string, { arg: T; requestId: string; requestStatus: 'pending' }>,
           ) => {
-            state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
-            state.queryParams = JSON.stringify(action.meta.arg);
-            state.isLoading = true;
-            state.status = EStatusState.getPending;
+            if (!state.isLoading) {
+              state.isLoading = true;
+              state.status = EStatusState.getPending;
+            }
+            this.defaultState.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
+            this.defaultState.queryParams = JSON.stringify(action.meta.arg);
           },
         )
         .addCase(action.get.fulfilled, (state: State<T>, action: PayloadAction<Responses<T[]>>) => {
@@ -51,10 +53,14 @@ export class Slice<T extends CommonEntity> {
             state.result = action.payload;
             state.status = EStatusState.getFulfilled;
           } else state.status = EStatusState.idle;
+          state.time = this.defaultState.time;
+          state.queryParams = this.defaultState.queryParams;
           state.isLoading = false;
         })
         .addCase(action.get.rejected, (state: State) => {
           state.status = EStatusState.getRejected;
+          state.time = this.defaultState.time;
+          state.queryParams = this.defaultState.queryParams;
           state.isLoading = false;
         })
 
