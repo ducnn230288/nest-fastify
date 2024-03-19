@@ -1,10 +1,10 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsArray, IsInt, IsOptional, IsString, Min, IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { DataType, DataTranslation } from '@model';
+import { DataType, DataTranslation, User } from '@model';
 import { MaxGroup, Base, setImage } from '@shared';
 
 @Entity({ schema: 'core' })
@@ -46,6 +46,16 @@ export class Data extends Base {
   @JoinColumn({ name: 'type', referencedColumnName: 'code' })
   @Expose({ groups: [MaxGroup] })
   public item?: DataType;
+
+  @Column()
+  @Expose()
+  @IsUUID()
+  @IsOptional()
+  userId?: string;
+
+  @ManyToOne(() => User, (user) => user.datas)
+  @JoinColumn()
+  user?: User;
 
   @OneToMany(() => DataTranslation, (data) => data.data, { eager: true })
   @IsArray()

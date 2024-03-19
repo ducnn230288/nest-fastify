@@ -14,7 +14,7 @@ import {
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address } from '@model';
+import { UserRole, Code, Address, Data, Post, Parameter } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity({ schema: 'user' })
@@ -90,6 +90,16 @@ export class User extends Base {
   @IsOptional()
   description: string;
 
+  @Column({
+    type: 'jsonb',
+    array: false,
+    default: {},
+  })
+  @Expose()
+  @ApiProperty({ example: {}, description: '' })
+  @IsOptional()
+  skill?: { name: string; complete: boolean }[];
+
   @Column({ nullable: true }) // , name: 'role_code'
   @Expose()
   @IsString()
@@ -132,4 +142,16 @@ export class User extends Base {
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)
   readonly address?: Address[];
+
+  @OneToMany(() => Data, (data) => data.user)
+  @Type(() => Data)
+  datas?: Data[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  @Type(() => Post)
+  posts?: Post[];
+
+  @OneToMany(() => Parameter, (parameter) => parameter.user)
+  @Type(() => Parameter)
+  parameters?: Parameter[];
 }
