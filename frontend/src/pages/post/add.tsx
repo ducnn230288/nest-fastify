@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-import slug from 'slug';
 import { Spin } from 'antd';
 
 import { Post, PostFacade, PostTypeFacade } from '@store';
 import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
+import { EStatusState } from '@models';
+import _column from '@column/post';
 
 const Page = () => {
   const { id, type } = useParams();
@@ -74,75 +74,7 @@ const Page = () => {
         <Form
           values={{ ...postFacade.data }}
           className="intro-x"
-          columns={[
-            {
-              title: 'Created At',
-              name: 'createdAt',
-              formItem: {
-                col: 6,
-                type: EFormType.date,
-                rules: id ? [{ type: EFormRuleType.required }] : [],
-              },
-            },
-            {
-              title: 'Thumbnail Url',
-              name: 'thumbnailUrl',
-              formItem: {
-                col: 6,
-                type: EFormType.upload,
-              },
-            },
-            {
-              name: 'translations',
-              title: '',
-              formItem: {
-                type: EFormType.tab,
-                tab: 'language',
-                list: [
-                  { label: 'English', value: 'en' },
-                  { label: 'Vietnam', value: 'vn' },
-                ],
-                column: [
-                  { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
-                  {
-                    title: 'Name',
-                    name: 'name',
-                    formItem: {
-                      col: 6,
-                      rules: [{ type: EFormRuleType.required }],
-                      onBlur: (e, form, name) => {
-                        if (e.target.value && !form.getFieldValue(['translations', name[0], 'slug'])) {
-                          form.setFieldValue(['translations', name[0], 'slug'], slug(e.target.value));
-                        }
-                      },
-                    },
-                  },
-                  {
-                    title: 'Slug',
-                    name: 'slug',
-                    formItem: {
-                      col: 6,
-                      rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
-                    },
-                  },
-                  {
-                    title: 'Description',
-                    name: 'description',
-                    formItem: {
-                      type: EFormType.textarea,
-                    },
-                  },
-                  {
-                    title: 'Content',
-                    name: 'content',
-                    formItem: {
-                      type: EFormType.editor,
-                    },
-                  },
-                ],
-              },
-            },
-          ]}
+          columns={_column.form(id)}
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}

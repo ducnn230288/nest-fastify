@@ -55,8 +55,8 @@ export const DataTable = forwardRef(
       emptyText = 'No Data',
       onRow,
       pageSizeOptions = [],
-      pageSizeRender = (sizePage: number) => sizePage + ' / page',
-      pageSizeWidth = '115px',
+      pageSizeRender = (sizePage: number) => sizePage,
+      pageSizeWidth = '50px',
       paginationDescription = (from: number, to: number, total: number) => from + '-' + to + ' of ' + total + ' items',
       idElement = 'temp-' + uuidv4(),
       className = 'data-table',
@@ -133,10 +133,18 @@ export const DataTable = forwardRef(
           let wTable: number;
           const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
           const cols = tableRef.current?.querySelectorAll('col');
-          for (let i = 0; i < cols!.length; i++) {
-            if (!cols![i].style.width) cols![i].style.width = cols![i].clientWidth + 'px';
-          }
-          table!.style.width = tableRef.current?.clientWidth + 'px';
+          const widthTable = tableRef.current!.clientWidth - 1;
+          if (parseInt(table!.style.width.replace('px', '')) - widthTable < 100)
+            table!.style.width = widthTable + 'px';
+          let totalWidth = 0;
+          let number = 0
+          cols?.forEach((i) => {
+            if (i.style.width) totalWidth += parseInt(i.style.width.replace('px', ''));
+            if (!i.style.width) number += 1;
+          })
+          cols?.forEach((i) => {
+            if (!i.style.width) i.style.width = ((widthTable - totalWidth) / number) + 'px';
+          })
           for (let i = 0; i < dragging!.length; i++) {
             new Draggabilly(dragging![i], {
               axis: 'x',
@@ -168,7 +176,7 @@ export const DataTable = forwardRef(
               });
           }
         }, 10);
-    }, [data, result?.data]);
+    }, [data, result?.data, facade.status]);
 
     const onChange = (request?: PaginationQuery, changeNavigate = true) => {
       if (request) {

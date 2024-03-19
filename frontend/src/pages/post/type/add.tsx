@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
-import slug from 'slug';
 
 import { PostType, PostTypeFacade } from '@store';
-import { lang, loopMapSelect, renderTitleBreadcrumbs, routerLinks } from '@utils';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
+import { EStatusState } from '@models';
+import _column from '@column/post/type';
 
 const Page = () => {
   const { id } = useParams();
@@ -63,35 +63,7 @@ const Page = () => {
         <Form
           values={{ ...postTypeFacade.data }}
           className="intro-x"
-          columns={[
-            {
-              title: 'Name',
-              name: 'name',
-              formItem: {
-                rules: [{ type: EFormRuleType.required }],
-                onBlur: (e, form) => {
-                  if (e.target.value && !form.getFieldValue('code'))
-                    form.setFieldValue('code', slug(e.target.value).toUpperCase());
-                },
-              },
-            },
-            {
-              title: 'Code',
-              name: 'code',
-              formItem: {
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
-                type: id ? EFormType.hidden : EFormType.text,
-              },
-            },
-            {
-              title: 'Là nhánh con',
-              name: 'idChildren',
-              formItem: {
-                type: id ? EFormType.hidden : EFormType.treeSelect,
-                list: loopMapSelect(postTypeFacade?.tree),
-              },
-            },
-          ]}
+          columns={_column.form(id, postTypeFacade.tree)}
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}

@@ -7,7 +7,8 @@ import { Data, DataFacade, DataTypeFacade } from '@store';
 import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
+import { EStatusState } from '@models';
+import _column from '@column/data';
 
 const Page = () => {
   const { id, type } = useParams();
@@ -75,90 +76,7 @@ const Page = () => {
         <Form
           values={{ ...dataFacade.data }}
           className="intro-x"
-          columns={[
-            {
-              title: 'Name',
-              name: 'name',
-              formItem:
-                type === 'partner' || type === 'tech'
-                  ? {
-                      col: 6,
-                    }
-                  : undefined,
-            },
-            {
-              title: 'routes.admin.Data.Order',
-              name: 'order',
-              formItem: {
-                col: 6,
-                type: EFormType.number,
-              },
-            },
-            {
-              title: 'routes.admin.Data.Image',
-              name: 'image',
-              formItem: {
-                col: 6,
-                type: EFormType.upload,
-              },
-            },
-            {
-              name: 'translations',
-              title: '',
-              formItem:
-                type === 'partner' || type === 'tech'
-                  ? undefined
-                  : {
-                      type: EFormType.tab,
-                      tab: 'language',
-                      list: [
-                        { label: 'English', value: 'en' },
-                        { label: 'Vietnam', value: 'vn' },
-                      ],
-                      column: [
-                        { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
-                        {
-                          title: 'Name',
-                          name: 'name',
-                          formItem: {
-                            col: type === 'member' ? 6 : 12,
-                            rules: [{ type: EFormRuleType.required }],
-                          },
-                        },
-
-                        {
-                          title: 'Position',
-                          name: 'position',
-                          formItem:
-                            type === 'member'
-                              ? {
-                                  col: 6,
-                                }
-                              : undefined,
-                        },
-
-                        {
-                          title: 'Description',
-                          name: 'description',
-                          formItem: {
-                            type: EFormType.textarea,
-                          },
-                        },
-
-                        {
-                          title: 'Content',
-                          name: 'content',
-                          formItem:
-                            type === 'member'
-                              ? {
-                                  type: EFormType.editor,
-                                }
-                              : undefined,
-                        },
-                      ],
-                    },
-            },
-          ]}
+          columns={_column.form(type)}
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}

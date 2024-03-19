@@ -3,23 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { Select, Spin, Tree } from 'antd';
 
-import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
-import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
-import { Arrow, Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { EStatusState, TableRefObject } from '@models';
+import { GlobalFacade, UserFacade, UserRoleFacade } from '@store';
+import { Arrow, Plus } from '@svgs';
 import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { PopConfirm } from '@core/pop-confirm';
-import { ToolTip } from '@core/tooltip';
+import _column from '@column/user';
 
 const Page = () => {
   const userRoleFacade = UserRoleFacade();
-  const { user, formatDate } = GlobalFacade();
+  const { user } = GlobalFacade();
   useEffect(() => {
     if (!userRoleFacade?.result?.data) userRoleFacade.get({});
     return () => { userFacade.set({isLoading: true, status: EStatusState.idle}) };
@@ -35,7 +32,7 @@ const Page = () => {
         pathname: `/${lang}${routerLinks('User')}`,
         search: `?${createSearchParams({ filter: '{"roleCode":"super_admin"}' })}`,
       });
-      request.filter.roleCode = 'staff';
+      request.filter.roleCode = 'super_admin';
       dataTableRef?.current?.onChange(request);
     }
   }, [userRoleFacade?.result]);
@@ -129,151 +126,10 @@ const Page = () => {
               onRow={(record) => ({
                 onDoubleClick: () => navigate(`/${lang}${routerLinks('User')}/${record.id}/edit`),
               })}
-              pageSizeRender={(sizePage: number) => sizePage}
-              pageSizeWidth={'50px'}
-              xScroll={1100}
               paginationDescription={(from: number, to: number, total: number) =>
                 t('routes.admin.Layout.User', { from, to, total })
               }
-              columns={[
-                {
-                  title: `routes.admin.user.Full name`,
-                  name: 'name',
-                  tableItem: {
-                    filter: { type: ETableFilterType.search },
-                    width: 210,
-                    fixed: window.innerWidth > 767 ? 'left' : '',
-                    sorter: true,
-                    render: (text: string, item: any) => text && <Avatar src={item.avatar} text={item.name} />,
-                  },
-                },
-                {
-                  title: 'routes.admin.user.Position',
-                  name: 'position',
-                  tableItem: {
-                    width: 200,
-                    filter: {
-                      type: ETableFilterType.checkbox,
-                      name: 'positionCode',
-                      get: {
-                        facade: CodeFacade,
-                        format: (item: any) => ({
-                          label: item.name,
-                          value: item.code,
-                        }),
-                        params: (fullTextSearch: string, value) => ({
-                          fullTextSearch,
-                          filter: { type: 'position' },
-                          extend: { code: value },
-                        }),
-                      },
-                    },
-                    sorter: true,
-                    render: (item) => item?.name,
-                  },
-                },
-                {
-                  title: 'routes.admin.user.Role',
-                  name: 'role',
-                  tableItem: {
-                    width: 110,
-                    sorter: true,
-                    render: (item) => item?.name,
-                  },
-                },
-                {
-                  title: 'Email',
-                  name: 'email',
-                  tableItem: {
-                    filter: { type: ETableFilterType.search },
-                    sorter: true,
-                  },
-                },
-                {
-                  title: 'routes.admin.user.Phone Number',
-                  name: 'phoneNumber',
-                  tableItem: {
-                    filter: { type: ETableFilterType.search },
-                    sorter: true,
-                  },
-                },
-                {
-                  title: 'Created',
-                  name: 'createdAt',
-                  tableItem: {
-                    width: 120,
-                    filter: { type: ETableFilterType.date },
-                    sorter: true,
-                    render: (text) => dayjs(text).format(formatDate),
-                  },
-                },
-                {
-                  title: 'routes.admin.user.Action',
-                  tableItem: {
-                    width: 90,
-                    align: ETableAlign.center,
-                    render: (text: string, data) => (
-                      <div className={'flex gap-2'}>
-                        {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <ToolTip
-                            title={t(
-                              data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                            )}
-                          >
-                            <PopConfirm
-                              title={t(
-                                !data.isDisabled
-                                  ? 'components.datatable.areYouSureWantDisable'
-                                  : 'components.datatable.areYouSureWantEnable',
-                              )}
-                              onConfirm={() => userFacade.putDisable({ id: data.id, disable: !data.isDisabled })}
-                            >
-                              <button
-                                title={
-                                  t(
-                                    data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                                  ) || ''
-                                }
-                              >
-                                {data.isDisabled ? (
-                                  <Disable className="icon-cud bg-yellow-700 hover:bg-yellow-500" />
-                                ) : (
-                                  <Check className="icon-cud bg-green-600 hover:bg-green-400" />
-                                )}
-                              </button>
-                            </PopConfirm>
-                          </ToolTip>
-                        )}
-                        {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                          <ToolTip title={t('routes.admin.Layout.Edit')}>
-                            <button
-                              title={t('routes.admin.Layout.Edit') || ''}
-                              onClick={() =>
-                                navigate(`/${lang}${routerLinks('User')}/${request.filter.roleCode}/${data.id}/edit`)
-                              }
-                            >
-                              <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
-                            </button>
-                          </ToolTip>
-                        )}
-
-                        {user?.role?.permissions?.includes(keyRole.P_USER_DELETE) && (
-                          <ToolTip title={t('routes.admin.Layout.Delete')}>
-                            <PopConfirm
-                              title={t('components.datatable.areYouSureWant')}
-                              onConfirm={() => dataTableRef?.current?.handleDelete(data.id)}
-                            >
-                              <button title={t('routes.admin.Layout.Delete') || ''}>
-                                <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
-                              </button>
-                            </PopConfirm>
-                          </ToolTip>
-                        )}
-                      </div>
-                    ),
-                  },
-                },
-              ]}
+              columns={_column.table(request.filter.roleCode)}
               rightHeader={
                 <div className={'flex gap-2'}>
                   {user?.role?.permissions?.includes(keyRole.P_USER_CREATE) && (

@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
-import dayjs from 'dayjs';
 
-import { CodeFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { User, UserFacade, UserRoleFacade } from '@store';
 import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EStatusState, EFormRuleType, EFormType } from '@models';
+import { EStatusState } from '@models';
+import _column from '@column/user';
 
 const Page = () => {
   const { id, roleCode } = useParams();
@@ -73,129 +73,7 @@ const Page = () => {
         <Form
           values={{ ...userFacade.data }}
           className="intro-x"
-          columns={[
-            {
-              title: 'routes.admin.user.Full name',
-              name: 'name',
-              formItem: {
-                col: 6,
-                rules: [{ type: EFormRuleType.required }],
-              },
-            },
-            {
-              title: 'Email',
-              name: 'email',
-              formItem: {
-                col: 6,
-                rules: [
-                  { type: EFormRuleType.required },
-                  { type: EFormRuleType.email },
-                  { type: EFormRuleType.min, value: 6 },
-                ],
-              },
-            },
-            {
-              title: 'columns.auth.login.password',
-              name: 'password',
-              formItem: {
-                col: 6,
-                type: EFormType.password,
-                condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [{ type: EFormRuleType.required }],
-              },
-            },
-            {
-              title: 'columns.auth.register.retypedPassword',
-              name: 'retypedPassword',
-              formItem: {
-                placeholder: 'columns.auth.register.retypedPassword',
-                col: 6,
-                type: EFormType.password,
-                condition: (value: string, form, index: number, values) => !values?.id,
-                rules: [
-                  { type: EFormRuleType.required },
-                  { type: EFormRuleType.min, value: 8 },
-                  {
-                    type: EFormRuleType.custom,
-                    validator: ({ getFieldValue }) => ({
-                      validator(rule, value: string) {
-                        if (!value || (getFieldValue('password') === value && value.length >= 8)) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(t('components.form.ruleConfirmPassword'));
-                      },
-                    }),
-                  },
-                ],
-              },
-            },
-            {
-              title: 'Số điện thoại',
-              name: 'phoneNumber',
-              formItem: {
-                col: 6,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
-              },
-            },
-            {
-              title: 'routes.admin.user.Date of birth',
-              name: 'dob',
-              formItem: {
-                col: 6,
-                type: EFormType.date,
-                rules: [{ type: EFormRuleType.required }],
-                disabledDate: (current) => {
-                  return current && current >= dayjs().startOf('day');
-                },
-              },
-            },
-            {
-              title: 'routes.admin.user.Position',
-              name: 'positionCode',
-              formItem: {
-                col: 6,
-                type: EFormType.select,
-                rules: [{ type: EFormRuleType.required }],
-                get: {
-                  facade: CodeFacade,
-                  params: (fullTextSearch: string) => ({
-                    fullTextSearch,
-                    filter: { type: 'position' },
-                    extend: {},
-                  }),
-                  format: (item) => ({
-                    label: item.name,
-                    value: item.code,
-                  }),
-                },
-              },
-            },
-            {
-              title: 'routes.admin.user.Start Date',
-              name: 'startDate',
-              formItem: {
-                col: 6,
-                type: EFormType.date,
-                rules: [{ type: EFormRuleType.required }],
-              },
-            },
-            {
-              title: 'routes.admin.user.Description',
-              name: 'description',
-              formItem: {
-                col: 8,
-                type: EFormType.textarea,
-              },
-            },
-            {
-              name: 'avatar',
-              title: 'routes.admin.user.Upload avatar',
-              formItem: {
-                col: 4,
-                type: EFormType.upload,
-              },
-            },
-          ]}
+          columns={_column.form()}
           extendButton={(form) => (
             <Button
               text={t('components.button.Save and Add new')}
