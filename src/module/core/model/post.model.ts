@@ -1,10 +1,10 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString, IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { PostType, PostTranslation } from '@model';
+import { PostType, PostTranslation, User } from '@model';
 import { MaxGroup, Base, setImage } from '@shared';
 
 @Entity({ schema: 'core' })
@@ -28,6 +28,16 @@ export class Post extends Base {
   afterThumbnailUrl?(): void {
     this.thumbnailUrl = setImage(this.thumbnailUrl, false);
   }
+
+  @Column({ nullable: true })
+  @Expose()
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  @IsUUID()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn()
+  public user?: User;
 
   @ManyToOne(() => PostType, (dataType) => dataType.items, { eager: false })
   @JoinColumn({ name: 'type', referencedColumnName: 'code' })

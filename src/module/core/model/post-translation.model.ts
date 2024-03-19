@@ -1,7 +1,7 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { IsOptional, IsString, IsUUID, MaxLength, IsDateString } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 import { Post } from '@model';
@@ -10,6 +10,11 @@ import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class PostTranslation extends Base {
+  @Column()
+  @ApiProperty({ example: faker.string.alpha({ length: 10, casing: 'upper', exclude: ['A'] }), description: '' })
+  @IsString()
+  type?: string;
+
   @Column()
   @ApiProperty({ example: 'en', description: '' })
   @IsString()

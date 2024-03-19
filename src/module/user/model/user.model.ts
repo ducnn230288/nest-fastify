@@ -11,10 +11,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  IsArray,
 } from 'class-validator';
 import * as argon2 from 'argon2';
 
-import { UserRole, Code, Address } from '@model';
+import { UserRole, Code, Address, Data, Post, Parameter } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
 @Entity({ schema: 'user' })
@@ -90,6 +91,16 @@ export class User extends Base {
   @IsOptional()
   description: string;
 
+  @Column({
+    type: 'jsonb',
+    array: false,
+    default: [{}],
+  })
+  @Expose()
+  @ApiProperty({ example: [{ skill: 'JS', complete: 95 }], description: '' })
+  @IsOptional()
+  skill?: { name: string; complete: number }[];
+
   @Column({ nullable: true }) // , name: 'role_code'
   @Expose()
   @IsString()
@@ -132,4 +143,19 @@ export class User extends Base {
   @OneToMany(() => Address, (address) => address.user)
   @Type(() => Address)
   readonly address?: Address[];
+
+  @OneToMany(() => Data, (data) => data.user, { eager: true })
+  @JoinColumn()
+  @IsArray()
+  public datas?: Data[];
+
+  @OneToMany(() => Post, (post) => post.user, { eager: true })
+  @JoinColumn()
+  @IsArray()
+  public posts?: Post[];
+
+  @OneToMany(() => Parameter, (parameter) => parameter.user, { eager: true })
+  @JoinColumn()
+  @IsArray()
+  public parameters?: Parameter[];
 }

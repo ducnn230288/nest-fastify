@@ -1,9 +1,11 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { Base } from '@shared';
+import { Expose } from 'class-transformer';
+import { User } from '@model';
 
 @Entity({ schema: 'core' })
 export class Parameter extends Base {
@@ -24,4 +26,14 @@ export class Parameter extends Base {
   @IsString()
   @IsOptional()
   en?: string;
+
+  @Column()
+  @Expose()
+  @ApiProperty({ example: faker.string.uuid(), description: '' })
+  @IsUUID()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn()
+  public user?: User;
 }
