@@ -30,9 +30,7 @@ export class DataController {
   ): Promise<ListDataResponseDto> {
     if (user.roleCode != 'super_admin') paginationQuery.where = [{ userId: user.id }];
     // console.log(paginationQuery);
-    console.log('Datas');
     const [result, total] = await this.service.findAll(paginationQuery);
-    console.log(result);
     return {
       message: i18n.t('common.Get List Success'),
       count: total,

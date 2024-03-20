@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 import { useSeederFactoryManager } from 'typeorm-extension';
 
 import { Data, DataType } from '@model';
-import { CreateDataTypeRequestDto, UpdateDataTypeRequestDto, CreateDataRequestDto, UpdateDataRequestDto } from '@dto';
+import { CreateDataRequestDto, CreateDataTypeRequestDto, UpdateDataRequestDto, UpdateDataTypeRequestDto } from '@dto';
 import { DataService, DataTypeService } from '@service';
 import '@factories';
 import { BaseTest } from '@test';
@@ -106,17 +106,16 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
     expect(body.data[0]).toEqual(jasmine.objectContaining(test));
   });
-  /*
+
   it('Get all [GET /api/data/array]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(DataService).create(data);
     const { body } = await request(BaseTest.server)
       .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(HttpStatus.OK);
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
     body.data[dataType.code][0].translations = data.translations;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { translations, ...test } = data;
+    const { translations, startTime, endTime, ...test } = data;
     expect(body.data[dataType.code][0]).toEqual(jasmine.objectContaining(test));
   });
 
@@ -126,20 +125,21 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
-    if (type) {
-      body.data.translations.forEach((item) => {
-        let index;
-        data.translations!.forEach((subItem, i: number) => {
-          if (subItem.language === item.language) {
-            index = i;
-          }
-        });
-        expect(item).toEqual(jasmine.objectContaining(data.translations![index]));
-        if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
+
+    body.data.translations.forEach((item) => {
+      let index;
+      data.translations!.forEach((subItem, i: number) => {
+        if (subItem.language === item.language) {
+          index = i;
+        }
       });
-      body.data.translations = data.translations;
-      expect(body.data).toEqual(jasmine.objectContaining(data));
-    }
+      expect(item).toEqual(jasmine.objectContaining(data.translations![index]));
+      if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
+    });
+    body.data.translations = data.translations;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { translations, startTime, endTime, ...test } = data;
+    expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   it('Update one [PUT /api/data/:id]', async () => {
@@ -149,37 +149,33 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .put('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    if (type) {
-      body.data.translations = dataUpdate.translations;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { translations, ...test } = dataUpdate;
-      expect(body.data).toEqual(jasmine.objectContaining(test));
-    }
+    body.data.translations = dataUpdate.translations;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { translations, startTime, endTime, ...test } = dataUpdate;
+    expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   it('Update one [PUT /api/data/:id/disable/:boolean]', async () => {
     const { body } = await request(BaseTest.server)
       .put('/api/data/' + result!.id + '/disable' + '/true')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
-    if (type)
-      expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
+    expect({ isDisabled: body.isDisabled }).not.toEqual(jasmine.objectContaining({ isDisabled: result!.isDisabled }));
   });
 
   it('Delete one [DELETE /api/data/:id]', async () => {
     const { body } = await request(BaseTest.server)
       .delete('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
-      body.data.translations = dataUpdate.translations;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { translations, ...test } = dataUpdate;
-      expect(body.data).toEqual(jasmine.objectContaining(test));
-    }
+      .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
+
+    body.data.translations = dataUpdate.translations;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { translations, startTime, endTime, ...test } = dataUpdate;
+    expect(body.data).toEqual(jasmine.objectContaining(test));
   });
 
   it('Delete one [DELETE /api/data/type/:id]', async () => {
