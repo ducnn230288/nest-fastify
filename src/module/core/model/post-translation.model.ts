@@ -20,6 +20,11 @@ export class PostTranslation extends Base {
   @IsString()
   name: string;
 
+  @Column()
+  @ApiProperty({ example: faker.string.alpha({ length: 10, casing: 'upper', exclude: ['A'] }), description: '' })
+  @IsString()
+  type: string;
+
   @Column({ nullable: true })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()

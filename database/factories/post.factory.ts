@@ -6,20 +6,20 @@ export default setSeederFactory(Post, (faker) => {
 
   data.type = faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] });
   data.thumbnailUrl = faker.image.url();
-  data.translations = [
-    {
-      language: 'vn',
-      name: faker.lorem.sentence(4),
-      description: faker.lorem.paragraph(),
-      slug: faker.lorem.slug(),
-    },
-    {
-      language: 'en',
-      name: faker.lorem.sentence(4),
-      description: faker.lorem.paragraph(),
-      slug: faker.lorem.slug(),
-    },
-  ];
+  // data.translations = [
+  //   {
+  //     language: 'vn',
+  //     name: faker.lorem.sentence(4),
+  //     description: faker.lorem.paragraph(),
+  //     slug: faker.lorem.slug(),
+  //   },
+  //   {
+  //     language: 'en',
+  //     name: faker.lorem.sentence(4),
+  //     description: faker.lorem.paragraph(),
+  //     slug: faker.lorem.slug(),
+  //   },
+  // ];
 
   return data;
 });

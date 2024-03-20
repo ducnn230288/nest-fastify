@@ -7,6 +7,10 @@ export default setSeederFactory(Data, (faker) => {
   data.name = faker.person.jobType();
   data.type = faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] });
   data.image = faker.image.url();
+  data.icon = faker.image.url();
+  data.startTime = faker.date.past({years: 5, refDate: '2023-01-01T00:00:00.000Z'});
+  data.startTime = faker.date.past({years: 1});
+
   data.translations = [
     {
       language: 'vn',

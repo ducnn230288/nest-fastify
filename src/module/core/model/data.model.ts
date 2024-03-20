@@ -1,7 +1,7 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsArray, IsInt, IsOptional, IsString, Min, IsUUID } from 'class-validator';
+import { IsArray, IsInt, IsOptional, IsString, Min, IsUUID, IsDateString } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 import { DataType, DataTranslation, User } from '@model';
@@ -36,11 +36,28 @@ export class Data extends Base {
   }
 
   @Column({ nullable: true })
-  @ApiProperty({ example: faker.number.int({ min: 0 }), description: '' })
+  @ApiProperty({ example: faker.number.int({ max: 10, min: 0 }), description: '' })
   @IsInt()
   @Min(0)
   @IsOptional()
   order?: number;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: faker.date.soon(), description: '' })
+  @IsDateString()
+  @IsOptional()
+  startTime?: Date;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: faker.date.past(), description: '' })
+  @IsDateString()
+  @IsOptional()
+  endTime?: Date;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: faker.image.url(), description: '' })
+  @IsString()
+  icon?: string;
 
   @ManyToOne(() => DataType, (dataType) => dataType.items, { eager: false })
   @JoinColumn({ name: 'type', referencedColumnName: 'code' })

@@ -6,10 +6,15 @@ export function setImage(value?: string, before = true): string | undefined {
     if (before && value.indexOf(appConfig.URL_FILE) === 0) return value.replace(appConfig.URL_FILE, '');
     else if (!before && value.indexOf('http') === -1) return appConfig.URL_FILE + value;
   }
+  // console.log(value);
   return value;
 }
 export function setImageContent(value?: string, before = true): string | undefined {
-  if (value) return value.replaceAll('src="' + (before ? appConfig.URL_FILE : ''), 'src="'+ (!before ? appConfig.URL_FILE : ''));
+  if (value)
+    return value.replaceAll(
+      'src="' + (before ? appConfig.URL_FILE : ''),
+      'src="' + (!before ? appConfig.URL_FILE : ''),
+    );
   return value;
 }
 export function getImages<T>(

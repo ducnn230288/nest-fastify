@@ -9,8 +9,10 @@ import {
   UpdateDataRequestDto,
   ArrayDataResponseDto,
 } from '@dto';
-import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { DataService, P_DATA_LISTED, P_DATA_CREATE, P_DATA_UPDATE, P_DATA_DELETE, P_DATA_DETAIL } from '@service';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, AuthUser } from '@shared';
+import { User } from '@model';
+import { createLogger } from 'winston';
 
 @Headers('data')
 export class DataController {
@@ -18,15 +20,19 @@ export class DataController {
 
   @Auth({
     summary: 'Get List data',
-    permission: P_DATA_LISTED,
     serializeOptions: { groups: [] },
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @AuthUser() user: User,
   ): Promise<ListDataResponseDto> {
+    if (user.roleCode != 'super_admin') paginationQuery.where = [{ userId: user.id }];
+    // console.log(paginationQuery);
+    console.log('Datas');
     const [result, total] = await this.service.findAll(paginationQuery);
+    console.log(result);
     return {
       message: i18n.t('common.Get List Success'),
       count: total,
@@ -34,7 +40,7 @@ export class DataController {
     };
   }
 
-  @Public({
+  @Auth({
     summary: 'Get Array data',
     serializeOptions: { groups: [MaxGroup] },
   })
@@ -49,7 +55,7 @@ export class DataController {
     };
   }
 
-  @Public({
+  @Auth({
     summary: 'Get Detail data',
     serializeOptions: { groups: [MaxGroup] },
   })
@@ -63,22 +69,22 @@ export class DataController {
 
   @Auth({
     summary: 'Create data',
-    permission: P_DATA_CREATE,
   })
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateDataRequestDto,
+    @AuthUser() user: User,
   ): Promise<DataResponseDto> {
+    const data = Object.assign(body, { userId: user.id });
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.create(data),
     };
   }
 
   @Auth({
     summary: 'Update data',
-    permission: P_DATA_UPDATE,
   })
   @Put(':id')
   async update(
@@ -94,7 +100,6 @@ export class DataController {
 
   @Auth({
     summary: 'Update disable',
-    permission: P_DATA_UPDATE,
   })
   @Put(':id/disable/:boolean')
   async updateDisable(
@@ -110,7 +115,6 @@ export class DataController {
 
   @Auth({
     summary: 'Delete data',
-    permission: P_DATA_DELETE,
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<DataResponseDto> {
