@@ -27,13 +27,11 @@ const Page = () => {
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t(id ? 'pages.Post/Edit' :  'pages.Post/Add'),
-      [
-        { title: t('titles.Setting'), link: '', },
-        { title: t('titles.Post'), link: '' },
-        { title:  t(id ? 'pages.Post/Edit' :  'pages.Post/Add'), link: '' }]
-    );
+    renderTitleBreadcrumbs(t(id ? 'pages.Post/Edit' : 'pages.Post/Add'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Post'), link: '' },
+      { title: t(id ? 'pages.Post/Edit' : 'pages.Post/Add'), link: '' },
+    ]);
     switch (postTypeFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:

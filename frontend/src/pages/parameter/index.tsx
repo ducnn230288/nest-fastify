@@ -18,10 +18,10 @@ const Page = () => {
   const request = getQueryStringParams(location.search);
   useEffect(() => {
     if (!parameterFacade.result?.data) parameterFacade.get({});
-    renderTitleBreadcrumbs(
-      t('pages.Parameter'),
-      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Parameter'), link: '' }]
-    );
+    renderTitleBreadcrumbs(t('pages.Parameter'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Parameter'), link: '' },
+    ]);
     parameterFacade.getById({ id: request.code });
   }, []);
 
@@ -55,7 +55,8 @@ const Page = () => {
                 defaultExpandAll
                 switcherIcon={<Arrow className={'w-4 h-4'} />}
                 treeData={parameterFacade.result?.data?.map((item: any) => ({
-                  title: item?.code.toLowerCase()
+                  title: item?.code
+                    .toLowerCase()
                     .split(' ')
                     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' '),
@@ -65,25 +66,27 @@ const Page = () => {
                   expanded: true,
                   children: [],
                 }))}
-                titleRender={(data: any) => (<div
-                  className={classNames(
-                    { 'bg-gray-100': request.code === data.code },
-                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-                  )}
-                >
+                titleRender={(data: any) => (
                   <div
-                    onClick={() => {
-                      navigate({
-                        pathname: `/${lang}${routerLinks('Parameter')}`,
-                        search: `?${createSearchParams({ code: data.value! })}`,
-                      });
-                      parameterFacade.getById({ id: data.value! });
-                    }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    className={classNames(
+                      { 'bg-gray-100': request.code === data.code },
+                      'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
+                    )}
                   >
-                    {data.title}
+                    <div
+                      onClick={() => {
+                        navigate({
+                          pathname: `/${lang}${routerLinks('Parameter')}`,
+                          search: `?${createSearchParams({ code: data.value! })}`,
+                        });
+                        parameterFacade.getById({ id: data.value! });
+                      }}
+                      className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    >
+                      {data.title}
+                    </div>
                   </div>
-                </div>)}
+                )}
               />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">

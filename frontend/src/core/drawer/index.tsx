@@ -30,10 +30,8 @@ export const DrawerForm = forwardRef(
     return (
       <Drawer
         size={size}
-        footer={(
-          <div
-            className={classNames('gap-3 flex mt-2 items-center sm:flex-row justify-end')}
-          >
+        footer={
+          <div className={classNames('gap-3 flex mt-2 items-center sm:flex-row justify-end')}>
             <Button
               text={t(textCancel)}
               className={'sm:min-w-36 justify-center out-line !border-black w-full sm:w-auto'}
@@ -49,7 +47,7 @@ export const DrawerForm = forwardRef(
               className={'sm:min-w-48 justify-center w-full sm:w-auto'}
             />
           </div>
-        )}
+        }
         title={title}
         open={facade[keyState]}
         onClose={() => facade.set({ [keyData]: undefined, [keyState]: false })}

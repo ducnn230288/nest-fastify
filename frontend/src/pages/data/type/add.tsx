@@ -16,21 +16,20 @@ const Page = () => {
   const param = JSON.parse(dataTypeFacade.queryParams || '{}');
   useEffect(() => {
     if (id) dataTypeFacade.getById({ id });
-    else dataTypeFacade.set({ data: undefined });
-    return () => { isReload.current && dataTypeFacade.get(param); };
+    else dataTypeFacade.set({ data: undefined, isLoading: false });
+    return () => {
+      isReload.current && dataTypeFacade.get(param);
+    };
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t(id ? t('pages.Data/Edit') : t('pages.Data/Add')),
-      [
-        { title: t('titles.Setting'), link: '' },
-        { title: t('titles.Data'), link: '' },
-        { title: t(id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
-      ]
-    );
+    renderTitleBreadcrumbs(t(id ? t('pages.Data/Edit') : t('pages.Data/Add')), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Data'), link: '' },
+      { title: t(id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
+    ]);
     switch (dataTypeFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:

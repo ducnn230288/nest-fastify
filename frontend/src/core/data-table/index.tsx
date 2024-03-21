@@ -134,17 +134,16 @@ export const DataTable = forwardRef(
           const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
           const cols = tableRef.current?.querySelectorAll('col');
           const widthTable = tableRef.current!.clientWidth - 1;
-          if (parseInt(table!.style.width.replace('px', '')) - widthTable < 100)
-            table!.style.width = widthTable + 'px';
+          if (parseInt(table!.style.width.replace('px', '')) - widthTable < 100) table!.style.width = widthTable + 'px';
           let totalWidth = 0;
-          let number = 0
+          let number = 0;
           cols?.forEach((i) => {
             if (i.style.width) totalWidth += parseInt(i.style.width.replace('px', ''));
             if (!i.style.width) number += 1;
-          })
+          });
           cols?.forEach((i) => {
-            if (!i.style.width) i.style.width = ((widthTable - totalWidth) / number) + 'px';
-          })
+            if (!i.style.width) i.style.width = (widthTable - totalWidth) / number + 'px';
+          });
           for (let i = 0; i < dragging!.length; i++) {
             new Draggabilly(dragging![i], {
               axis: 'x',

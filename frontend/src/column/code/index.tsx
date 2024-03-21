@@ -51,11 +51,7 @@ export default {
           render: (text: string, data) => (
             <div className={'flex gap-2'}>
               {user?.role?.permissions?.includes(keyRole.P_CODE_UPDATE) && (
-                <ToolTip
-                  title={t(
-                    data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                  )}
-                >
+                <ToolTip title={t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled')}>
                   <PopConfirm
                     title={t(
                       !data.isDisabled
@@ -66,9 +62,7 @@ export default {
                   >
                     <button
                       title={
-                        t(
-                          data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                        ) || ''
+                        t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled') || ''
                       }
                     >
                       {data.isDisabled ? (
@@ -106,7 +100,7 @@ export default {
           ),
         },
       },
-    ]
+    ];
   },
   form: (): FormModel[] => {
     return [
@@ -116,9 +110,9 @@ export default {
         formItem: {
           col: 6,
           rules: [{ type: EFormRuleType.required }],
-          onBlur: (e, form) => {
-            if (e.target.value && !form.getFieldValue('code')) {
-              form.setFieldValue('code', slug(e.target.value).toUpperCase());
+          onBlur: (value, form) => {
+            if (value && !form.getFieldValue('code')) {
+              form.setFieldValue('code', slug(value).toUpperCase());
             }
           },
         },
@@ -138,6 +132,6 @@ export default {
           type: EFormType.textarea,
         },
       },
-    ]
+    ];
   },
-}
+};

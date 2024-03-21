@@ -16,19 +16,16 @@ const Page = () => {
   const param = JSON.parse(userFacade.queryParams || `{"filter":"{\\"roleCode\\":\\"${roleCode}\\"}"}`);
   useEffect(() => {
     if (id) userFacade.getById({ id });
-    else userFacade.set({ data: undefined });
+    else userFacade.set({ data: undefined, isLoading: false });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t( id ? 'pages.User/Edit' : 'pages.User/Add'),
-      [
-        { title: t('titles.User'), link: '' },
-        { title:  t( id ? 'pages.User/Edit' : 'pages.User/Add'), link: '' },
-      ]
-    );
+    renderTitleBreadcrumbs(t(id ? 'pages.User/Edit' : 'pages.User/Add'), [
+      { title: t('titles.User'), link: '' },
+      { title: t(id ? 'pages.User/Edit' : 'pages.User/Add'), link: '' },
+    ]);
     switch (userFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -44,8 +41,9 @@ const Page = () => {
 
   const handleBack = () => {
     userFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), roleCode })}).toString()}`);
-
+    navigate(
+      `/${lang}${routerLinks('User')}?${new URLSearchParams({ ...param, filter: JSON.stringify({ ...JSON.parse(param?.filter || '{}'), roleCode }) }).toString()}`,
+    );
   };
   const handleSubmit = (values: User) => {
     if (id) userFacade.put({ ...values, id, roleCode });

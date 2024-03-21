@@ -18,7 +18,9 @@ const Page = () => {
   const dataTypeFacade = DataTypeFacade();
   useEffect(() => {
     if (!dataTypeFacade.result?.data) dataTypeFacade.get({});
-    return () => { dataFacade.set({isLoading: true, status: EStatusState.idle}) };
+    return () => {
+      dataFacade.set({ isLoading: true, status: EStatusState.idle });
+    };
   }, []);
 
   const navigate = useNavigate();
@@ -42,10 +44,10 @@ const Page = () => {
 
   const dataFacade = DataFacade();
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t('pages.Data'),
-      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Data'), link: '' }]
-    );
+    renderTitleBreadcrumbs(t('pages.Data'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Data'), link: '' },
+    ]);
     switch (dataFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:
@@ -83,22 +85,24 @@ const Page = () => {
                   expanded: true,
                   children: [],
                 }))}
-                titleRender={(data: any) => (<div
-                  className={classNames(
-                    { 'bg-gray-100': request.filter.type === data.value },
-                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-                  )}
-                >
+                titleRender={(data: any) => (
                   <div
-                    onClick={() => {
-                      request.filter.type = data.value;
-                      dataTableRef?.current?.onChange(request);
-                    }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    className={classNames(
+                      { 'bg-gray-100': request.filter.type === data.value },
+                      'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
+                    )}
                   >
-                    {data.title}
+                    <div
+                      onClick={() => {
+                        request.filter.type = data.value;
+                        dataTableRef?.current?.onChange(request);
+                      }}
+                      className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    >
+                      {data.title}
+                    </div>
                   </div>
-                </div>)}
+                )}
               />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">

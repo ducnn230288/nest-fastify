@@ -17,15 +17,17 @@ const Page = () => {
   const codeTypeFacade = CodeTypeFacade();
   useEffect(() => {
     if (!codeTypeFacade.result?.data) codeTypeFacade.get({});
-    return () => { codeFacade.set({isLoading: true, status: EStatusState.idle}) };
+    return () => {
+      codeFacade.set({ isLoading: true, status: EStatusState.idle });
+    };
   }, []);
 
   const codeFacade = CodeFacade();
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t('pages.Code'),
-      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Code'), link: '' }]
-    );
+    renderTitleBreadcrumbs(t('pages.Code'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Code'), link: '' },
+    ]);
     switch (codeFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:
@@ -81,22 +83,24 @@ const Page = () => {
                   expanded: true,
                   children: [],
                 }))}
-                titleRender={(data: any) => (<div
-                  className={classNames(
-                    { 'bg-gray-100': request.filter.type === data.value },
-                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-                  )}
-                >
+                titleRender={(data: any) => (
                   <div
-                    onClick={() => {
-                      request.filter.type = data.value;
-                      dataTableRef?.current?.onChange(request);
-                    }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    className={classNames(
+                      { 'bg-gray-100': request.filter.type === data.value },
+                      'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
+                    )}
                   >
-                    {data.title}
+                    <div
+                      onClick={() => {
+                        request.filter.type = data.value;
+                        dataTableRef?.current?.onChange(request);
+                      }}
+                      className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    >
+                      {data.title}
+                    </div>
                   </div>
-                </div>)}
+                )}
               />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">

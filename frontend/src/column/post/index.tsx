@@ -30,9 +30,8 @@ export default {
               src={item.thumbnailUrl}
               text={
                 (item.translations.length &&
-                  item.translations?.filter(
-                    (item: any) => item?.language === localStorage.getItem('i18nextLng'),
-                  )[0].name) ||
+                  item.translations?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0]
+                    .name) ||
                 ''
               }
             />
@@ -47,9 +46,7 @@ export default {
           sorter: true,
           render: (_: string, item: any) =>
             item.translations.length
-              ? item.translations?.filter(
-                (item: any) => item?.language === localStorage.getItem('i18nextLng'),
-              )[0].slug
+              ? item.translations?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug
               : '',
         },
       },
@@ -71,11 +68,7 @@ export default {
           render: (text: string, data) => (
             <div className={'flex gap-2'}>
               {user?.role?.permissions?.includes(keyRole.P_POST_UPDATE) && (
-                <ToolTip
-                  title={t(
-                    data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                  )}
-                >
+                <ToolTip title={t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled')}>
                   <PopConfirm
                     title={t(
                       !data.isDisabled
@@ -86,9 +79,7 @@ export default {
                   >
                     <button
                       title={
-                        t(
-                          data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                        ) || ''
+                        t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled') || ''
                       }
                     >
                       {data.isDisabled ? (
@@ -126,7 +117,7 @@ export default {
           ),
         },
       },
-    ]
+    ];
   },
   form: (id?: string): FormModel[] => {
     return [
@@ -165,9 +156,9 @@ export default {
               formItem: {
                 col: 6,
                 rules: [{ type: EFormRuleType.required }],
-                onBlur: (e, form, name) => {
-                  if (e.target.value && !form.getFieldValue(['translations', name[0], 'slug'])) {
-                    form.setFieldValue(['translations', name[0], 'slug'], slug(e.target.value));
+                onBlur: (value, form, name) => {
+                  if (value && !form.getFieldValue(['translations', name[0], 'slug'])) {
+                    form.setFieldValue(['translations', name[0], 'slug'], slug(value));
                   }
                 },
               },
@@ -199,4 +190,4 @@ export default {
       },
     ];
   },
-}
+};

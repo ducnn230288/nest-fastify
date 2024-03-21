@@ -374,6 +374,7 @@ export const Form = ({
             checkedChildren={<Check className="h-5 w-5 fill-white" />}
             unCheckedChildren={<Times className="h-5 w-5 fill-white" />}
             defaultChecked={!!values && values[item.name || ''] === 1}
+            onChange={(e) => formItem.onChange && formItem.onChange(e, form, reRender)}
           />
         );
       case EFormType.otp:
@@ -390,10 +391,8 @@ export const Form = ({
             placeholder={
               t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
             }
-            onBlur={(e: React.FocusEvent<HTMLInputElement, Element>) =>
-              formItem.onBlur && formItem.onBlur(e, form, name)
-            }
-            onChange={(value: any) => formItem.onChange && formItem.onChange(value, form, reRender)}
+            onBlur={(e: any) => formItem.onBlur && formItem.onBlur(e.target.value, form, name)}
+            onChange={(e: any) => formItem.onChange && formItem.onChange(e.target.value, form, reRender)}
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
           />
         );
@@ -465,8 +464,8 @@ export const Form = ({
                   validator(_: any, value: any) {
                     if (!value) return Promise.resolve();
                     else if (/^\d+$/.test(value)) {
-                      if (value?.trim().length < 8)
-                        return Promise.reject(t('components.form.ruleMinNumberLength', { min: 8 }));
+                      if (value?.trim().length < 10)
+                        return Promise.reject(t('components.form.ruleMinNumberLength', { min: 10 }));
                       else if (value?.trim().length > 12)
                         return Promise.reject(t('components.form.ruleMaxNumberLength', { max: 12 }));
                       else return Promise.resolve();

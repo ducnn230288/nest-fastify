@@ -13,7 +13,7 @@ import { EFormRuleType, EFormType, ETableFilterType } from '@models';
 import dayjs from 'dayjs';
 
 const Page = () => {
-  const { user, isLoading, profile, status, putProfile, set, data, formatDate } = GlobalFacade();
+  const { user, isLoading, profile, status, putProfile, data, formatDate } = GlobalFacade();
   useEffect(() => {
     profile();
     renderTitleBreadcrumbs(t('pages.MyProfile'), []);

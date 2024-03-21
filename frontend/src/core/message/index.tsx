@@ -15,7 +15,7 @@ export const Message = {
     import('sweetalert2').then(({ default: Swal }) =>
       Swal.fire({
         icon: 'success',
-        timer: 3000,
+        timer: 1500,
         title,
         text,
         cancelButtonText,

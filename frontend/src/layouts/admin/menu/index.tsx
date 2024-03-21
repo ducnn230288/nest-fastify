@@ -48,7 +48,8 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
                   location.pathname.indexOf(`/${lang}${routerLinks(subItem.name)}`) > -1,
               },
             )}
-            onClick={() => location.pathname.indexOf(`/${lang}${routerLinks(subItem.name)}`) === -1 &&
+            onClick={() =>
+              location.pathname.indexOf(`/${lang}${routerLinks(subItem.name)}`) === -1 &&
               navigate({
                 pathname: `/${lang}${routerLinks(subItem.name)}`,
                 search: `?${createSearchParams(subItem.queryParams)}`,
@@ -84,7 +85,8 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
                     'fill-gray-300': location.pathname !== `/${lang}${routerLinks(item.name)}`,
                     'justify-center': isCollapsed,
                   })}
-                  onClick={() => location.pathname !== `/${lang}${routerLinks(item.name)}` &&
+                  onClick={() =>
+                    location.pathname !== `/${lang}${routerLinks(item.name)}` &&
                     navigate({
                       pathname: `/${lang}${routerLinks(item.name)}`,
                       search: `?${createSearchParams(item.queryParams)}`,

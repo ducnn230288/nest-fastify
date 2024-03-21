@@ -30,9 +30,8 @@ export default {
               text={
                 text ||
                 (item.translations.length &&
-                  item.translations?.filter(
-                    (item: any) => item?.language === localStorage.getItem('i18nextLng'),
-                  )[0].name) ||
+                  item.translations?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0]
+                    .name) ||
                 ''
               }
             />
@@ -65,11 +64,7 @@ export default {
           render: (text: string, data) => (
             <div className={'flex gap-2'}>
               {user?.role?.permissions?.includes(keyRole.P_DATA_UPDATE) && (
-                <ToolTip
-                  title={t(
-                    data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                  )}
-                >
+                <ToolTip title={t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled')}>
                   <PopConfirm
                     title={t(
                       !data.isDisabled
@@ -80,9 +75,7 @@ export default {
                   >
                     <button
                       title={
-                        t(
-                          data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                        ) || ''
+                        t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled') || ''
                       }
                     >
                       {data.isDisabled ? (
@@ -120,7 +113,7 @@ export default {
           ),
         },
       },
-    ]
+    ];
   },
   form: (type?: string): FormModel[] => {
     return [
@@ -130,8 +123,8 @@ export default {
         formItem:
           type === 'partner' || type === 'tech'
             ? {
-              col: 6,
-            }
+                col: 6,
+              }
             : undefined,
       },
       {
@@ -157,55 +150,55 @@ export default {
           type === 'partner' || type === 'tech'
             ? undefined
             : {
-              type: EFormType.tab,
-              tab: 'language',
-              list: [
-                { label: 'English', value: 'en' },
-                { label: 'Vietnam', value: 'vn' },
-              ],
-              column: [
-                { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
-                {
-                  title: 'Name',
-                  name: 'name',
-                  formItem: {
-                    col: type === 'member' ? 6 : 12,
-                    rules: [{ type: EFormRuleType.required }],
+                type: EFormType.tab,
+                tab: 'language',
+                list: [
+                  { label: 'English', value: 'en' },
+                  { label: 'Vietnam', value: 'vn' },
+                ],
+                column: [
+                  { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
+                  {
+                    title: 'Name',
+                    name: 'name',
+                    formItem: {
+                      col: type === 'member' ? 6 : 12,
+                      rules: [{ type: EFormRuleType.required }],
+                    },
                   },
-                },
 
-                {
-                  title: 'Position',
-                  name: 'position',
-                  formItem:
-                    type === 'member'
-                      ? {
-                        col: 6,
-                      }
-                      : undefined,
-                },
-
-                {
-                  title: 'Description',
-                  name: 'description',
-                  formItem: {
-                    type: EFormType.textarea,
+                  {
+                    title: 'Position',
+                    name: 'position',
+                    formItem:
+                      type === 'member'
+                        ? {
+                            col: 6,
+                          }
+                        : undefined,
                   },
-                },
 
-                {
-                  title: 'Content',
-                  name: 'content',
-                  formItem:
-                    type === 'member'
-                      ? {
-                        type: EFormType.editor,
-                      }
-                      : undefined,
-                },
-              ],
-            },
+                  {
+                    title: 'Description',
+                    name: 'description',
+                    formItem: {
+                      type: EFormType.textarea,
+                    },
+                  },
+
+                  {
+                    title: 'Content',
+                    name: 'content',
+                    formItem:
+                      type === 'member'
+                        ? {
+                            type: EFormType.editor,
+                          }
+                        : undefined,
+                  },
+                ],
+              },
       },
-    ]
+    ];
   },
-}
+};

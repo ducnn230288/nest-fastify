@@ -16,19 +16,17 @@ const Page = () => {
   const param = JSON.parse(postFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
   useEffect(() => {
     if (id) postFacade.getById({ id });
-    else postFacade.set({ data: undefined });
+    else postFacade.set({ data: undefined, isLoading: false });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t(id ? 'pages.Post/Edit' :  'pages.Post/Add'),
-      [
-        { title: t('titles.Setting'), link: '', },
-        { title: t('titles.Post'), link: '' },
-        { title:  t(id ? 'pages.Post/Edit' :  'pages.Post/Add'), link: '' }]
-    );
+    renderTitleBreadcrumbs(t(id ? 'pages.Post/Edit' : 'pages.Post/Add'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Post'), link: '' },
+      { title: t(id ? 'pages.Post/Edit' : 'pages.Post/Add'), link: '' },
+    ]);
     switch (postFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -44,7 +42,9 @@ const Page = () => {
 
   const handleBack = () => {
     postFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Post')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
+    navigate(
+      `/${lang}${routerLinks('Post')}?${new URLSearchParams({ ...param, filter: JSON.stringify({ ...JSON.parse(param?.filter || '{}'), type }) }).toString()}`,
+    );
   };
 
   const handleSubmit = (values: Post) => {

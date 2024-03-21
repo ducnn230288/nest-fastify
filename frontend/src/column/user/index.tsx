@@ -97,11 +97,7 @@ export default {
           render: (text: string, data) => (
             <div className={'flex gap-2'}>
               {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
-                <ToolTip
-                  title={t(
-                    data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                  )}
-                >
+                <ToolTip title={t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled')}>
                   <PopConfirm
                     title={t(
                       !data.isDisabled
@@ -112,9 +108,7 @@ export default {
                   >
                     <button
                       title={
-                        t(
-                          data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled',
-                        ) || ''
+                        t(data.isDisabled ? 'components.datatable.Disabled' : 'components.datatable.Enabled') || ''
                       }
                     >
                       {data.isDisabled ? (
@@ -130,9 +124,7 @@ export default {
                 <ToolTip title={t('routes.admin.Layout.Edit')}>
                   <button
                     title={t('routes.admin.Layout.Edit') || ''}
-                    onClick={() =>
-                      navigate(`/${lang}${routerLinks('User')}/${roleCode}/${data.id}/edit`)
-                    }
+                    onClick={() => navigate(`/${lang}${routerLinks('User')}/${roleCode}/${data.id}/edit`)}
                   >
                     <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                   </button>
@@ -155,7 +147,7 @@ export default {
           ),
         },
       },
-    ]
+    ];
   },
   form: (): FormModel[] => {
     const { t } = useTranslation();
@@ -282,6 +274,6 @@ export default {
           type: EFormType.upload,
         },
       },
-    ]
+    ];
   },
-}
+};

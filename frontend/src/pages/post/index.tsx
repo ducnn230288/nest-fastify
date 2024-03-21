@@ -19,15 +19,18 @@ const Page = () => {
   const postTypeFacade = PostTypeFacade();
   useEffect(() => {
     if (!postTypeFacade.tree) postTypeFacade.getTree();
-    return () => { postFacade.set({isLoading: true, status: EStatusState.idle}) };
+    return () => {
+      postFacade.set({ isLoading: true, status: EStatusState.idle });
+    };
   }, []);
 
   const navigate = useNavigate();
   const postFacade = PostFacade();
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t('titles.Post'),
-      [{ title: t('titles.Setting'), link: '', }, { title: t('titles.Post'), link: '' }]);
+    renderTitleBreadcrumbs(t('titles.Post'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Post'), link: '' },
+    ]);
     switch (postFacade.status) {
       case EStatusState.putFulfilled:
       case EStatusState.putDisableFulfilled:
@@ -73,50 +76,52 @@ const Page = () => {
                 defaultExpandAll
                 switcherIcon={<Arrow className={'w-4 h-4'} />}
                 treeData={postTypeFacade.tree}
-                titleRender={(data: any) => (<div
-                  className={classNames(
-                    { 'bg-gray-100': request.filter.type === data.code },
-                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-                  )}
-                >
+                titleRender={(data: any) => (
                   <div
-                    onClick={() => {
-                      request.filter.type = data.code;
-                      dataTableRef?.current?.onChange(request);
-                    }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    className={classNames(
+                      { 'bg-gray-100': request.filter.type === data.code },
+                      'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
+                    )}
                   >
-                    {data.name}
-                  </div>
-                  <div className="w-16 flex justify-end gap-1">
-                    {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_UPDATE) && (
-                      <ToolTip title={t('routes.admin.Layout.Edit')}>
-                        <button
-                          className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
-                          title={t('routes.admin.Layout.Edit') || ''}
-                          onClick={() => navigate(`/${lang}${routerLinks('PostType')}/${data.id}/edit`)}
-                        >
-                          <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
-                        </button>
-                      </ToolTip>
-                    )}
-                    {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
-                      <ToolTip title={t('routes.admin.Layout.Delete')}>
-                        <PopConfirm
-                          title={t('components.datatable.areYouSureWant')}
-                          onConfirm={() => postTypeFacade.delete(data.id!)}
-                        >
+                    <div
+                      onClick={() => {
+                        request.filter.type = data.code;
+                        dataTableRef?.current?.onChange(request);
+                      }}
+                      className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    >
+                      {data.name}
+                    </div>
+                    <div className="w-16 flex justify-end gap-1">
+                      {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_UPDATE) && (
+                        <ToolTip title={t('routes.admin.Layout.Edit')}>
                           <button
-                            className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}
-                            title={t('routes.admin.Layout.Delete') || ''}
+                            className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
+                            title={t('routes.admin.Layout.Edit') || ''}
+                            onClick={() => navigate(`/${lang}${routerLinks('PostType')}/${data.id}/edit`)}
                           >
-                            <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
+                            <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                           </button>
-                        </PopConfirm>
-                      </ToolTip>
-                    )}
+                        </ToolTip>
+                      )}
+                      {user?.role?.permissions?.includes(keyRole.P_POST_TYPE_DELETE) && !data.isPrimary && (
+                        <ToolTip title={t('routes.admin.Layout.Delete')}>
+                          <PopConfirm
+                            title={t('components.datatable.areYouSureWant')}
+                            onConfirm={() => postTypeFacade.delete(data.id!)}
+                          >
+                            <button
+                              className={'opacity-0 group-hover:opacity-100 transition-all duration-300'}
+                              title={t('routes.admin.Layout.Delete') || ''}
+                            >
+                              <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
+                            </button>
+                          </PopConfirm>
+                        </ToolTip>
+                      )}
+                    </div>
                   </div>
-                </div>)}
+                )}
               />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">

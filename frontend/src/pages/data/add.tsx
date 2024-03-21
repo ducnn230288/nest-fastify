@@ -16,20 +16,17 @@ const Page = () => {
   const param = JSON.parse(dataFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
   useEffect(() => {
     if (id) dataFacade.getById({ id });
-    else dataFacade.set({ data: undefined });
+    else dataFacade.set({ data: undefined, isLoading: false });
   }, [id]);
 
   const navigate = useNavigate();
   const isBack = useRef(true);
   useEffect(() => {
-    renderTitleBreadcrumbs(
-      t( id ? 'pages.Data/Edit' : 'pages.Data/Add'),
-      [
-        { title: t('titles.Setting'), link: '' },
-        { title: t('titles.Data'), link: '' },
-        { title:  t( id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
-      ]
-    );
+    renderTitleBreadcrumbs(t(id ? 'pages.Data/Edit' : 'pages.Data/Add'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Data'), link: '' },
+      { title: t(id ? 'pages.Data/Edit' : 'pages.Data/Add'), link: '' },
+    ]);
     switch (dataFacade.status) {
       case EStatusState.postFulfilled:
       case EStatusState.putFulfilled:
@@ -45,8 +42,9 @@ const Page = () => {
 
   const handleBack = () => {
     dataFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
-
+    navigate(
+      `/${lang}${routerLinks('Data')}?${new URLSearchParams({ ...param, filter: JSON.stringify({ ...JSON.parse(param?.filter || '{}'), type }) }).toString()}`,
+    );
   };
 
   const handleSubmit = (values: Data) => {
