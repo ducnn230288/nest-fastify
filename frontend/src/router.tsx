@@ -56,52 +56,12 @@ const pages = [
         component: React.lazy(() => import('@pages/data')),
       },
       {
-        path: routerLinks('Data') + '/:type/add',
-        component: React.lazy(() => import('@pages/data/add')),
-      },
-      {
-        path: routerLinks('Data') + '/:type/:id/edit',
-        component: React.lazy(() => import('@pages/data/add')),
-      },
-      {
-        path: routerLinks('DataType') + '/add',
-        component: React.lazy(() => import('@pages/data/type/add')),
-      },
-      {
-        path: routerLinks('DataType') + '/:id/edit',
-        component: React.lazy(() => import('@pages/data/type/add')),
-      },
-      {
         path: routerLinks('Post'),
         component: React.lazy(() => import('@pages/post')),
       },
       {
-        path: routerLinks('Post') + '/:type/add',
-        component: React.lazy(() => import('@pages/post/add')),
-      },
-      {
-        path: routerLinks('Post') + '/:type/:id/edit',
-        component: React.lazy(() => import('@pages/post/add')),
-      },
-      {
-        path: routerLinks('PostType') + '/add',
-        component: React.lazy(() => import('@pages/post/type/add')),
-      },
-      {
-        path: routerLinks('PostType') + '/:id/edit',
-        component: React.lazy(() => import('@pages/post/type/add')),
-      },
-      {
         path: routerLinks('User'),
         component: React.lazy(() => import('@pages/user')),
-      },
-      {
-        path: routerLinks('User') + '/:roleCode/add',
-        component: React.lazy(() => import('@pages/user/add')),
-      },
-      {
-        path: routerLinks('User') + '/:roleCode/:id/edit',
-        component: React.lazy(() => import('@pages/user/add')),
       },
     ], // 💬 generate link to here
   },

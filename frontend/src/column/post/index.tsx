@@ -6,17 +6,15 @@ import React from 'react';
 import { GlobalFacade, PostFacade } from '@store';
 import { useTranslation } from 'react-i18next';
 import slug from 'slug';
-import { keyRole, lang, routerLinks } from '@utils';
+import { keyRole } from '@utils';
 import { ToolTip } from '@core/tooltip';
 import { PopConfirm } from '@core/pop-confirm';
-import { useNavigate } from 'react-router';
 
 export default {
   table: (): DataTableModel[] => {
     const { formatDate, user } = GlobalFacade();
     const { t } = useTranslation();
     const postFacade = PostFacade();
-    const navigate = useNavigate();
 
     return [
       {
@@ -95,7 +93,7 @@ export default {
                 <ToolTip title={t('routes.admin.Layout.Edit')}>
                   <button
                     title={t('routes.admin.Layout.Edit') || ''}
-                    onClick={() => navigate(`/${lang}${routerLinks('Post')}/${data.type}/${data.id}/edit`)}
+                    onClick={() => postFacade.getById({ id: data.id })}
                   >
                     <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                   </button>

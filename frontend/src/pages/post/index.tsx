@@ -1,18 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Spin, Tree, TreeSelect } from 'antd';
-import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
+import { keyRole, renderTitleBreadcrumbs } from '@utils';
 import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
 import { Arrow, Edit, Plus, Trash } from '@svgs';
 import { EStatusState, TableRefObject } from '@models';
 import { PopConfirm } from '@core/pop-confirm';
 import { ToolTip } from '@core/tooltip';
 import _column from '@column/post';
+import _columnType from '@column/post/type';
+import { DrawerForm } from '@core/drawer';
 
 const Page = () => {
   const { user } = GlobalFacade();
@@ -24,7 +25,6 @@ const Page = () => {
     };
   }, []);
 
-  const navigate = useNavigate();
   const postFacade = PostFacade();
   useEffect(() => {
     renderTitleBreadcrumbs(t('titles.Post'), [
@@ -42,6 +42,8 @@ const Page = () => {
   }, [postFacade.status]);
   useEffect(() => {
     switch (postTypeFacade.status) {
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
       case EStatusState.deleteFulfilled:
         postTypeFacade.getTree();
         break;
@@ -55,16 +57,35 @@ const Page = () => {
 
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
+      <DrawerForm
+        facade={postTypeFacade}
+        columns={_columnType.form(postTypeFacade.data?.id, postTypeFacade.tree)}
+        title={t(postTypeFacade.data ? 'pages.Post/Edit' : 'pages.Post/Add', { type: '' })}
+        onSubmit={(values) => {
+          if (postTypeFacade.data) postTypeFacade.put({ ...values, id: postTypeFacade.data.id });
+          else postTypeFacade.post({ ...values });
+        }}
+      />
+      <DrawerForm
+        size={'large'}
+        facade={postFacade}
+        columns={_column.form(postFacade.data?.id)}
+        title={t(postFacade.data ? 'pages.Post/Edit' : 'pages.Post/Add', { type: request.filter.type })}
+        onSubmit={(values) => {
+          if (postFacade.data) postFacade.put({ ...values, id: postFacade.data.id, type: request.filter.type });
+          else postFacade.post({ ...values, type: request.filter.type });
+        }}
+      />
       <div className="col-span-12 md:col-span-4 lg:col-span-3 -intro-x">
         <div className="shadow rounded-xl w-full bg-white overflow-hidden">
           <div className="h-14 flex justify-between items-center border-b border-gray-100 px-4 py-2">
             <h3 className={'font-bold text-lg'}>Post Type</h3>
             <div className="flex items-center">
-              {/*<Button*/}
-              {/*  icon={<Plus className="icon-cud !h-5 !w-5" />}*/}
-              {/*  text={t('routes.admin.Code.New Type')}*/}
-              {/*  onClick={() => navigate(`/${lang}${routerLinks('PostType')}/add`)}*/}
-              {/*/>*/}
+              <Button
+                icon={<Plus className="icon-cud !h-5 !w-5" />}
+                text={t('routes.admin.Code.New Type')}
+                onClick={() => postTypeFacade.set({ data: undefined, isVisible: true })}
+              />
             </div>
           </div>
           <Spin spinning={postTypeFacade.isLoading}>
@@ -98,7 +119,7 @@ const Page = () => {
                           <button
                             className={'opacity-0 group-hover:opacity-100 transition-all duration-300 '}
                             title={t('routes.admin.Layout.Edit') || ''}
-                            onClick={() => navigate(`/${lang}${routerLinks('PostType')}/${data.id}/edit`)}
+                            onClick={() => postTypeFacade.getById({ id: data.id })}
                           >
                             <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                           </button>
@@ -155,7 +176,7 @@ const Page = () => {
                     <Button
                       icon={<Plus className="icon-cud !h-5 !w-5" />}
                       text={t('components.button.New')}
-                      onClick={() => navigate(`/${lang}${routerLinks('Post')}/${request.filter.type}/add`)}
+                      onClick={() => postFacade.set({ data: undefined, isVisible: true })}
                     />
                   )}
                 </div>

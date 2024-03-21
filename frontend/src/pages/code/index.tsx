@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Drawer, Select, Spin, Tree } from 'antd';
+import { Select, Spin, Tree } from 'antd';
 import classNames from 'classnames';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { Form } from '@core/form';
 import { keyRole, renderTitleBreadcrumbs } from '@utils';
-import { Code, CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
+import { CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
 import { Arrow, Plus } from '@svgs';
 import { EStatusState, TableRefObject } from '@models';
 import _column from '@column/code';
+import { DrawerForm } from '@core/drawer';
 
 const Page = () => {
   const { user } = GlobalFacade();
@@ -44,24 +44,15 @@ const Page = () => {
   const dataTableRef = useRef<TableRefObject>(null);
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
-      <Drawer
+      <DrawerForm
+        facade={codeFacade}
+        columns={_column.form()}
         title={t(codeFacade.data ? 'pages.Code/Edit' : 'pages.Code/Add', { type: request.filter.type })}
-        onClose={() => codeFacade.set({ data: undefined, isVisible: false })}
-        open={codeFacade.isVisible}
-      >
-        <Form
-          spinning={codeFacade.isLoading}
-          values={{ ...codeFacade.data }}
-          className="intro-x"
-          columns={_column.form()}
-          handSubmit={(values: Code) => {
-            if (codeFacade.data) codeFacade.put({ ...values, id: codeFacade.data.id, type: request.filter.type });
-            else codeFacade.post({ ...values, type: request.filter.type });
-          }}
-          disableSubmit={codeFacade.isLoading}
-          handCancel={() => codeFacade.set({ data: undefined, isVisible: false })}
-        />
-      </Drawer>
+        onSubmit={(values) => {
+          if (codeFacade.data) codeFacade.put({ ...values, id: codeFacade.data.id, type: request.filter.type });
+          else codeFacade.post({ ...values, type: request.filter.type });
+        }}
+      />
       <div className="col-span-12 md:col-span-4 lg:col-span-3 -intro-x">
         <div className="shadow rounded-xl w-full bg-white overflow-hidden">
           <div className="h-14 flex justify-between items-center border-b border-gray-100 px-4 py-2">

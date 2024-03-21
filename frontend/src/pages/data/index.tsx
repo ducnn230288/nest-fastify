@@ -12,6 +12,7 @@ import { DataFacade, DataTypeFacade, GlobalFacade } from '@store';
 import { Arrow, Plus } from '@svgs';
 import { EStatusState, TableRefObject } from '@models';
 import _column from '@column/data';
+import { DrawerForm } from '@core/drawer';
 
 const Page = () => {
   const { user } = GlobalFacade();
@@ -64,6 +65,16 @@ const Page = () => {
   const dataTableRef = useRef<TableRefObject>(null);
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
+      <DrawerForm
+        size={request.filter.type !== 'partner' && request.filter.type !== 'tech' ? 'large' : undefined}
+        facade={dataFacade}
+        columns={_column.form(request.filter.type)}
+        title={t(dataFacade.data ? 'pages.Data/Edit' : 'pages.Data/Add', { type: request.filter.type })}
+        onSubmit={(values) => {
+          if (dataFacade.data) dataFacade.put({ ...values, id: dataFacade.data.id, type: request.filter.type });
+          else dataFacade.post({ ...values, type: request.filter.type });
+        }}
+      />
       <div className="col-span-12 md:col-span-4 lg:col-span-3 -intro-x">
         <div className="shadow rounded-xl w-full bg-white overflow-hidden">
           <div className="h-14 flex justify-between items-center border-b border-gray-100 px-4 py-2">
@@ -135,7 +146,7 @@ const Page = () => {
                     <Button
                       icon={<Plus className="icon-cud !h-5 !w-5" />}
                       text={t('components.button.New')}
-                      onClick={() => navigate(`/${lang}${routerLinks('Data')}/${request.filter.type}/add`)}
+                      onClick={() => dataFacade.set({ data: undefined, isVisible: true })}
                     />
                   )}
                 </div>

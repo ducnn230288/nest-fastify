@@ -6,8 +6,7 @@ import { Check, Disable, Edit, Trash } from '@svgs';
 import React from 'react';
 import { DataFacade, GlobalFacade } from '@store';
 import { useTranslation } from 'react-i18next';
-import { keyRole, lang, routerLinks } from '@utils';
-import { useNavigate } from 'react-router';
+import { keyRole } from '@utils';
 import { Avatar } from '@core/avatar';
 
 export default {
@@ -15,7 +14,6 @@ export default {
     const { formatDate, user } = GlobalFacade();
     const { t } = useTranslation();
     const dataFacade = DataFacade();
-    const navigate = useNavigate();
 
     return [
       {
@@ -91,7 +89,7 @@ export default {
                 <ToolTip title={t('routes.admin.Layout.Edit')}>
                   <button
                     title={t('routes.admin.Layout.Edit') || ''}
-                    onClick={() => navigate(`/${lang}${routerLinks('Data')}/${data.type}/${data.id}/edit`)}
+                    onClick={() => dataFacade.getById({ id: data.id })}
                   >
                     <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                   </button>
@@ -120,18 +118,13 @@ export default {
       {
         title: 'Name',
         name: 'name',
-        formItem:
-          type === 'partner' || type === 'tech'
-            ? {
-                col: 6,
-              }
-            : undefined,
+        formItem: type === 'partner' || type === 'tech' ? {} : undefined,
       },
       {
         title: 'routes.admin.Data.Order',
         name: 'order',
         formItem: {
-          col: 6,
+          col: type === 'partner' || type === 'tech' ? 12 : 6,
           type: EFormType.number,
         },
       },
@@ -139,7 +132,7 @@ export default {
         title: 'routes.admin.Data.Image',
         name: 'image',
         formItem: {
-          col: 6,
+          col: type === 'partner' || type === 'tech' ? 12 : 6,
           type: EFormType.upload,
         },
       },

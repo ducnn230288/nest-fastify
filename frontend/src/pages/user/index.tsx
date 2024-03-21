@@ -13,6 +13,7 @@ import { keyRole, lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
 import _column from '@column/user';
+import { DrawerForm } from '@core/drawer';
 
 const Page = () => {
   const userRoleFacade = UserRoleFacade();
@@ -46,6 +47,8 @@ const Page = () => {
       { title: t('titles.User/List'), link: '' },
     ]);
     switch (userFacade.status) {
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
       case EStatusState.deleteFulfilled:
       case EStatusState.putDisableFulfilled:
         dataTableRef?.current?.onChange(request);
@@ -58,17 +61,19 @@ const Page = () => {
   const dataTableRef = useRef<TableRefObject>(null);
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>
+      <DrawerForm
+        facade={userFacade}
+        columns={_column.form()}
+        title={t(userFacade.data ? 'pages.User/Edit' : 'pages.User/Add', { roleCode: request.filter.roleCode })}
+        onSubmit={(values) => {
+          if (userFacade.data) userFacade.put({ ...values, id: userFacade.data.id, roleCode: request.filter.roleCode });
+          else userFacade.post({ ...values, roleCode: request.filter.roleCode });
+        }}
+      />
       <div className="col-span-12 md:col-span-4 lg:col-span-3 -intro-x">
         <div className="shadow rounded-xl w-full bg-white overflow-hidden">
           <div className="h-14 flex justify-between items-center border-b border-gray-100 px-4 py-2">
             <h3 className={'font-bold text-lg'}>Role</h3>
-            {/*<div className="flex items-center">*/}
-            {/*  <Button*/}
-            {/*    icon={<Plus className="icon-cud !h-5 !w-5" />}*/}
-            {/*    text={t('routes.admin.Layout.Add')}*/}
-            {/*    onClick={() => navigate(`/${lang}${routerLinks('Code/Add')}`)}*/}
-            {/*  />*/}
-            {/*</div>*/}
           </div>
           <Spin spinning={userRoleFacade.isLoading}>
             <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
@@ -127,20 +132,20 @@ const Page = () => {
               className={'container mx-auto'}
               facade={userFacade}
               ref={dataTableRef}
-              onRow={(record) => ({
-                onDoubleClick: () => navigate(`/${lang}${routerLinks('User')}/${record.id}/edit`),
+              onRow={(data) => ({
+                onDoubleClick: () => userFacade.getById({ id: data.id }),
               })}
               paginationDescription={(from: number, to: number, total: number) =>
                 t('routes.admin.Layout.User', { from, to, total })
               }
-              columns={_column.table(request.filter.roleCode)}
+              columns={_column.table()}
               rightHeader={
                 <div className={'flex gap-2'}>
                   {user?.role?.permissions?.includes(keyRole.P_USER_CREATE) && (
                     <Button
                       icon={<Plus className="icon-cud !h-5 !w-5" />}
                       text={t('components.button.New')}
-                      onClick={() => navigate(`/${lang}${routerLinks('User')}/${request.filter.roleCode}/add`)}
+                      onClick={() => userFacade.set({ data: undefined, isVisible: true })}
                     />
                   )}
                 </div>

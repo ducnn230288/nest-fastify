@@ -7,15 +7,13 @@ import { Check, Disable, Edit, Trash } from '@svgs';
 import React from 'react';
 import { CodeFacade, GlobalFacade, UserFacade } from '@store';
 import { useTranslation } from 'react-i18next';
-import { keyRole, lang, routerLinks } from '@utils';
-import { useNavigate } from 'react-router';
+import { keyRole } from '@utils';
 
 export default {
-  table: (roleCode?: string): DataTableModel[] => {
+  table: (): DataTableModel[] => {
     const { formatDate, user } = GlobalFacade();
     const { t } = useTranslation();
     const userFacade = UserFacade();
-    const navigate = useNavigate();
 
     return [
       {
@@ -124,7 +122,7 @@ export default {
                 <ToolTip title={t('routes.admin.Layout.Edit')}>
                   <button
                     title={t('routes.admin.Layout.Edit') || ''}
-                    onClick={() => navigate(`/${lang}${routerLinks('User')}/${roleCode}/${data.id}/edit`)}
+                    onClick={() => userFacade.getById({ id: data.id })}
                   >
                     <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                   </button>
@@ -157,7 +155,6 @@ export default {
         title: 'routes.admin.user.Full name',
         name: 'name',
         formItem: {
-          col: 6,
           rules: [{ type: EFormRuleType.required }],
         },
       },
@@ -165,7 +162,6 @@ export default {
         title: 'Email',
         name: 'email',
         formItem: {
-          col: 6,
           rules: [
             { type: EFormRuleType.required },
             { type: EFormRuleType.email },
@@ -177,7 +173,6 @@ export default {
         title: 'columns.auth.login.password',
         name: 'password',
         formItem: {
-          col: 6,
           type: EFormType.password,
           condition: (value: string, form, index: number, values: any) => !values?.id,
           rules: [{ type: EFormRuleType.required }],
@@ -188,7 +183,6 @@ export default {
         name: 'retypedPassword',
         formItem: {
           placeholder: 'columns.auth.register.retypedPassword',
-          col: 6,
           type: EFormType.password,
           condition: (value: string, form, index: number, values) => !values?.id,
           rules: [
@@ -212,7 +206,6 @@ export default {
         title: 'Số điện thoại',
         name: 'phoneNumber',
         formItem: {
-          col: 6,
           rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
         },
       },
@@ -220,7 +213,6 @@ export default {
         title: 'routes.admin.user.Date of birth',
         name: 'dob',
         formItem: {
-          col: 6,
           type: EFormType.date,
           rules: [{ type: EFormRuleType.required }],
           disabledDate: (current) => {
@@ -232,7 +224,6 @@ export default {
         title: 'routes.admin.user.Position',
         name: 'positionCode',
         formItem: {
-          col: 6,
           type: EFormType.select,
           rules: [{ type: EFormRuleType.required }],
           get: {
@@ -253,7 +244,6 @@ export default {
         title: 'routes.admin.user.Start Date',
         name: 'startDate',
         formItem: {
-          col: 6,
           type: EFormType.date,
           rules: [{ type: EFormRuleType.required }],
         },
@@ -262,7 +252,6 @@ export default {
         title: 'routes.admin.user.Description',
         name: 'description',
         formItem: {
-          col: 8,
           type: EFormType.textarea,
         },
       },
@@ -270,7 +259,6 @@ export default {
         name: 'avatar',
         title: 'routes.admin.user.Upload avatar',
         formItem: {
-          col: 4,
           type: EFormType.upload,
         },
       },

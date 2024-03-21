@@ -6,6 +6,7 @@ import { Form } from '../form';
 import classNames from 'classnames';
 import { Button } from '@core/button';
 import { useTranslation } from 'react-i18next';
+import { convertFormValue } from '@utils';
 
 export const DrawerForm = forwardRef(
   (
@@ -41,7 +42,7 @@ export const DrawerForm = forwardRef(
               text={t(textSubmit)}
               onClick={async () => {
                 const values = await form.validateFields();
-                onSubmit(values);
+                onSubmit(convertFormValue(columns, values));
               }}
               disabled={facade[keyIsLoading]}
               className={'sm:min-w-48 justify-center w-full sm:w-auto'}
