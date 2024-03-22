@@ -152,9 +152,8 @@ export class Slice<T extends CommonEntity, Y = EStatusState> {
           state.isLoading = true;
           state.status = EStatusState.deletePending;
         })
-        .addCase(action.delete.fulfilled, (state: State<T, Y>, action: PayloadAction<T>) => {
-          if (action.payload) state.status = EStatusState.deleteFulfilled;
-          else state.status = EStatusState.idle;
+        .addCase(action.delete.fulfilled, (state: State<T, Y>) => {
+          state.status = EStatusState.deleteFulfilled;
           state.isLoading = false;
         })
         .addCase(action.delete.rejected, (state: State) => {

@@ -40,10 +40,7 @@ export const DrawerForm = forwardRef(
             />
             <Button
               text={t(textSubmit)}
-              onClick={async () => {
-                const values = await form.validateFields();
-                onSubmit(convertFormValue(columns, values));
-              }}
+              onClick={async () => onSubmit(convertFormValue(columns, await form.validateFields()))}
               disabled={facade[keyIsLoading]}
               className={'sm:min-w-48 justify-center w-full sm:w-auto'}
             />
