@@ -57,6 +57,7 @@ export class Data extends Base {
   @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
   @IsString()
+  @IsOptional()
   icon?: string;
 
   @ManyToOne(() => DataType, (dataType) => dataType.items, { eager: false })

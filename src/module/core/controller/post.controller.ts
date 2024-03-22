@@ -10,7 +10,8 @@ import {
   ArrayPostResponseDto,
 } from '@dto';
 import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, AuthUser } from '@shared';
+import { User } from '@model';
 
 @Headers('post')
 export class PostController {
@@ -18,14 +19,15 @@ export class PostController {
 
   @Auth({
     summary: 'Get List data',
-    permission: P_POST_LISTED,
     serializeOptions: { groups: [] },
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @AuthUser() user: User,
   ): Promise<ListPostResponseDto> {
+    if (user.roleCode != 'super_admin') paginationQuery.where = [{ userId: user.id }];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List Success'),
@@ -75,22 +77,21 @@ export class PostController {
 
   @Auth({
     summary: 'Create data',
-    permission: P_POST_CREATE,
   })
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreatePostRequestDto,
+    @AuthUser() user: User,
   ): Promise<PostResponseDto> {
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.create(Object.assign(body, { userId: user.id })),
     };
   }
 
   @Auth({
     summary: 'Update data',
-    permission: P_POST_UPDATE,
   })
   @Put(':id')
   async update(
@@ -106,7 +107,6 @@ export class PostController {
 
   @Auth({
     summary: 'Update disable',
-    permission: P_POST_UPDATE,
   })
   @Put(':id/disable/:boolean')
   async updateDisable(
@@ -122,7 +122,6 @@ export class PostController {
 
   @Auth({
     summary: 'Delete data',
-    permission: P_POST_DELETE,
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {

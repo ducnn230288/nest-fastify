@@ -167,6 +167,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Delete one [DELETE /api/data/:id]', async () => {
+    console.log(resultType);
     const { body } = await request(BaseTest.server)
       .delete('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -179,11 +180,13 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   });
 
   it('Delete one [DELETE /api/data/type/:id]', async () => {
+
     const { body } = await request(BaseTest.server)
       .delete('/api/data/type/' + resultType!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
+    if(type)
+      expect(body.data).toEqual(jasmine.objectContaining(dataUpdateType));
   });
 
   /**/

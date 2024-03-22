@@ -16,6 +16,78 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP DATABASE postgres;
+
+--
+-- Name: postgres; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE postgres WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE postgres OWNER TO postgres;
+
+\connect postgres
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: DATABASE postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: core; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA core;
+
+
+ALTER SCHEMA core OWNER TO postgres;
+
+--
+-- Name: user; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA "user";
+
+
+ALTER SCHEMA "user" OWNER TO postgres;
+
+DROP DATABASE ari;
+--
+-- Name: ari; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE ari WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE ari OWNER TO postgres;
+
+\connect ari
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
 --
 -- Name: core; Type: SCHEMA; Schema: -; Owner: postgres
 --
@@ -57,15 +129,15 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE core.code (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         code character varying NOT NULL,
-                         type character varying NOT NULL,
-                         name character varying NOT NULL,
-                         description character varying
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    type character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying
 );
 
 
@@ -76,14 +148,14 @@ ALTER TABLE core.code OWNER TO postgres;
 --
 
 CREATE TABLE core.code_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
 );
 
 
@@ -94,19 +166,19 @@ ALTER TABLE core.code_type OWNER TO postgres;
 --
 
 CREATE TABLE core.data (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type character varying NOT NULL,
-                         name character varying,
-                         image character varying,
-                         "order" integer,
-                         "startTime" timestamp without time zone,
-                         "endTime" timestamp without time zone,
-                         icon character varying,
-                         "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    name character varying,
+    image character varying,
+    "order" integer,
+    "startTime" timestamp without time zone,
+    "endTime" timestamp without time zone,
+    icon character varying,
+    "userId" uuid NOT NULL
 );
 
 
@@ -117,17 +189,17 @@ ALTER TABLE core.data OWNER TO postgres;
 --
 
 CREATE TABLE core.data_translation (
-                                     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                     "isDeleted" timestamp without time zone,
-                                     "isDisabled" timestamp without time zone,
-                                     "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     language character varying NOT NULL,
-                                     name character varying NOT NULL,
-                                     description character varying,
-                                     "position" character varying,
-                                     content jsonb DEFAULT '{}'::jsonb NOT NULL,
-                                     "dataId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    "position" character varying,
+    "dataId" uuid NOT NULL,
+    content character varying
 );
 
 
@@ -138,14 +210,14 @@ ALTER TABLE core.data_translation OWNER TO postgres;
 --
 
 CREATE TABLE core.data_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
 );
 
 
@@ -156,17 +228,17 @@ ALTER TABLE core.data_type OWNER TO postgres;
 --
 
 CREATE TABLE core.file (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type integer NOT NULL,
-                         url character varying NOT NULL,
-                         description character varying,
-                         data character varying,
-                         status integer DEFAULT 0 NOT NULL,
-                         "userId" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type integer NOT NULL,
+    url character varying NOT NULL,
+    description character varying,
+    data character varying,
+    status integer DEFAULT 0 NOT NULL,
+    "userId" character varying NOT NULL
 );
 
 
@@ -177,15 +249,16 @@ ALTER TABLE core.file OWNER TO postgres;
 --
 
 CREATE TABLE core.parameter (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              code character varying NOT NULL,
-                              vn character varying,
-                              en character varying,
-                              "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    vn character varying,
+    en character varying,
+    "userId" uuid NOT NULL,
+    description character varying NOT NULL
 );
 
 
@@ -196,14 +269,14 @@ ALTER TABLE core.parameter OWNER TO postgres;
 --
 
 CREATE TABLE core.post (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type character varying NOT NULL,
-                         "thumbnailUrl" character varying,
-                         "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    "thumbnailUrl" character varying,
+    "userId" uuid NOT NULL
 );
 
 
@@ -214,18 +287,18 @@ ALTER TABLE core.post OWNER TO postgres;
 --
 
 CREATE TABLE core.post_translation (
-                                     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                     "isDeleted" timestamp without time zone,
-                                     "isDisabled" timestamp without time zone,
-                                     "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     language character varying NOT NULL,
-                                     name character varying NOT NULL,
-                                     type character varying NOT NULL,
-                                     description character varying,
-                                     slug character varying,
-                                     content jsonb DEFAULT '{}'::jsonb NOT NULL,
-                                     "postId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    slug character varying,
+    "postId" uuid NOT NULL,
+    type character varying NOT NULL,
+    content character varying
 );
 
 
@@ -236,16 +309,16 @@ ALTER TABLE core.post_translation OWNER TO postgres;
 --
 
 CREATE TABLE core.post_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL,
-                              mpath character varying DEFAULT ''::character varying,
-                              parent_id uuid
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL,
+    mpath character varying DEFAULT ''::character varying,
+    parent_id uuid
 );
 
 
@@ -256,16 +329,16 @@ ALTER TABLE core.post_type OWNER TO postgres;
 --
 
 CREATE TABLE "user".address (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "codeProvince" character varying NOT NULL,
-                              "codeDistrict" character varying NOT NULL,
-                              "codeWard" character varying NOT NULL,
-                              "specificAddress" character varying NOT NULL,
-                              "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "codeProvince" character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL,
+    "codeWard" character varying NOT NULL,
+    "specificAddress" character varying NOT NULL,
+    "userId" uuid NOT NULL
 );
 
 
@@ -276,14 +349,14 @@ ALTER TABLE "user".address OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_district (
-                                       id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                       "isDeleted" timestamp without time zone,
-                                       "isDisabled" timestamp without time zone,
-                                       "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       name character varying NOT NULL,
-                                       code character varying NOT NULL,
-                                       "codeProvince" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeProvince" character varying NOT NULL
 );
 
 
@@ -294,13 +367,13 @@ ALTER TABLE "user".address_district OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_province (
-                                       id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                       "isDeleted" timestamp without time zone,
-                                       "isDisabled" timestamp without time zone,
-                                       "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       name character varying NOT NULL,
-                                       code character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL
 );
 
 
@@ -311,14 +384,14 @@ ALTER TABLE "user".address_province OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_ward (
-                                   id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                   "isDeleted" timestamp without time zone,
-                                   "isDisabled" timestamp without time zone,
-                                   "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                   "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                   name character varying NOT NULL,
-                                   code character varying NOT NULL,
-                                   "codeDistrict" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL
 );
 
 
@@ -329,26 +402,26 @@ ALTER TABLE "user".address_ward OWNER TO postgres;
 --
 
 CREATE TABLE "user"."user" (
-                             id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                             "isDeleted" timestamp without time zone,
-                             "isDisabled" timestamp without time zone,
-                             "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                             "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                             name character varying NOT NULL,
-                             avatar character varying,
-                             password character varying NOT NULL,
-                             "refreshToken" character varying,
-                             otp character varying,
-                             email character varying NOT NULL,
-                             "phoneNumber" character varying NOT NULL,
-                             dob timestamp without time zone NOT NULL,
-                             description text DEFAULT ''::text NOT NULL,
-                             skill jsonb DEFAULT '[{}]'::jsonb NOT NULL,
-                             "roleCode" character varying,
-                             "positionCode" character varying,
-                             "startDate" timestamp without time zone NOT NULL,
-                             "dateLeave" real,
-                             "dateOff" real DEFAULT '0'::real
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    avatar character varying,
+    password character varying NOT NULL,
+    "refreshToken" character varying,
+    otp character varying,
+    email character varying NOT NULL,
+    "phoneNumber" character varying NOT NULL,
+    dob timestamp without time zone NOT NULL,
+    "roleCode" character varying,
+    "positionCode" character varying,
+    "startDate" timestamp without time zone NOT NULL,
+    "dateLeave" real,
+    "dateOff" real DEFAULT '0'::real,
+    skill jsonb DEFAULT '[{}]'::jsonb NOT NULL,
+    description jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -359,15 +432,15 @@ ALTER TABLE "user"."user" OWNER TO postgres;
 --
 
 CREATE TABLE "user".user_role (
-                                id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                "isDeleted" timestamp without time zone,
-                                "isDisabled" timestamp without time zone,
-                                "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                code character varying NOT NULL,
-                                name character varying NOT NULL,
-                                "isSystemAdmin" boolean DEFAULT false NOT NULL,
-                                permissions jsonb DEFAULT '[]'::jsonb NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    name character varying NOT NULL,
+    "isSystemAdmin" boolean DEFAULT false NOT NULL,
+    permissions jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -416,7 +489,7 @@ COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, n
 -- Data for Name: data_translation; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", content, "dataId") FROM stdin;
+COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", "dataId", content) FROM stdin;
 \.
 
 
@@ -431,6 +504,9 @@ efa1c376-5d8c-4035-8ab1-a2af44cfe48d	\N	\N	2024-03-19 02:39:45.470985	2024-03-19
 24e86ec3-1545-49fb-b492-10c8dfd886a3	\N	\N	2024-03-19 02:39:45.770021	2024-03-19 02:39:45.770021	Member	member	t
 f8f80171-946f-4ce9-b5e1-73ced38ed78e	\N	\N	2024-03-19 02:39:45.871475	2024-03-19 02:39:45.871475	Tech	tech	t
 26643b61-070b-43a7-af35-0d0c115a679b	\N	\N	2024-03-19 02:39:45.970755	2024-03-19 02:39:45.970755	Partner	partner	t
+c2f169c0-95ea-4098-99fa-20e1427f1bf1	\N	\N	2024-03-21 08:50:55.006624	2024-03-21 08:50:55.006624	Experience	experience	t
+8748b99d-d0b4-4159-949f-29b1d09b4b98	\N	\N	2024-03-21 08:50:21.652674	2024-03-21 08:50:21.652674	Education	education	t
+dfe727a2-7a9d-4035-8406-55060086a38f	\N	\N	2024-03-21 08:54:38.619347	2024-03-21 08:54:38.619347	Testimonials	testimonials	f
 \.
 
 
@@ -446,7 +522,7 @@ COPY core.file (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, u
 -- Data for Name: parameter; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId") FROM stdin;
+COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId", description) FROM stdin;
 \.
 
 
@@ -462,7 +538,7 @@ COPY core.post (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, "
 -- Data for Name: post_translation; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, type, description, slug, content, "postId") FROM stdin;
+COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, slug, "postId", type, content) FROM stdin;
 \.
 
 
@@ -11879,8 +11955,9 @@ d786d42f-d897-42cb-a4da-cd3ff6356b8d	\N	\N	2024-03-19 02:58:51.114075	2024-03-19
 -- Data for Name: user; Type: TABLE DATA; Schema: user; Owner: postgres
 --
 
-COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, description, skill, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff") FROM stdin;
-41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-19 03:01:35.67856	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$0JnuDenKllEntzpXVuhXsA$8ETROkmFgEmWZnJ/xIzEmVkxVJ9rAgYmGuY/L84HKrs	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	Correptius ago despecto dignissimos. Aqua cometes aggredior viduo. Auxilium vulgus vester temporibus thesaurus degusto.	[{"skill": "JS", "complete": 95}]	super_admin	\N	2023-04-15 15:40:15.881	8	0
+COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff", skill, description) FROM stdin;
+b8c86a23-3426-40ea-a231-671016a83f61	\N	\N	2024-03-21 01:30:42.23727	2024-03-21 08:41:24.332188	Lillie Gleason	\N	$argon2id$v=19$m=65536,t=3,p=4$Ui9Z8y+MLtzMtt0mzzEmvQ$+SXzt82/83/er7zsE6X7P9F87oRxYIH+ibzst9dq9EI	$argon2id$v=19$m=65536,t=3,p=4$M4mf+7/Yv1u6awVqZaZS7w$n4vu2DCaya114grhPBp4YKMcrAgwuCu9AgxNnSGhrRs	\N	thien@admin.com	5176978604	1963-10-23 13:13:06.82	user	\N	2023-04-04 04:20:47.614	\N	0	[{}]	["Cumque traho synagoga laborum adversus thema. Terror adsum sodalitas depromo. Ubi crustulum ventosus sublime comminor antiquus confido depromo rem alioqui."]
+41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-21 08:45:19.379486	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$3BrIMsLuDIYdtY1K/ALgzA$Y9EWBEOBCNYsLNebSecC9ieexp6++8EFkbtiDFUKYS4	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	super_admin	\N	2023-04-15 15:40:15.881	8	0	[{}]	[]
 \.
 
 
@@ -11890,6 +11967,7 @@ COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", nam
 
 COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, name, "isSystemAdmin", permissions) FROM stdin;
 24e4f065-7181-4582-9b2a-73cfb19b388c	\N	\N	2024-03-19 02:39:46.370673	2024-03-19 02:39:46.370673	super_admin	Super Admin	f	["11cc566b-b109-49f8-983f-84ff08f9849e", "2a71d57d-7c2d-49ad-a7e9-3cd4aace132f", "7af26c77-e81f-4875-89df-9d4c2fa3ce52", "45f014c0-9ebe-497e-9766-2054ebb7e1d5", "fdb47b79-1a6e-49be-8f5b-8525a547534a", "f16e2bc7-12b9-446e-b53b-a2597ca0ad3a", "5d808d76-bf99-4a51-b4b6-d5aa37bdb398", "eb510a79-4f75-4b14-a118-f036c1daa430", "a9574d5e-269d-44f9-a5bb-41cf06d7bdda", "6d34b679-9c0e-489a-a2de-a17e37fadf72", "e21ac25b-1651-443e-9834-e593789807c9", "8f559613-ef55-4ef0-8068-8c37e84b75de", "35ea86b5-e591-4819-9c41-4d35ed580d0b", "f6732943-cb1d-484b-8644-7740a295e3e3", "3e8aa2c2-35bf-4a56-8bf2-8f8de240e24c", "62fd3bc2-0921-4113-9b5b-9966dd5a0517", "ac0c4f13-776d-4b71-be4d-f9952734a319", "a9de3f3d-4c04-4f50-9d1b-c3c2e2eca6dc", "41c9d4e1-ba5a-4850-ad52-35ac928a61d9", "b82e6224-12c3-4e6c-b4e0-62495fb799bf", "bc0b5f32-ddf7-4c61-b435-384fc5ac7574", "2712ca04-7e7c-44b6-83c1-b8c7f332a0fb", "03380c3a-3336-42f4-b8c2-e54084d35655", "00e77095-35ea-4755-bbae-46a1ba78e46e", "0e481286-bd5d-4203-a374-a8f8f8735f33", "1db70aa0-7541-4433-b2f6-fbd7bf8bf7bb", "c3ab9e11-7ba3-4afd-b5cb-c560362a3144", "99ea12da-5800-4d6d-9e73-60c016a267a9", "2e8c8772-2505-4683-b6fa-13fa2570eee7", "d9185449-e2ac-4e72-9c9f-25788c23d5ba", "275ebda7-3e03-4c93-b352-baa7705528aa", "d278abcb-1956-4b45-95c1-2ab612110ec6", "3d478437-949b-4ae7-9c21-79cabb1663a3", "0ca9634c-3496-4059-bf86-5bec23c96b55", "4097d5ff-e35c-4bff-a5b1-013ca1181762", "7c34dc92-cbbe-4419-8dbc-745818d76098", "eda2799a-4072-46a7-9a26-efa9a98036db", "87cb77c4-565c-43ec-bffc-fbaf5077c2be", "cd00c62e-1ec4-4c61-b273-cdd6867a3212", "efa34c52-8c9a-444d-a82b-8bec109dbab5", "bfa36cef-71c4-4f08-89e6-d7e0c1c03ba4", "a9574d5e-269d-44f9-a5bb-41cf06d7bdda", "6d34b679-9c0e-123a-a2de-a11e37fadf72", "e21ac25b-1111-443e-9999-e593789807c9"]
+a0197ea5-9509-4de4-9c82-52b5c3e12e10	\N	\N	2024-03-21 07:28:21.432894	2024-03-21 07:28:21.432894	user	user	f	[]
 \.
 
 
@@ -11898,7 +11976,7 @@ COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", 
 --
 
 ALTER TABLE ONLY core.post_translation
-  ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
 
 
 --
@@ -11906,7 +11984,7 @@ ALTER TABLE ONLY core.post_translation
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
 
 
 --
@@ -11914,7 +11992,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
 
 
 --
@@ -11922,7 +12000,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.file
-  ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
 
 
 --
@@ -11930,7 +12008,7 @@ ALTER TABLE ONLY core.file
 --
 
 ALTER TABLE ONLY core.code_type
-  ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
 
 
 --
@@ -11938,7 +12016,7 @@ ALTER TABLE ONLY core.code_type
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
 
 
 --
@@ -11946,7 +12024,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.parameter
-  ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
 
 
 --
@@ -11954,7 +12032,7 @@ ALTER TABLE ONLY core.parameter
 --
 
 ALTER TABLE ONLY core.data_type
-  ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
 
 
 --
@@ -11962,7 +12040,7 @@ ALTER TABLE ONLY core.data_type
 --
 
 ALTER TABLE ONLY core.data_translation
-  ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
 
 
 --
@@ -11970,7 +12048,7 @@ ALTER TABLE ONLY core.data_translation
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
 
 
 --
@@ -11978,7 +12056,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
+    ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
 
 
 --
@@ -11986,7 +12064,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.code_type
-  ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
+    ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
 
 
 --
@@ -11994,7 +12072,7 @@ ALTER TABLE ONLY core.code_type
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
+    ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
 
 
 --
@@ -12002,7 +12080,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.data_type
-  ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
+    ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
 
 
 --
@@ -12010,7 +12088,7 @@ ALTER TABLE ONLY core.data_type
 --
 
 ALTER TABLE ONLY core.file
-  ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
+    ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
 
 
 --
@@ -12018,7 +12096,7 @@ ALTER TABLE ONLY core.file
 --
 
 ALTER TABLE ONLY "user".address_province
-  ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
 
 
 --
@@ -12026,7 +12104,7 @@ ALTER TABLE ONLY "user".address_province
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
 
 
 --
@@ -12034,7 +12112,7 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
 
 
 --
@@ -12042,7 +12120,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
 
 
 --
@@ -12050,7 +12128,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
 
 
 --
@@ -12058,7 +12136,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user".user_role
-  ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
 
 
 --
@@ -12066,7 +12144,7 @@ ALTER TABLE ONLY "user".user_role
 --
 
 ALTER TABLE ONLY "user".user_role
-  ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
+    ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
 
 
 --
@@ -12074,7 +12152,7 @@ ALTER TABLE ONLY "user".user_role
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
+    ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
 
 
 --
@@ -12082,7 +12160,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
+    ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
 
 
 --
@@ -12090,7 +12168,7 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user".address_province
-  ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
+    ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
 
 
 --
@@ -12098,7 +12176,7 @@ ALTER TABLE ONLY "user".address_province
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
+    ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
 
 
 --
@@ -12106,7 +12184,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "FK_4ee98a297a032944fb052144963" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_4ee98a297a032944fb052144963" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12114,7 +12192,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
+    ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
 
 
 --
@@ -12122,7 +12200,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "FK_5c1cf55c308037b5aca1038a131" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_5c1cf55c308037b5aca1038a131" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12130,7 +12208,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
+    ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
 
 
 --
@@ -12138,7 +12216,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
+    ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
 
 
 --
@@ -12146,7 +12224,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.post_translation
-  ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -12154,7 +12232,7 @@ ALTER TABLE ONLY core.post_translation
 --
 
 ALTER TABLE ONLY core.parameter
-  ADD CONSTRAINT "FK_d75cb6f3f42657b892e66d1526f" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_d75cb6f3f42657b892e66d1526f" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12162,7 +12240,7 @@ ALTER TABLE ONLY core.parameter
 --
 
 ALTER TABLE ONLY core.data_translation
-  ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -12170,7 +12248,7 @@ ALTER TABLE ONLY core.data_translation
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
+    ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
 
 
 --
@@ -12178,7 +12256,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
+    ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
 
 
 --
@@ -12186,7 +12264,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+    ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
 
 
 --
@@ -12194,7 +12272,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
+    ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
 
 
 --
@@ -12202,7 +12280,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+    ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
 
 
 --
@@ -12210,7 +12288,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12218,7 +12296,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+    ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
 
 
 --
@@ -12226,8 +12304,7 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
-
+    ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
 
 --
 -- PostgreSQL database dump complete

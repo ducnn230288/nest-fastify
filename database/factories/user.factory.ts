@@ -1,6 +1,6 @@
 import { setSeederFactory } from 'typeorm-extension';
 import { User } from '@model';
-import {Example} from "@shared";
+import { Example } from '@shared';
 
 export default setSeederFactory(User, (faker) => {
   const data = new User();

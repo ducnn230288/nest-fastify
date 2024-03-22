@@ -2,7 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, AuthUser } from '@shared';
 import {
   ParameterResponseDto,
   ListParameterResponseDto,
@@ -16,6 +16,7 @@ import {
   P_PARAMETER_UPDATE,
   P_PARAMETER_DELETE,
 } from '@service';
+import { User } from '@model';
 
 @Headers('parameter')
 export class ParameterController {
@@ -23,13 +24,14 @@ export class ParameterController {
 
   @Auth({
     summary: 'Get List data',
-    permission: P_PARAMETER_LISTED,
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
+    @AuthUser() user: User,
   ): Promise<ListParameterResponseDto> {
+    if (user.roleCode != 'super_admin') paginationQuery.where = [{ userId: user.id }];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List Success'),
@@ -52,22 +54,22 @@ export class ParameterController {
 
   @Auth({
     summary: 'Create data',
-    permission: P_PARAMETER_CREATE,
   })
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody()) body: CreateParameterRequestDto,
+    @AuthUser() user: User,
   ): Promise<ParameterResponseDto> {
+    const data = Object.assign({ userId: user.id }, body);
     return {
       message: i18n.t('common.Create Success'),
-      data: await this.service.create(body),
+      data: await this.service.create(data),
     };
   }
 
   @Auth({
     summary: 'Update data',
-    permission: P_PARAMETER_UPDATE,
   })
   @Put(':id')
   async update(
@@ -83,7 +85,6 @@ export class ParameterController {
 
   @Auth({
     summary: 'Update disable',
-    permission: P_PARAMETER_UPDATE,
   })
   @Put(':id/disable/:boolean')
   async updateDisable(
@@ -99,7 +100,6 @@ export class ParameterController {
 
   @Auth({
     summary: 'Delete data',
-    permission: P_PARAMETER_DELETE,
   })
   @Delete(':id')
   async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ParameterResponseDto> {

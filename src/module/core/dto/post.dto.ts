@@ -15,6 +15,7 @@ export class CreatePostTranslationRequestDto extends PickType(PostTranslation, [
   'description',
   'slug',
   'content',
+  'type'
 ] as const) {}
 
 export class UpdatePostRequestDto extends PartialType(CreatePostRequestDto) {}

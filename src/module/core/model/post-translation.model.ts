@@ -38,11 +38,7 @@ export class PostTranslation extends Base {
   @MaxLength(100)
   slug: string;
 
-  @Column({
-    type: 'jsonb',
-    array: false,
-    default: {},
-  })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()
