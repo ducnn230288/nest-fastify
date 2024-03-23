@@ -7,16 +7,16 @@ import { User } from '@svgs';
 import { Form } from '@core/form';
 import { Button } from '@core/button';
 import { CodeFacade, EStatusGlobal, GlobalFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { useSearchParams } from 'react-router-dom';
 import { EFormRuleType, EFormType, ETableFilterType } from '@models';
 import dayjs from 'dayjs';
 
 const Page = () => {
-  const { user, isLoading, profile, status, putProfile, set, data, formatDate } = GlobalFacade();
+  const { user, isLoading, profile, status, putProfile, data, formatDate } = GlobalFacade();
   useEffect(() => {
     profile();
-    set({ breadcrumbs: [] });
+    renderTitleBreadcrumbs(t('pages.MyProfile'), []);
   }, []);
   useEffect(() => {
     switch (status) {

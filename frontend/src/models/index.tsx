@@ -6,9 +6,7 @@ export enum EStatusState {
   getPending = 'get.pending',
   getFulfilled = 'get.fulfilled',
   getRejected = 'get.rejected',
-  getTreePending = 'getTree.pending',
-  getTreeFulfilled = 'getTree.fulfilled',
-  getTreeRejected = 'getTree.rejected',
+
   getByIdPending = 'getById.pending',
   getByIdFulfilled = 'getById.fulfilled',
   getByIdRejected = 'getById.rejected',

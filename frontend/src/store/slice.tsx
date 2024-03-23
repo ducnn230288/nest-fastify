@@ -2,15 +2,15 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { EStatusState, CommonEntity, Responses } from '@models';
 import { Action } from '@store';
 
-export class Slice<T extends CommonEntity> {
+export class Slice<T extends CommonEntity, Y = EStatusState> {
   name: string;
-  initialState: State<T>;
+  initialState: State<T, Y>;
   reducers: any;
   extraReducers: (builder: any) => void;
-  defaultState: State<T> = {
+  defaultState: State<T, Y> = {
     result: {},
     data: undefined,
-    isLoading: false,
+    isLoading: true,
     isVisible: false,
     status: EStatusState.idle,
     queryParams: '',
@@ -18,9 +18,9 @@ export class Slice<T extends CommonEntity> {
     time: 0,
   };
   constructor(
-    action: Action<T>,
-    initialState: State<T> = {},
-    // extraReducers?: (builder: ActionReducerMapBuilder<State<T>>) => void,
+    action: Action<T, Y>,
+    initialState: State<T, Y> = {},
+    // extraReducers?: (builder: ActionReducerMapBuilder<State<T, Y>>) => void,
     extraReducers?: (builder: any) => void,
   ) {
     this.name = action.name;
@@ -28,33 +28,39 @@ export class Slice<T extends CommonEntity> {
     this.reducers = {};
     this.extraReducers = (builder: any) => {
       builder
-        .addCase(action.set.fulfilled, (state: State<T>, action: PayloadAction<State<T>>) => {
+        .addCase(action.set.fulfilled, (state: State<T, Y>, action: PayloadAction<State<T>>) => {
           Object.keys(action.payload).forEach((key) => {
-            state[key] = action.payload[key as keyof State<T>];
+            state[key] = action.payload[key as keyof State<T, Y>];
           });
           state.status = EStatusState.idle;
         })
         .addCase(
           action.get.pending,
           (
-            state: State<T>,
+            state: State<T, Y>,
             action: PayloadAction<undefined, string, { arg: T; requestId: string; requestStatus: 'pending' }>,
           ) => {
-            state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
-            state.queryParams = JSON.stringify(action.meta.arg);
-            state.isLoading = true;
-            state.status = EStatusState.getPending;
+            if (!state.isLoading) {
+              state.isLoading = true;
+              state.status = EStatusState.getPending;
+            }
+            this.defaultState.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
+            this.defaultState.queryParams = JSON.stringify(action.meta.arg);
           },
         )
-        .addCase(action.get.fulfilled, (state: State<T>, action: PayloadAction<Responses<T[]>>) => {
+        .addCase(action.get.fulfilled, (state: State<T, Y>, action: PayloadAction<Responses<T[]>>) => {
           if (action.payload.data) {
             state.result = action.payload;
             state.status = EStatusState.getFulfilled;
           } else state.status = EStatusState.idle;
+          state.time = this.defaultState.time;
+          state.queryParams = this.defaultState.queryParams;
           state.isLoading = false;
         })
         .addCase(action.get.rejected, (state: State) => {
           state.status = EStatusState.getRejected;
+          state.time = this.defaultState.time;
+          state.queryParams = this.defaultState.queryParams;
           state.isLoading = false;
         })
 
@@ -64,7 +70,7 @@ export class Slice<T extends CommonEntity> {
         })
         .addCase(
           action.getById.fulfilled,
-          (state: State<T>, action: PayloadAction<{ data: T; keyState: keyof State<T> }>) => {
+          (state: State<T, Y>, action: PayloadAction<{ data: T; keyState: keyof State<T> }>) => {
             if (action.payload) {
               const { data, keyState } = action.payload;
               if (JSON.stringify(state.data) !== JSON.stringify(data)) state.data = data;
@@ -83,7 +89,7 @@ export class Slice<T extends CommonEntity> {
         .addCase(
           action.post.pending,
           (
-            state: State<T>,
+            state: State<T, Y>,
             action: PayloadAction<undefined, string, { arg: T; requestId: string; requestStatus: 'pending' }>,
           ) => {
             state.data = action.meta.arg;
@@ -91,7 +97,7 @@ export class Slice<T extends CommonEntity> {
             state.status = EStatusState.postPending;
           },
         )
-        .addCase(action.post.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
+        .addCase(action.post.fulfilled, (state: State<T, Y>, action: PayloadAction<T>) => {
           if (action.payload) {
             if (JSON.stringify(state.data) !== JSON.stringify(action.payload)) state.data = action.payload;
             state.isVisible = false;
@@ -107,7 +113,7 @@ export class Slice<T extends CommonEntity> {
         .addCase(
           action.put.pending,
           (
-            state: State<T>,
+            state: State<T, Y>,
             action: PayloadAction<undefined, string, { arg: T; requestId: string; requestStatus: 'pending' }>,
           ) => {
             state.data = action.meta.arg;
@@ -115,7 +121,7 @@ export class Slice<T extends CommonEntity> {
             state.status = EStatusState.putPending;
           },
         )
-        .addCase(action.put.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
+        .addCase(action.put.fulfilled, (state: State<T, Y>, action: PayloadAction<T>) => {
           if (action.payload) {
             if (JSON.stringify(state.data) !== JSON.stringify(action.payload)) state.data = action.payload;
             state.isVisible = false;
@@ -128,11 +134,11 @@ export class Slice<T extends CommonEntity> {
           state.isLoading = false;
         })
 
-        .addCase(action.putDisable.pending, (state: State<T>) => {
+        .addCase(action.putDisable.pending, (state: State<T, Y>) => {
           state.isLoading = true;
           state.status = EStatusState.putDisablePending;
         })
-        .addCase(action.putDisable.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
+        .addCase(action.putDisable.fulfilled, (state: State<T, Y>, action: PayloadAction<T>) => {
           state.isVisible = false;
           state.status = action.payload ? EStatusState.putDisableFulfilled : EStatusState.idle;
           state.isLoading = false;
@@ -142,13 +148,12 @@ export class Slice<T extends CommonEntity> {
           state.isLoading = false;
         })
 
-        .addCase(action.delete.pending, (state: State<T>) => {
+        .addCase(action.delete.pending, (state: State<T, Y>) => {
           state.isLoading = true;
           state.status = EStatusState.deletePending;
         })
-        .addCase(action.delete.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
-          if (action.payload) state.status = EStatusState.deleteFulfilled;
-          else state.status = EStatusState.idle;
+        .addCase(action.delete.fulfilled, (state: State<T, Y>) => {
+          state.status = EStatusState.deleteFulfilled;
           state.isLoading = false;
         })
         .addCase(action.delete.rejected, (state: State) => {
@@ -159,13 +164,13 @@ export class Slice<T extends CommonEntity> {
     };
   }
 }
-export interface State<T = object> {
+export interface State<T = object, Y = EStatusState> {
   [selector: string]: any;
   result?: Responses<T[]>;
   data?: T;
   isLoading?: boolean;
   isVisible?: boolean;
-  status?: EStatusState;
+  status?: EStatusState | Y;
   queryParams?: string;
   keepUnusedDataFor?: number;
   time?: number;
