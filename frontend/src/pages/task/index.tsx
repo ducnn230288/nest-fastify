@@ -11,7 +11,7 @@ import { Button } from '@core/button';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
-  console.log(user)
+  // console.log(user)
   const taskFacade = TaskFacade();
   // console.log(taskFacade.result?.data);
   const navigate = useNavigate();

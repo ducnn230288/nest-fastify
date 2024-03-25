@@ -1,4 +1,3 @@
-import React from 'react';
 import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
 
@@ -82,7 +81,7 @@ export class FormItem {
   initialValues?: { start: string; end: string };
   convert?: (data: any) => any;
   onChange?: (value: any, form: FormInstance, reRender: any) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>, form: FormInstance, name: string) => void;
+  onBlur?: (e: string, form: FormInstance, name: string) => void;
   disabledDate?: (current: any, form: FormInstance) => boolean;
   showTime?: boolean;
   picker?: EFormPickerDate;

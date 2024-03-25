@@ -49,6 +49,7 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
               },
             )}
             onClick={() =>
+              location.pathname.indexOf(`/${lang}${routerLinks(subItem.name)}`) === -1 &&
               navigate({
                 pathname: `/${lang}${routerLinks(subItem.name)}`,
                 search: `?${createSearchParams(subItem.queryParams)}`,
@@ -85,6 +86,7 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
                     'justify-center': isCollapsed,
                   })}
                   onClick={() =>
+                    location.pathname !== `/${lang}${routerLinks(item.name)}` &&
                     navigate({
                       pathname: `/${lang}${routerLinks(item.name)}`,
                       search: `?${createSearchParams(item.queryParams)}`,

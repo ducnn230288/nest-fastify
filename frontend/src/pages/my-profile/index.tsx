@@ -7,7 +7,7 @@ import { User } from '@svgs';
 import { Form } from '@core/form';
 import { Button } from '@core/button';
 import { CodeFacade, EStatusGlobal, GlobalFacade } from '@store';
-import { lang, routerLinks } from '@utils';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
 import { useSearchParams } from 'react-router-dom';
 import { EFormRuleType, EFormType, ETableFilterType } from '@models';
 import dayjs from 'dayjs';
@@ -17,7 +17,7 @@ const Page = () => {
   console.log('data',data)
   useEffect(() => {
     profile();
-    set({ breadcrumbs: [] });
+    renderTitleBreadcrumbs(t('pages.MyProfile'), []);
   }, []);
   useEffect(() => {
     switch (status) {
