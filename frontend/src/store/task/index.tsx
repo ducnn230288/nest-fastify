@@ -27,7 +27,9 @@ export class Task extends CommonEntity {
     public name: string,
     public level: number,
     public start?: string,
+    public deadline?: string,
     public assignee?: string,
+    public assigneeIds?: any,
     public status?: number,
     public priority?: number,
     public planned?: number,
@@ -36,6 +38,7 @@ export class Task extends CommonEntity {
     public endDate?: Dayjs,
     public percent?: number,
     public success?: string,
+    public complete?: number,
   ) {
     super();
   }

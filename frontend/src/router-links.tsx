@@ -26,6 +26,7 @@ export const routerLinks = (name: string, type?: string) => {
     'DayOff/Detail': '/dayoff/detail',
     Booking: '/booking',
     Task: '/task',
+    'Task/Add': '/setting/task/add',
     TimeSheet: '/timesheet',
   }; // 💬 generate link to here
 

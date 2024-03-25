@@ -1,9 +1,37 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { useAppDispatch, useTypedSelector, Action, Slice, State, User } from '@store';
-import { CommonEntity, PaginationQuery } from '@models';
+import { CommonEntity, EStatusState, PaginationQuery } from '@models';
+import { API, routerLinks } from '@utils';
+import { Message } from '@core/message';
 
 const name = 'TimeSheet';
-const action = new Action<TimeSheet>(name);
+// const action = new Action<TimeSheet>(name);
+const action = {
+  ...new Action<TimeSheet>(name),
+  putCheckin: createAsyncThunk(name + '/putCheckin', async (values: any) => {
+    const { data, message } = await API.put(`${routerLinks(name, 'api')}`, values);
+    if (message) Message.success({ text: message });
+    return data;
+  }),
+};
+export const timesheetSlice = createSlice(
+  new Slice<TimeSheet>(action, (builder:any) => {
+    builder
+      .addCase(action.putCheckin.pending, (state: State<TimeSheet>) => {
+        state.isLoading = true;
+        state.status = EStatusState.putCheckinPending;
+      })
+      .addCase(action.putCheckin.fulfilled, (state: State<TimeSheet>, action: PayloadAction<TimeSheet>) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.status = EStatusState.putCheckinFulfilled;
+      })
+      .addCase(action.putCheckin.rejected, (state: State<TimeSheet>) => {
+        state.isLoading = false;
+        state.status = EStatusState.putCheckinRejected;
+      });
+  }),
+);
 export const TimeSheetSlice = createSlice(new Slice<TimeSheet>(action, { keepUnusedDataFor: 9999 }));
 export const TimeSheetFacade = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +43,7 @@ export const TimeSheetFacade = () => {
       dispatch(action.getById({ id, keyState })),
     post: (values: TimeSheet) => dispatch(action.post(values)),
     put: (values: TimeSheet) => dispatch(action.put(values)),
+    putCheckin: (values: TimeSheet) => dispatch(action.putCheckin(values)),
     putDisable: (values: { id: string; disable: boolean }) => dispatch(action.putDisable(values)),
     delete: (id: string) => dispatch(action.delete(id)),
   };
@@ -36,13 +65,16 @@ export class TimeSheet extends CommonEntity {
     super();
   }
 }
+// interface Works {
+//   [key: string]: Work;
+// }
 export class Work extends CommonEntity {
   constructor(
     public id?: string,
     public isDisabled?: string,
     public createdAt?: string,
     public updatedAt?: string,
-    public hours?: string,
+    public hours?: number,
     public taskId?: string,
     public timesheetId?: string,
     public task?: {

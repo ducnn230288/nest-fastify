@@ -77,7 +77,11 @@
     "Booking/List": "Danh sách",
     "Booking/Add": "Tạo mới",
     "Question": "Câu hỏi",
-    "Task": "Công việc"
+    "Task": "Công việc",
+    "Task/List": "Danh sách",
+    "Task/Add": "Tạo mới",
+    "TimeSheet": "Thời gian biểu",
+    "TimeSheet/List": "Danh sách"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -113,7 +117,9 @@
     "Booking/Detail": "Đặt trước {{date}}",
     "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}",
     "Question": "Danh sách câu hỏi",
-    "Task":"Công việc"
+    "Task":"Công việc",
+    "Task/Add": "Tạo mới công việc",
+    "TimeSheet": "Thời gian biểu"
   },
   "columns": {
     "auth": {
@@ -316,6 +322,23 @@
         "options": "Các lựa chọn",
         "correct": "Đáp án",
         "createdAt": "Ngày tạo"
+      },
+      "task": {
+        "project": "Dự án",
+        "position": "Chức vụ",
+        "start": "Ngày bắt đầu",
+        "deadline": "Deadline",
+        "priority": "Ưu tiên",
+        "status": "Trạng thái",
+        "level": "Cấp độ công việc",
+        "order": "Thứ tự công việc",
+        "complete": "Tiến độ (%)",
+        "predecessors": "Người đảm nhiệm trước",
+        "successors": "Người kế nhiệm",
+        "task": "Công việc"
+      },
+      "TimeSheet": {
+        "checkout": "Check out"
       }
     }
   }

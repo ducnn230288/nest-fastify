@@ -149,6 +149,7 @@ const Page = () => {
     data,
   };
 
+
   const s2Options: any = {
     width: 1200,
     height: 480,
@@ -331,6 +332,7 @@ const Page = () => {
     </div>
   );
 };
+
 const data = [
   {
     type: 'Have a credit card',

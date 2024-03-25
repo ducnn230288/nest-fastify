@@ -12,6 +12,7 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, type } = useParams();
+  console.log(id)
   const codeFacade = CodeFacade();
   const { set } = GlobalFacade();
   const param = JSON.parse(codeFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
@@ -22,7 +23,7 @@ const Page = () => {
       breadcrumbs: [
         { title: 'titles.Setting', link: '' },
         { title: 'titles.Code', link: '' },
-        { title: id ? 'pages.Code/Edit' : 'pages.Code/Add', link: '' },
+        // { title: id ? 'pages.Code/Edit' : 'pages.Code/Add', link: '' },
       ],
     });
   }, [id]);

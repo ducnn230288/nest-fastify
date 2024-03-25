@@ -389,7 +389,7 @@ export const Gantt = ({
           className={'w-1 h-full bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2 -ml-0.5 drag-side'}
         ></div>
         <div className={'w-full flex gap-0.5'}>
-          <div className={'left overflow-hidden'} style={{ flexBasis: '50%' }}>
+          <div className={'left overflow-hidden -intro-x'} style={{ flexBasis: '50%' }}>
             <div className={'left-scroll overflow-x-hidden'}>
               <table className={'head min-w-[600px]'}>
                 <thead>
@@ -458,7 +458,7 @@ export const Gantt = ({
               </table>
             </div>
           </div>
-          <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
+          <div className={'right relative overflow-hidden intro-x'} style={{ flexBasis: '50%' }}>
             <div className={'right-scroll overflow-x-hidden'} style={{ paddingRight: getScrollBarWidth() + 'px' }}>
               <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <thead>
@@ -586,6 +586,7 @@ type TTask = {
   id: string;
   name: string;
   start?: string;
+  deadline?: string;
   assignee?: string;
   status?: string;
   priority?: string;

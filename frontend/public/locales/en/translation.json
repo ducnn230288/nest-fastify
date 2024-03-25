@@ -113,7 +113,10 @@
     "Booking/Detail": "Booking {{date}}",
     "Booking/Add": "Add booking {{type}} {{date}}",
     "Question": "Question",
-    "Task": "Task"
+    "Task": "Task",
+    "Task/Add": "Add new Task",
+    "Task/Edit": "Edit Task",
+    "TimeSheet": "TimeSheet"
   },
   "columns": {
     "auth": {

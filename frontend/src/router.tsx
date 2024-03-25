@@ -182,6 +182,17 @@ const pages = [
         title: 'Task',
       },
       {
+        path: routerLinks('Task') + '/add',
+        component: React.lazy(() => import('@pages/task/add')),
+        // Title
+        title: 'Task/Add',
+      },
+      {
+        path: routerLinks('Task') + '/:id/edit',
+        component: React.lazy(() => import('@pages/task/add')),
+        title: 'Task/Edit',
+      },
+      {
         path: routerLinks('Booking'),
         component: React.lazy(() => import('@pages/booking')),
         title: 'Booking',

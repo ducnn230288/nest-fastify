@@ -48,11 +48,19 @@ export const ModalForm = forwardRef(
           return form
             .validateFields()
             .then(async (values) => {
-              values = convertFormValue(columns, values);
-              if (facade[keyData]?.id) facade[keyPut]({ ...values, id: facade[keyData].id });
-              else facade[keyPost]({ ...values });
+              let valuess = convertFormValue(columns, values);
+              if (!facade[keyData]?.id) facade[keyPost]({ ...valuess });
+              const {works, ...rest} = values;
+              const valuesPut = { ...rest, listTaskWork: values.works.map((work: any) => ({
+                id: work.id,
+                hours: work.hours,
+                taskId: work.taskId
+                }))}
+              if (facade[keyData]?.id) facade[keyPut]({ ...valuesPut});
+              // else facade[keyPost]({ ...valuess });
               return true;
             })
+            
             .catch(() => false);
         }}
       >

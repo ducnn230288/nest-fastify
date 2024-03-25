@@ -25,7 +25,7 @@ export class TaskTimesheetService extends BaseService<TaskTimesheet> {
   }
 
   async getCheckIn(user: User): Promise<TaskTimesheet | null> {
-    return await this.repo.checkHaveTaskTimesheetInDay(user.id!, ['works', 'user']);
+    return await this.repo.checkHaveTaskTimesheetInDay(user.id!, ['works', 'user', 'works.task']);
   }
 
   async checkIn(user: User, body: CheckInRequestDto): Promise<TaskTimesheet | null> {

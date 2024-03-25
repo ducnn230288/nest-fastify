@@ -1,20 +1,40 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { DataTable } from '@core/data-table';
-import { TimeSheetFacade } from '@store';
+import { Booking, GlobalFacade, TaskFacade, TimeSheetFacade, UserFacade } from '@store';
 
 import dayjs from 'dayjs';
 import { Button } from '@core/button';
-import { Plus } from '@svgs';
+import { Check, Edit, Plus, Trash } from '@svgs';
 import { ModalForm } from '@core/modal/form';
-import { lang, routerLinks } from '@utils';
+import { keyRole, lang, routerLinks } from '@utils';
+import { EFormRuleType, EFormType, EStatusState, ETableAlign } from '@models';
+import { ToolTip } from '@core/tooltip';
+import { PopConfirm } from '@core/pop-confirm';
 const Page = () => {
+  const { set } = GlobalFacade();
   const { t } = useTranslation();
   const timeSheetFacade = TimeSheetFacade();
   const dataTableRef = useRef<any>();
   const modalFormRefcheckin = useRef<any>();
+  const modalFormRefcheckout = useRef<any>();
   const navigate = useNavigate();
+  // const { id, date } = useParams();
+  // const { data } = timeSheetFacade;
+  // console.log(data)
+
+
+  useEffect(() => {
+    set({
+      breadcrumbs: [
+        { title: 'titles.TimeSheet', link: '' },
+        { title: 'titles.TimeSheet/List', link: '' },
+        // { title: id ? 'pages.Code/Edit' : 'pages.Code/Add', link: '' },
+      ],
+    });
+  }, []);
+
   return (
     <>
       <div className="justify-end flex content-end">
@@ -25,61 +45,99 @@ const Page = () => {
           onClick={() => modalFormRefcheckin?.current?.handleEdit()}
         />
         <ModalForm
-          keyState=""
+          textSubmit='Check in'
+          keyPost='post'
+          keyState="1"
           facade={timeSheetFacade}
           ref={modalFormRefcheckin}
-          title={() => t('Xem giá')}
+          title={() => t('Check in')}
           className="z form"
           columns={[
             {
-              title: '',
-              name: 'works',
+              title: 'listTask',
+              name: 'listTask',
               formItem: {
-                render: (text, item) => {
-                  return (
-                    <>
-                      <div className="sm:pt-2 border-t">
-                        <div className="flex items-center h-full w-full text-base lg:mt-0 mt-4 form-store mb-5">
-                          <div className="w-1/2 flex">
-                            <div className="font-semibold text-teal-900 ">Tên sản phẩm:</div>
-                            <div className="ml-4">{item?.works?.[0]?.task?.project?.name}</div>
-                          </div>
-                          <div className="w-1/2 flex">
-                            <div className="font-semibold text-teal-900 ">Nhà cung cấp:</div>
-                            <div className="ml-4">{item?.subOrg?.name}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center h-full text-base lg:mt-0 mt-4 form-store mb-5">
-                          <div className="font-semibold text-teal-900 ">Đơn vị cơ bản:</div>
-                          <div className="ml-4">{item?.basicUnit}</div>
-                        </div>
-                      </div>
-                    </>
-                  );
-                },
+                type: EFormType.addable,
+                rules: [{ type: EFormRuleType.required }],
+                col: 12,
+                column: [
+                  {
+                    title: 'taskId',
+                    name: 'id',
+                    formItem: {
+                      type: EFormType.select,
+                      get: {
+                        facade: TaskFacade,
+                        format: (item) => ({
+                          label: item.name,
+                          value: item.id,
+                        }),
+                      }
+
+                    }
+                  },
+                ],
               },
             },
           ]}
-          widthModal={1000}
-          footerCustom={(handleOk, handleCancel) => (
-            <div className=" w-full bg-white ">
-              <div className="flex flex-col items-start mb-[33px] ml-[9px]">
-                <button
-                  className="z-10 px-8 sm:w-auto w-3/5 bg-white border-teal-900 hover:border-teal-600 border-solid border p-2 rounded-xl text-teal-900 hover:text-teal-600 sm:mt-1 mt-2 text-sm h-11"
-                  onClick={handleCancel}
-                >
-                  {t('components.form.modal.cancel')}
-                </button>
-              </div>
-            </div>
-          )}
         />
-        <Button
+        {/* <Button
           icon={<Plus className="w-3 h-3 mr-2 " />}
           text={t('Check out')}
           className={' sm:min-w-[8rem] justify-center out-line  sm:w-auto'}
-
+          onClick={() => modalFormRefcheckout?.current?.handleEdit()}
           // onClick={}
+        /> */}
+        <ModalForm  
+          textSubmit='Check out' 
+          keyPut='putCheckin'
+          facade={timeSheetFacade}
+          ref={modalFormRefcheckout}
+          title={() => t('Check out')}
+          className="z form"
+          columns={[
+            {
+              title:'',
+              name: 'note',
+              formItem: {
+                col: 12,
+                type: EFormType.text,
+              }
+            },
+            {
+              title: 'listTaskWork',
+              name: 'works',
+              formItem: {
+                type: EFormType.addable,
+                rules: [{ type: EFormRuleType.required }],
+                col: 12,
+                column: [
+                  {
+                    title: 'workId',
+                    name: 'id',
+                    formItem: {
+                      type: EFormType.select,
+                    }
+                  },
+                  
+                  {
+                    title: 'hours',
+                    name: 'hours',
+                    formItem: {
+                      type: EFormType.number,
+                    }
+                  },
+                  {
+                    title: 'taskId',
+                    name: 'taskId',
+                    formItem: {
+                      type: EFormType.select,
+                    }
+                  },
+                ],
+              },
+            },
+          ]}
         />
       </div>
 
@@ -124,21 +182,30 @@ const Page = () => {
             name: '',
             tableItem: {
               render: (text, item) => (
+                // console.log('text',text),
+                // console.log('item',item),
+                // item.works.forEach((ok:any) => {
+                //   return ok?.task?.project?.name
+                // })
                 <div className="flex">
-                  <div className="font-semibold pr-1">{item?.works?.[0]?.task?.project?.name}:</div>
-                  <div> {item?.works?.[0]?.task?.name}</div>
-                </div>
+                      <div className="font-semibold pr-1">{item?.works[0]?.task?.project?.name
+                      }:</div>
+                      <div> {item?.works[0]?.task?.name}</div>
+                    </div>
               ),
+              // renderOK: (item) => {
+              //   console.log('item',item)
+              // }
             },
           },
           {
             title: 'Thời gian',
-            name: 'name',
+            name: 'createdAt',
             tableItem: {
               render: (text, item) => (
                 <div className="flex">
-                  <div className="">{dayjs(item?.start).format('HH:mm')}:</div>
-                  <div>{dayjs(item?.finish).format('HH:mm')}</div>
+                  <div className="">{dayjs(item?.start).format('HH:mm')}</div>
+                  {/* <div>{dayjs(item?.finish).format('HH:mm')}</div> */}
                 </div>
               ),
             },
@@ -152,9 +219,37 @@ const Page = () => {
           },
           {
             title: 'Thao tác',
-            name: 'id',
+            name: '',
             tableItem: {
-              render: (text, item) => item?.user?.name,
+              width: 100,
+              align: ETableAlign.center,
+              render: (text: string, data) => (
+                // console.log('data',data),
+                <div className={'flex gap-2'}>
+                  {/* {user?.role?.permissions?.includes(keyRole.P_TASKTIMESHEET_UPDATE) && ( */}
+                    <ToolTip title={t('routes.admin.TimeSheet.checkout')}>
+                      <button
+                        title={t('routes.admin.TimeSheet.checkout') || ''}
+                        onClick={() => {modalFormRefcheckout?.current?.handleEdit({id: data.id}); console.log(data.id)}}
+                      >
+                        <Check className="icon-cud bg-green-600 hover:bg-green-400" />
+                      </button>
+                    </ToolTip>
+                  {/* )} */}
+                  {/* {user?.role?.permissions?.includes(keyRole.P_TASKTIMESHEET_DELETE) && ( */}
+                    <ToolTip title={t('routes.admin.Layout.Delete')}>
+                      <PopConfirm
+                        title={t('components.datatable.areYouSureWant')}
+                        onConfirm={() => dataTableRef?.current?.handleDelete!(data.id)}
+                      >
+                        <button title={t('routes.admin.Layout.Delete') || ''}>
+                          <Trash className="icon-cud bg-red-600 hover:bg-red-400" />
+                        </button>
+                      </PopConfirm>
+                    </ToolTip>
+                  {/* )} */}
+                </div>
+              ),
             },
           },
         ]}

@@ -26,6 +26,7 @@ export class TableItem {
   align?: ETableAlign;
   onClick?: any;
   render?: (text: any, item: any) => JSX.Element | string;
+  renderOK?: (item: any) => void;
   defaultSortOrder?: string;
   defaultFilteredValue?: string;
 }

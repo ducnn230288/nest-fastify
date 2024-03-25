@@ -14,6 +14,7 @@ import Menu from './menu';
 const Layout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
   const globalFacade = GlobalFacade();
+  // console.log(globalFacade)
   const { user, title, titleOption, breadcrumbs } = globalFacade;
 
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       )}
     >
       <div className="flex items-center justify-end sm:justify-between px-5 h-16">
+        {/* breadcrumbs */}
         {title !== 'Dashboard' && (
           <div>
             <h1 className={'text-xl font-bold hidden sm:block'}>{t('pages.' + title, titleOption || {})}</h1>
@@ -94,7 +96,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             </div>
           </div>
         )}
-
+        {/* User */}
         <div className="flex items-center gap-5 absolute right-6">
           <Dropdown
             trigger={['click']}
@@ -179,6 +181,8 @@ const Layout = ({ children }: PropsWithChildren) => {
           <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
         </div>
       </div>
+
+      {/* full Logo */}
       <div
         className={classNames(
           'flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-3 font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20',
@@ -242,6 +246,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           />
         </div>
       </div>
+      {/* Menu: Catgegory */}
       <div
         className={classNames('fixed z-30 top-16 left-0 h-screen bg-teal-900 transition-all duration-300 ease-in-out', {
           'w-64': !isCollapsed,

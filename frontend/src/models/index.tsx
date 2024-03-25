@@ -27,4 +27,7 @@ export enum EStatusState {
   putStatusPending = 'putStatus.pending',
   putStatusFulfilled = 'putStatus.fulfilled',
   putStatusRejected = 'putStatus.rejected',
+  putCheckinPending = 'putCheckin.pending',
+  putCheckinFulfilled = 'putCheckin.fulfilled',
+  putCheckinRejected = 'putCheckin.rejected',
 }

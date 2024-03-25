@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 
 const Page = () => {
   const { user, isLoading, profile, status, putProfile, set, data, formatDate } = GlobalFacade();
+  console.log('data',data)
   useEffect(() => {
     profile();
     set({ breadcrumbs: [] });
@@ -155,35 +156,35 @@ const Page = () => {
                                 value: item.code,
                               }),
                               data: () => data?.position,
-                              column: [
-                                {
-                                  title: 'titles.Code',
-                                  name: 'code',
-                                  tableItem: {
-                                    width: 100,
-                                    filter: { type: ETableFilterType.search },
-                                    sorter: true,
-                                  },
-                                },
-                                {
-                                  title: 'routes.admin.Code.Name',
-                                  name: 'name',
-                                  tableItem: {
-                                    filter: { type: ETableFilterType.search },
-                                    sorter: true,
-                                  },
-                                },
-                                {
-                                  title: 'Created',
-                                  name: 'createdAt',
-                                  tableItem: {
-                                    width: 120,
-                                    filter: { type: ETableFilterType.date },
-                                    sorter: true,
-                                    render: (text) => dayjs(text).format(formatDate),
-                                  },
-                                },
-                              ],
+                              // column: [
+                              //   {
+                              //     title: 'titles.Code',
+                              //     name: 'code',
+                              //     tableItem: {
+                              //       width: 100,
+                              //       filter: { type: ETableFilterType.search },
+                              //       sorter: true,
+                              //     },
+                              //   },
+                              //   {
+                              //     title: 'routes.admin.Code.Name',
+                              //     name: 'name',
+                              //     tableItem: {
+                              //       filter: { type: ETableFilterType.search },
+                              //       sorter: true,
+                              //     },
+                              //   },
+                              //   {
+                              //     title: 'Created',
+                              //     name: 'createdAt',
+                              //     tableItem: {
+                              //       width: 120,
+                              //       filter: { type: ETableFilterType.date },
+                              //       sorter: true,
+                              //       render: (text) => dayjs(text).format(formatDate),
+                              //     },
+                              //   },
+                              // ],
                             },
                           },
                         },
