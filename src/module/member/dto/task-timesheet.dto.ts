@@ -6,7 +6,7 @@ import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 
 export class TaskRequest extends PickType(Task, ['id'] as const) {}
 
-export class TaskWorkRequest extends PickType(TaskWork, ['id', 'hours', 'taskId'] as const) {}
+export class TaskWorkRequest extends PickType(TaskWork, ['id', 'hours'] as const) {}
 
 export class CreateTaskTimesheetRequestDto extends PickType(TaskTimesheet, [] as const) {
   @IsArray()

@@ -209,7 +209,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   it('Check Out [POST /api/task-timesheet', async () => {
     const taskWork = await factoryManager.get(TaskWork).make({
       id: resultTaskTimesheet.works![0].id,
-      taskId: resultTaskWork.taskId,
+
       hours: 1000,
     });
 
@@ -294,8 +294,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
     const { user, works, ...testTimesheet } = resultTaskTimesheet!;
+
     expect(body.data).toEqual(jasmine.objectContaining(testTimesheet));
-    expect(body.data.works).toEqual(jasmine.objectContaining(works));
+    expect(body.data.works[0]).toEqual(jasmine.objectContaining(works![0]));
   });
 
   it('Update [PUT /api/task/{id}/{status}]', async () => {

@@ -91,7 +91,6 @@ export class TaskTimesheetRepository extends BaseRepository<TaskTimesheet> {
         for (const item of listTaskWork) {
           const exist = await entityManager
             .createQueryBuilder(TaskWork, 'base')
-            .andWhere(`base.taskId=:taskId`, { taskId: item.taskId })
             .andWhere(`base.timesheetId=:timesheetId`, { timesheetId: timesheet.id })
             .andWhere(`base.id=:id`, { id: item.id })
             .withDeleted()
