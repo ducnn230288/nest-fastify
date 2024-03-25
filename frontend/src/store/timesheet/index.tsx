@@ -9,7 +9,13 @@ const name = 'TimeSheet';
 const action = {
   ...new Action<TimeSheet>(name),
   putCheckin: createAsyncThunk(name + '/putCheckin', async (values: any) => {
-    const { data, message } = await API.put(`${routerLinks(name, 'api')}`, values);
+    const { works, id, ...rest} = values;
+    const valuesPut = { ...rest, listTaskWork: values.works.map((work: any) => ({
+      id: work.id,
+      hours: work.hours,
+      }))}
+    // console.log('valuesPut',valuesPut)
+    const { data, message } = await API.put(`${routerLinks(name, 'api')}`, valuesPut);
     if (message) Message.success({ text: message });
     return data;
   }),
@@ -42,8 +48,8 @@ export const TimeSheetFacade = () => {
     getById: ({ id, keyState = 'isVisible' }: { id: string; keyState?: keyof State<TimeSheet> }) =>
       dispatch(action.getById({ id, keyState })),
     post: (values: TimeSheet) => dispatch(action.post(values)),
-    put: (values: TimeSheet) => dispatch(action.put(values)),
-    putCheckin: (values: TimeSheet) => dispatch(action.putCheckin(values)),
+    put: (values: TimeSheet) => dispatch(action.putCheckin(values)),
+    // putCheckin: (values: TimeSheet) => dispatch(action.putCheckin(values)),
     putDisable: (values: { id: string; disable: boolean }) => dispatch(action.putDisable(values)),
     delete: (id: string) => dispatch(action.delete(id)),
   };
@@ -65,9 +71,7 @@ export class TimeSheet extends CommonEntity {
     super();
   }
 }
-// interface Works {
-//   [key: string]: Work;
-// }
+
 export class Work extends CommonEntity {
   constructor(
     public id?: string,

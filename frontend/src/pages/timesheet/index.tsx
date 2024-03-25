@@ -90,7 +90,7 @@ const Page = () => {
         /> */}
         <ModalForm  
           textSubmit='Check out' 
-          keyPut='putCheckin'
+          keyPost='putCheckin'
           facade={timeSheetFacade}
           ref={modalFormRefcheckout}
           title={() => t('Check out')}
@@ -117,6 +117,8 @@ const Page = () => {
                     name: 'id',
                     formItem: {
                       type: EFormType.select,
+                      // disabled: () => true,
+                      list: timeSheetFacade?.data?.works?.map((i) => ({value: i.id, label: i.task?.name})) ?? []
                     }
                   },
                   
@@ -124,16 +126,16 @@ const Page = () => {
                     title: 'hours',
                     name: 'hours',
                     formItem: {
-                      type: EFormType.number,
+                      type: EFormType.onlyNumber,
                     }
                   },
-                  {
-                    title: 'taskId',
-                    name: 'taskId',
-                    formItem: {
-                      type: EFormType.select,
-                    }
-                  },
+                  // {
+                  //   title: 'taskId',
+                  //   name: 'taskId',
+                  //   formItem: {
+                  //     type: EFormType.select,
+                  //   }
+                  // },
                 ],
               },
             },
