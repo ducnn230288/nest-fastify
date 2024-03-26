@@ -46,4 +46,5 @@ other/upload
 frontend/test/result
 frontend/build
 frontend/node_modules
+frontend/package-lock.json
 
