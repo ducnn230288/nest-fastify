@@ -16,8 +16,8 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     SchedulerModule,
-    UserModule,
-    CoreModule,
+    // UserModule,
+    // CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',
@@ -38,7 +38,7 @@ import { NotificationModule, SchedulerModule, CoreModule, UserModule } from '@mo
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
         autoLoadEntities: true,
-        synchronize: appConfig.NODE_ENV !== 'prod',
+        synchronize: false,
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
       }),
