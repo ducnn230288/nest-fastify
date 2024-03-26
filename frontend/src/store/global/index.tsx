@@ -6,7 +6,7 @@ import i18n from 'i18next';
 
 import { API, keyRefreshToken, keyToken, keyUser, lang, routerLinks } from '@utils';
 import { Message } from '@core/message';
-import { useAppDispatch, useTypedSelector, UserRole, Code, UserTeam } from '@store';
+import { useAppDispatch, useTypedSelector, UserRole, Code } from '@store';
 import { CommonEntity } from '@models';
 
 const name = 'Auth';
@@ -70,6 +70,11 @@ interface ResetPassword {
   email?: string;
   otp?: string;
 }
+interface Breadcrumb {
+  title: string;
+  link: string;
+}
+
 export class User extends CommonEntity {
   constructor(
     public name?: string,
@@ -79,20 +84,11 @@ export class User extends CommonEntity {
     public phoneNumber?: string,
     public dob?: string,
     public description?: string,
-    public roleCode?: string,
-    public role?: UserRole,
-    public managers?: UserTeam[],
-    public teams?: UserTeam[],
-    public teamsId?: string[],
-    public managerId?: string,
-    public manager?: User,
-    public members?: User[],
     public positionCode?: string,
     public position?: Code,
-    public startDate?: Date,
-    public dateLeave?: number,
-    public dateOff?: number,
     public retypedPassword?: string,
+    public roleCode?: string,
+    public role?: UserRole,
     public createdAt?: string,
     public updatedAt?: string,
   ) {
@@ -135,7 +131,9 @@ const initialState: State = {
   isLoading: false,
   isVisible: false,
   status: EStatusGlobal.idle,
+  title: '',
   pathname: '',
+  breadcrumbs: [],
   ...checkLanguage(lang),
 };
 export const globalSlice = createSlice({
@@ -327,9 +325,12 @@ interface State {
   isLoading?: boolean;
   isVisible?: boolean;
   status?: EStatusGlobal;
+  title?: string;
+  titleOption?: Record<string, string | undefined>;
   pathname?: string;
   formatDate?: string;
   language?: string;
+  breadcrumbs?: Breadcrumb[];
   locale?: typeof viVN | typeof enUS;
 }
 export const GlobalFacade = () => {

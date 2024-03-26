@@ -65,6 +65,7 @@ const Page = () => {
                     title: 'taskId',
                     name: 'id',
                     formItem: {
+                      rules: [{ type: EFormRuleType.required }],
                       type: EFormType.select,
                       get: {
                         facade: TaskFacade,
@@ -97,9 +98,10 @@ const Page = () => {
           className="z form"
           columns={[
             {
-              title:'',
+              title:'note',
               name: 'note',
               formItem: {
+                rules: [{ type: EFormRuleType.required }],
                 col: 12,
                 type: EFormType.text,
               }
@@ -117,7 +119,7 @@ const Page = () => {
                     name: 'id',
                     formItem: {
                       type: EFormType.select,
-                      // disabled: () => true,
+                      disabled: () => true,
                       list: timeSheetFacade?.data?.works?.map((i) => ({value: i.id, label: i.task?.name})) ?? []
                     }
                   },
@@ -126,7 +128,9 @@ const Page = () => {
                     title: 'hours',
                     name: 'hours',
                     formItem: {
-                      type: EFormType.onlyNumber,
+                      rules: [{ type: EFormRuleType.required }],
+                      // EFormType.number: đang ở dạng string khi submit
+                      type: EFormType.number,
                     }
                   },
                   // {

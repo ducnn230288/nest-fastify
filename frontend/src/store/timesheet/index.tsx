@@ -10,11 +10,12 @@ const action = {
   ...new Action<TimeSheet>(name),
   putCheckin: createAsyncThunk(name + '/putCheckin', async (values: any) => {
     const { works, id, ...rest} = values;
+    
     const valuesPut = { ...rest, listTaskWork: values.works.map((work: any) => ({
       id: work.id,
-      hours: work.hours,
-      }))}
-    // console.log('valuesPut',valuesPut)
+      // sử dụng hàm parseInt() hoặc parseFloat(): Chuyển string thành number 
+      hours: parseFloat(work.hours),
+    }))};
     const { data, message } = await API.put(`${routerLinks(name, 'api')}`, valuesPut);
     if (message) Message.success({ text: message });
     return data;

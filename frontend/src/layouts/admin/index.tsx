@@ -15,8 +15,9 @@ const Layout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
   const globalFacade = GlobalFacade();
   // console.log(globalFacade)
-  const { user } = globalFacade;
-  // const { user, title, titleOption, breadcrumbs } = globalFacade;
+  // const { user } = globalFacade;
+  const { user, title, titleOption, breadcrumbs } = globalFacade;
+  console.log('globalFacade',globalFacade)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,6 +66,9 @@ const Layout = ({ children }: PropsWithChildren) => {
       navigate(globalFacade.pathname);
     }
   }, [globalFacade.pathname]);
+  // useEffect(() => {
+  //   if (!!globalFacade.language && globalFacade.title) document.title = t('pages.' + globalFacade.title || '');
+  // }, [globalFacade.language]);
 
   const Header = ({ isCollapsed, isDesktop }: { isCollapsed: boolean; isDesktop: boolean }) => (
     <header
@@ -79,7 +83,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     >
       <div className="flex items-center justify-end sm:justify-between px-5 h-16">
         {/* breadcrumbs */}
-        {/* {title !== 'Dashboard' && (
+        {title !== 'Dashboard' && (
           <div>
             <h1 className={'text-xl font-bold hidden sm:block'}>{t('pages.' + title, titleOption || {})}</h1>
 
@@ -94,7 +98,7 @@ const Layout = ({ children }: PropsWithChildren) => {
               ))}
             </div>
           </div>
-        )} */}
+        )}
         {/* User */}
         <div className="flex items-center gap-5 absolute right-6">
           <Dropdown
