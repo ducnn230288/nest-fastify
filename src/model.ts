@@ -15,3 +15,6 @@ export * from './module/user/model/address-ward.model';
 export * from './module/user/model/address.model';
 export * from './module/user/model/user.model';
 export * from './module/user/model/user-role.model';
+
+export * from './module/building/model/building.model';
+export * from './module/building/model/room.entity';
