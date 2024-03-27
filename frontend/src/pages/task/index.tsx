@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { t } from 'i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
@@ -8,6 +8,7 @@ import { Plus } from '@svgs';
 import { useNavigate } from 'react-router';
 import { keyRole, lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
+import { EStatusState, TableRefObject } from '@models';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -15,19 +16,37 @@ const Page = () => {
   const taskFacade = TaskFacade();
   // console.log(taskFacade.result?.data);
   const navigate = useNavigate();
-  // const codeFacade = CodeFacade();
-  // const request = JSON.parse(codeFacade.queryParams || '{}');
-  // const request = JSON.parse(taskFacade.queryParams || '{}');
+  
+  
+  // useEffect(() => {
+  //   // if (!codeTypeFacade.result?.data) codeTypeFacade.get({});
+    // set({
+    //   breadcrumbs: [
+    //     { title: 'titles.Task', link: '' },
+    //     { title: 'titles.Task/List', link: '' },
+    //   ],
+    // });
+  // }, []);
   useEffect(() => {
-    // if (!codeTypeFacade.result?.data) codeTypeFacade.get({});
     set({
       breadcrumbs: [
         { title: 'titles.Task', link: '' },
         { title: 'titles.Task/List', link: '' },
       ],
     });
+    // switch (taskFacade.status) {
+    //   case EStatusState.putFulfilled:
+    //   case EStatusState.putDisableFulfilled:
+    //   case EStatusState.postFulfilled:
+    //   case EStatusState.deleteFulfilled:
+    //     dataTableRef?.current?.onChange(request);
+    //     break;
+    // }
+    // [taskFacade.status]
   }, []);
   
+  const dataTableRef = useRef<TableRefObject>(null);
+  const request = JSON.parse(taskFacade.queryParams || '{}');
 
   useEffect(() => {
     if (!taskFacade?.result?.data) {taskFacade.get({});};
