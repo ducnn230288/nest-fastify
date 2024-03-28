@@ -5,6 +5,7 @@ import { FormInstance } from 'antd';
 const Component = forwardRef(
   (
     {
+      id,
       className = 'h-10',
       mask,
       value,
@@ -15,6 +16,7 @@ const Component = forwardRef(
       maxLength,
       placeholder,
       onBlur,
+      onFocus,
       onChange,
       onPressEnter,
       ...prop
@@ -40,6 +42,7 @@ const Component = forwardRef(
       >
         {!!addonBefore && <div>{addonBefore(form)}</div>}
         <input
+          id={id}
           ref={input}
           className={classNames(
             'w-full text-gray-600 bg-white px-4',
@@ -54,11 +57,12 @@ const Component = forwardRef(
             className,
           )}
           readOnly={disabled}
-          value={value}
+          defaultValue={value}
           maxLength={maxLength}
           placeholder={placeholder}
           onBlur={onBlur}
           onChange={onChange}
+          onFocus={onFocus}
           onKeyUp={(e) => e.keyCode === 13 && onPressEnter && onPressEnter(e)}
           {...prop}
         />
@@ -69,8 +73,9 @@ const Component = forwardRef(
 );
 Component.displayName = 'Mask Input';
 type Type = {
+  id?: string;
   className?: string;
-  mask?: string;
+  mask?: any;
   value?: string;
   addonBefore?: (form?: FormInstance) => JSX.Element;
   addonAfter?: (form?: FormInstance) => JSX.Element;
@@ -79,6 +84,7 @@ type Type = {
   maxLength?: number;
   placeholder: string;
   onBlur?: (e: any) => any;
+  onFocus?: (e: any) => any;
   onChange?: (e: any) => any;
   onPressEnter?: (e: any) => any;
 };

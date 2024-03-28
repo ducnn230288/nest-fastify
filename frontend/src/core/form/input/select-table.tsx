@@ -5,6 +5,7 @@ import { Dropdown } from 'antd';
 import { TableGet, TableRefObject } from '@models';
 import { DataTable } from '@core/data-table';
 import { arrayUnique } from '@utils';
+import Mask from '@core/form/input/mask';
 
 const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => {
   const refSelect = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
   const facade = get?.facade() || {};
 
   const table = useRef<TableRefObject>(null);
-  const input = useRef<HTMLInputElement>(null);
+  const input = useRef<{ input: HTMLInputElement }>(null);
 
   const [_temp, set_temp] = useState([]);
   useEffect(() => {
@@ -41,7 +42,7 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
         if (JSON.stringify(_data) !== JSON.stringify(_temp)) {
           set_temp(_data.length ? _data : [_data]);
           setTimeout(() => {
-            input.current!.value = data[0].label;
+            input.current!.input.value = data[0].label;
           });
         }
       }
@@ -71,7 +72,7 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
                   if (get?.format) {
                     const { label, value } = get!.format(e);
                     onChange(value);
-                    input.current!.value = label!.toString();
+                    input.current!.input.value = label!.toString();
                     setOpen(false);
                   }
                 },
@@ -81,14 +82,10 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
           </div>
         )}
       >
-        <input
+        <Mask
           ref={input}
           disabled={disabled}
-          type="text"
           placeholder={placeholder}
-          className={classNames('w-full h-10 text-gray-600 bg-white px-4 ant-input border rounded-xl', {
-            'bg-zinc-100 border-none focus:shadow-none text-zinc-400': disabled,
-          })}
           onBlur={onBlur}
           onFocus={onFocus}
           onChange={(e) => table.current?.onChange({ fullTextSearch: e.target.value, page: 1, perPage: 10 })}

@@ -133,7 +133,7 @@ const Page = () => {
               facade={userFacade}
               ref={dataTableRef}
               onRow={(data) => ({
-                onDoubleClick: () => userFacade.getById({ id: data.id }),
+                // onDoubleClick: () => userFacade.getById({ id: data.id }),
               })}
               paginationDescription={(from: number, to: number, total: number) =>
                 t('routes.admin.Layout.User', { from, to, total })

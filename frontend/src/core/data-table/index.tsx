@@ -15,6 +15,7 @@ import { DataTableModel, PaginationQuery, TableGet, TableRefObject } from '@mode
 import { cleanObjectKeyNull, getSizePageByHeight, uuidv4 } from '@utils';
 import { Calendar, CheckCircle, CheckSquare, Search, Times } from '@svgs';
 import { SorterResult } from 'antd/lib/table/interface';
+import { Mask } from '@core/form/input';
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -204,17 +205,13 @@ export const DataTable = forwardRef(
           <Spin spinning={facade.isLoading === true || false}>
             <div className="p-1">
               {get?.facade && (
-                <input
-                  className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4 mb-1"
-                  type="text"
+                <Mask
                   placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
                   onChange={(e) => {
                     clearTimeout(timeoutSearch.current);
                     timeoutSearch.current = setTimeout(() => columnSearch(get, e.target.value, selectedKeys), 500);
                   }}
-                  onKeyUp={async (e) => {
-                    if (e.key === 'Enter') await columnSearch(get, e.currentTarget.value, undefined, facade);
-                  }}
+                  onPressEnter={(e) => columnSearch(get, e.currentTarget.value, undefined, facade)}
                 />
               )}
               <div>
@@ -248,9 +245,7 @@ export const DataTable = forwardRef(
           <Spin spinning={facade.isLoading === true || false}>
             <div className="p-1">
               {!!get?.facade && (
-                <input
-                  className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4 mb-1"
-                  type="text"
+                <Mask
                   placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
                   onChange={(e) => {
                     clearTimeout(timeoutSearch.current);
@@ -259,9 +254,7 @@ export const DataTable = forwardRef(
                       500,
                     );
                   }}
-                  onKeyUp={async (e) => {
-                    if (e.key === 'Enter') await columnSearch(get, e.currentTarget.value, undefined, facade);
-                  }}
+                  onPressEnter={(e) => columnSearch(get, e.currentTarget.value, undefined, facade)}
                 />
               )}
               <div>
@@ -287,17 +280,12 @@ export const DataTable = forwardRef(
     const getColumnSearchInput = (key: any) => ({
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
         <div className="p-1">
-          <input
+          <Mask
             id={idTable.current + '_input_filter_' + key}
-            className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4"
-            value={selectedKeys}
-            type="text"
             placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
+            value={selectedKeys}
             onChange={(e) => setSelectedKeys(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') confirm();
-              e.stopPropagation();
-            }}
+            onPressEnter={(e) => confirm()}
           />
           {groupButton(confirm, clearFilters, key, selectedKeys)}
         </div>
@@ -445,11 +433,10 @@ export const DataTable = forwardRef(
           <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
             {showSearch ? (
               <div className="relative">
-                <input
+                <Mask
+                  className={'h-10 pl-8'}
                   id={idTable.current + '_input_search'}
-                  className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
-                  defaultValue={params.fullTextSearch}
-                  type="text"
+                  value={params.fullTextSearch}
                   placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
                   onChange={() => {
                     clearTimeout(timeoutSearch.current);
@@ -464,15 +451,12 @@ export const DataTable = forwardRef(
                       500,
                     );
                   }}
-                  onKeyUp={(e) => {
-                    if (e.key === 'Enter')
-                      handleTableChange(
-                        undefined,
-                        params.filter,
-                        params.sorts as SorterResult<any>,
-                        (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                      );
-                  }}
+                  onPressEnter={(e) => handleTableChange(
+                    undefined,
+                    params.filter,
+                    params.sorts as SorterResult<any>,
+                    (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
+                  )}
                 />
                 {!params.fullTextSearch ? (
                   <Search
