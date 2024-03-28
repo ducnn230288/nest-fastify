@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { EFormModeSelect, EFormType, FormModel } from '@models';
-
 dayjs.extend(utc);
 
 export const convertFormValue = (columns: FormModel[], values: { [selector: string]: any }, exportData = true) => {
@@ -43,8 +42,8 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
             }
             break;
           case EFormType.number:
-            if (!exportData && values && values[item.name])
-              values[item.name] = !item.formItem?.mask ? parseFloat(values[item.name]) : values[item.name].toString();
+            if (!exportData && values && (values[item.name] || values[item.name] === 0))
+              values[item.name] = values[item.name].toString();
             if (exportData) values[item.name] = parseFloat(values[item.name]);
             break;
           case EFormType.tab:
@@ -101,6 +100,9 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
             break;
           case EFormType.textarea:
             if (!exportData && !values[item.name]) values[item.name] = '';
+            break;
+          case EFormType.chips:
+            if (!exportData && !values[item.name]) values[item.name] = [];
             break;
           default:
             if (!item?.formItem?.mask && typeof values[item.name] === 'string') {

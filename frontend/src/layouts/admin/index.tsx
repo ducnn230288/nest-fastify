@@ -248,7 +248,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           'ml-16': isCollapsed && isDesktop,
         })}
       >
-        <div className={'h-[calc(100vh-6rem)]'}>
+        <div className={'h-[calc(100vh-6rem)] overflow-auto'}>
           {!isDesktop && <h1 className={'title-page text-xl font-bold block sm:hidden'}></h1>}
           <div className={'breadcrumbs-page flex items-center text-xs mt-0.5 pb-5 sm:hidden'}></div>
           {children}

@@ -509,7 +509,7 @@ export const DataTable = forwardRef(
         {!!showList && (
           <DndContext
             modifiers={[restrictToHorizontalAxis]}
-            onDragMove={({activatorEvent, delta}) => {
+            onDragMove={({ activatorEvent, delta }) => {
               if (!left) {
                 left = (activatorEvent.target as HTMLSpanElement)!.closest('th');
                 const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
@@ -525,13 +525,13 @@ export const DataTable = forwardRef(
               left.style.minWidth = wLeft + p + 'px';
               table!.style.width = wTable + p + 'px';
             }}
-            onDragEnd={() => left = undefined}
+            onDragEnd={() => (left = undefined)}
           >
             <Table
               onRow={onRow}
               components={{
                 header: {
-                  cell: ({ children, ...restProps }: { children: React.ReactNode, title?: string }) => (
+                  cell: ({ children, ...restProps }: { children: React.ReactNode; title?: string }) => (
                     <th {...restProps}>
                       {children}
                       <Draggable id={restProps?.title} />
@@ -609,11 +609,13 @@ type Type = {
   formatData?: (data: any) => any[];
 };
 const Draggable = (props: any) => {
-  const {attributes, listeners, setNodeRef} = useDraggable({ id: props.id, });
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: props.id });
   return (
     <span
       className={'opacity-0 cursor-col-resize absolute right-0 top-0 z-50 h-full w-1'}
-      ref={setNodeRef} {...listeners} {...attributes}
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
     />
   );
-}
+};

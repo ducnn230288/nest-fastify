@@ -99,8 +99,8 @@ export class FormItem {
   };
   showSearch?: boolean;
   mask?: any;
-  addonBefore?: (form: FormInstance) => JSX.Element;
-  addonAfter?: (form: FormInstance) => JSX.Element;
+  addonBefore?: (form?: FormInstance) => JSX.Element;
+  addonAfter?: (form?: FormInstance) => JSX.Element;
   maxLength?: number;
   textAdd?: string;
   onAdd?: (values: any, form: FormInstance) => void;

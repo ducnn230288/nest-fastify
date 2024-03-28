@@ -136,3 +136,42 @@ export const mapTreeObject = (item: any) => {
     children: !item?.children ? null : item?.children?.map((i: any) => mapTreeObject(i)),
   } as any;
 };
+export const textWidth = (text?: string, fontProp?: string) => {
+  if (text) {
+    const tag = document.createElement('div');
+    tag.style.position = 'absolute';
+    tag.style.left = '-999em';
+    tag.style.whiteSpace = 'nowrap';
+    if (fontProp) tag.style.font = fontProp;
+    tag.innerHTML = text;
+    document.body.appendChild(tag);
+    const result = tag.clientWidth;
+    document.body.removeChild(tag);
+    return result;
+  }
+  return 0;
+};
+export const getLongTextInArray = (arr: string[]) => arr.reduce((a, b) => (a.length > b.length ? a : b));
+export const reorderArray = (list: any[], startIndex: any, endIndex: any) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
+export const cssInObject = (styles: string) =>
+  styles
+    .trim()
+    .split(';')
+    .map((cur) =>
+      cur
+        .trim()
+        .split(':')
+        .map((i) => i.trim()),
+    )
+    .filter((i) => i.length === 2)
+    .reduce((acc: any, val) => {
+      const [key, value] = val;
+      const newKey = key.replace(/-./g, (css) => css.toUpperCase()[1]);
+      acc[newKey] = value;
+      return acc;
+    }, {});

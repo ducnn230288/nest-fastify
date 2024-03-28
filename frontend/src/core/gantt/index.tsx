@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { gsap } from 'gsap';
 import classNames from 'classnames';
+import TweenOne from 'rc-tween-one';
 import { DndContext, useDraggable } from '@dnd-kit/core';
 import { restrictToHorizontalAxis, restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
@@ -121,39 +121,10 @@ export const Gantt = ({
       );
     }
   };
-  const time = useRef<any>({});
   const statusCollapse = useRef<any>({});
   const [task, setTask] = useState(data);
-  const handleCollapse = (e: any) => {
-    const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!);
-    const level = parseInt(loopGetDataset(e.target as HTMLElement, 'level').dataset.level!);
-    const reversed = !!time.current[index] && !time.current[index].reversed();
-    statusCollapse.current[index] = !reversed;
-    if (reversed) time.current[index].reverse();
-    else {
-      time.current[index] = gsap.timeline({ defaults: { duration: 0.2, ease: 'power1.inOut' } });
-      time.current[index].to(e.target, { transform: 'rotate(0deg)' }, '0');
-      ['left', 'right'].forEach((className) => {
-        let isCollapse = true;
-        document.querySelectorAll(`#${id.current} .${className} tbody > tr`).forEach((tr: any) => {
-          const trIndex = parseInt(tr.dataset.index);
-          const trLevel = parseInt(tr.dataset.level);
-          if (isCollapse && trIndex > index) {
-            if (trLevel > level) {
-              tr.querySelectorAll('td').forEach((td: any) => {
-                time.current[index].to(
-                  td,
-                  { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' },
-                  '0',
-                );
-                const svg = td.querySelector('svg');
-                if (svg) time.current[index].to(svg, { height: '-0px', width: '-0px' }, '0');
-              });
-            } else isCollapse = false;
-          }
-        });
-      });
-    }
+  const handleCollapse = (index: number, level: number) => {
+    statusCollapse.current[index] = !statusCollapse.current[index];
 
     let isCheck = true;
     let currentLevel: number | undefined;
@@ -181,7 +152,9 @@ export const Gantt = ({
       document.querySelector(`#${id.current} ${e.target.dataset.scrollX}`)!.scrollTo({ left: e.target.scrollLeft });
   };
   const NameColumn = ({ name }: { name: string; isDrag?: boolean }) => (
-    <th align={'left'} className="capitalize border px-4 h-12 text-xs relative truncate">{name}</th>
+    <th align={'left'} className="capitalize border px-4 h-12 text-xs relative truncate">
+      {name}
+    </th>
   );
   const renderSvg = (item: TTask, i: number) => {
     if (item.success) {
@@ -308,8 +281,8 @@ export const Gantt = ({
       <div className="relative">
         <DndContext
           modifiers={[restrictToHorizontalAxis]}
-          onDragEnd={() => dragStart = true}
-          onDragMove={({delta, active}) => {
+          onDragEnd={() => (dragStart = true)}
+          onDragMove={({ delta, active }) => {
             const left: any = document.querySelector(`#${id.current} .left`);
             const right: any = document.querySelector(`#${id.current} .right`);
             if (active.id === 'side') {
@@ -329,14 +302,14 @@ export const Gantt = ({
               <div className={'left-scroll overflow-x-hidden'}>
                 <table className={'head min-w-[600px]'}>
                   <thead>
-                  <tr>
-                    <NameColumn name={'Product Release'}></NameColumn>
-                    <NameColumn name={'Assignee'}></NameColumn>
-                    <NameColumn name={'Status'}></NameColumn>
-                    <NameColumn name={'Priority'}></NameColumn>
-                    <NameColumn name={'Planned'}></NameColumn>
-                    <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
-                  </tr>
+                    <tr>
+                      <NameColumn name={'Product Release'}></NameColumn>
+                      <NameColumn name={'Assignee'}></NameColumn>
+                      <NameColumn name={'Status'}></NameColumn>
+                      <NameColumn name={'Priority'}></NameColumn>
+                      <NameColumn name={'Planned'}></NameColumn>
+                      <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
+                    </tr>
                   </thead>
                 </table>
               </div>
@@ -344,52 +317,62 @@ export const Gantt = ({
               <div className="overflow-scroll" data-scroll-x={'.left-scroll'} onScroll={handleScroll}>
                 <table className={'body min-w-[600px] border-b'}>
                   <tbody>
-                  {task.map((item, index) => (
-                    <tr
-                      key={index}
-                      onMouseOver={handleHover}
-                      onMouseOut={handleHover}
-                      data-index={index}
-                      data-level={item.level}
-                    >
-                      <td className="border-x pl-5 py-0 h-6 overflow-hidden">
-                        <div
-                          className={'flex items-center gap-1'}
-                          style={{ paddingLeft: item.level * (widthColumnDay / perRow) + 'px' }}
-                        >
-                          {!!task[index + 1] && task[index + 1].level > item.level && (
-                            <Arrow onClick={handleCollapse} className={'w-3 h-3 -ml-4 cursor-pointer rotate-90'} />
-                          )}
-                          <span className={'truncate'}>{item.name}</span>
-                        </div>
-                      </td>
-                      <td className="border-x px-4 py-0 h-6 truncate">{item.assignee}</td>
-                      <td
-                        className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
-                          'bg-blue-600': item.status === 'In Progress',
-                          'bg-green-600': item.status === 'Completed',
-                          'bg-gray-600': item.status === 'On Hold',
-                        })}
-                      >
-                        {item.status}
-                      </td>
-                      <td
-                        className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
-                          'bg-red-500': item.priority === 'Critical',
-                          'bg-orange-500': item.priority === 'High',
-                          'bg-yellow-500': item.priority === 'Normal',
-                        })}
-                      >
-                        {item.priority}
-                      </td>
-                      <td className="border-x px-4 py-0 h-6 truncate">
-                        {item.planned} {item.planned ? 'hours' : ''}
-                      </td>
-                      <td className="border-x px-4 py-0 h-6 truncate">
-                        {item.work} {item.work ? 'days' : ''}
-                      </td>
-                    </tr>
-                  ))}
+                    {task.map(
+                      (item, index) =>
+                        !item.hidden && (
+                          <tr
+                            key={index}
+                            onMouseOver={handleHover}
+                            onMouseOut={handleHover}
+                            data-index={index}
+                            data-level={item.level}
+                          >
+                            <td className="border-x pl-5 py-0 h-6 overflow-hidden">
+                              <div
+                                className={'flex items-center gap-1'}
+                                style={{ paddingLeft: item.level * (widthColumnDay / perRow) + 'px' }}
+                              >
+                                {!!task[index + 1] && task[index + 1].level > item.level && (
+                                  <TweenOne
+                                    animation={{ rotate: 0, duration: 200 }} // @ts-ignore
+                                    moment={!statusCollapse.current[index] ? null : 1}
+                                    reverse={!statusCollapse.current[index]}
+                                    className={'-ml-4 rotate-90 w-3 h-3 cursor-pointer'}
+                                  >
+                                    <Arrow onClick={() => handleCollapse(index, item.level)} className={'w-3 h-3'} />
+                                  </TweenOne>
+                                )}
+                                <span className={'truncate'}>{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="border-x px-4 py-0 h-6 truncate">{item.assignee}</td>
+                            <td
+                              className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
+                                'bg-blue-600': item.status === 'In Progress',
+                                'bg-green-600': item.status === 'Completed',
+                                'bg-gray-600': item.status === 'On Hold',
+                              })}
+                            >
+                              {item.status}
+                            </td>
+                            <td
+                              className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
+                                'bg-red-500': item.priority === 'Critical',
+                                'bg-orange-500': item.priority === 'High',
+                                'bg-yellow-500': item.priority === 'Normal',
+                              })}
+                            >
+                              {item.priority}
+                            </td>
+                            <td className="border-x px-4 py-0 h-6 truncate">
+                              {item.planned} {item.planned ? 'hours' : ''}
+                            </td>
+                            <td className="border-x px-4 py-0 h-6 truncate">
+                              {item.work} {item.work ? 'days' : ''}
+                            </td>
+                          </tr>
+                        ),
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -397,41 +380,47 @@ export const Gantt = ({
             <DraggableSide />
             <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
               <div className={'right-scroll overflow-x-hidden'} style={{ paddingRight: getScrollBarWidth() + 'px' }}>
-                <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+                <table
+                  className={'w-full min-w-[600px] border-b'}
+                  style={{ width: date.total * widthColumnDay + 'px' }}
+                >
                   <thead>
-                  <tr>
-                    {Object.keys(date.obj).map((year) =>
-                      Object.keys(date.obj[year]).map((month, index) => (
-                        <th
-                          key={index}
-                          align={'left'}
-                          className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
-                          style={{ width: widthGantt(year, month) }}
-                        >
-                          {date.obj[year][month][0].format('MMMM')} {year}
-                        </th>
-                      )),
-                    )}
-                  </tr>
-                  </thead>
-                </table>
-                <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
-                  <thead>
-                  <tr>
-                    {Object.keys(date.obj).map((year) =>
-                      Object.keys(date.obj[year]).map((month) =>
-                        date.obj[year][month].map((day: Dayjs, index: number) => (
+                    <tr>
+                      {Object.keys(date.obj).map((year) =>
+                        Object.keys(date.obj[year]).map((month, index) => (
                           <th
                             key={index}
-                            className={'capitalize border-x font-normal h-6 text-xs'}
-                            style={{ width: widthColumnDay + 'px' }}
+                            align={'left'}
+                            className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
+                            style={{ width: widthGantt(year, month) }}
                           >
-                            {day.format('DD')}
+                            {date.obj[year][month][0].format('MMMM')} {year}
                           </th>
                         )),
-                      ),
-                    )}
-                  </tr>
+                      )}
+                    </tr>
+                  </thead>
+                </table>
+                <table
+                  className={'w-full min-w-[600px] border-b'}
+                  style={{ width: date.total * widthColumnDay + 'px' }}
+                >
+                  <thead>
+                    <tr>
+                      {Object.keys(date.obj).map((year) =>
+                        Object.keys(date.obj[year]).map((month) =>
+                          date.obj[year][month].map((day: Dayjs, index: number) => (
+                            <th
+                              key={index}
+                              className={'capitalize border-x font-normal h-6 text-xs'}
+                              style={{ width: widthColumnDay + 'px' }}
+                            >
+                              {day.format('DD')}
+                            </th>
+                          )),
+                        ),
+                      )}
+                    </tr>
                   </thead>
                 </table>
               </div>
@@ -492,23 +481,23 @@ export const Gantt = ({
                 </div>
                 <table className={'min-w-[600px] border-b -z-10'} style={{ width: date.total * widthColumnDay + 'px' }}>
                   <tbody>
-                  {task.map((item, index) => (
-                    <tr
-                      key={index}
-                      onMouseOver={handleHover}
-                      onMouseOut={handleHover}
-                      data-index={index}
-                      data-level={item.level}
-                    >
-                      {Object.keys(date.obj).map((year) =>
-                        Object.keys(date.obj[year]).map((month) =>
-                          date.obj[year][month].map((day: Dayjs, i: number) => (
-                            <td key={i} className={'capitalize border-x font-normal h-6 relative py-0'} />
-                          )),
-                        ),
-                      )}
-                    </tr>
-                  ))}
+                    {task.map((item, index) => (
+                      <tr
+                        key={index}
+                        onMouseOver={handleHover}
+                        onMouseOut={handleHover}
+                        data-index={index}
+                        data-level={item.level}
+                      >
+                        {Object.keys(date.obj).map((year) =>
+                          Object.keys(date.obj[year]).map((month) =>
+                            date.obj[year][month].map((day: Dayjs, i: number) => (
+                              <td key={i} className={'capitalize border-x font-normal h-6 relative py-0'} />
+                            )),
+                          ),
+                        )}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -518,11 +507,10 @@ export const Gantt = ({
       </div>
       <DndContext
         modifiers={[restrictToVerticalAxis]}
-        onDragEnd={() => dragStart = true}
-        onDragMove={({delta, active}) => {
+        onDragEnd={() => (dragStart = true)}
+        onDragMove={({ delta, active }) => {
           if (active.id === 'vertical') {
-            const vertical = document
-              .querySelectorAll(`#${id.current} .overflow-scroll`);
+            const vertical = document.querySelectorAll(`#${id.current} .overflow-scroll`);
             if (dragStart) {
               dragStart = false;
               height = vertical[0].clientHeight;
@@ -537,17 +525,17 @@ export const Gantt = ({
   );
 };
 const DraggableSide = () => {
-  const {attributes, listeners, setNodeRef} = useDraggable({ id: 'side' });
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: 'side' });
   return (
     <div className={'w-1 h-auto cursor-ew-resize hover:bg-red-500'} ref={setNodeRef} {...listeners} {...attributes} />
   );
-}
+};
 const DraggableVertical = () => {
-  const {attributes, listeners, setNodeRef} = useDraggable({ id: 'vertical' });
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: 'vertical' });
   return (
     <div className={'w-full h-1 cursor-ns-resize hover:bg-red-500'} ref={setNodeRef} {...listeners} {...attributes} />
   );
-}
+};
 type TTask = {
   id: string;
   name: string;
