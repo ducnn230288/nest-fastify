@@ -10,7 +10,7 @@ import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class PostTranslation extends Base {
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.string.alpha({ length: 10, casing: 'upper', exclude: ['A'] }), description: '' })
   @IsString()
   type?: string;
@@ -39,9 +39,7 @@ export class PostTranslation extends Base {
   slug: string;
 
   @Column({
-    type: 'jsonb',
-    array: false,
-    default: {},
+    nullable: true,
   })
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })

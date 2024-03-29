@@ -33,9 +33,7 @@ export class DataTranslation extends Base {
   position?: string;
 
   @Column({
-    type: 'jsonb',
-    array: false,
-    default: {},
+    nullable: true,
   })
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })

@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
 
@@ -10,7 +10,8 @@ import {
   ArrayPostResponseDto,
 } from '@dto';
 import { PostService, P_POST_LISTED, P_POST_CREATE, P_POST_UPDATE, P_POST_DELETE } from '@service';
-import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto } from '@shared';
+import { Auth, Headers, MaxGroup, Public, SerializerBody, PaginationQueryDto, AuthUser } from '@shared';
+import { User } from '@model';
 
 @Headers('post')
 export class PostController {
@@ -18,14 +19,21 @@ export class PostController {
 
   @Auth({
     summary: 'Get List data',
-    permission: P_POST_LISTED,
+    // permission: P_POST_LISTED,
     serializeOptions: { groups: [] },
   })
   @Get('')
   async findAll(
     @I18n() i18n: I18nContext,
+    @AuthUser() authUser: User,
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
   ): Promise<ListPostResponseDto> {
+    if (authUser.roleCode !== 'super_admin')
+      paginationQuery.where = [
+        {
+          userId: authUser.id,
+        },
+      ];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
       message: i18n.t('common.Get List Success'),
@@ -75,13 +83,15 @@ export class PostController {
 
   @Auth({
     summary: 'Create data',
-    permission: P_POST_CREATE,
+    // permission: P_POST_CREATE,
   })
   @Post('')
   async create(
     @I18n() i18n: I18nContext,
+    @AuthUser() authUser: User,
     @Body(new SerializerBody([MaxGroup])) body: CreatePostRequestDto,
   ): Promise<PostResponseDto> {
+    body['userId'] = authUser.id;
     return {
       message: i18n.t('common.Create Success'),
       data: await this.service.create(body),
@@ -90,14 +100,19 @@ export class PostController {
 
   @Auth({
     summary: 'Update data',
-    permission: P_POST_UPDATE,
+    // permission: P_POST_UPDATE,
   })
   @Put(':id')
   async update(
     @I18n() i18n: I18nContext,
+    @AuthUser() authUser: User,
     @Param('id') id: string,
     @Body(new SerializerBody([MaxGroup])) body: UpdatePostRequestDto,
   ): Promise<PostResponseDto> {
+    const data = await this.service.findOne(id);
+    if (data?.userId !== authUser.id) {
+      throw new BadRequestException(i18n.t('common.User id not found', { args: { id } }));
+    }
     return {
       message: i18n.t('common.Update Success'),
       data: await this.service.update(id, body),
@@ -122,10 +137,18 @@ export class PostController {
 
   @Auth({
     summary: 'Delete data',
-    permission: P_POST_DELETE,
+    // permission: P_POST_DELETE,
   })
   @Delete(':id')
-  async remove(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<PostResponseDto> {
+  async remove(
+    @I18n() i18n: I18nContext,
+    @AuthUser() authUser: User,
+    @Param('id') id: string,
+  ): Promise<PostResponseDto> {
+    const data = await this.service.findOne(id);
+    if (data?.userId !== authUser.id) {
+      throw new BadRequestException(i18n.t('common.User id not found', { args: { id } }));
+    }
     return {
       message: i18n.t('common.Delete Success'),
       data: await this.service.removeHard(id),

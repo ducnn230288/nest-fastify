@@ -4,11 +4,18 @@ import { IsArray } from 'class-validator';
 import { Post, PostTranslation } from '@model';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 
-export class CreatePostRequestDto extends PickType(Post, ['type', 'thumbnailUrl', 'createdAt', 'isDisabled'] as const) {
+export class CreatePostRequestDto extends PickType(Post, [
+  'type',
+  'thumbnailUrl',
+  'createdAt',
+  'isDisabled',
+  // 'userId',
+] as const) {
   @IsArray()
   translations?: CreatePostTranslationRequestDto[];
 }
 export class CreatePostTranslationRequestDto extends PickType(PostTranslation, [
+  'type',
   'id',
   'language',
   'name',

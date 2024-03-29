@@ -23,6 +23,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
 
   it('Create [POST /api/data/type]', async () => {
     dataType = await factoryManager.get(DataType).make();
+
     const { body } = await request(BaseTest.server)
       .post('/api/data/type')
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -76,7 +77,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       );
   });
 
-  // Api Data
+  // // Api Data
   it('Create [POST /api/data]', async () => {
     data = await factoryManager.get(Data).make();
     data.type = resultType?.code || '';
@@ -85,11 +86,17 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/data')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(data)
-      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.CREATED);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { translations, ...test } = data;
-    if (type) {
+    const { translations, startTime, endTime, ...test } = data;
+
+    {
       expect(body.data).toEqual(jasmine.objectContaining(test));
+      body.data.startTime = new Date(body.data.startTime);
+      body.data.endTime = new Date(body.data.endTime);
+      expect(body.data.startTime).toEqual(jasmine.objectContaining(startTime));
+      expect(body.data.endTime).toEqual(jasmine.objectContaining(endTime));
+
       result = body.data;
     }
   });
@@ -98,26 +105,25 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .get('/api/data?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
 
-    if (type) {
+    {
       body.data[0].translations = data.translations;
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { translations, ...test } = data;
+      const { translations, startTime, endTime, ...test } = data;
       expect(body.data[0]).toEqual(jasmine.objectContaining(test));
     }
   });
 
   it('Get all [GET /api/data/array]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(DataService).create(data);
     const { body } = await request(BaseTest.server)
       .get(`/api/data/array?array=%5B%22${dataType.code}%22%5D`)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
-
     body.data[dataType.code][0].translations = data.translations;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { translations, ...test } = data;
+    const { translations, startTime, endTime, ...test } = data;
     expect(body.data[dataType.code][0]).toEqual(jasmine.objectContaining(test));
   });
 
@@ -127,6 +133,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .get('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK);
+
     if (type) {
       body.data.translations.forEach((item) => {
         let index;
@@ -139,6 +146,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
         if (dataUpdate.translations) dataUpdate.translations[index].id = item.id;
       });
       body.data.translations = data.translations;
+      body.data.startTime = new Date(body.data.startTime);
+      body.data.endTime = new Date(body.data.endTime);
+
       expect(body.data).toEqual(jasmine.objectContaining(data));
     }
   });
@@ -150,12 +160,12 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .put('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
 
-    if (type) {
+    {
       body.data.translations = dataUpdate.translations;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { translations, ...test } = dataUpdate;
+      const { translations, startTime, endTime, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
@@ -174,11 +184,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .delete('/api/data/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
+      .expect(HttpStatus.OK);
+    {
       body.data.translations = dataUpdate.translations;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { translations, ...test } = dataUpdate;
+      const { translations, startTime, endTime, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });

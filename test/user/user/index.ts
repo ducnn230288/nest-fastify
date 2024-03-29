@@ -105,7 +105,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       );
   });
 
-  // // User: 6 api test
+  // User: 6 api test
 
   it('Create [POST /api/user]', async () => {
     data = await factoryManager.get(User).make({ roleCode: resultRole?.code });

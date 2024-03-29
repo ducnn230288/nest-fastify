@@ -15,6 +15,13 @@ export class Parameter extends Base {
   @IsOptional()
   code: string;
 
+  @Column({ type: 'text', array: true, nullable: true })
+  @Expose()
+  @ApiProperty({ example: [faker.lorem.paragraph()], description: '' })
+  @IsString({ each: true })
+  @IsOptional()
+  description: string[];
+
   @Column({ nullable: true })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
@@ -27,11 +34,11 @@ export class Parameter extends Base {
   @IsOptional()
   en?: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
-  userId: string;
+  userId?: string;
 
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()

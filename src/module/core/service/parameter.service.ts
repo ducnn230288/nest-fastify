@@ -25,4 +25,8 @@ export class ParameterService extends BaseService<Parameter> {
   async findOne(code: string): Promise<Parameter | null> {
     return this.repo.getDataByCode(code);
   }
+
+  async findOneById(id: string, listJoin: string[] = []): Promise<Parameter | null> {
+    return this.repo.getDataById(id, []);
+  }
 }

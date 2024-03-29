@@ -68,7 +68,7 @@ export class User extends Base {
   otp?: string | null;
 
   @Column()
-  @ApiProperty({ example: faker.internet.email().toLowerCase(), description: '' })
+  @ApiProperty({ example: 'admin@admin.com', description: '' })
   @IsEmail()
   email?: string;
 
@@ -84,12 +84,12 @@ export class User extends Base {
   @IsDateString()
   dob: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', array: true, nullable: true })
   @Expose()
-  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
-  @IsString()
+  @ApiProperty({ example: [faker.lorem.paragraph()], description: '' })
+  @IsString({ each: true })
   @IsOptional()
-  description: string;
+  description: string[];
 
   @Column({
     type: 'jsonb',

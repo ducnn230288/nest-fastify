@@ -22,8 +22,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/parameter')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataType)
-      .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
-    if (type) {
+      .expect(HttpStatus.CREATED);
+    {
       expect(body.data).toEqual(jasmine.objectContaining(dataType));
       result = body.data;
     }
@@ -33,12 +33,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .get('/api/parameter?page=1&perPage=19&filter=%7B%7D&sorts=null')
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
 
   it('Get one [GET /api/parameter/:code]', async () => {
-    if (!type) result = await BaseTest.moduleFixture!.get(ParameterService).create(dataType);
     const { body } = await request(BaseTest.server)
       .get('/api/parameter/' + result!.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
@@ -52,7 +51,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .put('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataUpdate)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+      .expect(HttpStatus.OK);
     if (type) expect(body.data).toEqual(jasmine.objectContaining(dataUpdate));
   });
 
@@ -69,8 +68,8 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     const { body } = await request(BaseTest.server)
       .delete('/api/parameter/' + result!.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
-    if (type) {
+      .expect(HttpStatus.OK);
+    {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { code, en, vn, ...test } = dataUpdate;
       expect(body.data).toEqual(jasmine.objectContaining(test));

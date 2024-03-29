@@ -22,4 +22,12 @@ export class ParameterRepository extends BaseRepository<Parameter> {
       .withDeleted()
       .getOne();
   }
+
+  async getDataById(id: string, listJoin: string[] = []): Promise<Parameter | null> {
+    return await this.createQueryBuilder('base')
+      .where(`base.id=:id`, { id })
+      .addOrderBy('base.createdAt', 'ASC')
+      .withDeleted()
+      .getOne();
+  }
 }

@@ -18,11 +18,11 @@ export class Data extends Base {
   @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsUUID()
-  userId: string;
+  userId?: string;
 
   @ManyToOne(() => User, (user) => user.datas)
   @JoinColumn()
-  public user?: User;
+  user?: User;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
@@ -64,7 +64,7 @@ export class Data extends Base {
   icon?: string;
 
   @Column({ nullable: true })
-  @ApiProperty({ example: faker.number.int({ min: 0 }), description: '' })
+  @ApiProperty({ example: faker.number.int({ min: 0, max: 10 }), description: '' })
   @IsInt()
   @Min(0)
   @IsOptional()
