@@ -45,16 +45,6 @@ svg { fill: currentColor; }
   &:hover:before { @apply animate-shine; }
 }
 
-.slide-zoom { @apply overflow-visible;
-
-  .swiper-slide { @apply opacity-0 duration-500 transition-all ease-in-out !scale-110;
-
-    &.swiper-slide-next,
-    &.swiper-slide-active,
-    &.swiper-slide-prev { @apply opacity-100 duration-500 transition-all ease-in-out !scale-100; }
-  }
-}
-
 .ant-tree-treenode,
 .ant-tree-node-content-wrapper { @apply w-full; }
 

@@ -386,6 +386,7 @@ export const Form = ({
         // @ts-ignore
         return (
           <Mask
+            list={formItem.list}
             form={form}
             mask={formItem.mask}
             addonBefore={formItem.addonBefore}

@@ -7,6 +7,7 @@ declare module '*.svg' {
 
   export default ReactComponent;
 }
+
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
   readonly VITE_URL_SOCKET: string
@@ -18,3 +19,5 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+declare const GLightbox: any
+declare const Swal: any

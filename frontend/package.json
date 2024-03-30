@@ -24,9 +24,7 @@
     "antd-input-otp": "^2.0.5",
     "echarts": "^5.5.0",
     "echarts-for-react": "^3.0.2",
-    "glightbox": "^3.2.0",
     "i18next-xhr-backend": "^3.2.2",
-    "inputmask": "^5.0.8",
     "rc-tween-one": "^3.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -38,11 +36,10 @@
     "socket.io-client": "^4.7.4",
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.6.1",
-    "sweetalert2": "^11.10.5",
-    "swiper": "^11.0.6",
     "web-vitals": "^3.5.2"
   },
   "devDependencies": {
+    "@types/inputmask": "^5.0.7",
     "@types/node": "^20.11.20",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
