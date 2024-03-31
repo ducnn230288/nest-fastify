@@ -16,6 +16,78 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP DATABASE postgres;
+
+--
+-- Name: postgres; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE postgres WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE postgres OWNER TO postgres;
+
+\connect postgres
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: DATABASE postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: core; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA core;
+
+
+ALTER SCHEMA core OWNER TO postgres;
+
+--
+-- Name: user; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA "user";
+
+
+ALTER SCHEMA "user" OWNER TO postgres;
+
+DROP DATABASE ari;
+--
+-- Name: ari; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE ari WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE ari OWNER TO postgres;
+
+\connect ari
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
 --
 -- Name: core; Type: SCHEMA; Schema: -; Owner: postgres
 --
@@ -42,7 +114,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
@@ -57,15 +129,15 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE core.code (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         code character varying NOT NULL,
-                         type character varying NOT NULL,
-                         name character varying NOT NULL,
-                         description character varying
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    type character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying
 );
 
 
@@ -76,14 +148,14 @@ ALTER TABLE core.code OWNER TO postgres;
 --
 
 CREATE TABLE core.code_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
 );
 
 
@@ -94,19 +166,19 @@ ALTER TABLE core.code_type OWNER TO postgres;
 --
 
 CREATE TABLE core.data (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type character varying NOT NULL,
-                         name character varying,
-                         image character varying,
-                         "order" integer,
-                         "startTime" timestamp without time zone,
-                         "endTime" timestamp without time zone,
-                         icon character varying,
-                         "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    name character varying,
+    image character varying,
+    "order" integer,
+    "startTime" timestamp without time zone,
+    "endTime" timestamp without time zone,
+    icon character varying,
+    "userId" uuid NOT NULL
 );
 
 
@@ -117,17 +189,17 @@ ALTER TABLE core.data OWNER TO postgres;
 --
 
 CREATE TABLE core.data_translation (
-                                     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                     "isDeleted" timestamp without time zone,
-                                     "isDisabled" timestamp without time zone,
-                                     "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     language character varying NOT NULL,
-                                     name character varying NOT NULL,
-                                     description character varying,
-                                     "position" character varying,
-                                     content jsonb DEFAULT '{}'::jsonb NOT NULL,
-                                     "dataId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    "position" character varying,
+    "dataId" uuid NOT NULL,
+    content character varying
 );
 
 
@@ -138,14 +210,14 @@ ALTER TABLE core.data_translation OWNER TO postgres;
 --
 
 CREATE TABLE core.data_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
 );
 
 
@@ -156,17 +228,17 @@ ALTER TABLE core.data_type OWNER TO postgres;
 --
 
 CREATE TABLE core.file (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type integer NOT NULL,
-                         url character varying NOT NULL,
-                         description character varying,
-                         data character varying,
-                         status integer DEFAULT 0 NOT NULL,
-                         "userId" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type integer NOT NULL,
+    url character varying NOT NULL,
+    description character varying,
+    data character varying,
+    status integer DEFAULT 0 NOT NULL,
+    "userId" character varying NOT NULL
 );
 
 
@@ -177,15 +249,17 @@ ALTER TABLE core.file OWNER TO postgres;
 --
 
 CREATE TABLE core.parameter (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              code character varying NOT NULL,
-                              vn character varying,
-                              en character varying,
-                              "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    vn character varying,
+    en character varying,
+    "userId" uuid NOT NULL,
+    note character varying,
+    description character varying
 );
 
 
@@ -196,14 +270,14 @@ ALTER TABLE core.parameter OWNER TO postgres;
 --
 
 CREATE TABLE core.post (
-                         id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                         "isDeleted" timestamp without time zone,
-                         "isDisabled" timestamp without time zone,
-                         "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                         type character varying NOT NULL,
-                         "thumbnailUrl" character varying,
-                         "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    "thumbnailUrl" character varying,
+    "userId" uuid NOT NULL
 );
 
 
@@ -214,18 +288,18 @@ ALTER TABLE core.post OWNER TO postgres;
 --
 
 CREATE TABLE core.post_translation (
-                                     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                     "isDeleted" timestamp without time zone,
-                                     "isDisabled" timestamp without time zone,
-                                     "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                     language character varying NOT NULL,
-                                     name character varying NOT NULL,
-                                     type character varying NOT NULL,
-                                     description character varying,
-                                     slug character varying,
-                                     content jsonb DEFAULT '{}'::jsonb NOT NULL,
-                                     "postId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    slug character varying,
+    "postId" uuid NOT NULL,
+    type character varying NOT NULL,
+    content character varying
 );
 
 
@@ -236,16 +310,16 @@ ALTER TABLE core.post_translation OWNER TO postgres;
 --
 
 CREATE TABLE core.post_type (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              name character varying NOT NULL,
-                              code character varying NOT NULL,
-                              "isPrimary" boolean DEFAULT false NOT NULL,
-                              mpath character varying DEFAULT ''::character varying,
-                              parent_id uuid
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL,
+    mpath character varying DEFAULT ''::character varying,
+    parent_id uuid
 );
 
 
@@ -256,16 +330,16 @@ ALTER TABLE core.post_type OWNER TO postgres;
 --
 
 CREATE TABLE "user".address (
-                              id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                              "isDeleted" timestamp without time zone,
-                              "isDisabled" timestamp without time zone,
-                              "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                              "codeProvince" character varying NOT NULL,
-                              "codeDistrict" character varying NOT NULL,
-                              "codeWard" character varying NOT NULL,
-                              "specificAddress" character varying NOT NULL,
-                              "userId" uuid NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "codeProvince" character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL,
+    "codeWard" character varying NOT NULL,
+    "specificAddress" character varying NOT NULL,
+    "userId" uuid NOT NULL
 );
 
 
@@ -276,14 +350,14 @@ ALTER TABLE "user".address OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_district (
-                                       id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                       "isDeleted" timestamp without time zone,
-                                       "isDisabled" timestamp without time zone,
-                                       "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       name character varying NOT NULL,
-                                       code character varying NOT NULL,
-                                       "codeProvince" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeProvince" character varying NOT NULL
 );
 
 
@@ -294,13 +368,13 @@ ALTER TABLE "user".address_district OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_province (
-                                       id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                       "isDeleted" timestamp without time zone,
-                                       "isDisabled" timestamp without time zone,
-                                       "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                       name character varying NOT NULL,
-                                       code character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL
 );
 
 
@@ -311,14 +385,14 @@ ALTER TABLE "user".address_province OWNER TO postgres;
 --
 
 CREATE TABLE "user".address_ward (
-                                   id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                   "isDeleted" timestamp without time zone,
-                                   "isDisabled" timestamp without time zone,
-                                   "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                   "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                   name character varying NOT NULL,
-                                   code character varying NOT NULL,
-                                   "codeDistrict" character varying NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL
 );
 
 
@@ -329,26 +403,27 @@ ALTER TABLE "user".address_ward OWNER TO postgres;
 --
 
 CREATE TABLE "user"."user" (
-                             id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                             "isDeleted" timestamp without time zone,
-                             "isDisabled" timestamp without time zone,
-                             "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                             "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                             name character varying NOT NULL,
-                             avatar character varying,
-                             password character varying NOT NULL,
-                             "refreshToken" character varying,
-                             otp character varying,
-                             email character varying NOT NULL,
-                             "phoneNumber" character varying NOT NULL,
-                             dob timestamp without time zone NOT NULL,
-                             description text DEFAULT ''::text NOT NULL,
-                             skill jsonb DEFAULT '[{}]'::jsonb NOT NULL,
-                             "roleCode" character varying,
-                             "positionCode" character varying,
-                             "startDate" timestamp without time zone NOT NULL,
-                             "dateLeave" real,
-                             "dateOff" real DEFAULT '0'::real
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    avatar character varying,
+    password character varying NOT NULL,
+    "refreshToken" character varying,
+    otp character varying,
+    email character varying NOT NULL,
+    "phoneNumber" character varying NOT NULL,
+    dob timestamp without time zone NOT NULL,
+    "roleCode" character varying,
+    "positionCode" character varying,
+    "startDate" timestamp without time zone NOT NULL,
+    "dateLeave" real,
+    "dateOff" real DEFAULT '0'::real,
+    skills jsonb DEFAULT '[{}]'::jsonb NOT NULL,
+    description jsonb DEFAULT '[]'::jsonb NOT NULL,
+    positions jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -359,15 +434,15 @@ ALTER TABLE "user"."user" OWNER TO postgres;
 --
 
 CREATE TABLE "user".user_role (
-                                id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-                                "isDeleted" timestamp without time zone,
-                                "isDisabled" timestamp without time zone,
-                                "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-                                code character varying NOT NULL,
-                                name character varying NOT NULL,
-                                "isSystemAdmin" boolean DEFAULT false NOT NULL,
-                                permissions jsonb DEFAULT '[]'::jsonb NOT NULL
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    name character varying NOT NULL,
+    "isSystemAdmin" boolean DEFAULT false NOT NULL,
+    permissions jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -409,6 +484,17 @@ COPY core.code_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", na
 --
 
 COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, name, image, "order", "startTime", "endTime", icon, "userId") FROM stdin;
+827b7ed3-c220-417a-8d48-d2034cd45212	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:00:19.456836	education	BACKEND PROGRAMMING		1	2020-03-29 05:48:46.639	2021-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:01:33.494	education	MASTER IN GRAPHIC		2	2019-03-29 05:48:46.639	2020-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+426d7a7b-db14-42c6-a134-63d4b1c30e98	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:07:50.986183	experience	Freelancer		1	2024-03-29 05:48:46.639	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+470d6335-3491-4ce0-a3a1-c546a2a39483	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:02:52.192315	education	BACHELORS OF FINEART		3	2027-03-29 05:48:46.639	2028-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:09:06.295331	experience	Agency Macll		2	2019-03-29 05:48:46.639	2022-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:11:36.125511	experience	Themeforest		4	2014-03-29 05:48:46.639	2017-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:11:10.749665	experience	Envato		3	2017-03-29 05:48:46.639	2019-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:18:33.769756	testimonials	Isabella Wilson	https://html.bslthemes.com/treto/img/faces/clients/1.jpg	1	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:20:10.258391	testimonials	Isabella Wilson4	https://html.bslthemes.com/treto/img/faces/clients/4.jpg	4	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+6bfa6f48-1117-4017-9778-be208fdcad6c	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:20:59.085608	testimonials	Isabella Wilson 3	https://html.bslthemes.com/treto/img/faces/clients/3.jpg	3	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+830141c1-f363-44b4-a812-0b7f28d73f33	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:21:09.774384	testimonials	Isabella Wilson 2	https://html.bslthemes.com/treto/img/faces/clients/2.jpg	3	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
 \.
 
 
@@ -416,7 +502,29 @@ COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, n
 -- Data for Name: data_translation; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", content, "dataId") FROM stdin;
+COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", "dataId", content) FROM stdin;
+f03fd68f-cff1-4ecf-b444-1abc284de2d0	\N	\N	2024-03-28 03:00:19.456836	2024-03-28 03:00:19.456836	en	BACKEND PROGRAMMING	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	827b7ed3-c220-417a-8d48-d2034cd45212	\N
+257ea7af-fb1a-4ff5-bbc7-affbb30d4b86	\N	\N	2024-03-28 03:00:19.456836	2024-03-28 03:00:19.456836	vn	LẬP TRÌNH BACKEND	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	827b7ed3-c220-417a-8d48-d2034cd45212	\N
+eee109be-d3d3-4392-b4b3-304ed18b984c	\N	\N	2024-03-28 03:01:33.494	2024-03-28 03:01:33.494	en	MASTER IN GRAPHIC	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N
+193a552f-c741-47aa-bf35-88fb107d6494	\N	\N	2024-03-28 03:01:33.494	2024-03-28 03:01:33.494	vn	THẠC SĨ VỀ HÌNH ẢNH	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N
+66d42d4a-86f0-4250-888e-ba77a54e55a2	\N	\N	2024-03-28 03:02:52.192315	2024-03-28 03:02:52.192315	en	BACHELORS OF FINEART	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	470d6335-3491-4ce0-a3a1-c546a2a39483	\N
+db6ff874-c037-4c51-92da-74ec961d6203	\N	\N	2024-03-28 03:02:52.192315	2024-03-28 03:02:52.192315	vn	CỬ NHÂN MỸ THUẬT	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	470d6335-3491-4ce0-a3a1-c546a2a39483	\N
+33c7fbeb-a2e1-4e3b-bc40-6debfe1b1cbd	\N	\N	2024-03-28 03:07:50.986183	2024-03-28 03:07:50.986183	en	Freelancer	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	426d7a7b-db14-42c6-a134-63d4b1c30e98	\N
+fe5b1b2e-326d-4d49-b250-29ff5e964136	\N	\N	2024-03-28 03:07:50.986183	2024-03-28 03:07:50.986183	vn	Người làm nghề tự do	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	426d7a7b-db14-42c6-a134-63d4b1c30e98	\N
+99add604-7c65-4c24-bf99-b621662871e3	\N	\N	2024-03-28 03:09:06.295331	2024-03-28 03:09:06.295331	en	Agency Macll	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N
+b4af7136-9eed-4198-967c-27e45a000f8d	\N	\N	2024-03-28 03:09:06.295331	2024-03-28 03:09:06.295331	vn	Agency Macll	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N
+4845ebba-d69f-4a98-9b29-df37dc4e7c66	\N	\N	2024-03-28 03:11:10.749665	2024-03-28 03:11:10.749665	en	Envato	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N
+2ca232da-8350-426d-be59-1e135f1a5a57	\N	\N	2024-03-28 03:11:10.749665	2024-03-28 03:11:10.749665	vn	Envato	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N
+dec47ce8-19d4-4fe6-80a1-35f477998eb1	\N	\N	2024-03-28 03:11:36.125511	2024-03-28 03:11:36.125511	en	Themeforest	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N
+333b0d58-1463-4a32-8672-69933cb03ee9	\N	\N	2024-03-28 03:11:36.125511	2024-03-28 03:11:36.125511	vn	Themeforest	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N
+0234b19f-d15e-4246-bd93-6fd2f94666a5	\N	\N	2024-03-28 03:18:33.769756	2024-03-28 03:18:33.769756	en	Director at Geands Hotel	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N
+dc4ea08c-6f01-497f-b773-541fae364bc2	\N	\N	2024-03-28 03:18:33.769756	2024-03-28 03:18:33.769756	vn	Giám đốc khách sạn Geands	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N
+f04b4118-570e-4280-bd2d-91473633cac3	\N	\N	2024-03-28 03:20:10.258391	2024-03-28 03:20:10.258391	en	Director at Geands Hotel 4	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N
+16a4ae0c-97ce-4f52-94e5-3f25464be662	\N	\N	2024-03-28 03:20:10.258391	2024-03-28 03:20:10.258391	vn	Giám đốc khách sạn Geands 4	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N
+058e3282-0a11-4332-a663-1682ecd550ec	\N	\N	2024-03-28 03:20:59.085608	2024-03-28 03:20:59.085608	en	Director at Geands Hotel 3	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	6bfa6f48-1117-4017-9778-be208fdcad6c	\N
+44b76a60-5bd3-4db4-a3f5-0c3ad57fb26f	\N	\N	2024-03-28 03:20:59.085608	2024-03-28 03:20:59.085608	vn	Giám đốc khách sạn Geands 3	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	6bfa6f48-1117-4017-9778-be208fdcad6c	\N
+d51f1516-a9cb-4d72-ac38-a0ec46471bcd	\N	\N	2024-03-28 03:21:09.774384	2024-03-28 03:21:09.774384	en	Director at Geands Hotel 2	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	830141c1-f363-44b4-a812-0b7f28d73f33	\N
+af650b07-790a-45c6-a7bd-2c0e3ed3acd1	\N	\N	2024-03-28 03:21:09.774384	2024-03-28 03:21:09.774384	vn	Giám đốc khách sạn Geands 2	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	830141c1-f363-44b4-a812-0b7f28d73f33	\N
 \.
 
 
@@ -431,6 +539,9 @@ efa1c376-5d8c-4035-8ab1-a2af44cfe48d	\N	\N	2024-03-19 02:39:45.470985	2024-03-19
 24e86ec3-1545-49fb-b492-10c8dfd886a3	\N	\N	2024-03-19 02:39:45.770021	2024-03-19 02:39:45.770021	Member	member	t
 f8f80171-946f-4ce9-b5e1-73ced38ed78e	\N	\N	2024-03-19 02:39:45.871475	2024-03-19 02:39:45.871475	Tech	tech	t
 26643b61-070b-43a7-af35-0d0c115a679b	\N	\N	2024-03-19 02:39:45.970755	2024-03-19 02:39:45.970755	Partner	partner	t
+c2f169c0-95ea-4098-99fa-20e1427f1bf1	\N	\N	2024-03-21 08:50:55.006624	2024-03-21 08:50:55.006624	Experience	experience	t
+8748b99d-d0b4-4159-949f-29b1d09b4b98	\N	\N	2024-03-21 08:50:21.652674	2024-03-21 08:50:21.652674	Education	education	t
+dfe727a2-7a9d-4035-8406-55060086a38f	\N	\N	2024-03-21 08:54:38.619347	2024-03-21 08:54:38.619347	Testimonials	testimonials	f
 \.
 
 
@@ -446,7 +557,13 @@ COPY core.file (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, u
 -- Data for Name: parameter; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId") FROM stdin;
+COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId", note, description) FROM stdin;
+f21a8440-a151-47dd-9a65-52c07d1bfd51	\N	\N	2024-03-28 02:28:06.948897	2024-03-28 02:28:06.948897	ABOUT	Từ Pháp, Paris. Tôi có nhiều kinh nghiệm về thiết kế web, tôi cũng giỏi React, Vue.js. Tôi thích nói chuyện với bạn về sự độc đáo của chúng tôi. Tôi đã học Thiết kế UI UX từ tháng 10 năm 2020. Tôi thích tạo một dự án thiết kế thú vị.	From France, Paris. I have rich experience in web design, also I am good at React, Vue.js. I love to talk with you about our unique. I have been studying UI UX Design since October 2020. I like creating a cool design project.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	From France, Paris. I have rich experience in web design, also I am good at React, Vue.js. I love to talk with you about our unique. I have been studying UI UX Design since October 2020. I like creating a cool design project.
+f2748b9b-180f-40c4-88d1-13cc363d95b0	\N	\N	2024-03-28 02:29:26.024509	2024-03-28 02:29:26.024509	ABOUT	Hơn 6 năm kinh nghiệm về CNTT, trong đó có hơn 2 năm làm Nhà phát triển React JS và 3 năm Kinh nghiệm làm Nhà phát triển UI/UX và 1 năm Kinh nghiệm làm Nhà phát triển phần mềm.	Over 6+ years of IT experience which includes 2+ years of a React JS Developer and 3 years of Experience as a UI/UX Developer and 1 years of Experience as software Developer.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	Over 6+ years of IT experience which includes 2+ years of a React JS Developer and 3 years of Experience as a UI/UX Developer and 1 years of Experience as software Developer.
+601845bb-f466-4834-b6ad-15bdc05368b1	\N	\N	2024-03-28 02:30:58.927708	2024-03-28 02:30:58.927708	ABILITY OR SKILL	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	MY GREAT WORK	\N
+f8b55131-3e80-4214-b250-edf35ec206b4	\N	\N	2024-03-28 02:56:04.335621	2024-03-28 02:56:04.335621	EDUCATION	Giáo dục chuyên sâu về phát triển các trang web sử dụng: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.	Extensive education in developing web pages using: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	CERTIFICATES	Extensive education in developing web pages using: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.
+dcd7016e-c11b-4fc5-9359-1fe3d9808684	\N	\N	2024-03-28 03:04:37.953626	2024-03-28 03:04:37.953626	EXPERIENCE	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	A DECADE OF WORK	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+15852c8a-3d52-4158-9bba-1a86830ca4c2	\N	\N	2024-03-28 03:14:43.657849	2024-03-28 03:14:43.657849	TESTIMONIALS	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	RESULT OF MY WORK	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 \.
 
 
@@ -462,7 +579,7 @@ COPY core.post (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, "
 -- Data for Name: post_translation; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, type, description, slug, content, "postId") FROM stdin;
+COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, slug, "postId", type, content) FROM stdin;
 \.
 
 
@@ -11879,8 +11996,9 @@ d786d42f-d897-42cb-a4da-cd3ff6356b8d	\N	\N	2024-03-19 02:58:51.114075	2024-03-19
 -- Data for Name: user; Type: TABLE DATA; Schema: user; Owner: postgres
 --
 
-COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, description, skill, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff") FROM stdin;
-41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-19 03:01:35.67856	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$0JnuDenKllEntzpXVuhXsA$8ETROkmFgEmWZnJ/xIzEmVkxVJ9rAgYmGuY/L84HKrs	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	Correptius ago despecto dignissimos. Aqua cometes aggredior viduo. Auxilium vulgus vester temporibus thesaurus degusto.	[{"skill": "JS", "complete": 95}]	super_admin	\N	2023-04-15 15:40:15.881	8	0
+COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff", skills, description, positions) FROM stdin;
+9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	\N	2024-03-28 02:19:33.19696	2024-03-28 02:54:04.964362	Mr. Archie Sipes MD	\N	$argon2id$v=19$m=65536,t=3,p=4$QONs0dJU//llC8rrLYHmyA$UPdoLmCv47OWyFPWozjbBmDq2PWxkhFmZCcj1OdrOxY	$argon2id$v=19$m=65536,t=3,p=4$0quA2zJTmL9pZ93WRG6DAQ$Hh1xl+gOdbxxN+JTh+aIM2TqOH4lMEIn44+2ZGlK20Q	\N	thien@admin.com	(356)7203995	1978-08-17 15:26:32.947	\N	\N	2023-10-02 17:16:48.731	\N	0	[{"icon": "fa-brands fa-figma", "name": "FIGMA", "class": "w-3/5", "complete": "60%"}, {"icon": "fa-brands fa-php", "name": "PHP / C++", "class": "w-4/5", "complete": "80%"}, {"icon": "fa-brands fa-js", "name": "JAVESCRIPT", "class": "w-3/4", "complete": "75%"}, {"icon": "fa-brands fa-react", "name": "REACT / NEST.JS", "class": "w-3/4", "complete": "75%"}, {"icon": "fa-brands fa-html5", "name": "HTML5 / CSS3", "class": "w-11/12", "complete": "90%"}, {"icon": "fa-brands fa-vuejs", "name": "VUE.JS", "class": "w-7/12", "complete": "55%"}]	["From France, Paris. I have rich experience in web design, also I am good at wordpress. I love to talk with you about our unique."]	["web developer", "graphics"]
+41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-28 02:54:00.46518	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$lii+5cOn7BbcVWw9D/KE7g$AN4/92xSZC6wFnDtKaOyR7NH7jHbfb9X3N1Uf2nGf18	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	super_admin	\N	2023-04-15 15:40:15.881	8	0	[{}]	[]	[]
 \.
 
 
@@ -11890,6 +12008,7 @@ COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", nam
 
 COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, name, "isSystemAdmin", permissions) FROM stdin;
 24e4f065-7181-4582-9b2a-73cfb19b388c	\N	\N	2024-03-19 02:39:46.370673	2024-03-19 02:39:46.370673	super_admin	Super Admin	f	["11cc566b-b109-49f8-983f-84ff08f9849e", "2a71d57d-7c2d-49ad-a7e9-3cd4aace132f", "7af26c77-e81f-4875-89df-9d4c2fa3ce52", "45f014c0-9ebe-497e-9766-2054ebb7e1d5", "fdb47b79-1a6e-49be-8f5b-8525a547534a", "f16e2bc7-12b9-446e-b53b-a2597ca0ad3a", "5d808d76-bf99-4a51-b4b6-d5aa37bdb398", "eb510a79-4f75-4b14-a118-f036c1daa430", "a9574d5e-269d-44f9-a5bb-41cf06d7bdda", "6d34b679-9c0e-489a-a2de-a17e37fadf72", "e21ac25b-1651-443e-9834-e593789807c9", "8f559613-ef55-4ef0-8068-8c37e84b75de", "35ea86b5-e591-4819-9c41-4d35ed580d0b", "f6732943-cb1d-484b-8644-7740a295e3e3", "3e8aa2c2-35bf-4a56-8bf2-8f8de240e24c", "62fd3bc2-0921-4113-9b5b-9966dd5a0517", "ac0c4f13-776d-4b71-be4d-f9952734a319", "a9de3f3d-4c04-4f50-9d1b-c3c2e2eca6dc", "41c9d4e1-ba5a-4850-ad52-35ac928a61d9", "b82e6224-12c3-4e6c-b4e0-62495fb799bf", "bc0b5f32-ddf7-4c61-b435-384fc5ac7574", "2712ca04-7e7c-44b6-83c1-b8c7f332a0fb", "03380c3a-3336-42f4-b8c2-e54084d35655", "00e77095-35ea-4755-bbae-46a1ba78e46e", "0e481286-bd5d-4203-a374-a8f8f8735f33", "1db70aa0-7541-4433-b2f6-fbd7bf8bf7bb", "c3ab9e11-7ba3-4afd-b5cb-c560362a3144", "99ea12da-5800-4d6d-9e73-60c016a267a9", "2e8c8772-2505-4683-b6fa-13fa2570eee7", "d9185449-e2ac-4e72-9c9f-25788c23d5ba", "275ebda7-3e03-4c93-b352-baa7705528aa", "d278abcb-1956-4b45-95c1-2ab612110ec6", "3d478437-949b-4ae7-9c21-79cabb1663a3", "0ca9634c-3496-4059-bf86-5bec23c96b55", "4097d5ff-e35c-4bff-a5b1-013ca1181762", "7c34dc92-cbbe-4419-8dbc-745818d76098", "eda2799a-4072-46a7-9a26-efa9a98036db", "87cb77c4-565c-43ec-bffc-fbaf5077c2be", "cd00c62e-1ec4-4c61-b273-cdd6867a3212", "efa34c52-8c9a-444d-a82b-8bec109dbab5", "bfa36cef-71c4-4f08-89e6-d7e0c1c03ba4", "a9574d5e-269d-44f9-a5bb-41cf06d7bdda", "6d34b679-9c0e-123a-a2de-a11e37fadf72", "e21ac25b-1111-443e-9999-e593789807c9"]
+a0197ea5-9509-4de4-9c82-52b5c3e12e10	\N	\N	2024-03-21 07:28:21.432894	2024-03-21 07:28:21.432894	user	user	f	[]
 \.
 
 
@@ -11898,7 +12017,7 @@ COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", 
 --
 
 ALTER TABLE ONLY core.post_translation
-  ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
 
 
 --
@@ -11906,7 +12025,7 @@ ALTER TABLE ONLY core.post_translation
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
 
 
 --
@@ -11914,7 +12033,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
 
 
 --
@@ -11922,7 +12041,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.file
-  ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
 
 
 --
@@ -11930,7 +12049,7 @@ ALTER TABLE ONLY core.file
 --
 
 ALTER TABLE ONLY core.code_type
-  ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
 
 
 --
@@ -11938,7 +12057,7 @@ ALTER TABLE ONLY core.code_type
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
 
 
 --
@@ -11946,7 +12065,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.parameter
-  ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
 
 
 --
@@ -11954,7 +12073,7 @@ ALTER TABLE ONLY core.parameter
 --
 
 ALTER TABLE ONLY core.data_type
-  ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
 
 
 --
@@ -11962,7 +12081,7 @@ ALTER TABLE ONLY core.data_type
 --
 
 ALTER TABLE ONLY core.data_translation
-  ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
 
 
 --
@@ -11970,7 +12089,7 @@ ALTER TABLE ONLY core.data_translation
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
 
 
 --
@@ -11978,7 +12097,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
+    ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
 
 
 --
@@ -11986,7 +12105,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.code_type
-  ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
+    ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
 
 
 --
@@ -11994,7 +12113,7 @@ ALTER TABLE ONLY core.code_type
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
+    ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
 
 
 --
@@ -12002,7 +12121,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.data_type
-  ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
+    ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
 
 
 --
@@ -12010,7 +12129,7 @@ ALTER TABLE ONLY core.data_type
 --
 
 ALTER TABLE ONLY core.file
-  ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
+    ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
 
 
 --
@@ -12018,7 +12137,7 @@ ALTER TABLE ONLY core.file
 --
 
 ALTER TABLE ONLY "user".address_province
-  ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
 
 
 --
@@ -12026,7 +12145,7 @@ ALTER TABLE ONLY "user".address_province
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
 
 
 --
@@ -12034,7 +12153,7 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
 
 
 --
@@ -12042,7 +12161,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
 
 
 --
@@ -12050,7 +12169,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
 
 
 --
@@ -12058,7 +12177,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user".user_role
-  ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
+    ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
 
 
 --
@@ -12066,7 +12185,7 @@ ALTER TABLE ONLY "user".user_role
 --
 
 ALTER TABLE ONLY "user".user_role
-  ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
+    ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
 
 
 --
@@ -12074,7 +12193,7 @@ ALTER TABLE ONLY "user".user_role
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
+    ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
 
 
 --
@@ -12082,7 +12201,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
+    ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
 
 
 --
@@ -12090,7 +12209,7 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user".address_province
-  ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
+    ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
 
 
 --
@@ -12098,7 +12217,7 @@ ALTER TABLE ONLY "user".address_province
 --
 
 ALTER TABLE ONLY core.post_type
-  ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
+    ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
 
 
 --
@@ -12106,7 +12225,7 @@ ALTER TABLE ONLY core.post_type
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "FK_4ee98a297a032944fb052144963" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_4ee98a297a032944fb052144963" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12114,7 +12233,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.data
-  ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
+    ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
 
 
 --
@@ -12122,7 +12241,7 @@ ALTER TABLE ONLY core.data
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "FK_5c1cf55c308037b5aca1038a131" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_5c1cf55c308037b5aca1038a131" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12130,7 +12249,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.code
-  ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
+    ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
 
 
 --
@@ -12138,7 +12257,7 @@ ALTER TABLE ONLY core.code
 --
 
 ALTER TABLE ONLY core.post
-  ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
+    ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
 
 
 --
@@ -12146,7 +12265,7 @@ ALTER TABLE ONLY core.post
 --
 
 ALTER TABLE ONLY core.post_translation
-  ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -12154,7 +12273,7 @@ ALTER TABLE ONLY core.post_translation
 --
 
 ALTER TABLE ONLY core.parameter
-  ADD CONSTRAINT "FK_d75cb6f3f42657b892e66d1526f" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_d75cb6f3f42657b892e66d1526f" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12162,7 +12281,7 @@ ALTER TABLE ONLY core.parameter
 --
 
 ALTER TABLE ONLY core.data_translation
-  ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -12170,7 +12289,7 @@ ALTER TABLE ONLY core.data_translation
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
+    ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
 
 
 --
@@ -12178,7 +12297,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
+    ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
 
 
 --
@@ -12186,7 +12305,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_ward
-  ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+    ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
 
 
 --
@@ -12194,7 +12313,7 @@ ALTER TABLE ONLY "user".address_ward
 --
 
 ALTER TABLE ONLY "user"."user"
-  ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
+    ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
 
 
 --
@@ -12202,7 +12321,7 @@ ALTER TABLE ONLY "user"."user"
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+    ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
 
 
 --
@@ -12210,7 +12329,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+    ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
 
 
 --
@@ -12218,7 +12337,7 @@ ALTER TABLE ONLY "user".address
 --
 
 ALTER TABLE ONLY "user".address_district
-  ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+    ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
 
 
 --
@@ -12226,9 +12345,10 @@ ALTER TABLE ONLY "user".address_district
 --
 
 ALTER TABLE ONLY "user".address
-  ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+    ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
 
 
 --
 -- PostgreSQL database dump complete
 --
+
