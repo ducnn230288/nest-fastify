@@ -42,6 +42,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     if (type) expect(body.data[0]).toEqual(jasmine.objectContaining(dataType));
   });
+
   it('Get one [GET /api/code/type/:code]', async () => {
     if (!type)
       resultType = await BaseTest.moduleFixture!.get(CodeTypeService).create(await factoryManager.get(CodeType).make());

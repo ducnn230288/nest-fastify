@@ -114,7 +114,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
@@ -258,7 +258,8 @@ CREATE TABLE core.parameter (
     vn character varying,
     en character varying,
     "userId" uuid NOT NULL,
-    description character varying NOT NULL
+    note character varying,
+    description character varying
 );
 
 
@@ -420,8 +421,9 @@ CREATE TABLE "user"."user" (
     "startDate" timestamp without time zone NOT NULL,
     "dateLeave" real,
     "dateOff" real DEFAULT '0'::real,
-    skill jsonb DEFAULT '[{}]'::jsonb NOT NULL,
-    description jsonb DEFAULT '[]'::jsonb NOT NULL
+    skills jsonb DEFAULT '[{}]'::jsonb NOT NULL,
+    description jsonb DEFAULT '[]'::jsonb NOT NULL,
+    positions jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -482,6 +484,17 @@ COPY core.code_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", na
 --
 
 COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, name, image, "order", "startTime", "endTime", icon, "userId") FROM stdin;
+827b7ed3-c220-417a-8d48-d2034cd45212	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:00:19.456836	education	BACKEND PROGRAMMING		1	2020-03-29 05:48:46.639	2021-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:01:33.494	education	MASTER IN GRAPHIC		2	2019-03-29 05:48:46.639	2020-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+426d7a7b-db14-42c6-a134-63d4b1c30e98	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:07:50.986183	experience	Freelancer		1	2024-03-29 05:48:46.639	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+470d6335-3491-4ce0-a3a1-c546a2a39483	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:02:52.192315	education	BACHELORS OF FINEART		3	2027-03-29 05:48:46.639	2028-07-08 08:57:41.989	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:09:06.295331	experience	Agency Macll		2	2019-03-29 05:48:46.639	2022-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:11:36.125511	experience	Themeforest		4	2014-03-29 05:48:46.639	2017-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:11:10.749665	experience	Envato		3	2017-03-29 05:48:46.639	2019-03-29 05:48:46.639	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:18:33.769756	testimonials	Isabella Wilson	https://html.bslthemes.com/treto/img/faces/clients/1.jpg	1	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:20:10.258391	testimonials	Isabella Wilson4	https://html.bslthemes.com/treto/img/faces/clients/4.jpg	4	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+6bfa6f48-1117-4017-9778-be208fdcad6c	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:20:59.085608	testimonials	Isabella Wilson 3	https://html.bslthemes.com/treto/img/faces/clients/3.jpg	3	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
+830141c1-f363-44b4-a812-0b7f28d73f33	\N	2024-03-28 09:56:55.4	2024-03-28 09:56:55.4	2024-03-28 03:21:09.774384	testimonials	Isabella Wilson 2	https://html.bslthemes.com/treto/img/faces/clients/2.jpg	3	\N	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff
 \.
 
 
@@ -490,6 +503,28 @@ COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, n
 --
 
 COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", "dataId", content) FROM stdin;
+f03fd68f-cff1-4ecf-b444-1abc284de2d0	\N	\N	2024-03-28 03:00:19.456836	2024-03-28 03:00:19.456836	en	BACKEND PROGRAMMING	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	827b7ed3-c220-417a-8d48-d2034cd45212	\N
+257ea7af-fb1a-4ff5-bbc7-affbb30d4b86	\N	\N	2024-03-28 03:00:19.456836	2024-03-28 03:00:19.456836	vn	LẬP TRÌNH BACKEND	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	827b7ed3-c220-417a-8d48-d2034cd45212	\N
+eee109be-d3d3-4392-b4b3-304ed18b984c	\N	\N	2024-03-28 03:01:33.494	2024-03-28 03:01:33.494	en	MASTER IN GRAPHIC	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N
+193a552f-c741-47aa-bf35-88fb107d6494	\N	\N	2024-03-28 03:01:33.494	2024-03-28 03:01:33.494	vn	THẠC SĨ VỀ HÌNH ẢNH	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	344ddcaf-b7c9-41d0-aa1f-ad61ffb2f313	\N
+66d42d4a-86f0-4250-888e-ba77a54e55a2	\N	\N	2024-03-28 03:02:52.192315	2024-03-28 03:02:52.192315	en	BACHELORS OF FINEART	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	470d6335-3491-4ce0-a3a1-c546a2a39483	\N
+db6ff874-c037-4c51-92da-74ec961d6203	\N	\N	2024-03-28 03:02:52.192315	2024-03-28 03:02:52.192315	vn	CỬ NHÂN MỸ THUẬT	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	470d6335-3491-4ce0-a3a1-c546a2a39483	\N
+33c7fbeb-a2e1-4e3b-bc40-6debfe1b1cbd	\N	\N	2024-03-28 03:07:50.986183	2024-03-28 03:07:50.986183	en	Freelancer	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	426d7a7b-db14-42c6-a134-63d4b1c30e98	\N
+fe5b1b2e-326d-4d49-b250-29ff5e964136	\N	\N	2024-03-28 03:07:50.986183	2024-03-28 03:07:50.986183	vn	Người làm nghề tự do	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	426d7a7b-db14-42c6-a134-63d4b1c30e98	\N
+99add604-7c65-4c24-bf99-b621662871e3	\N	\N	2024-03-28 03:09:06.295331	2024-03-28 03:09:06.295331	en	Agency Macll	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N
+b4af7136-9eed-4198-967c-27e45a000f8d	\N	\N	2024-03-28 03:09:06.295331	2024-03-28 03:09:06.295331	vn	Agency Macll	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	f5be3379-0fb6-496c-bdf5-0aa2f3b8a2c4	\N
+4845ebba-d69f-4a98-9b29-df37dc4e7c66	\N	\N	2024-03-28 03:11:10.749665	2024-03-28 03:11:10.749665	en	Envato	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N
+2ca232da-8350-426d-be59-1e135f1a5a57	\N	\N	2024-03-28 03:11:10.749665	2024-03-28 03:11:10.749665	vn	Envato	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	ef52bf38-34f4-445e-be8a-4cc3d9ae8e47	\N
+dec47ce8-19d4-4fe6-80a1-35f477998eb1	\N	\N	2024-03-28 03:11:36.125511	2024-03-28 03:11:36.125511	en	Themeforest	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N
+333b0d58-1463-4a32-8672-69933cb03ee9	\N	\N	2024-03-28 03:11:36.125511	2024-03-28 03:11:36.125511	vn	Themeforest	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	8c8c7b42-c028-4bf6-ba37-9607d6cf8d39	\N
+0234b19f-d15e-4246-bd93-6fd2f94666a5	\N	\N	2024-03-28 03:18:33.769756	2024-03-28 03:18:33.769756	en	Director at Geands Hotel	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N
+dc4ea08c-6f01-497f-b773-541fae364bc2	\N	\N	2024-03-28 03:18:33.769756	2024-03-28 03:18:33.769756	vn	Giám đốc khách sạn Geands	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	408b122c-b6ce-49ba-adac-33f4ab85d9fe	\N
+f04b4118-570e-4280-bd2d-91473633cac3	\N	\N	2024-03-28 03:20:10.258391	2024-03-28 03:20:10.258391	en	Director at Geands Hotel 4	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N
+16a4ae0c-97ce-4f52-94e5-3f25464be662	\N	\N	2024-03-28 03:20:10.258391	2024-03-28 03:20:10.258391	vn	Giám đốc khách sạn Geands 4	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	cda2b42d-a4aa-488a-8690-80619ec4bc3d	\N
+058e3282-0a11-4332-a663-1682ecd550ec	\N	\N	2024-03-28 03:20:59.085608	2024-03-28 03:20:59.085608	en	Director at Geands Hotel 3	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	6bfa6f48-1117-4017-9778-be208fdcad6c	\N
+44b76a60-5bd3-4db4-a3f5-0c3ad57fb26f	\N	\N	2024-03-28 03:20:59.085608	2024-03-28 03:20:59.085608	vn	Giám đốc khách sạn Geands 3	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	6bfa6f48-1117-4017-9778-be208fdcad6c	\N
+d51f1516-a9cb-4d72-ac38-a0ec46471bcd	\N	\N	2024-03-28 03:21:09.774384	2024-03-28 03:21:09.774384	en	Director at Geands Hotel 2	It has survived not only five centuries, but also the leap into electronic typesetting, remaining unchanged.	\N	830141c1-f363-44b4-a812-0b7f28d73f33	\N
+af650b07-790a-45c6-a7bd-2c0e3ed3acd1	\N	\N	2024-03-28 03:21:09.774384	2024-03-28 03:21:09.774384	vn	Giám đốc khách sạn Geands 2	Nó đã tồn tại không chỉ qua 5 thế kỷ mà còn là bước nhảy vọt trong lĩnh vực sắp chữ điện tử, không thay đổi.	\N	830141c1-f363-44b4-a812-0b7f28d73f33	\N
 \.
 
 
@@ -522,7 +557,13 @@ COPY core.file (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, u
 -- Data for Name: parameter; Type: TABLE DATA; Schema: core; Owner: postgres
 --
 
-COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId", description) FROM stdin;
+COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en, "userId", note, description) FROM stdin;
+f21a8440-a151-47dd-9a65-52c07d1bfd51	\N	\N	2024-03-28 02:28:06.948897	2024-03-28 02:28:06.948897	ABOUT	Từ Pháp, Paris. Tôi có nhiều kinh nghiệm về thiết kế web, tôi cũng giỏi React, Vue.js. Tôi thích nói chuyện với bạn về sự độc đáo của chúng tôi. Tôi đã học Thiết kế UI UX từ tháng 10 năm 2020. Tôi thích tạo một dự án thiết kế thú vị.	From France, Paris. I have rich experience in web design, also I am good at React, Vue.js. I love to talk with you about our unique. I have been studying UI UX Design since October 2020. I like creating a cool design project.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	From France, Paris. I have rich experience in web design, also I am good at React, Vue.js. I love to talk with you about our unique. I have been studying UI UX Design since October 2020. I like creating a cool design project.
+f2748b9b-180f-40c4-88d1-13cc363d95b0	\N	\N	2024-03-28 02:29:26.024509	2024-03-28 02:29:26.024509	ABOUT	Hơn 6 năm kinh nghiệm về CNTT, trong đó có hơn 2 năm làm Nhà phát triển React JS và 3 năm Kinh nghiệm làm Nhà phát triển UI/UX và 1 năm Kinh nghiệm làm Nhà phát triển phần mềm.	Over 6+ years of IT experience which includes 2+ years of a React JS Developer and 3 years of Experience as a UI/UX Developer and 1 years of Experience as software Developer.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	Over 6+ years of IT experience which includes 2+ years of a React JS Developer and 3 years of Experience as a UI/UX Developer and 1 years of Experience as software Developer.
+601845bb-f466-4834-b6ad-15bdc05368b1	\N	\N	2024-03-28 02:30:58.927708	2024-03-28 02:30:58.927708	ABILITY OR SKILL	\N	\N	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	MY GREAT WORK	\N
+f8b55131-3e80-4214-b250-edf35ec206b4	\N	\N	2024-03-28 02:56:04.335621	2024-03-28 02:56:04.335621	EDUCATION	Giáo dục chuyên sâu về phát triển các trang web sử dụng: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.	Extensive education in developing web pages using: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	CERTIFICATES	Extensive education in developing web pages using: HTML5, CSS3, SASS, JavaScript, React JS, Angular JS, JQuery, JSON, Node.js, Bootstrap.
+dcd7016e-c11b-4fc5-9359-1fe3d9808684	\N	\N	2024-03-28 03:04:37.953626	2024-03-28 03:04:37.953626	EXPERIENCE	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	A DECADE OF WORK	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+15852c8a-3d52-4158-9bba-1a86830ca4c2	\N	\N	2024-03-28 03:14:43.657849	2024-03-28 03:14:43.657849	TESTIMONIALS	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	9cb30caf-8557-4fb0-b925-4fe6a52c32ff	RESULT OF MY WORK	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 \.
 
 
@@ -11955,9 +11996,9 @@ d786d42f-d897-42cb-a4da-cd3ff6356b8d	\N	\N	2024-03-19 02:58:51.114075	2024-03-19
 -- Data for Name: user; Type: TABLE DATA; Schema: user; Owner: postgres
 --
 
-COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff", skill, description) FROM stdin;
-b8c86a23-3426-40ea-a231-671016a83f61	\N	\N	2024-03-21 01:30:42.23727	2024-03-21 08:41:24.332188	Lillie Gleason	\N	$argon2id$v=19$m=65536,t=3,p=4$Ui9Z8y+MLtzMtt0mzzEmvQ$+SXzt82/83/er7zsE6X7P9F87oRxYIH+ibzst9dq9EI	$argon2id$v=19$m=65536,t=3,p=4$M4mf+7/Yv1u6awVqZaZS7w$n4vu2DCaya114grhPBp4YKMcrAgwuCu9AgxNnSGhrRs	\N	thien@admin.com	5176978604	1963-10-23 13:13:06.82	user	\N	2023-04-04 04:20:47.614	\N	0	[{}]	["Cumque traho synagoga laborum adversus thema. Terror adsum sodalitas depromo. Ubi crustulum ventosus sublime comminor antiquus confido depromo rem alioqui."]
-41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-21 08:45:19.379486	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$3BrIMsLuDIYdtY1K/ALgzA$Y9EWBEOBCNYsLNebSecC9ieexp6++8EFkbtiDFUKYS4	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	super_admin	\N	2023-04-15 15:40:15.881	8	0	[{}]	[]
+COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff", skills, description, positions) FROM stdin;
+9cb30caf-8557-4fb0-b925-4fe6a52c32ff	\N	\N	2024-03-28 02:19:33.19696	2024-03-28 02:54:04.964362	Mr. Archie Sipes MD	\N	$argon2id$v=19$m=65536,t=3,p=4$QONs0dJU//llC8rrLYHmyA$UPdoLmCv47OWyFPWozjbBmDq2PWxkhFmZCcj1OdrOxY	$argon2id$v=19$m=65536,t=3,p=4$0quA2zJTmL9pZ93WRG6DAQ$Hh1xl+gOdbxxN+JTh+aIM2TqOH4lMEIn44+2ZGlK20Q	\N	thien@admin.com	(356)7203995	1978-08-17 15:26:32.947	\N	\N	2023-10-02 17:16:48.731	\N	0	[{"icon": "fa-brands fa-figma", "name": "FIGMA", "class": "w-3/5", "complete": "60%"}, {"icon": "fa-brands fa-php", "name": "PHP / C++", "class": "w-4/5", "complete": "80%"}, {"icon": "fa-brands fa-js", "name": "JAVESCRIPT", "class": "w-3/4", "complete": "75%"}, {"icon": "fa-brands fa-react", "name": "REACT / NEST.JS", "class": "w-3/4", "complete": "75%"}, {"icon": "fa-brands fa-html5", "name": "HTML5 / CSS3", "class": "w-11/12", "complete": "90%"}, {"icon": "fa-brands fa-vuejs", "name": "VUE.JS", "class": "w-7/12", "complete": "55%"}]	["From France, Paris. I have rich experience in web design, also I am good at wordpress. I love to talk with you about our unique."]	["web developer", "graphics"]
+41a5420a-5941-4dda-8960-60a9681bf694	\N	\N	2024-03-19 02:39:46.645121	2024-03-28 02:54:00.46518	Luther Muller	https://hinhanhdep.org/wp-content/uploads/2016/07/anh-avatar-girl-xinh.jpg	$argon2id$v=19$m=65536,t=3,p=4$qnSVyHhq7/ow+OMW0Q4zNA$BbwW/OMOTsXKWdyOh+vZvwvgJAwYfk7CG+pARvYvUNg	$argon2id$v=19$m=65536,t=3,p=4$lii+5cOn7BbcVWw9D/KE7g$AN4/92xSZC6wFnDtKaOyR7NH7jHbfb9X3N1Uf2nGf18	\N	admin@admin.com	017570106512	1998-07-25 16:50:26.293	super_admin	\N	2023-04-15 15:40:15.881	8	0	[{}]	[]	[]
 \.
 
 
@@ -12305,6 +12346,7 @@ ALTER TABLE ONLY "user".address_district
 
 ALTER TABLE ONLY "user".address
     ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+
 
 --
 -- PostgreSQL database dump complete

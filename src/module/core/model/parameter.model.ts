@@ -15,7 +15,13 @@ export class Parameter extends Base {
   @IsOptional()
   code: string;
 
-  @Column()
+  @Column({nullable: true})
+  @ApiProperty({ example: faker.string.alpha({ length: 3, casing: 'upper', exclude: ['A'] }), description: '' })
+  @IsString()
+  @IsOptional()
+  note: string;
+
+  @Column({nullable: true})
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()

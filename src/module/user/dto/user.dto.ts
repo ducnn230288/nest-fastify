@@ -15,6 +15,7 @@ export class RegisterAuthRequestDto extends PickType(User, [
   'dob',
   'description',
   'startDate',
+  'positions'
 ] as const) {
   @MinLength(6)
   @ApiProperty({ example: Example.password, description: '' })

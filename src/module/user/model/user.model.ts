@@ -17,6 +17,13 @@ import * as argon2 from 'argon2';
 import { UserRole, Code, Address, Data, Post, Parameter } from '@model';
 import { Example, OnlyUpdateGroup, Base, setImage } from '@shared';
 
+interface Skill {
+  name: string,
+  complete: number,
+  icon: string,
+  class: string
+}
+
 @Entity({ schema: 'user' })
 export class User extends Base {
   @Column()
@@ -96,12 +103,22 @@ export class User extends Base {
   @Column({
     type: 'jsonb',
     array: false,
+    default: [],
+    nullable: false,
+  })
+  @ApiProperty({ example: [faker.lorem.paragraph()], description: '' })
+  @IsOptional()
+  positions: string[];
+
+  @Column({
+    type: 'jsonb',
+    array: false,
     default: [{}],
   })
   @Expose()
-  @ApiProperty({ example: [{skill: "JS", complete: 95}], description: '' })
+  @ApiProperty({ example: [{name: "JS", complete: 95, icon: ""}], description: '' })
   @IsOptional()
-  skill?: { name: string; complete: number }[];
+  skills?: Skill[];
 
   @Column({ nullable: true }) // , name: 'role_code'
   @Expose()
