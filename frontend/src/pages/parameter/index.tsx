@@ -4,29 +4,24 @@ import { Select, Spin, Tree } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
 import classNames from 'classnames';
 
-import { keyRole, lang, routerLinks } from '@utils';
-import { GlobalFacade, ParameterFacade } from '@store';
+import { lang, renderTitleBreadcrumbs, routerLinks } from '@utils';
+import { ParameterFacade } from '@store';
 import { createSearchParams } from 'react-router-dom';
 import { Form } from '@core/form';
 import { getQueryStringParams } from '@core/data-table';
 import { EFormType } from '@models';
-import { Arrow, Edit, Trash } from '@svgs';
-import { ToolTip } from '@core/tooltip';
-import { PopConfirm } from '@core/pop-confirm';
+import { Arrow } from '@svgs';
 
 const Page = () => {
-  const { set } = GlobalFacade();
   const parameterFacade = ParameterFacade();
   const location = useLocation();
   const request = getQueryStringParams(location.search);
   useEffect(() => {
     if (!parameterFacade.result?.data) parameterFacade.get({});
-    set({
-      breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Parameter', link: '' },
-      ],
-    });
+    renderTitleBreadcrumbs(t('pages.Parameter'), [
+      { title: t('titles.Setting'), link: '' },
+      { title: t('titles.Parameter'), link: '' },
+    ]);
     parameterFacade.getById({ id: request.code });
   }, []);
 
@@ -60,7 +55,8 @@ const Page = () => {
                 defaultExpandAll
                 switcherIcon={<Arrow className={'w-4 h-4'} />}
                 treeData={parameterFacade.result?.data?.map((item: any) => ({
-                  title: item?.code.toLowerCase()
+                  title: item?.code
+                    .toLowerCase()
                     .split(' ')
                     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' '),
@@ -70,25 +66,27 @@ const Page = () => {
                   expanded: true,
                   children: [],
                 }))}
-                titleRender={(data: any) => (<div
-                  className={classNames(
-                    { 'bg-gray-100': request.code === data.code },
-                    'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
-                  )}
-                >
+                titleRender={(data: any) => (
                   <div
-                    onClick={() => {
-                      navigate({
-                        pathname: `/${lang}${routerLinks('Parameter')}`,
-                        search: `?${createSearchParams({ code: data.value! })}`,
-                      });
-                      parameterFacade.getById({ id: data.value! });
-                    }}
-                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    className={classNames(
+                      { 'bg-gray-100': request.code === data.code },
+                      'item text-gray-700 font-medium hover:bg-gray-100 flex justify-between items-center border-b border-gray-100 w-full text-left  group',
+                    )}
                   >
-                    {data.title}
+                    <div
+                      onClick={() => {
+                        navigate({
+                          pathname: `/${lang}${routerLinks('Parameter')}`,
+                          search: `?${createSearchParams({ code: data.value! })}`,
+                        });
+                        parameterFacade.getById({ id: data.value! });
+                      }}
+                      className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-3 py-1"
+                    >
+                      {data.title}
+                    </div>
                   </div>
-                </div>)}
+                )}
               />
             </div>
             <div className="p-2 sm:p-0 block sm:hidden">

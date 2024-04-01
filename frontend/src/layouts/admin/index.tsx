@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState, Fragment } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { Dropdown, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
@@ -14,7 +14,7 @@ import Menu from './menu';
 const Layout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
   const globalFacade = GlobalFacade();
-  const { user, title, titleOption, breadcrumbs } = globalFacade;
+  const { user } = globalFacade;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,9 +63,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       navigate(globalFacade.pathname);
     }
   }, [globalFacade.pathname]);
-  useEffect(() => {
-    if (!!globalFacade.language && globalFacade.title) document.title = t('pages.' + globalFacade.title || '');
-  }, [globalFacade.language]);
+
   const Header = ({ isCollapsed, isDesktop }: { isCollapsed: boolean; isDesktop: boolean }) => (
     <header
       className={classNames(
@@ -78,22 +76,11 @@ const Layout = ({ children }: PropsWithChildren) => {
       )}
     >
       <div className="flex items-center justify-end sm:justify-between px-5 h-16">
-        {title !== 'Dashboard' && (
-          <div>
-            <h1 className={'text-xl font-bold hidden sm:block'}>{t('pages.' + title, titleOption || {})}</h1>
+        <div>
+          <h1 className={'title-page text-xl font-bold hidden sm:block'}></h1>
 
-            <div className={'hidden sm:flex items-center text-xs mt-0.5'}>
-              {breadcrumbs?.map((item, i) => (
-                <Fragment key={i}>
-                  <span className={classNames({ 'text-gray-400': i < breadcrumbs.length - 1 })}>
-                    {t(item.title, titleOption || {})}
-                  </span>{' '}
-                  {i < breadcrumbs.length - 1 && <Arrow className={'w-2.5 h-2.5 mx-1.5'} />}
-                </Fragment>
-              ))}
-            </div>
-          </div>
-        )}
+          <div className={' breadcrumbs-page hidden sm:flex items-center text-xs mt-0.5'}></div>
+        </div>
 
         <div className="flex items-center gap-5 absolute right-6">
           <Dropdown
@@ -261,20 +248,9 @@ const Layout = ({ children }: PropsWithChildren) => {
           'ml-16': isCollapsed && isDesktop,
         })}
       >
-        <div className={'h-[calc(100vh-6rem)]'}>
-          {!isDesktop && (
-            <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
-          )}
-          <div className={'flex items-center text-xs mt-0.5 pb-5 sm:hidden'}>
-            {breadcrumbs?.map((item, i) => (
-              <Fragment key={i}>
-                <span className={classNames({ 'text-gray-400': i < breadcrumbs.length - 1 })}>
-                  {t(item.title, titleOption || {})}
-                </span>{' '}
-                {i < breadcrumbs.length - 1 && <Arrow className={'w-2.5 h-2.5 mx-1.5'} />}
-              </Fragment>
-            ))}
-          </div>
+        <div className={'h-[calc(100vh-6rem)] overflow-auto'}>
+          {!isDesktop && <h1 className={'title-page text-xl font-bold block sm:hidden'}></h1>}
+          <div className={'breadcrumbs-page flex items-center text-xs mt-0.5 pb-5 sm:hidden'}></div>
           {children}
         </div>
 
