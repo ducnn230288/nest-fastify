@@ -60,6 +60,7 @@ export class AuthController {
   ): Promise<DefaultAuthResponseDto> {
     const user = await this.authService.login(loginAuthDto);
     const tokens = await this.authService.getTokens(user, true);
+
     return {
       message: i18n.t('common.Success'),
       data: {

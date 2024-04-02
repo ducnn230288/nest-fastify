@@ -12,6 +12,7 @@ import hbsUtils from 'hbs-utils';
 import { appConfig, loggerOptions, setupSwagger } from '@config';
 import { HttpExceptionFilter } from '@shared';
 import { AppModule } from './app.module';
+import dayjs from 'dayjs';
 
 async function bootstrap(): Promise<void> {
   const logger = new Logger('bootstrap');
@@ -47,13 +48,24 @@ async function bootstrap(): Promise<void> {
   await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
   app.useStaticAssets({ root: join(process.cwd(), './other', 'public') });
   hbs.registerPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbs.registerPartials(join(process.cwd(), './other', '/views/partials'));
+  hbs.registerPartials(join(process.cwd(), './other', '/views/pages'));
+
   hbs.registerHelper('json', function (context) {
     return JSON.stringify(context);
   });
   hbs.registerHelper('raw-helper', function (options) {
     return options.fn();
   });
+
+  hbs.registerHelper('getYear', function (date: Date) {
+    return dayjs(date).year();
+  });
+
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/partials'));
+
   app.setViewEngine({
     engine: { handlebars: hbs },
     includeViewExtension: true,

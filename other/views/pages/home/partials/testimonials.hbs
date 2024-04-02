@@ -1,0 +1,106 @@
+<div
+  id='section7'
+  class='mil-section fade fadeOut relative z-10 w-full h-screen flex justify-center items-center max-xl:h-auto xl:pt-28 pb-20'
+>
+  <div
+    class='box-bg top-block w-72 h-96 absolute -z-10 -bottom-8 right-10 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+  ></div>
+  <div
+    class='box-bg top-block w-24 h-36 absolute bottom-32 right-96 -z-10 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+  ></div>
+
+  <div class='container w-full mx-auto px-8 max-w-7xl'>
+    <div class='xl:text-center text-left'>
+      <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7 xl:px-4'>
+        {{paraTestimonials.note}}
+      </p>
+
+      <h2
+        class='text-black uppercase font-Jost-Font font-bold xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
+      >
+        {{paraTestimonials.code}}
+      </h2>
+
+      <p class='text-black font-Jost-Font font-light text-lg leading-8 mb-14'>
+        {{paraTestimonials.description}}
+      </p>
+    </div>
+
+    <div class='relative border-t-2 border-solic border-gray-300 w-full'>
+      <div class='absolute border-t-2 border-solid border-black -left-2 -top-2 bottom-1 right-2 w-full'></div>
+    </div>
+
+    <div class='flex xl:flex-row flex-col relative w-full h-full box-content'>
+      <div class='xl:w-8/12'>
+        <div class='flex col-start-1 justify-start'>
+          <div class='swiper swiper-section-testimonials overflow-hidden touch-pan-y pt-14'>
+            <div id='content-tes' class='swiper-wrapper relative w-full h-full box-content flex transform duration-0'>
+              {{#each testimonials}}<div class='swiper-slide'>
+                  <div class='flex mb-10 xl:flex-row lg:flex-row flex-col'>
+                    <div class='flex justify-start items-start xl:w-1/3 lg:w-1/3 w-full'>
+                      <div class='relative flex justify-center items-center pb-2'>
+                        <div
+                          class='border-2 border-solid box-border absolute border-black top-3.5 left-3.5 -right-3.5 -bottom-2 w-full'
+                        ></div>
+                        <img data-src='{{image}}' alt='{{alt}}' class='w-40 h-40 lazy' />
+                      </div>
+                    </div>
+
+                    <div class='xl:w-2/3 lg:w-2/3 w-full mr-20 xl:mt-0 lg:mt-0 mt-10'>
+                      <p class='text-black font-Jost-Font font-light text-lg leading-8 mb-7 text-wrap'>
+                        {{#with (lookup translations 1)}}
+                          {{this.description}}
+                        {{/with}}
+                      </p>
+
+                      <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-2'>
+                        {{name}}
+                      </p>
+
+                      <p class='text-black font-Jost-Font font-light text-lg leading-8 mb-7'>
+                        {{#with (lookup translations 1)}}
+                          {{this.position}}
+                        {{/with}}
+                      </p>
+                    </div>
+                  </div>
+                </div>{{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='xl:w-4/12 xl:px-4'>
+        <div class='flex col-start-2 justify-end h-full'>
+          <div class='flex w-full pt-14 pb-14 xl:pl-14 relative xl:border-l-2 xl:block border-solic border-gray-300'>
+            <div
+              class='absolute xl:border-l-2 border-t-2 border-solid border-black -left-2 -top-2 bottom-1 right-2 h-full'
+            ></div>
+            <div class='flex swiper-button2 relative items-center mb-7 mt-6 z-50'>
+              <button
+                id='prevPage'
+                class='swiper-button-prev flex justify-center items-center cursor-pointer w-16 h-16 border-2 border-solid border-black box-border shadow-custom-dark duration-500 ease-custom-cubic hover:shadow-none mr-4 xl:left-0 left-1/4 absolute'
+              >
+                <i class='fa-solid fa-chevron-left'></i>
+              </button>
+              <button
+                id='nextPage'
+                class='swiper-button-next flex justify-center items-center w-16 h-16 border-2 border-solid border-black box-border shadow-custom-dark duration-500 ease-custom-cubic hover:shadow-none mr-4 xl:right-1/2 left-20 absolute'
+              >
+                <i class='fa-solid fa-chevron-right'></i>
+              </button>
+            </div>
+
+            <div
+              class='pr-7 mr-7 xl:pb-28 xl:my-0 my-14 xl:ml-16 text-black uppercase font-Jost-Font font-semibold text-base swiper-pagination xl:text-left text-right'
+            >
+              <span>1</span>
+              /
+              <span>4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

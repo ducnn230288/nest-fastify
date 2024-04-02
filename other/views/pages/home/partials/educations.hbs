@@ -1,0 +1,67 @@
+<!-- 3 Section tiếp theo (Uyên) -->
+<!-- Section 4 -->
+<!-- Education -->
+<div
+  id='section4'
+  class='mil-section fade fadeOut relative z-10 w-full h-screen flex justify-center items-center max-xl:h-auto xl:pt-10 pb-20'
+>
+  <div class='box-bg w-72 h-96 absolute -z-10 top-2/4 left-1/4 -rotate-12 opacity-35 rounded-full bg-black'></div>
+
+  <div class='box-bg w-24 h-36 absolute -left-28 -z-10 -rotate-12 opacity-35 rounded-full bg-black'></div>
+
+  <div class='container w-full mx-auto px-8 max-w-7xl'>
+    <div class='xl:flex pt-28 mb-10 xl:mx-6'>
+      <div class='xl:col-start-1 xl:justify-start flex-col mr-4 mt-9'>
+        <div class='2xl:text-right text-left'>
+          <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7'>
+            {{paraEdu.note}}
+          </p>
+          <h2
+            class='text-black uppercase font-Jost-Font font-bold xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
+          >
+            {{paraEdu.code}}
+          </h2>
+          <p class='text-black font-Jost-Font font-light text-lg leading-8'>
+            {{paraEdu.description}}
+          </p>
+        </div>
+      </div>
+
+      <div id='' class='2xl:col-start-2 2xl:justify-end flex-col xl:mx-20 mt-10'>
+        {{#each educations}}
+          <div class='flex mb-10 px-1'>
+            <div class='flex justify-start items-start'>
+              <div
+                class='relative border-2 border-solid border-black box-border w-16 h-16 flex justify-center items-center pb-2'
+              >
+                <div class='absolute bg-zinc-200 -top-3.5 -left-3.5 w-16 h-16 -z-10'></div>
+                <div class='absolute -top-14 left-auto -right-7 box-phone w-16 h-16 -z-10'></div>
+                <a href='' class='text-black font-Jost-Font font-normal text-3xl image-link'>+</a>
+              </div>
+            </div>
+
+            <div class='pl-10 pt-1'>
+              <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-2'>
+                {{name}}
+              </p>
+
+              <p class='text-black uppercase font-Jost-Font font-medium text-sm mb-5'>
+                {{getYear startTime}}
+                <span class='text-orange-600'> to </span>
+                {{getYear endTime}}
+              </p>
+
+              <p class='text-black font-Jost-Font font-light text-lg leading-8'>
+                {{#with (lookup translations 0)}}
+                  {{this.description}}
+                {{/with}}
+              </p>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Education end -->
+<!-- End Section 4 -->

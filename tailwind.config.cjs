@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
   content: ['./other/views/**/*.hbs'],
   safelist: [
@@ -51,6 +52,29 @@ module.exports = {
       },
       transitionTimingFunction: {
         'custom-cubic': 'cubic-bezier(0, 0, 0.3642, 1)',
+      },
+      keyframes: {
+        shine: {
+          '100%': { left: '125%' },
+        },
+        burgerHover: {
+          '0%': { width: '100%' },
+          '50%': { width: '50%' },
+          '100%': { width: '100%' },
+        },
+        introXAnimation: {
+          to: {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+        },
+      },
+      animation: {
+        shine: 'shine 0.8s',
+        'intro-x-animation': 'introXAnimation .4s ease-in-out forwards .33333s',
+        'burger-hover-2': 'burgerHover 1s infinite ease-in-out alternate forwards 200ms',
+        'burger-hover-4': 'burgerHover 1s infinite ease-in-out alternate forwards 400ms',
+        'burger-hover-6': 'burgerHover 1s infinite ease-in-out alternate forwards 600ms',
       },
     },
     screens: {
@@ -331,31 +355,6 @@ module.exports = {
         900: '#881337',
       },
     }),
-    extend: {
-      keyframes: {
-        shine: {
-          '100%': { left: '125%' },
-        },
-        burgerHover: {
-          '0%': { width: '100%' },
-          '50%': { width: '50%' },
-          '100%': { width: '100%' },
-        },
-        introXAnimation: {
-          to: {
-            opacity: '1',
-            transform: 'translateX(0px)',
-          },
-        },
-      },
-      animation: {
-        shine: 'shine 0.8s',
-        'intro-x-animation': 'introXAnimation .4s ease-in-out forwards .33333s',
-        'burger-hover-2': 'burgerHover 1s infinite ease-in-out alternate forwards 200ms',
-        'burger-hover-4': 'burgerHover 1s infinite ease-in-out alternate forwards 400ms',
-        'burger-hover-6': 'burgerHover 1s infinite ease-in-out alternate forwards 600ms',
-      },
-    },
   },
   plugins: [],
 };

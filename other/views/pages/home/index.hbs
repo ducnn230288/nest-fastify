@@ -1,0 +1,324 @@
+{{#> main}}
+{{#*inline "body"}}
+
+{{> home/partials/cover}}
+
+<div id='main' class='mil-onepage w-full'>
+  <!-- Section 1 -->
+  <!-- Graphic Developer -->
+  <div
+    id='section1'
+    class='mil-section fade fadeOut relative z-10 w-full h-screen md:max-xl:h-auto max-xl:pt-16 max-xl:mb-14'
+  >
+    <div class='h-full'>
+      <div class='w-full h-full relative justify-center items-center flex flex-col'>
+        <div class='w-full h-full flex z-10 max-xl:flex max-xl:flex-col'>
+          <div class='w-7/12 pr-4 flex items-center max-xl:w-full max-xl:bg-white'>
+            <div class='relative w-full pr-28 pl-56 mill-banner max-xl:px-8 max-xl:py-16 max-xl:text-center'>
+              <div class='w-full opacity-35 absolute box-bg h-36 t-0 -left-3/4 -z-10'></div>
+              <div class='w-full h-36 opacity-35 absolute box-bg left-3/4 -z-10'></div>
+
+              <div>
+                <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7'>           
+                  {{#with (lookup user.positions 0)}}
+                    {{this}}
+                  {{/with}}
+                  <span class='text-orange-600'> and </span>
+                  {{#with (lookup user.positions 1)}}
+                    {{this}}
+                  {{/with}}
+                </p>
+                <h1 class='text-shadow text-7xl mb-10 uppercase font-bold max-lg:text-5xl'>
+                  {{user.name}}
+                </h1>
+                <div class='pl-14'>
+                  <p class='pb-7 text-black font-Jost-Font font-light text-lg leading-8'>
+                     {{#with (lookup user.description 0)}}
+                    {{this}}
+                  {{/with}}
+                  </p>
+                  <div class='flex justify-start max-xl:justify-center max-lg:!flex-col max-lg:!justify-center'>
+                    <a
+                      href=''
+                      class='flex text-black uppercase font-Jost-Font font-semibold text-base mb-7 z-30 items-center justify-center h-14 border-solid border-2 border-black mr-4 pl-10 pr-10 shadow-custom-dark duration-500 ease-custom-cubic hover:shadow-none max-lg:mb-4 max-lg:w-full'
+                    >Portfolio</a>
+                    <a
+                      href=''
+                      class='flex text-white uppercase font-Jost-Font font-semibold text-base mb-7 z-30 items-center justify-center h-14 pl-10 pr-10 !bg-orange-600 shadow-custom-orange duration-500 ease-custom-cubic hover:shadow-none'
+                    >Contact me</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='w-5/12 pl-4 max-xl:w-full max-md:pl-0'>
+            <img
+              data-src='https://html.bslthemes.com/treto/img/faces/5.jpg'
+              alt=''
+              class='h-full w-full object-cover object-center align-top max-xl:h-96 lazy'
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Graphic Developer end -->
+  <!-- End Section 1 -->
+
+  <!-- Section 2 -->
+  <!-- Hello -->
+  <div
+    id='section2'
+    class='mil-section fade fadeOut relative z-10 w-full h-screen flex justify-center items-center max-xl:mt-32 max-xl:h-auto max-xl:pb-24 max-md:pt-64'
+  >
+    <div
+      class='box-bg top-block w-72 h-96 absolute -z-10 -top-1/3 right-40 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+    ></div>
+    <div class='container w-full mx-auto px-8 max-w-7xl'>
+      <div class='flex justify-between items-center max-xl:justify-center max-xl:items-center'>
+        <div class='w-4/12 max-xl:hidden'>
+          <div class='w-full relative'>
+            <div class='absolute border-2 border-solid border-black left-3 top-3 -bottom-3 right-1'></div>
+            <img data-src='https://html.bslthemes.com/treto/img/faces/1.jpg' alt='' class='h-500px lazy' />
+          </div>
+        </div>
+        <div class='w-7/12 max-xl:w-11/12'>
+          <div class='flex flex-wrap font-Jost-Font'>
+            <div class='w-full px-4'>
+              <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7'>
+                <span class='text-orange-600'>Hello</span>
+                , my name is
+              </p>
+              <h2
+                class='text-black uppercase font-Jost-Font font-bold 2xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
+              >
+                {{user.name}}
+              </h2>
+              <p class='pb-7 text-black font-Jost-Font font-light text-lg leading-8'>
+                From France, Paris. I have rich experience in web design, also I am good at React, Vue.js. I love to
+                talk with you about our unique. I have been studying UI UX Design since October 2020. I like creating a
+                cool design project.
+              </p>
+              <p class='pb-7 text-black font-Jost-Font font-light text-lg leading-8'>
+                Over 6+ years of IT experience which includes 2+ years of a React JS Developer and 3 years of Experience
+                as a UI/UX Developer and 1 years of Experience as software Developer.
+              </p>
+              <div class='flex justify-center'>
+                <a
+                  href=''
+                  class='flex text-white uppercase font-Jost-Font font-semibold text-base mb-7 z-30 items-center justify-center h-14 pl-10 pr-10 !bg-orange-600 shadow-custom-orange duration-500 ease-custom-cubic hover:shadow-none'
+                >Download CV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Hello end -->
+  <!-- End Section 2 -->
+
+  <!-- Section 3 -->
+  <!-- Skills -->
+  <div
+    id='section3'
+    class='mil-section fade fadeOut relative z-10 w-full h-screen flex justify-center items-center max-xl:h-auto'
+  >
+    <div
+      class='box-bg top-block w-72 h-96 absolute -z-10 -top-32 right-80 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+    ></div>
+
+    <div
+      class='box-bg w-72 h-96 absolute -z-10 origin-top-left rotate-6 bottom-32 left-36 opacity-35 rounded-full'
+    ></div>
+
+    <div
+      class='box-bg w-24 h-36 absolute top-32 left-16 -z-10 origin-top-left rotate-6 bottom-32 opacity-35 rounded-full bg-black'
+    ></div>
+
+    <div class='container w-full mx-auto px-8 max-w-7xl'>
+      <div>
+        <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7'>
+          my great
+          <span class='text-orange-600'>work</span>
+        </p>
+        <h2
+          class='text-black uppercase font-Jost-Font font-bold xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
+        >
+          ABILITY OR SKILL
+        </h2>
+      </div>
+
+      <div class='flex flex-wrap -mx-3'>
+        <div class='w-2/12 px-3 max-xl:hidden'></div>
+        <div class='w-10/12 px-3 max-xl:w-full'>
+          <div id='skills' class='flex flex-wrap max-xl:!flex-col'>
+            {{#each user.skills}}
+            <div class="w-1/2 mb-10 pl-3 pr-5 max-xl:w-full">
+            <div class="box-icon flex justify-between">
+              <div class="flex">
+                <div
+                  class="relative border-2 border-solid border-black box-border w-16 h-16 flex justify-center items-center pb-2"
+                >
+                  <div
+                    class="absolute bg-zinc-200 -top-3.5 -left-3.5 w-16 h-16 -z-10"
+                  ></div>
+
+                  <div
+                    class="text-black font-Jost-Font font-normal text-3xl"
+                  >
+                    <i class="{{icon}}"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="w-calc-100-minus-90">
+                <span
+                  class="text-black uppercase font-Jost-Font font-semibold text-base mb-7"
+                  >{{name}}</span
+                >
+                <div
+                  class="border-b-2 border-solid border-b-gray-300 py-1 ml-2"
+                >
+                  <div
+                    class="{{class}} relative -left-2 h-3 border-b-2 border-r-2 border-orange-600"
+                  >
+                    <span
+                      class="absolute top-0 right-0 translate-x-4 -translate-y-6 uppercase font-Jost-Font font-semibold text-sm text-orange-600"
+                      >{{complete}}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+{{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Skills end -->
+  <!-- End Section 3 -->
+
+  <!-- End 3 section đầu tiên -->
+  {{> home/partials/educations}}
+
+  <!-- Section 5 -->
+  <!-- Expirience -->
+  {{>home/partials/experiences}}
+  <!-- Expirience end -->
+  <!-- End Section 5 -->
+
+  <!-- Section 6 -->
+  <!-- Services -->
+  {{>home/partials/services}}
+  <!-- Services end -->
+  <!-- End Section 6 -->
+  <!-- End 3 section tiếp theo (Uyên) -->
+
+  <!-- Section 7 -->
+  <!-- Testimonials -->
+  {{>home/partials/testimonials}}
+  <!-- Testimonials end -->
+  <!-- End Section 7 -->
+
+  <!-- Section 8 -->
+  <!-- Contact -->
+  <div
+    id='section8'
+    class='mil-section fade fadeOut relative h-screen w-full flex justify-center items-center pt-8 max-lg:h-auto max-xl:text-3xl'
+  >
+    <div
+      class='box-bg top-block w-72 h-96 absolute -z-10 -bottom-8 -right-12 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+    ></div>
+    <div
+      class='box-bg w-24 h-36 absolute bottom-32 right-8 -z-10 origin-bottom -rotate-12 opacity-35 rounded-full bg-black'
+    ></div>
+
+    <div class='container max-w-7xl w-full px-12 mx-auto font-Jost-Font'>
+      <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7'>
+        contact
+        <span class='text-orange-600'>me</span>
+      </p>
+      <h2
+        class='text-black uppercase font-Jost-Font font-bold 2xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
+      >
+        Let's get you an estimate
+      </h2>
+      <div class='flex flex-wrap justify-between text-base text-black max-lg:flex-col'>
+        <div id='container-contact' class='w-1/3 max-lg:w-full'>
+          <div class="box-email relative mb-7 p-7 border-2 border-solic border-black">
+                <div
+                  class="absolute border-2 border-solid border-gray-300 left-1 -right-2 -bottom-2 top-1 -z-10"
+                ></div>
+                <p class="text-black uppercase font-Jost-Font font-semibold text-base mb-7">EMAIL</p>
+                <p>
+                 <a class="text-black font-Jost-Font font-light text-lg leading-8 mb-14">hello@treto.co</a> </br>
+                 <a class="text-black font-Jost-Font font-light text-lg leading-8 mb-14">projects@treto.co</a> </br>
+                </p>
+          </div>
+
+          <div class="box-email relative mb-7 p-7 border-2 border-solic border-black">
+                <div
+                  class="absolute border-2 border-solid border-gray-300 left-1 -right-2 -bottom-2 top-1 -z-10"
+                ></div>
+                <p class="text-black uppercase font-Jost-Font font-semibold text-base mb-7">PHONE</p>
+                <p>
+                  <a class="text-black font-Jost-Font font-light text-lg leading-8 mb-14">+ 56 3636 60 60 </a> </br>
+                  <a class="text-black font-Jost-Font font-light text-lg leading-8 mb-14">+ 56 6363 06 06</a> </br>
+                </p>
+          </div>
+        </div>
+        <div class='w-7/12 max-lg:w-full'>
+          <form action=''>
+            <div class='flex flex-wrap text-base text-black max-lg:flex-col'>
+              <div
+                class='w-1/2 text-black uppercase font-Jost-Font font-semibold text-base mb-7 px-4 max-lg:w-full max-lg:px-0'
+              >
+                <label for='' class='block mb-4'>Your full name
+                  <span class='text-orange-600'>*</span></label>
+                <input type='text' class='w-full px-7 bg-zinc-100 h-16 outline-none' />
+              </div>
+              <div
+                class='w-1/2 text-black uppercase font-Jost-Font font-semibold text-base mb-7 px-4 max-lg:w-full max-lg:px-0'
+              >
+                <label for='' class='block mb-4'>Your email address
+                  <span class='text-orange-600'>*</span></label>
+                <input type='text' class='w-full px-7 bg-zinc-100 h-16 outline-none' />
+              </div>
+              <div class='w-full text-black uppercase font-Jost-Font font-semibold text-base mb-7 px-4 max-lg:px-0'>
+                <label for='' class='block mb-4'>Your message
+                  <span class='text-orange-600'>*</span></label>
+                <input type='text' class='w-full px-7 py-4 bg-zinc-100 h-32 outline-none' />
+              </div>
+              <div
+                class='w-full flex justify-between items-center text-black font-Jost-Font font-light text-lg leading-8 px-4 max-lg:px-0 max-lg:h-auto'
+              >
+                <label for='' class='block cursor-pointer relative pl-10 mb-7'>
+                  by sending, I accept the
+                  <a class='text-orange-600 underline decoration-solid'>terms and conditions</a><input
+                    type='checkbox'
+                    class='cursor-pointer absolute h-0 w-0 opacity-0'
+                  />
+                  <span class='check-box absolute top-0 left-0 h-6 w-6 bg-zinc-200' onclick='toggleBackground()'></span>
+                </label>
+                <button
+                  class='flex text-white uppercase font-Jost-Font font-semibold text-base mb-7 z-30 items-center justify-center h-14 pl-10 pr-10 !bg-orange-600 shadow-custom-orange duration-500 ease-custom-cubic hover:shadow-none'
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Contact end -->
+  <!-- End Section 8-->
+</div>
+
+{{> home/partials/pagination}}
+
+{{/inline}}
+{{/main}}

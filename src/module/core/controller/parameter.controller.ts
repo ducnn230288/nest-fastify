@@ -46,6 +46,8 @@ export class ParameterController {
   })
   @Get(':code')
   async findOne(@I18n() i18n: I18nContext, @Param('code') code: string): Promise<ParameterResponseDto> {
+    const paraEducation = await this.service.findOne('EXPERIENCE');
+    console.log(paraEducation);
     return {
       message: i18n.t('common.Get Detail Success'),
       data: await this.service.findOne(code),
