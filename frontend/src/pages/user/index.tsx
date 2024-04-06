@@ -132,7 +132,7 @@ const Page = () => {
               className={'container mx-auto'}
               facade={userFacade}
               ref={dataTableRef}
-              onRow={(data) => ({
+              onRow={() => ({
                 // onDoubleClick: () => userFacade.getById({ id: data.id }),
               })}
               paginationDescription={(from: number, to: number, total: number) =>
