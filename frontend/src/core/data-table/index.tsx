@@ -285,7 +285,7 @@ export const DataTable = forwardRef(
             placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
             value={selectedKeys}
             onChange={(e) => setSelectedKeys(e.target.value)}
-            onPressEnter={(e) => confirm()}
+            onPressEnter={() => confirm()}
           />
           {groupButton(confirm, clearFilters, key, selectedKeys)}
         </div>
@@ -451,12 +451,14 @@ export const DataTable = forwardRef(
                       500,
                     );
                   }}
-                  onPressEnter={(e) => handleTableChange(
-                    undefined,
-                    params.filter,
-                    params.sorts as SorterResult<any>,
-                    (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                  )}
+                  onPressEnter={() =>
+                    handleTableChange(
+                      undefined,
+                      params.filter,
+                      params.sorts as SorterResult<any>,
+                      (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
+                    )
+                  }
                 />
                 {!params.fullTextSearch ? (
                   <Search

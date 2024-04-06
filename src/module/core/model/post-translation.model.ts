@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Post } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
-import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class PostTranslation extends Base {

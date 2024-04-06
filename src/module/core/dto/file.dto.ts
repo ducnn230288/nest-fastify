@@ -11,18 +11,3 @@ export class FileResponseDto extends PartialType(DefaultResponsesDto) {
 export class ListFileResponseDto extends PartialType(PaginationResponsesDto) {
   readonly data: File[];
 }
-export interface IEditor {
-  id: string;
-  data: {
-    text: string;
-    level?: string;
-    file?: {
-      url?: string;
-    };
-    caption?: string;
-    stretched?: boolean;
-    withBorder?: boolean;
-    withBackground?: boolean;
-  };
-  type: string;
-}
