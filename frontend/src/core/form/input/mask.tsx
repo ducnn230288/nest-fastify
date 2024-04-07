@@ -48,7 +48,7 @@ const Component = forwardRef(
       //   return sel.text.length - selLen;
       // }
       return 0;
-    }
+    };
 
     const setCaretPosition = (input: HTMLInputElement, selectionStart: number, selectionEnd: number) => {
       if (input.setSelectionRange) {
@@ -62,7 +62,7 @@ const Component = forwardRef(
       //   range.moveStart('character', selectionStart);
       //   range.select();
       // }
-    }
+    };
 
     return (
       <Fragment>
@@ -97,22 +97,28 @@ const Component = forwardRef(
           />
           {!!addonAfter && <div>{addonAfter(form)}</div>}
         </div>
-        {list && <div className={'flex flex-wrap gap-2 mt-2'}>
-          {list.map((item, index) => (
-            <Button
-              key={index}
-              text={item.label}
-              onClick={() => {
-                if (item.value) {
-                  const value = input.current?.value ?? '';
-                  const position = getCursorPosition(input.current!);
-                  input.current!.value = value.slice(0, position) + item.value + value.slice(position);
-                  setCaretPosition(input.current!, position + item.value.toString().length, position + item.value.toString().length)
-                }
-              }}
-            />
-          ))}
-        </div>}
+        {list && (
+          <div className={'flex flex-wrap gap-2 mt-2'}>
+            {list.map((item, index) => (
+              <Button
+                key={index}
+                text={item.label}
+                onClick={() => {
+                  if (item.value) {
+                    const value = input.current?.value ?? '';
+                    const position = getCursorPosition(input.current!);
+                    input.current!.value = value.slice(0, position) + item.value + value.slice(position);
+                    setCaretPosition(
+                      input.current!,
+                      position + item.value.toString().length,
+                      position + item.value.toString().length,
+                    );
+                  }
+                }}
+              />
+            ))}
+          </div>
+        )}
       </Fragment>
     );
   },
@@ -133,6 +139,6 @@ type Type = {
   onFocus?: (e: any) => any;
   onChange?: (e: any) => any;
   onPressEnter?: (e: any) => any;
-  list?: TableItemFilterList[]
+  list?: TableItemFilterList[];
 };
 export default Component;
