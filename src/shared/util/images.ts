@@ -1,5 +1,4 @@
 import { appConfig } from '@config';
-import { IEditor } from '@dto';
 
 export function setImage(value?: string, before = true): string | undefined {
   if (value) {
@@ -9,7 +8,11 @@ export function setImage(value?: string, before = true): string | undefined {
   return value;
 }
 export function setImageContent(value?: string, before = true): string | undefined {
-  if (value) return value.replaceAll('src="' + (before ? appConfig.URL_FILE : ''), 'src="'+ (!before ? appConfig.URL_FILE : ''));
+  if (value)
+    return value.replaceAll(
+      'src="' + (before ? appConfig.URL_FILE : ''),
+      'src="' + (!before ? appConfig.URL_FILE : ''),
+    );
   return value;
 }
 export function getImages<T>(

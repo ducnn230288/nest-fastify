@@ -177,7 +177,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
    */
   async getCountToday(): Promise<number> {
     return await this.createQueryBuilder('base')
-      .where(`"created_at" BETWEEN :startDate AND :endDate`, {
+      .where(`"createdAt" BETWEEN :startDate AND :endDate`, {
         startDate: dayjs().startOf('days').toDate(),
         endDate: dayjs().endOf('days').toDate(),
       })

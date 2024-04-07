@@ -132,8 +132,8 @@ const Page = () => {
               className={'container mx-auto'}
               facade={userFacade}
               ref={dataTableRef}
-              onRow={(data) => ({
-                onDoubleClick: () => userFacade.getById({ id: data.id }),
+              onRow={() => ({
+                // onDoubleClick: () => userFacade.getById({ id: data.id }),
               })}
               paginationDescription={(from: number, to: number, total: number) =>
                 t('routes.admin.Layout.User', { from, to, total })

@@ -1,11 +1,12 @@
-import React, { forwardRef, Fragment, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { Ref, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Checkbox, CheckboxOptionType, DatePicker, Radio, Spin, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import classNames from 'classnames';
-import Draggabilly from 'draggabilly';
+import { DndContext, useDraggable } from '@dnd-kit/core';
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 dayjs.extend(utc);
 
 import { Button } from '../button';
@@ -14,6 +15,7 @@ import { DataTableModel, PaginationQuery, TableGet, TableRefObject } from '@mode
 import { cleanObjectKeyNull, getSizePageByHeight, uuidv4 } from '@utils';
 import { Calendar, CheckCircle, CheckSquare, Search, Times } from '@svgs';
 import { SorterResult } from 'antd/lib/table/interface';
+import { Mask } from '@core/form/input';
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -126,12 +128,7 @@ export const DataTable = forwardRef(
     useEffect(() => {
       if (data?.length || result?.data?.length)
         setTimeout(() => {
-          let left: HTMLTableCellElement | null;
-          let table = tableRef.current?.querySelector('table');
-          let indexLeft: number;
-          let wLeft: number;
-          let wTable: number;
-          const dragging: NodeListOf<HTMLSpanElement> | undefined = tableRef.current?.querySelectorAll('.dragging');
+          const table = tableRef.current?.querySelector('table');
           const cols = tableRef.current?.querySelectorAll('col');
           const widthTable = tableRef.current!.clientWidth - 1;
           if (parseInt(table!.style.width.replace('px', '')) - widthTable < 100) table!.style.width = widthTable + 'px';
@@ -144,36 +141,6 @@ export const DataTable = forwardRef(
           cols?.forEach((i) => {
             if (!i.style.width) i.style.width = (widthTable - totalWidth) / number + 'px';
           });
-          for (let i = 0; i < dragging!.length; i++) {
-            new Draggabilly(dragging![i], {
-              axis: 'x',
-            })
-              .on('dragStart', () => {
-                left = dragging![i].closest('th');
-                const div = document.createElement('div');
-                div.className = 'bg';
-                dragging![i].closest('tr')!.appendChild(div);
-                const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
-                indexLeft = th.indexOf(left) + 1;
-                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
-                wLeft = parseFloat(left.style.width);
-                table = tableRef.current?.querySelector('table');
-                wTable = parseFloat(table!.style.width);
-              })
-              .on('dragMove', (_, __, moveVector) => {
-                const p = moveVector.x * 0.6;
-                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
-                left.style.width = wLeft + p + 'px';
-                left.style.minWidth = wLeft + p + 'px';
-                table!.style.width = wTable + p + 'px';
-              })
-              .on('dragEnd', () => {
-                dragging![i].style.left = '';
-                setTimeout(() => {
-                  dragging![i].closest('tr')!.querySelector('.bg')!.remove();
-                });
-              });
-          }
         }, 10);
     }, [data, result?.data, facade.status]);
 
@@ -238,17 +205,13 @@ export const DataTable = forwardRef(
           <Spin spinning={facade.isLoading === true || false}>
             <div className="p-1">
               {get?.facade && (
-                <input
-                  className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4 mb-1"
-                  type="text"
+                <Mask
                   placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
                   onChange={(e) => {
                     clearTimeout(timeoutSearch.current);
                     timeoutSearch.current = setTimeout(() => columnSearch(get, e.target.value, selectedKeys), 500);
                   }}
-                  onKeyUp={async (e) => {
-                    if (e.key === 'Enter') await columnSearch(get, e.currentTarget.value, undefined, facade);
-                  }}
+                  onPressEnter={(e) => columnSearch(get, e.currentTarget.value, undefined, facade)}
                 />
               )}
               <div>
@@ -282,9 +245,7 @@ export const DataTable = forwardRef(
           <Spin spinning={facade.isLoading === true || false}>
             <div className="p-1">
               {!!get?.facade && (
-                <input
-                  className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4 mb-1"
-                  type="text"
+                <Mask
                   placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
                   onChange={(e) => {
                     clearTimeout(timeoutSearch.current);
@@ -293,9 +254,7 @@ export const DataTable = forwardRef(
                       500,
                     );
                   }}
-                  onKeyUp={async (e) => {
-                    if (e.key === 'Enter') await columnSearch(get, e.currentTarget.value, undefined, facade);
-                  }}
+                  onPressEnter={(e) => columnSearch(get, e.currentTarget.value, undefined, facade)}
                 />
               )}
               <div>
@@ -321,17 +280,12 @@ export const DataTable = forwardRef(
     const getColumnSearchInput = (key: any) => ({
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
         <div className="p-1">
-          <input
+          <Mask
             id={idTable.current + '_input_filter_' + key}
-            className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4"
-            value={selectedKeys}
-            type="text"
             placeholder={t('components.datatable.pleaseEnterValueToSearch') || ''}
+            value={selectedKeys}
             onChange={(e) => setSelectedKeys(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') confirm();
-              e.stopPropagation();
-            }}
+            onPressEnter={() => confirm()}
           />
           {groupButton(confirm, clearFilters, key, selectedKeys)}
         </div>
@@ -468,17 +422,21 @@ export const DataTable = forwardRef(
             children: item.children && loopData(item.children),
           }))
         : [];
+    let indexLeft: number;
+    let left: any;
+    let wLeft: number;
+    let table: HTMLTableElement;
+    let wTable: number;
     return (
       <div ref={tableRef} className={classNames(className, 'intro-x')}>
         {(!!showSearch || !!leftHeader || !!rightHeader) && (
           <div className="lg:flex justify-between mb-2.5 gap-y-2.5 flex-wrap">
             {showSearch ? (
               <div className="relative">
-                <input
+                <Mask
+                  className={'h-10 pl-8'}
                   id={idTable.current + '_input_search'}
-                  className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
-                  defaultValue={params.fullTextSearch}
-                  type="text"
+                  value={params.fullTextSearch}
                   placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
                   onChange={() => {
                     clearTimeout(timeoutSearch.current);
@@ -493,15 +451,14 @@ export const DataTable = forwardRef(
                       500,
                     );
                   }}
-                  onKeyUp={(e) => {
-                    if (e.key === 'Enter')
-                      handleTableChange(
-                        undefined,
-                        params.filter,
-                        params.sorts as SorterResult<any>,
-                        (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
-                      );
-                  }}
+                  onPressEnter={() =>
+                    handleTableChange(
+                      undefined,
+                      params.filter,
+                      params.sorts as SorterResult<any>,
+                      (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
+                    )
+                  }
                 />
                 {!params.fullTextSearch ? (
                   <Search
@@ -536,15 +493,34 @@ export const DataTable = forwardRef(
         )}
         {subHeader && subHeader(result?.count)}
         {!!showList && (
-          <Fragment>
+          <DndContext
+            modifiers={[restrictToHorizontalAxis]}
+            onDragMove={({ activatorEvent, delta }) => {
+              if (!left) {
+                left = (activatorEvent.target as HTMLSpanElement)!.closest('th');
+                const th = Array.prototype.slice.call(tableRef.current?.querySelectorAll('thead > tr > th'));
+                indexLeft = th.indexOf(left) + 1;
+                left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+                wLeft = parseFloat(left.style.width);
+                table = tableRef.current!.querySelector('table')!;
+                wTable = parseFloat(table!.style.width);
+              }
+              left = tableRef.current!.querySelector('col:nth-of-type(' + indexLeft + ')')!;
+              const p = delta.x * 0.6;
+              left.style.width = wLeft + p + 'px';
+              left.style.minWidth = wLeft + p + 'px';
+              table!.style.width = wTable + p + 'px';
+            }}
+            onDragEnd={() => (left = undefined)}
+          >
             <Table
               onRow={onRow}
               components={{
                 header: {
-                  cell: ({ children, ...restProps }: { children: React.ReactNode }) => (
+                  cell: ({ children, ...restProps }: { children: React.ReactNode; title?: string }) => (
                     <th {...restProps}>
                       {children}
-                      <span className="dragging"></span>
+                      <Draggable id={restProps?.title} />
                     </th>
                   ),
                 },
@@ -582,7 +558,7 @@ export const DataTable = forwardRef(
                 {...prop}
               />
             )}
-          </Fragment>
+          </DndContext>
         )}
         {!!footer && <div className="footer">{footer(result)}</div>}
       </div>
@@ -617,4 +593,15 @@ type Type = {
   facade?: any;
   data?: any[];
   formatData?: (data: any) => any[];
+};
+const Draggable = (props: any) => {
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: props.id });
+  return (
+    <span
+      className={'opacity-0 cursor-col-resize absolute right-0 top-0 z-50 h-full w-1'}
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+    />
+  );
 };

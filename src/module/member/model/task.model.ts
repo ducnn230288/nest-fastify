@@ -6,7 +6,6 @@ import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID }
 
 import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
-import { IEditor } from '@dto';
 import { TaskSub } from '@model';
 
 export enum ETaskPriority {
@@ -53,7 +52,7 @@ export class Task extends Base {
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
-  content?: { blocks: IEditor[] };
+  content?: string;
 
   @Column()
   @ApiProperty({ example: faker.date.past(), description: '' })

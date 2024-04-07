@@ -56,7 +56,7 @@ export class TaskController {
     const [result, total] = await this.service.findAll(paginationQuery);
     // console.log(datas);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
