@@ -8,17 +8,52 @@
 
   <div class='container w-full mx-auto px-8 max-w-7xl mt-10'>
     <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-7 xl:px-4'>
-      Freelance
+      {{paraSer.note}}
     </p>
 
     <h2
       class='text-black uppercase font-Jost-Font font-bold 2xl:text-6xl lg:text-5xl md:text-4xl sm:text-4xl text-3xl mb-14 text-shadow'
     >
-      Services
+      {{paraSer.code}}
     </h2>
 
     <div class='flex flex-wrap justify-between items-center max-w-full 2xl:px-4'>
-      <div id='content-ser' class='flex 2xl:flex-row flex-col relative w-full h-full box-content'></div>
+      <div id='content-ser' class='flex max-xl:flex-col relative w-full h-full box-content'>
+        {{#each services}}
+          <div class='flex mb-10 xl:pr-14'>
+            <div class='flex justify-start items-start'>
+              <div
+                class='relative border-2 border-solid border-black box-border w-16 h-16 flex justify-center items-center pb-2'
+              >
+                <div class='absolute bg-zinc-200 -top-3.5 -left-3.5 w-16 h-16 -z-10'></div>
+                <div class='absolute -top-14 left-auto -right-7 box-phone w-16 h-16 -z-10'></div>
+                <div class='text-black font-Jost-Font font-normal text-3xl'>
+                  <i class='{{icon}}'></i>
+                </div>
+              </div>
+            </div>
+
+            <div class='pl-10 pt-1'>
+              <p class='text-black uppercase font-Jost-Font font-semibold text-base mb-2'>
+                {{name}}
+              </p>
+
+              <p class='text-black uppercase font-Jost-Font font-medium text-sm mb-5'>
+                {{#with (lookup translations 0)}}
+                  {{this.content}}
+                {{/with}}
+                <span class='text-orange-600'> per hour </span>
+              </p>
+
+              <p class='text-black font-Jost-Font font-light text-lg leading-8'>
+                {{#with (lookup translations 0)}}
+                  {{this.description}}
+                {{/with}}
+              </p>
+            </div>
+          </div>
+        {{/each}}
+      </div>
     </div>
   </div>
 </div>

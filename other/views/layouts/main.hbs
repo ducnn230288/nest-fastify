@@ -32,7 +32,7 @@
   <!-- Link web -->
   <!-- https://html.bslthemes.com/treto/index.html -->
 
-  <body class='bg-white max-xl:overflow-y-auto'>
+  <body class='bg-white overflow-hidden max-xl:overflow-y-auto'>
 
     {{> body}}
 
@@ -42,81 +42,221 @@
     <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
 
     <!--  vanilla-lazyload 17 -->
-    <script src='https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js"></script>
     <script>
-      setTimeout(() => { new LazyLoad({ callback_error: (el) => (el.src = "https://via.placeholder.com/1x1/?text="), });
+      setTimeout(() => {
+        new LazyLoad({
+          callback_error: (el) =>
+            (el.src = "https://via.placeholder.com/1x1/?text="),
+        });
       }, 1000);
     </script>
 
     <!-- Magnific Popup core JS file -->
-    <script src='src/magnific-popup.js'></script>
+    <script src="src/magnific-popup.js"></script>
     <script>
-      $(document).ready(function () { $(".image-link").magnificPopup({ type: "image" }); });
+      document.addEventListener("DOMContentLoaded", function() {
+        var imageLinks = document.querySelectorAll(".image-link");
+        imageLinks.forEach(function(imageLink) {
+          imageLink.addEventListener("click", function() {
+            // Assuming magnificPopup function is defined elsewhere
+            magnificPopup({ type: "image" });
+          });
+        });
+      });
     </script>
 
     <!-- Swiper JS -->
-    <script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <!-- Initialize Swiper -->
     <script>
-      var swiper = new Swiper(".swiper-section-experience", { hashNavigation: true, spaceBetween: 30, speed: 800,
-      parallax: !0, pagination: { el: ".swiper-pag", type: "fraction", clickable: !0, }, navigation: { nextEl:
-      ".swiper-button-next", prevEl: ".swiper-button-prev", }, slidesPerView: 1, breakpoints: { 1366: { slidesPerView:
-      3, }, 1024: { slidesPerView: 3, }, 768: { slidesPerView: 1, }, 500: { slidesPerView: 1, }, }, }); new
-      Swiper(".swiper-section-testimonials", { hashNavigation: true, spaceBetween: 30, speed: 800, parallax: !0,
-      pagination: { el: ".swiper-pagination", type: "fraction", clickable: !0, }, navigation: { nextEl:
-      ".swiper-button-next", prevEl: ".swiper-button-prev", }, slidesPerView: 1, });
+      var swiper = new Swiper(".swiper-section-experience", {
+        hashNavigation: true,
+        spaceBetween: 30,
+        speed: 800,
+        parallax: !0,
+        pagination: {
+          el: ".swiper-pag",
+          type: "fraction",
+          clickable: !0,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+
+        slidesPerView: 1,
+        breakpoints: {
+          1366: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 1,
+          },
+          500: {
+            slidesPerView: 1,
+          },
+        },
+      });
+
+      new Swiper(".swiper-section-testimonials", {
+        hashNavigation: true,
+        spaceBetween: 30,
+        speed: 800,
+        parallax: !0,
+        pagination: {
+          el: ".swiper-pagination",
+          type: "fraction",
+          clickable: !0,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+
+        slidesPerView: 1,
+      });
     </script>
     <!-- Initialize Swiper end -->
 
     <!--Scroll and pagination effect-->
-    {{!-- <script>
-      if ($(window).width() >= 1280) { $(document).ready(function () { var delay = false; var currentPage = 1; var
-      pageCount = $(".mil-section").length; var swipe = document.getElementsByTagName(".mil-section"); //Pagination
-      Effect $(document).ready(function () { for (let i = 1; i <= 8; i++) { $(`#scrollToSection${i}`).click(function
-      (event) { event.preventDefault(); // Loại bỏ lớp 'active' từ tất cả các nút
-      $(`[id^='scrollToSection']`).removeClass("active1"); // Thêm lớp 'active' vào nút được nhấn
-      $(this).addClass("active1"); $("html, body").animate( { scrollTop: $(`#section${i}`).offset().top, }, 0, function
-      () { currentPage = i; console.log("lalala", currentPage); } ); }); } }); //Pagination Effect End if
-      ($(window).width() >= 1280) { $(document).on("mousewheel DOMMouseScroll", function (event) { if (delay) return;
-      delay = true; setTimeout(function () { delay = false; }, 600); var wd = event.originalEvent.wheelDelta ||
-      -event.originalEvent.detail; if (wd < 0) { if (currentPage < pageCount) { currentPage++; console.log(currentPage);
-      } } else { if (1 < currentPage) { currentPage--; console.log(currentPage); } } $("html,body").animate( {
-      scrollTop: $("#section" + currentPage).offset().top, }, 700 ); $("#scrollToSection" +
-      currentPage).addClass("active1"); for (var i = 1; i <= pageCount; i++) { if (i != currentPage) {
-      $("#scrollToSection" + i).removeClass("active1"); } } }); } }); }
-    </script> --}}
+    <script>
+      if (window.innerWidth >= 1280) {
+        document.addEventListener("DOMContentLoaded", function () {
+          var delay = false;
+          var currentPage = 1;
+          var pageCount = document.querySelectorAll(".mil-section").length;
+
+          // Pagination Effect
+          for (let i = 1; i <= 8; i++) {
+            document.getElementById(`scrollToSection${i}`).addEventListener("click", function (event) {
+              event.preventDefault();
+
+              // Remove 'active' class from all buttons
+              document.querySelectorAll("[id^='scrollToSection']").forEach(function (button) {
+                button.classList.remove("active1");
+              });
+
+              // Add 'active' class to the clicked button
+              this.classList.add("active1");
+
+              // Scroll to the corresponding section
+              window.scrollTo({
+                top: document.getElementById(`section${i}`).offsetTop,
+                behavior: "smooth"
+              });
+              currentPage = i;
+              console.log("lalala", currentPage);
+            });
+          }
+
+          // Pagination Effect End
+
+          if (window.innerWidth >= 1280) {
+            document.addEventListener("mousewheel", function (event) {
+              if (delay) return;
+              delay = true;
+              setTimeout(function () {
+                delay = false;
+              }, 600);
+
+              var wd = event.wheelDelta || -event.detail;
+              if (wd < 0) {
+                if (currentPage < pageCount) {
+                  currentPage++;
+                  console.log(currentPage);
+                }
+              } else {
+                if (1 < currentPage) {
+                  currentPage--;
+                  console.log(currentPage);
+                }
+              }
+              window.scrollTo({
+                top: document.getElementById("section" + currentPage).offsetTop,
+                behavior: "smooth"
+              });
+              document.getElementById("scrollToSection" + currentPage).classList.add("active1");
+              for (var i = 1; i <= pageCount; i++) {
+                if (i != currentPage) {
+                  document.getElementById("scrollToSection" + i).classList.remove("active1");
+                }
+              }
+            });
+          }
+        });
+      }
+    </script>
     <!--Scroll and pagination effect end-->
 
     <!--Fade Effect-->
     <script>
-      if ($(window).width() >= 1280) { const observerOptions = { root: null, rootMargin: "0px", threshold: 0.7, };
-      function observerCallback(entries, observer) { entries.forEach((entry) => { if (entry.isIntersecting) {
-      entry.target.classList.replace("fadeOut", "fadeIn"); } else { entry.target.classList.replace("fadeIn", "fadeOut");
-      } }); } const observer = new IntersectionObserver( observerCallback, observerOptions ); const fadeElms =
-      document.querySelectorAll(".fade"); fadeElms.forEach((el) => observer.observe(el)); }
+      if (window.innerWidth >= 1280) {
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.7,
+        };
+
+        function observerCallback(entries, observer) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.replace("fadeOut", "fadeIn");
+            } else {
+              entry.target.classList.replace("fadeIn", "fadeOut");
+            }
+          });
+        }
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const fadeElms = document.querySelectorAll(".fade");
+        fadeElms.forEach((el) => observer.observe(el));
+      }
     </script>
     <!--Fade Effect End-->
 
     <!--navbutton effect-->
     <script>
-      $(".menu-toggle-btn").click(function () { $(this).toggleClass("open"); }); $(".menu-toggle-btn").click(function ()
-      { if ($(".hide-nav").hasClass("display-nav")) { $(".hide-nav").removeClass("display-nav"); // Ẩn nếu đã hiển thị }
-      else { $(".hide-nav").addClass("display-nav"); // Hiển thị nếu đã ẩn } }); $(document).ready(function () {
-      $(".navmb").hover( function () { $(".dropdown-m").addClass("nav-respons"); }, function () {
-      $(".dropdown-m").removeClass("nav-respons"); } ); });
+      document.querySelector(".menu-toggle-btn").addEventListener("click", function() {
+          this.classList.toggle("open");
+      });
+
+      document.querySelector(".menu-toggle-btn").addEventListener("click", function() {
+          const hideNav = document.querySelector(".hide-nav");
+          if (hideNav.classList.contains("display-nav")) {
+              hideNav.classList.remove("display-nav");
+          } else {
+              hideNav.classList.add("display-nav");
+          }
+      });
+
+      document.addEventListener("DOMContentLoaded", function() {
+          const navmb = document.querySelector(".navmb");
+          navmb.addEventListener("mouseenter", function() {
+              document.querySelector(".dropdown-m").classList.add("nav-respons");
+          });
+          navmb.addEventListener("mouseleave", function() {
+              document.querySelector(".dropdown-m").classList.remove("nav-respons");
+          });
+      });
     </script>
     <!--navbutton effect end-->
 
     <!-- Check box section 8 -->
     <script>
-      function toggleBackground() { const checkBox = document.getElementsByClassName("check-box");
-      checkBox[0].classList.toggle("checked"); }
+      function toggleBackground() {
+        const checkBox = document.getElementsByClassName("check-box");
+        checkBox[0].classList.toggle("checked");
+      }
     </script>
 
     <!-- Include Handlebars from a CDN -->
-    <script src='https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 
-    <script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </body>
 </html>

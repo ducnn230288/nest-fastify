@@ -34,24 +34,32 @@ export class AppController {
       sorts: '{"order": "ASC"}',
     });
 
-    const [testimonials, c] = await this.dataService.findAll({
+    const [services, c] = await this.dataService.findAll({
+      where: [{ type: 'services' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [testimonials, d] = await this.dataService.findAll({
       where: [{ type: 'testimonials' }, { userId: user.id }],
       sorts: '{"order": "ASC"}',
     });
 
     const paraEducation = await this.parameterService.findOne('EDUCATION');
     const paraExperience = await this.parameterService.findOne('EXPERIENCE');
+    const paraServices = await this.parameterService.findOne("SERVICES");
     const paraTestimonials = await this.parameterService.findOne('TESTIMONIALS');
 
     req.session.set('user', user);
 
     return {
       user: user,
-      educations: educations,
       paraEdu: paraEducation,
       paraExperience: paraExperience,
+      paraSer: paraServices,
       paraTestimonials: paraTestimonials,
+      educations: educations,
       experiences: experiences,
+      services: services,
       testimonials: testimonials,
     };
   }
