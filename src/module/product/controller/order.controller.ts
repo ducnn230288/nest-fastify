@@ -32,7 +32,7 @@ export class OrderController {
     if (user.roleCode !== 'supper_admin') paginationQuery.where = [{ userId: user.id }];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
@@ -52,7 +52,7 @@ export class OrderController {
     }
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
@@ -71,7 +71,7 @@ export class OrderController {
     paginationQuery.where = [{ productStoreId: storeId }];
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
@@ -105,7 +105,7 @@ export class OrderController {
   ): Promise<OrderResponseDto> {
     const { data, message } = await this.service.updateStatus(id, parseInt(status));
     return {
-      message: i18n.t(message),
+      message: i18n.t(`common.StatusOrder.${message}`),
       data: data,
     };
   }

@@ -17,7 +17,7 @@
   "Data": {
     "Name is already taken": "Tên đã tồn tại"
   },
-  "user" : {
+  "user": {
     "Other leave requests need approval": "Còn những yêu cầu nghỉ cần duyệt",
     "Data id not found": "Dữ liệu {id} không tồn tại",
     "Can't be deleted because there's still link data": "Không thể xóa được do vẫn còn dữ liệu liên kết"
@@ -28,5 +28,18 @@
       "You may have mistyped": "Có thể bạn đã gõ sai địa chỉ hoặc trang đã được di chuyển.",
       "Back to Home": "Trở về trang chủ"
     }
+  },
+  "StatusOrder": {
+    "Pending": "Đang xử lý",
+    "Accepted": "Đã được chấp nhận",
+    "Shipping": "Đang chuyển hàng",
+    "Finish": "Hoàn thành",
+    "Cancel": "Hủy bỏ",
+    "Reject": "Từ chối",
+    "Not Accepted": "Đơn hàng của bạn không được chấp nhận",
+    "Not Shipping": "Sản phẩm của bạn đang vận chuyển",
+    "Not Finish": "Đơn đặt hàng của bạn chưa hoàn thành",
+    "Was Accepted": "Đơn hàng của bạn đã được chấp nhận",
+    "Not Found": "Không tìm thấy trạng thái"
   }
 }

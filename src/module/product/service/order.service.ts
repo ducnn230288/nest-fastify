@@ -1,6 +1,6 @@
-import { Address, Order, OrderAddress, OrderProduct, Product, User } from '@model';
+import { Address, EStatusOrder, Order, OrderAddress, OrderProduct, Product, User } from '@model';
 import { BaseService } from '@shared';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderRequestDto } from '../dto/order.dto';
 import { OrderRepository, ProductRepository } from '@repository';
 import { I18nContext } from 'nestjs-i18n';
@@ -140,73 +140,35 @@ export class OrderService extends BaseService<Order> {
     const order = await this.findOne(id);
 
     const { result, message } = this.checkOrderStatus(order!.status!, status);
-    if (!result) throw new BadRequestException(i18n.t(message));
+    if (!result) throw new BadRequestException(i18n.t('common.StatusOrder.Not Found'));
 
     const data = await this.update(order!.id!, { status: status });
     return { data, message };
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  getStatusOrder(data: number) {
-    let status, detailStatus;
-
-    switch (data) {
-      case 0:
-        status = 0;
-        detailStatus = 'Pending';
-        break;
-      case 1:
-        status = 1;
-        detailStatus = 'Accepted';
-        break;
-      case 2:
-        status = 2;
-        detailStatus = 'Shipping';
-        break;
-      case 3:
-        status = 3;
-        detailStatus = 'Finish';
-        break;
-      case -1:
-        status = -1;
-        detailStatus = 'Cancel';
-        break;
-      case -2:
-        status = -2;
-        detailStatus = 'Reject';
-        break;
-      default:
-        status = -999;
-        detailStatus = 'Page not found';
-        break;
-    }
-
-    return { status, detailStatus };
-  }
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   checkOrderStatus(orderStatus: number, paramStatus: number) {
-    const { detailStatus } = paramStatus >= 0 ? this.getStatusOrder(orderStatus + 1) : this.getStatusOrder(paramStatus);
-
-    if (orderStatus >= 0 && paramStatus === orderStatus + 1) {
+    const i18n = I18nContext.current()!;
+    if (orderStatus >= EStatusOrder.Pending && paramStatus === orderStatus + 1) {
       return {
         result: true,
-        message: detailStatus,
+        message: EStatusOrder[paramStatus],
       };
     }
 
-    if (orderStatus === 0 && paramStatus < 0) {
+    if (orderStatus === EStatusOrder.Pending && paramStatus < EStatusOrder.Pending) {
       return {
         result: true,
-        message: detailStatus,
+        message: EStatusOrder[paramStatus],
       };
     }
 
-    if (paramStatus < -2) return { result: false, message: 'Page not found' };
-    if (orderStatus >= 0 && paramStatus > orderStatus + 1)
-      return { result: false, message: `Your Order not ${detailStatus}` };
-    if (orderStatus >= 1 && paramStatus < 0) return { result: false, message: 'Your Order was accepted' };
-
+    if (orderStatus >= EStatusOrder.Pending && paramStatus > orderStatus + 1)
+      throw new BadRequestException(i18n.t(`common.StatusOrder.Not ${EStatusOrder[orderStatus + 1]}`));
+    if (paramStatus < EStatusOrder.Reject || paramStatus > EStatusOrder.Finish)
+      throw new NotFoundException(i18n.t('common.Wiews.404.The page you were looking'));
+    if (orderStatus >= EStatusOrder.Accepted && paramStatus < EStatusOrder.Pending)
+      throw new BadRequestException(i18n.t('common.StatusOrder.Was Accepted'));
     return { result: false, message: `Not found ${paramStatus}` };
   }
 }

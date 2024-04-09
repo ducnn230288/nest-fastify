@@ -26,7 +26,7 @@ export class ProductCategoryController {
   ): Promise<ListProductCategoryResponseDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };
@@ -52,7 +52,7 @@ export class ProductCategoryController {
   async fineOne(@I18n() i18n: I18nContext, @Param('id') id: string): Promise<ProductCategoryResponseDto> {
     return {
       message: i18n.t('common.Get Detail Success'),
-      data: await this.service.findOne(id, ['products']),
+      data: await this.service.findOne(id),
     };
   }
 

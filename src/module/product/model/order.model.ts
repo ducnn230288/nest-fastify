@@ -7,6 +7,16 @@ import { faker } from '@faker-js/faker/locale/vi';
 import { IsOptional, IsUUID, IsString, IsNumber } from 'class-validator';
 import { customAlphabet } from 'nanoid';
 
+export enum EStatusOrder {
+  Pending = 0,
+  Accepted = 1,
+  Shipping = 2,
+  Finish = 3,
+  Cancel = -1,
+  Reject = -2,
+  PageNotFound = -999,
+}
+
 @Entity({ schema: 'product' })
 export class Order extends Base {
   @Column() // { name: 'user_id' }
@@ -22,7 +32,7 @@ export class Order extends Base {
   @Column({
     default: '0',
   })
-  @ApiProperty({ example: 'pending', description: '' })
+  @ApiProperty({ example: EStatusOrder.Pending, description: '' })
   @IsString()
   status?: number;
 

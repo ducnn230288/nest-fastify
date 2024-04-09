@@ -43,7 +43,7 @@ export class ProductStoreController {
   ): Promise<ListProductStoreResponseDto> {
     const [result, total] = await this.storeService.findAll(paginationQuery);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };

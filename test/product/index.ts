@@ -24,25 +24,25 @@ import {
   UserRole,
   User,
   OrderProduct,
-  Province,
-  Ward,
-  District,
+  AddressProvince,
+  AddressWard,
+  AddressDistrict,
   Order,
   Address,
 } from '@model';
 import {
   CATEGORY_CREATE,
-  DistrictService,
+  AddressDistrictService,
   PRODUCT_CREATE,
   P_USER_CREATE,
   ProductCategoryService,
   ProductService,
   ProductStoreService,
-  ProvinceService,
+  AddressProvinceService,
   STORE_CREATE,
   UserRoleService,
   UserService,
-  WardService,
+  AddressWardService,
 } from '@service';
 import { Example } from '@shared';
 import { SeederFactoryManager, useSeederFactoryManager } from 'typeorm-extension';
@@ -72,9 +72,9 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
   // let dataOrderProduct: OrderProductDto;
 
   let orderProduct: OrderProductDto;
-  let province: Province | null;
-  let district: District | null;
-  let ward: Ward | null;
+  let province: AddressProvince | null;
+  let district: AddressDistrict | null;
+  let ward: AddressWard | null;
   let createAddressDto: CreateAddressRequestDto | null;
   let resultOrder: Order | null;
 
@@ -320,16 +320,18 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       quantity: 3,
     };
 
-    province = await BaseTest.moduleFixture!.get(ProvinceService).create(await factoryManager.get(Province).make());
+    province = await BaseTest.moduleFixture!.get(AddressProvinceService).create(
+      await factoryManager.get(AddressProvince).make(),
+    );
 
-    district = await BaseTest.moduleFixture!.get(DistrictService).create(
-      await factoryManager.get(District).make({
+    district = await BaseTest.moduleFixture!.get(AddressDistrictService).create(
+      await factoryManager.get(AddressDistrict).make({
         codeProvince: province?.code,
       }),
     );
 
-    ward = await BaseTest.moduleFixture!.get(WardService).create(
-      await factoryManager.get(Ward).make({
+    ward = await BaseTest.moduleFixture!.get(AddressWardService).create(
+      await factoryManager.get(AddressWard).make({
         codeDistrict: district?.code,
       }),
     );

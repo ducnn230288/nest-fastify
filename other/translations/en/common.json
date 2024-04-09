@@ -27,5 +27,18 @@
       "You may have mistyped": "You may have mistyped the address or the page may have moved.",
       "Back to Home": "Back to Home"
     }
+  },
+  "StatusOrder": {
+    "Pending": "Pending",
+    "Accepted": "Accepted",
+    "Shipping": "Shipping",
+    "Finish": "Finish",
+    "Cancel": "Cancel",
+    "Reject": "Reject",
+    "Not Accepted": "Your order not accepted",
+    "Not Shipping": "Your products is shipping",
+    "Not Finish": "Your order not finished",
+    "Was Accepted": "Your order was accepted",
+    "Not Found": "Not found status"
   }
 }
