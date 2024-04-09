@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { Dropdown, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
@@ -19,23 +19,19 @@ const Layout = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isCollapsed, set_isCollapsed] = useState(window.innerWidth < 1025);
-  const [isDesktop, set_isDesktop] = useState(window.innerWidth > 640);
   const [, contextHolder] = notification.useNotification();
 
   useEffect(() => {
-    if (window.innerWidth < 1025 && !isCollapsed) {
-      setTimeout(() => {
-        set_isCollapsed(true);
-      });
+    setTimeout(() => changeCollapsed(), 200);
+    if (innerWidth < 1280 && !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')) {
+      setTimeout(() => changeCollapsed());
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     function handleResize() {
-      if (window.innerWidth < 1025 && !isCollapsed) {
-        set_isCollapsed(true);
+      if (innerWidth < 1280 && !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')) {
+        changeCollapsed();
       }
-      set_isDesktop(window.innerWidth > 640);
     }
     window.addEventListener('resize', handleResize, { passive: true });
 
@@ -53,8 +49,8 @@ const Layout = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth < 1025 && !isCollapsed) {
-      set_isCollapsed(true);
+    if (innerWidth < 1280 && !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')) {
+      changeCollapsed();
     }
   }, [location]);
   useEffect(() => {
@@ -64,22 +60,17 @@ const Layout = ({ children }: PropsWithChildren) => {
     }
   }, [globalFacade.pathname]);
 
-  const Header = ({ isCollapsed, isDesktop }: { isCollapsed: boolean; isDesktop: boolean }) => (
+  const Header = () => (
     <header
-      className={classNames(
-        'bg-white w-full h-16 transition-all duration-300 ease-in-out top-0 block sm:bg-gray-100 z-20 fixed lg:relative',
-        {
-          'pl-64': !isCollapsed && isDesktop,
-          'pl-16': isCollapsed && isDesktop,
-          'pl-28': !isDesktop,
-        },
-      )}
+      className={
+        'div3 bg-white w-full h-16 transition-all duration-300 ease-in-out top-0 block sm:bg-gray-100 z-20 fixed lg:relative pl-64'
+      }
     >
       <div className="flex items-center justify-end sm:justify-between px-5 h-16">
-        <div>
+        <div className={'div6'}>
           <h1 className={'title-page text-xl font-bold hidden sm:block'}></h1>
 
-          <div className={' breadcrumbs-page hidden sm:flex items-center text-xs mt-0.5'}></div>
+          <div className={'breadcrumbs-page hidden sm:flex items-center text-xs mt-0.5'}></div>
         </div>
 
         <div className="flex items-center gap-5 absolute right-6">
@@ -158,98 +149,54 @@ const Layout = ({ children }: PropsWithChildren) => {
     </header>
   );
   return (
-    <main>
+    <main className={classNames({ isCollapsed: !(innerWidth < 1280) })}>
       {contextHolder}
       <div className="leading-10" />
       <div className="h-16 relative">
         <div className="absolute top-0 left-0 right-0">
-          <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
+          <Header />
         </div>
       </div>
       <div
-        className={classNames(
-          'flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-3 font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20',
-          {
-            'w-64': !isCollapsed && isDesktop,
-            'w-16': isCollapsed && isDesktop,
-            'bg-teal-900': isDesktop,
-            'bg-gray-100': !isDesktop,
-          },
-        )}
+        className={
+          'div5 flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-3 font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20'
+        }
       >
         <div className="flex">
-          <div
-            className={classNames('hamburger sm:!hidden', {
-              'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
-            })}
-            onClick={() => {
-              set_isCollapsed(!isCollapsed);
-              set_isDesktop(isDesktop);
-            }}
-          >
+          <div className={'div11 hamburger sm:!hidden'} onClick={() => changeCollapsed()}>
             <span className="line" />
             <span className="line" />
             <span className="line" />
           </div>
 
           <a href="/vn/dashboard" className="flex items-center group">
-            <Logo
-              className={classNames('w-12 mr-3 text-white', {
-                'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
-                'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
-              })}
-            />
+            <Logo className={'div12 w-12 mr-3 text-white'} />
             <div
               id={'name-application'}
-              className={classNames(
-                'transition-all duration-300 ease-in-out absolute text-white left-16 overflow-ellipsis overflow-hidden ml-5',
-                {
-                  'opacity-100 text-2xl': !isCollapsed && isDesktop,
-                  'opacity-0 text-[0px] hidden': isCollapsed || !isDesktop,
-                },
-              )}
+              className={
+                'div13 transition-all duration-300 ease-in-out absolute text-white left-16 overflow-ellipsis overflow-hidden ml-5'
+              }
             >
               Admin
             </div>
           </a>
         </div>
-        <div
-          className={classNames('relative', {
-            'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
-          })}
-          onClick={() => {
-            set_isCollapsed(!isCollapsed);
-            set_isDesktop(isDesktop);
-          }}
-        >
-          <Arrow
-            className={classNames('w-9 text-white transition-all duration-300 ease-in-out', {
-              'rotate-180': !isCollapsed && isDesktop,
-            })}
-          />
+        <div className={'div11 relative'} onClick={() => changeCollapsed()}>
+          <Arrow className={'div10 w-9 text-white transition-all duration-300 ease-in-out'} />
         </div>
       </div>
-      <div
-        className={classNames('fixed z-30 top-16 left-0 h-screen bg-teal-900 transition-all duration-300 ease-in-out', {
-          'w-64': !isCollapsed,
-          'w-16': isCollapsed,
-          '!-left-20': isCollapsed && !isDesktop,
-        })}
-      >
-        <Menu isCollapsed={isCollapsed} permission={user?.role?.permissions} />
+      <div className={'div4 fixed z-30 top-16 left-0 h-screen bg-teal-900 transition-all duration-300 ease-in-out'}>
+        <Menu
+          isCollapsed={document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')}
+          permission={user?.role?.permissions}
+        />
       </div>
-      {!isCollapsed && !isDesktop && (
-        <div className={'w-full h-full fixed bg-black opacity-30 z-20'} onClick={() => set_isCollapsed(true)} />
+      {!document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && !(innerWidth > 1280) && (
+        <div className={'w-full h-full fixed bg-black opacity-30 z-20'} onClick={() => changeCollapsed()} />
       )}
-      <section
-        id={'main'}
-        className={classNames('px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative', {
-          'ml-64': !isCollapsed && isDesktop,
-          'ml-16': isCollapsed && isDesktop,
-        })}
-      >
+      <section id={'main'} className={'div7 px-2 sm:px-0 transition-all duration-300 ease-in-out z-10 relative'}>
         <div className={'h-[calc(100vh-6rem)] overflow-auto'}>
-          {!isDesktop && <h1 className={'title-page text-xl font-bold block sm:hidden'}></h1>}
+          {!(innerWidth > 1280) && <h1 className={'title-page text-xl font-bold block sm:hidden'}></h1>}
           <div className={'breadcrumbs-page flex items-center text-xs mt-0.5 pb-5 sm:hidden'}></div>
           {children}
         </div>
@@ -258,5 +205,170 @@ const Layout = ({ children }: PropsWithChildren) => {
       </section>
     </main>
   );
+};
+const changeCollapsed = () => {
+  document.querySelectorAll('main')[0]?.classList?.toggle('isCollapsed');
+  const listElement = [
+    {
+      classId: 'div5',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'w-64',
+    },
+    {
+      classId: 'div5',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'w-16',
+    },
+    {
+      classId: 'main',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'ml-64',
+    },
+    {
+      classId: 'main',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'ml-16',
+    },
+    {
+      classId: 'div4',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'w-64',
+    },
+    {
+      classId: 'div4',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'w-16',
+    },
+    {
+      classId: 'div4',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && !(innerWidth > 1280),
+      toggleClass: '!-left-20',
+    },
+    {
+      classId: 'div7',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'ml-64',
+    },
+    {
+      classId: 'div7',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'ml-16',
+    },
+    {
+      classId: 'div1',
+      condition:
+        (document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280) ||
+        (!document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && !(innerWidth > 1280)),
+      toggleClass: 'is-active',
+    },
+    {
+      classId: 'div6',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'xl:ml-7',
+    },
+    {
+      classId: 'div3',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'pl-64',
+    },
+    {
+      classId: 'div3',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'pl-16',
+    },
+    {
+      classId: 'div10',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: 'rotate-180',
+    },
+    {
+      classId: 'div11',
+      condition:
+        (document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280) ||
+        (!document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && !(innerWidth > 1280)),
+      toggleClass: 'is-active',
+    },
+    {
+      classId: 'div12',
+      condition:
+        (!document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280) ||
+        (document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && !(innerWidth > 1280)),
+      toggleClass: ['opacity-100', 'text-lg', 'w-12'],
+    },
+    {
+      classId: 'div13',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') && innerWidth > 1280,
+      toggleClass: ['opacity-100', 'text-xl'],
+    },
+    {
+      classId: 'div13',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed') || !(innerWidth > 1280),
+      toggleClass: ['opacity-0', 'text-[0px]', 'hidden'],
+    },
+    {
+      classId: 'div14',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: ['justify-center', 'h-10'],
+    },
+    {
+      classId: 'div15',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'absolute',
+    },
+    {
+      classId: 'div16',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'opacity-100',
+    },
+    {
+      classId: 'div17',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'hidden',
+    },
+    {
+      classId: 'div18',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'justify-center',
+    },
+    {
+      classId: 'div19',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'ml-1',
+    },
+    {
+      classId: 'div20',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'opacity-100',
+    },
+    {
+      classId: 'div20',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: ['opacity-0', 'text-[0]'],
+    },
+    {
+      classId: 'div21',
+      condition: document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'hidden',
+    },
+    {
+      classId: 'div22',
+      condition: !document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed'),
+      toggleClass: 'hidden',
+    },
+  ];
+  listElement.forEach((item) => {
+    const element = document.getElementsByClassName(item.classId);
+    if (element.length && item.condition) {
+      Array.from(element).forEach((el) => {
+        if (Array.isArray(item.toggleClass)) el?.classList?.add(...item.toggleClass);
+        else el?.classList?.add(item.toggleClass);
+      });
+    } else {
+      Array.from(element).forEach((el) => {
+        if (Array.isArray(item.toggleClass)) el?.classList?.remove(...item.toggleClass);
+        else el?.classList?.remove(item.toggleClass);
+      });
+    }
+  });
 };
 export default Layout;
