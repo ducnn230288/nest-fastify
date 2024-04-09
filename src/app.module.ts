@@ -9,7 +9,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
 import {
-  NotificationModule,
+  // NotificationModule,
   SchedulerModule,
   CoreModule,
   UserModule,
@@ -24,7 +24,7 @@ import {
   controllers: [AppController],
   imports: [
     WinstonModule.forRoot(loggerOptions),
-    NotificationModule,
+    // NotificationModule,
     SchedulerModule,
     UserModule,
     // AddressModule,
