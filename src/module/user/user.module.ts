@@ -18,7 +18,7 @@ import {
   AddressService,
   AuthService,
   AddressDistrictService,
-  EmailService,
+  // EmailService,
   FileService,
   AddressProvinceService,
   UserRoleService,
@@ -57,7 +57,7 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
   providers: [
     AccessTokenStrategy,
     RefreshTokenStrategy,
-    EmailService,
+    // EmailService,
     AuthService,
     UserRepository,
     UserService,

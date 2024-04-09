@@ -1,7 +1,7 @@
 import SMTPConnection = require('nodemailer/lib/smtp-connection');
 import { appConfig } from './config';
 import { MailerOptions } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+// import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 // https://nest-modules.github.io/mailer/docs/mailer
 export const mailerTransportOptions: SMTPConnection.Options = {
@@ -24,7 +24,7 @@ export const mailerOptions: MailerOptions = {
   },
   template: {
     dir: './other/templates',
-    adapter: new HandlebarsAdapter(), // or new PugAdapter()
+    // adapter: new HandlebarsAdapter(), // or new PugAdapter()
     options: {
       strict: true,
     },
