@@ -108,6 +108,7 @@ const Component = forwardRef(
                     const value = input.current?.value ?? '';
                     const position = getCursorPosition(input.current!);
                     input.current!.value = value.slice(0, position) + item.value + value.slice(position);
+                    onChange && onChange({ target: input.current });
                     setCaretPosition(
                       input.current!,
                       position + item.value.toString().length,
