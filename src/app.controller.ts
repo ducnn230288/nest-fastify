@@ -3,19 +3,18 @@ import { I18nContext } from 'nestjs-i18n';
 import { FastifyReply } from 'fastify';
 import dayjs from 'dayjs';
 // import { Cache } from 'cache-manager'; CACHE_MANAGER Inject
-import { CacheInterceptor,  } from '@nestjs/cache-manager';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 import { DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';
-import { DataDto, IEditor, PostDto } from '@dto';
+import { DataDto, PostDto } from '@dto';
 
 @Controller()
 export class AppController {
-  constructor(
-    // private readonly dataService: DataService,
-    // private readonly postService: PostService,
-    // private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
-  ) {}
+  constructor() // private readonly dataService: DataService,
+  // private readonly postService: PostService,
+  // private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
+  {}
 
   // @Get('')
   // @Render('index')
@@ -373,8 +372,6 @@ export class AppController {
   //     dataArray,
   //   };
   // }
-
-
 }
 interface ICommon {
   title: string;

@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Data } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
-import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class DataTranslation extends Base {
@@ -32,11 +31,7 @@ export class DataTranslation extends Base {
   @IsOptional()
   position?: string;
 
-  @Column({
-    type: 'jsonb',
-    array: false,
-    default: {},
-  })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()

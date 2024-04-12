@@ -30,7 +30,7 @@ export class AuthService extends BaseService<User> {
   constructor(
     public readonly repo: UserRepository,
     private readonly jwtService: JwtService,
-    private emailService: EmailService,
+    // private emailService: EmailService,
     private schedulerRegistry: SchedulerRegistry,
   ) {
     super(repo);
@@ -101,7 +101,7 @@ export class AuthService extends BaseService<User> {
 
     user.otp = customAlphabet('0123456789', 10)(6);
     await this.update(user.id!, user);
-    if (!body.notSendEmail) await this.emailService.sendUserConfirmation(user, user.otp);
+    // if (!body.notSendEmail) await this.emailService.sendUserConfirmation(user, user.otp);
 
     const name = user.id + 'forgottenPassword';
     if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);
@@ -135,7 +135,7 @@ export class AuthService extends BaseService<User> {
    *
    */
   async sendMailContact(body: ContactRequestDto): Promise<boolean> {
-    await this.emailService.sendUserContact(body);
+    // await this.emailService.sendUserContact(body);
     return true;
   }
 

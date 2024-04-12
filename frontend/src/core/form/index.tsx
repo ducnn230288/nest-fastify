@@ -8,6 +8,7 @@ import {
   Slider,
   Switch,
   TimePicker,
+  Spin,
 } from 'antd';
 import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,7 @@ export const Form = ({
   extendButton,
   idSubmit = 'idSubmit',
   disableSubmit = false,
+  spinning = false,
   formAnt,
 }: Type) => {
   const { t } = useTranslation();
@@ -313,6 +315,7 @@ export const Form = ({
               t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
             }
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
+            list={formItem.list}
           />
         );
       case EFormType.select:
@@ -324,10 +327,11 @@ export const Form = ({
             placeholder={
               t(formItem.placeholder || '') || t('components.form.Choose') + ' ' + t(item.title)!.toLowerCase()
             }
-            formItem={formItem}
             form={form}
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
             get={formItem.get}
+            list={formItem.list}
+            mode={formItem.mode}
           />
         );
       case EFormType.selectTable:
@@ -372,6 +376,7 @@ export const Form = ({
             checkedChildren={<Check className="h-5 w-5 fill-white" />}
             unCheckedChildren={<Times className="h-5 w-5 fill-white" />}
             defaultChecked={!!values && values[item.name || ''] === 1}
+            onChange={(e) => formItem.onChange && formItem.onChange(e, form, reRender)}
           />
         );
       case EFormType.otp:
@@ -380,6 +385,7 @@ export const Form = ({
         // @ts-ignore
         return (
           <Mask
+            list={formItem.list}
             form={form}
             mask={formItem.mask}
             addonBefore={formItem.addonBefore}
@@ -388,10 +394,8 @@ export const Form = ({
             placeholder={
               t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
             }
-            onBlur={(e: React.FocusEvent<HTMLInputElement, Element>) =>
-              formItem.onBlur && formItem.onBlur(e, form, name)
-            }
-            onChange={(value: any) => formItem.onChange && formItem.onChange(value, form, reRender)}
+            onBlur={(e: any) => formItem.onBlur && formItem.onBlur(e.target.value, form, name)}
+            onChange={(e: any) => formItem.onChange && formItem.onChange(e.target.value, form, reRender)}
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
           />
         );
@@ -463,8 +467,8 @@ export const Form = ({
                   validator(_: any, value: any) {
                     if (!value) return Promise.resolve();
                     else if (/^\d+$/.test(value)) {
-                      if (value?.trim().length < 8)
-                        return Promise.reject(t('components.form.ruleMinNumberLength', { min: 8 }));
+                      if (value?.trim().length < 10)
+                        return Promise.reject(t('components.form.ruleMinNumberLength', { min: 10 }));
                       else if (value?.trim().length > 12)
                         return Promise.reject(t('components.form.ruleMaxNumberLength', { max: 12 }));
                       else return Promise.resolve();
@@ -601,9 +605,9 @@ export const Form = ({
                   rules.forEach((item: any) => item.min && (min = item.min));
                   if (value.trim().length < min)
                     return Promise.reject(t('components.form.ruleMinNumberLength', { min }));
-                  if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/.test(value))
-                    return Promise.resolve();
-                  else return Promise.reject(t('components.form.rulePassword'));
+                  // if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/.test(value))
+                  //   return Promise.resolve();
+                  // else return Promise.reject(t('components.form.rulePassword'));
                 } else return Promise.resolve();
               },
             }));
@@ -670,83 +674,85 @@ export const Form = ({
   };
 
   return (
-    <AntForm
-      scrollToFirstError={true}
-      requiredMark={true}
-      className={classNames('p-2', className)}
-      form={form}
-      layout={!widthLabel ? 'vertical' : 'horizontal'}
-      onFinishFailed={(failed) =>
-        failed?.errorFields?.length && form?.scrollToField(failed?.errorFields[0].name, { behavior: 'smooth' })
-      }
-      onFinish={handFinish}
-      onValuesChange={async (objValue) => {
-        if (form && checkHidden) {
-          clearTimeout(timeout.current);
-          timeout.current = setTimeout(async () => {
-            for (const key in objValue) {
-              if (Object.prototype.hasOwnProperty.call(objValue, key))
-                columns.filter((_item: any) => _item.name === key);
-            }
-            refLoad.current = false;
-            set_columns(columns);
-            handleFilter();
-          }, 500);
+    <Spin spinning={spinning}>
+      <AntForm
+        scrollToFirstError={true}
+        requiredMark={true}
+        className={classNames(className)}
+        form={form}
+        layout={!widthLabel ? 'vertical' : 'horizontal'}
+        onFinishFailed={(failed) =>
+          failed?.errorFields?.length && form?.scrollToField(failed?.errorFields[0].name, { behavior: 'smooth' })
         }
-      }}
-    >
-      <div className={'group-input group-input-profile'}>
-        <div className={'grid gap-x-5 grid-cols-12 group-input'}>
-          {_columns.map(
-            (column: any, index: number) =>
-              (!column?.formItem?.condition ||
-                !!column?.formItem?.condition(values[column.name], form, index, values)) && (
-                <div
-                  className={classNames(
-                    'col-span-12 ' +
-                      (column?.formItem?.type || EFormType.text) +
-                      (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
-                      (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
-                  )}
-                  key={index}
-                >
-                  {generateForm(column, index)}
-                </div>
-              ),
-          )}
+        onFinish={handFinish}
+        onValuesChange={async (objValue) => {
+          if (form && checkHidden) {
+            clearTimeout(timeout.current);
+            timeout.current = setTimeout(async () => {
+              for (const key in objValue) {
+                if (Object.prototype.hasOwnProperty.call(objValue, key))
+                  columns.filter((_item: any) => _item.name === key);
+              }
+              refLoad.current = false;
+              set_columns(columns);
+              handleFilter();
+            }, 500);
+          }
+        }}
+      >
+        <div className={'group-input group-input-profile'}>
+          <div className={'grid gap-x-5 grid-cols-12 group-input'}>
+            {_columns.map(
+              (column: any, index: number) =>
+                (!column?.formItem?.condition ||
+                  !!column?.formItem?.condition(values[column.name], form, index, values)) && (
+                  <div
+                    className={classNames(
+                      'col-span-12 ' +
+                        (column?.formItem?.type || EFormType.text) +
+                        (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
+                        (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
+                    )}
+                    key={index}
+                  >
+                    {generateForm(column, index)}
+                  </div>
+                ),
+            )}
+          </div>
+
+          {extendForm && extendForm(values)}
         </div>
 
-        {extendForm && extendForm(values)}
-      </div>
-
-      <div
-        className={classNames('gap-2 flex sm:block', {
-          '!mt-5 items-center sm:flex-row': handCancel && handSubmit,
-          'md:inline-flex w-full justify-end': handSubmit,
-          'sm:w-auto text-center items-center sm:flex-row flex-col mt-5': handSubmit && extendButton,
-          '!w-full sm:inline-flex text-center justify-end items-center sm:flex-row mt-5':
-            !handSubmit && (handCancel || extendButton),
-        })}
-      >
-        {handCancel && (
-          <Button
-            text={t(textCancel)}
-            className={'sm:min-w-44 justify-center out-line !border-black w-3/5 sm:w-auto'}
-            onClick={handCancel}
-          />
-        )}
-        {extendButton && extendButton(form)}
-        {handSubmit && (
-          <Button
-            text={t(textSubmit)}
-            id={idSubmit}
-            onClick={() => form && form.submit()}
-            disabled={disableSubmit}
-            className={'sm:min-w-44 justify-center w-3/5 sm:w-auto '}
-          />
-        )}
-      </div>
-    </AntForm>
+        <div
+          className={classNames('gap-7 flex sm:block mt-2', {
+            'items-center sm:flex-row': handCancel && handSubmit,
+            'md:inline-flex w-full justify-end': handSubmit,
+            'sm:w-auto text-center items-center sm:flex-row flex-col': handSubmit && extendButton,
+            '!w-full sm:inline-flex text-center justify-end items-center sm:flex-row':
+              !handSubmit && (handCancel || extendButton),
+          })}
+        >
+          {handCancel && (
+            <Button
+              text={t(textCancel)}
+              className={'sm:min-w-32 justify-center out-line !border-black w-full sm:w-auto'}
+              onClick={handCancel}
+            />
+          )}
+          {extendButton && extendButton(form)}
+          {handSubmit && (
+            <Button
+              text={t(textSubmit)}
+              id={idSubmit}
+              onClick={() => form && form.submit()}
+              disabled={disableSubmit || spinning}
+              className={'sm:min-w-44 justify-center w-full sm:w-auto '}
+            />
+          )}
+        </div>
+      </AntForm>
+    </Spin>
   );
 };
 type Type = {
@@ -765,4 +771,5 @@ type Type = {
   extendButton?: (values: any) => JSX.Element;
   idSubmit?: string;
   disableSubmit?: boolean;
+  spinning?: boolean;
 };

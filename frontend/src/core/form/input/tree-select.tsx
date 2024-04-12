@@ -112,7 +112,7 @@ const Component = ({ formItem, placeholder, onChange, value, form, disabled, sho
       listHeight={200}
       allowClear={true}
       showSearch={showSearch}
-      onChange={(data) => {
+      onChange={(data: any) => {
         if (formItem.api?.loadData) {
           if (formItem.mode !== 'multiple') {
             const _data = _list.filter((_item: any) => _item.id === data.value)[0];

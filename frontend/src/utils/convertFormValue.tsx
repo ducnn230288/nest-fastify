@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { EFormModeSelect, FormModel } from '@models';
+import { EFormModeSelect, EFormType, FormModel } from '@models';
 dayjs.extend(utc);
 
 export const convertFormValue = (columns: FormModel[], values: { [selector: string]: any }, exportData = true) => {
@@ -11,10 +11,10 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
         values[item.name] = item.formItem.convert(values[item.name]);
       } else {
         switch (item.formItem!.type) {
-          case 'switch':
+          case EFormType.switch:
             if (typeof values[item.name] === 'undefined') values[item.name] = false;
             break;
-          case 'upload':
+          case EFormType.upload:
             if (values[item.name] && typeof values[item.name] === 'object' && exportData) {
               if (!item.formItem?.mode && values[item.name].length > 0) values[item.name] = values[item.name][0].url;
               else if (values[item.name].length > 1) {
@@ -24,14 +24,14 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
               }
             }
             break;
-          case 'date':
+          case EFormType.date:
             if (values[item.name]) {
               if (exportData) {
                 values[item.name] = values[item.name].utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
               } else values[item.name] = dayjs(values[item.name]);
             }
             break;
-          case 'date_range':
+          case EFormType.dateRange:
             if (!!values[item.name] || typeof item.name === 'object') {
               if (exportData) {
                 values[item.name] = [
@@ -41,12 +41,12 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
               } else values[item.name] = [dayjs(values[item.name][0]), dayjs(values[item.name][1])];
             }
             break;
-          case 'number':
-            if (!exportData && values && values[item.name])
-              values[item.name] = !item.formItem?.mask ? parseFloat(values[item.name]) : values[item.name].toString();
+          case EFormType.number:
+            if (!exportData && values && (values[item.name] || values[item.name] === 0))
+              values[item.name] = values[item.name].toString();
             if (exportData) values[item.name] = parseFloat(values[item.name]);
             break;
-          case 'tab':
+          case EFormType.tab:
             if (!exportData) {
               item?.formItem?.list?.sort((a: any, b: any) =>
                 a[item!.formItem!.tab!] < b[item!.formItem!.tab!]
@@ -89,17 +89,20 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
               }
             }
             break;
-          case 'select':
+          case EFormType.select:
             if (!exportData && item?.formItem?.mode === 'multiple' && values[item.name]) {
               values[item.name] = values[item.name].map((item: any) => (item.id ? item.id : item));
             }
             break;
-          case 'tree_select':
+          case EFormType.treeSelect:
             if (values[item.name])
               values[item.name] = exportData ? values[item.name].value : { value: values[item.name] };
             break;
-          case 'textarea':
+          case EFormType.textarea:
             if (!exportData && !values[item.name]) values[item.name] = '';
+            break;
+          case EFormType.chips:
+            if (!exportData && !values[item.name]) values[item.name] = [];
             break;
           default:
             if (!item?.formItem?.mask && typeof values[item.name] === 'string') {

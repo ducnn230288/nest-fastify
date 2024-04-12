@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Post } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
-import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class PostTranslation extends Base {
@@ -33,11 +32,7 @@ export class PostTranslation extends Base {
   @MaxLength(100)
   slug: string;
 
-  @Column({
-    type: 'jsonb',
-    array: false,
-    default: {},
-  })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsOptional()
