@@ -10,3 +10,4 @@ export * from './module/user/repository/address.repository';
 export * from './module/user/repository/user.repository';
 
 export * from './module/building/repository/building.repository';
+export * from './module/building/repository/room.repository';

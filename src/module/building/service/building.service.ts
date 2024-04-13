@@ -14,15 +14,15 @@ export class BuildingService extends BaseService<Building> {
   constructor(public repo: BuildingRepository) {
     super(repo);
     this.listQuery = ['name'];
+    this.listJoin = ['buildingContent', 'rooms', 'buildingAddress'];
   }
 
   /**
    *
-   * @param code
    * @returns Building
    *
    */
-  async findOne(code: string): Promise<Building | null> {
-    return this.repo.getDataByCode(code);
+  async findOne(): Promise<any> {
+    return this.repo.getBuildings();
   }
 }
