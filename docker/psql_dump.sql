@@ -12280,3 +12280,6 @@ ALTER TABLE ONLY "user".address
 -- PostgreSQL database dump complete
 --
 
+\connect postgres;
+CREATE SCHEMA "user";
+CREATE SCHEMA "core";
