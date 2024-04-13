@@ -1,12 +1,5 @@
 import { Building } from '@model';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RoomContent } from './room-content.entity';
 import { RoomCost } from './room-cost.entity';
 import { RoomMedia } from './room-media.entity';
@@ -72,8 +65,8 @@ export class Room {
   @Column()
   rentedBy: number;
 
-  @Column()
-  isPublic = false;
+  @Column({ default: false })
+  isPublic: boolean;
 
   @Column()
   isDeleted: boolean;
