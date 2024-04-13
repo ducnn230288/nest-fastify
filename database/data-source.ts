@@ -22,6 +22,7 @@ import {
   User,
   UserRole,
 } from '@model';
+import { NamingStrategy } from '@shared';
 
 const options: DataSourceOptions & SeederOptions = {
   type: 'postgres',
@@ -53,5 +54,6 @@ const options: DataSourceOptions & SeederOptions = {
   factories: ['database/factories/**/*{.ts,.js}'],
   logging: ['error'],
   logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
+  namingStrategy: new NamingStrategy(),
 };
 export const AppDataSource = new DataSource(options);

@@ -2,6 +2,7 @@ import { Brackets, ObjectLiteral } from 'typeorm';
 import { BadRequestException } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import dayjs from 'dayjs';
+import { snakeCase } from 'typeorm/util/StringUtils';
 
 import { PaginationQueryDto, BaseRepository } from '@shared';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
@@ -83,7 +84,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
           Object.keys(filter).forEach((key) => {
             if (typeof filter[key] === 'object' && filter[key]?.length > 0) {
               if (dayjs(filter[key][0]).isValid()) {
-                qb = qb.andWhere(`base."${key}" BETWEEN :startDate AND :endDate`, {
+                qb = qb.andWhere(`base."${snakeCase(key)}" BETWEEN :startDate AND :endDate`, {
                   startDate: filter[key][0],
                   endDate: filter[key][1],
                 });
@@ -96,7 +97,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
             } else if (typeof filter[key] !== 'object') {
               // /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(filter[key])
               if (filter[key] === 'NULL') qb = qb.andWhere(`base.${key} IS NULL`);
-              else qb = qb.andWhere(`base.${key}=:${key}`, { [key]: filter[key] });
+              else qb = qb.andWhere(`base.${snakeCase(key)}=:${key}`, { [key]: filter[key] });
             }
           });
 
@@ -104,19 +105,22 @@ export abstract class BaseService<T extends ObjectLiteral> {
             Object.keys(skip).forEach((key) => {
               if (typeof skip[key] === 'object' && skip[key].length > 0) {
                 if (dayjs(skip[key][0]).isValid()) {
-                  qb = qb.andWhere(`"base.${key}" NOT BETWEEN :startDate AND :endDate`, {
+                  qb = qb.andWhere(`"base.${snakeCase(key)}" NOT BETWEEN :startDate AND :endDate`, {
                     startDate: skip[key][0],
                     endDate: skip[key][1],
                   });
                 } else {
                   const checkKey = key.split('.');
-                  qb = qb.andWhere(`${checkKey.length === 1 ? 'base.' + checkKey[0] : key} IN (:...${key})`, {
-                    [key]: skip[key],
-                  });
+                  qb = qb.andWhere(
+                    `${checkKey.length === 1 ? 'base.' + snakeCase(checkKey[0]) : key} IN (:...${key})`,
+                    {
+                      [key]: skip[key],
+                    },
+                  );
                 }
               } else if (typeof skip[key] !== 'object') {
                 // /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(skip[[key])
-                qb = qb.andWhere(`base.${key}!=:${key}`, { [key]: skip[key] });
+                qb = qb.andWhere(`base.${snakeCase(key)}!=:${key}`, { [key]: skip[key] });
               }
             });
           }
@@ -128,7 +132,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
         new Brackets((qb) => {
           this.listQuery.forEach((key) => {
             if (!filter || !filter[key]) {
-              qb = qb.orWhere(`base.${key} like :${key}`, {
+              qb = qb.orWhere(`base.${snakeCase(key)} like :${key}`, {
                 [key]: `%${fullTextSearch}%`,
               });
             }
