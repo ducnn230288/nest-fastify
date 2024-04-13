@@ -14,7 +14,8 @@ export class BuildingService extends BaseService<Building> {
   constructor(public repo: BuildingRepository) {
     super(repo);
     this.listQuery = ['name'];
-    this.listJoin = ['buildingContent', 'rooms', 'buildingAddress'];
+    this.listJoin = ['buildingContent', 'buildingAddress'];
+    this.listInnerJoin = [{ key: 'rooms', condition: 'isPublic = TRUE' }];
   }
 
   /**

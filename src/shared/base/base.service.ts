@@ -45,9 +45,11 @@ export abstract class BaseService<T extends ObjectLiteral> {
 
     const request = this.repo
       .createQueryBuilder('base')
-      .orderBy('base.createdAt', 'DESC')
-      .withDeleted()
-      .andWhere('base.isDeleted Is Null');
+      // .orderBy('base.createdAt', 'DESC')
+      // .withDeleted()
+      // .andWhere('base.isDeleted Is Null');
+      .andWhere('base.isDeleted = FALSE');
+
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');

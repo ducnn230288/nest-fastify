@@ -18,8 +18,10 @@ export class AppController {
   @Get('')
   @Render('index')
   async root(): Promise<any> {
-    const data = await this.buildingService.findOne();
-    console.log(data.data);
+    // const {data} = await this.buildingService.findOne();
+    // console.log(data.map(i => i.id));
+    const [bu] = await this.buildingService.findAll({ page: 1, perPage: 10 });
+    console.log(bu.map((i) => i.id));
     return {};
   }
 
