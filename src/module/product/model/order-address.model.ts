@@ -13,7 +13,7 @@ export class OrderAddress extends Base {
   codeWard: string;
 
   @ManyToOne(() => AddressWard, (ward) => ward.orderAddress, { eager: false })
-  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public ward?: AddressWard;
 
   @Column() //{ name: 'code_district' }
@@ -21,7 +21,7 @@ export class OrderAddress extends Base {
   codeDistrict: string;
 
   @ManyToOne(() => AddressDistrict, (district) => district.orderAddress, { eager: false })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public district?: AddressDistrict;
 
   @Column() // { name: 'code_province' }
@@ -29,10 +29,10 @@ export class OrderAddress extends Base {
   codeProvince: string;
 
   @ManyToOne(() => AddressProvince, (province) => province.orderAddress, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public province?: AddressProvince;
 
-  @Column()  // { name: 'specific_address' }
+  @Column() // { name: 'specific_address' }
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
