@@ -327,7 +327,6 @@ export const Form = ({
             placeholder={
               t(formItem.placeholder || '') || t('components.form.Choose') + ' ' + t(item.title)!.toLowerCase()
             }
-            formItem={formItem}
             form={form}
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
             get={formItem.get}
