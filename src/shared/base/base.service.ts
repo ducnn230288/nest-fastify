@@ -13,6 +13,7 @@ export abstract class BaseService<T extends ObjectLiteral> {
   public listJoinCount: { name: string; key: string }[] = [];
   public listHistoryKey = [];
   public joinColumn: string[] = [];
+  public listInnerJoin: { key: string; condition: string }[] = [];
   protected constructor(
     public repo: BaseRepository<T>, // public repoHistory?: Repository<T>,
   ) {}
@@ -51,6 +52,11 @@ export abstract class BaseService<T extends ObjectLiteral> {
       // .andWhere('base.isDeleted Is Null');
       .andWhere('base.isDeleted = FALSE');
 
+    if (this.listInnerJoin.length) {
+      this.listInnerJoin.forEach((innerJoin) => {
+        request.innerJoin(`base.${innerJoin.key}`, innerJoin.key, `${innerJoin.key}.${innerJoin.condition}`);
+      });
+    }
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');
