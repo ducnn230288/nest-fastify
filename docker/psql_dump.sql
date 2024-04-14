@@ -35,6 +35,20 @@ CREATE SCHEMA "user";
 ALTER SCHEMA "user" OWNER TO postgres;
 
 --
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
 -- Name: building_type; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -52,7 +66,7 @@ ALTER TYPE public.building_type OWNER TO postgres;
 --
 
 CREATE FUNCTION public.trigger_set_current_timestamp() RETURNS trigger
-  LANGUAGE plpgsql
+    LANGUAGE plpgsql
     AS $$
 BEGIN
   NEW.updated_at = NOW();
@@ -68,26 +82,218 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: code; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.code (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    type character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying
+);
+
+
+ALTER TABLE core.code OWNER TO postgres;
+
+--
+-- Name: code_type; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.code_type (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE core.code_type OWNER TO postgres;
+
+--
+-- Name: data; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.data (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    name character varying,
+    image character varying,
+    "order" integer
+);
+
+
+ALTER TABLE core.data OWNER TO postgres;
+
+--
+-- Name: data_translation; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.data_translation (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    "position" character varying,
+    content character varying,
+    "dataId" uuid NOT NULL
+);
+
+
+ALTER TABLE core.data_translation OWNER TO postgres;
+
+--
+-- Name: data_type; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.data_type (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE core.data_type OWNER TO postgres;
+
+--
+-- Name: file; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.file (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type integer NOT NULL,
+    url character varying NOT NULL,
+    description character varying,
+    data character varying,
+    status integer DEFAULT 0 NOT NULL,
+    "userId" character varying NOT NULL
+);
+
+
+ALTER TABLE core.file OWNER TO postgres;
+
+--
+-- Name: parameter; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.parameter (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    vn character varying,
+    en character varying
+);
+
+
+ALTER TABLE core.parameter OWNER TO postgres;
+
+--
+-- Name: post; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.post (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    type character varying NOT NULL,
+    "thumbnailUrl" character varying
+);
+
+
+ALTER TABLE core.post OWNER TO postgres;
+
+--
+-- Name: post_translation; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.post_translation (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    language character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    slug character varying,
+    content character varying,
+    "postId" uuid NOT NULL
+);
+
+
+ALTER TABLE core.post_translation OWNER TO postgres;
+
+--
+-- Name: post_type; Type: TABLE; Schema: core; Owner: postgres
+--
+
+CREATE TABLE core.post_type (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "isPrimary" boolean DEFAULT false NOT NULL,
+    mpath character varying DEFAULT ''::character varying,
+    parent_id uuid
+);
+
+
+ALTER TABLE core.post_type OWNER TO postgres;
+
+--
 -- Name: app_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.app_user (
-                               id bigint NOT NULL,
-                               username character varying(255) NOT NULL,
-                               name character varying(500) NOT NULL,
-                               email character varying(255),
-                               identity_card character varying(50),
-                               address character varying(500),
-                               phone_number character varying(50),
-                               profile_image character varying(500),
-                               is_active boolean DEFAULT false,
-                               is_forget_password boolean DEFAULT false,
-                               is_deleted boolean DEFAULT false,
-                               passport character varying,
-                               gender character varying,
-                               date_of_birth timestamp(0) without time zone,
-                               ic_date date,
-                               ic_place character varying(500)
+    id bigint NOT NULL,
+    username character varying(255) NOT NULL,
+    name character varying(500) NOT NULL,
+    email character varying(255),
+    identity_card character varying(50),
+    address character varying(500),
+    phone_number character varying(50),
+    profile_image character varying(500),
+    is_active boolean DEFAULT false,
+    is_forget_password boolean DEFAULT false,
+    is_deleted boolean DEFAULT false,
+    passport character varying,
+    gender character varying,
+    date_of_birth timestamp(0) without time zone,
+    ic_date date,
+    ic_place character varying(500)
 );
 
 
@@ -98,19 +304,19 @@ ALTER TABLE public.app_user OWNER TO postgres;
 --
 
 CREATE TABLE public.building (
-                               id bigint NOT NULL,
-                               name character varying(500),
-                               type public.building_type NOT NULL,
-                               address character varying(500),
-                               description character varying(500),
-                               media character varying(500),
-                               is_deleted boolean DEFAULT false,
-                               created_by bigint,
-                               created_at timestamp without time zone,
-                               updated_at timestamp without time zone DEFAULT now(),
-                               updated_by bigint,
-                               org_id bigint,
-                               building_address_id bigint
+    id bigint NOT NULL,
+    name character varying(500),
+    type public.building_type NOT NULL,
+    address character varying(500),
+    description character varying(500),
+    media character varying(500),
+    is_deleted boolean DEFAULT false,
+    created_by bigint,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    org_id bigint,
+    building_address_id bigint
 );
 
 
@@ -121,11 +327,11 @@ ALTER TABLE public.building OWNER TO postgres;
 --
 
 CREATE TABLE public.building_address (
-                                       id bigint NOT NULL,
-                                       detail character varying(500),
-                                       province character varying(500),
-                                       district character varying(500),
-                                       ward character varying(500)
+    id bigint NOT NULL,
+    detail character varying(500),
+    province character varying(500),
+    district character varying(500),
+    ward character varying(500)
 );
 
 
@@ -136,11 +342,11 @@ ALTER TABLE public.building_address OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_address_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_address_id_seq OWNER TO postgres;
@@ -157,15 +363,15 @@ ALTER SEQUENCE public.building_address_id_seq OWNED BY public.building_address.i
 --
 
 CREATE TABLE public.building_content (
-                                       id bigint NOT NULL,
-                                       building_id bigint NOT NULL,
-                                       content text NOT NULL,
-                                       slug text NOT NULL,
-                                       created_at timestamp without time zone DEFAULT now(),
-                                       updated_at timestamp without time zone DEFAULT now(),
-                                       created_by bigint NOT NULL,
-                                       updated_by bigint NOT NULL,
-                                       is_deleted boolean DEFAULT false
+    id bigint NOT NULL,
+    building_id bigint NOT NULL,
+    content text NOT NULL,
+    slug text NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    created_by bigint NOT NULL,
+    updated_by bigint NOT NULL,
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -176,11 +382,11 @@ ALTER TABLE public.building_content OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_content_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_content_id_seq OWNER TO postgres;
@@ -197,17 +403,17 @@ ALTER SEQUENCE public.building_content_id_seq OWNED BY public.building_content.i
 --
 
 CREATE TABLE public.building_cost (
-                                    id bigint NOT NULL,
-                                    name character varying(500) NOT NULL,
-                                    calculation_unit character varying(500) NOT NULL,
-                                    unit_price numeric(18,2) NOT NULL,
-                                    description character varying(500),
-                                    building_id bigint NOT NULL,
-                                    mt_cost_id bigint,
-                                    is_active boolean DEFAULT true,
-                                    type character varying(50) DEFAULT NULL::character varying,
-                                    calculation_type character varying(50) DEFAULT NULL::character varying,
-                                    time_to_pay character varying(50)
+    id bigint NOT NULL,
+    name character varying(500) NOT NULL,
+    calculation_unit character varying(500) NOT NULL,
+    unit_price numeric(18,2) NOT NULL,
+    description character varying(500),
+    building_id bigint NOT NULL,
+    mt_cost_id bigint,
+    is_active boolean DEFAULT true,
+    type character varying(50) DEFAULT NULL::character varying,
+    calculation_type character varying(50) DEFAULT NULL::character varying,
+    time_to_pay character varying(50)
 );
 
 
@@ -218,11 +424,11 @@ ALTER TABLE public.building_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_id_seq OWNER TO postgres;
@@ -239,11 +445,11 @@ ALTER SEQUENCE public.building_id_seq OWNED BY public.building.id;
 --
 
 CREATE TABLE public.building_manager (
-                                       building_id bigint NOT NULL,
-                                       manager_id bigint NOT NULL,
-                                       description character varying(500),
-                                       id bigint NOT NULL,
-                                       is_active boolean DEFAULT true
+    building_id bigint NOT NULL,
+    manager_id bigint NOT NULL,
+    description character varying(500),
+    id bigint NOT NULL,
+    is_active boolean DEFAULT true
 );
 
 
@@ -254,11 +460,11 @@ ALTER TABLE public.building_manager OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_manager_building_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_manager_building_id_seq OWNER TO postgres;
@@ -275,11 +481,11 @@ ALTER SEQUENCE public.building_manager_building_id_seq OWNED BY public.building_
 --
 
 CREATE SEQUENCE public.building_manager_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_manager_id_seq OWNER TO postgres;
@@ -296,11 +502,11 @@ ALTER SEQUENCE public.building_manager_id_seq OWNED BY public.building_manager.i
 --
 
 CREATE SEQUENCE public.building_manager_manager_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_manager_manager_id_seq OWNER TO postgres;
@@ -317,15 +523,15 @@ ALTER SEQUENCE public.building_manager_manager_id_seq OWNED BY public.building_m
 --
 
 CREATE TABLE public.building_media (
-                                     id bigint NOT NULL,
-                                     name character varying(255) NOT NULL,
-                                     created_at timestamp without time zone DEFAULT now(),
-                                     updated_at timestamp without time zone DEFAULT now(),
-                                     updated_by bigint NOT NULL,
-                                     building_id bigint NOT NULL,
-                                     is_default boolean DEFAULT false,
-                                     size bigint DEFAULT 0 NOT NULL,
-                                     media_type character varying(50) DEFAULT 'IMAGE'::character varying NOT NULL
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    updated_by bigint NOT NULL,
+    building_id bigint NOT NULL,
+    is_default boolean DEFAULT false,
+    size bigint DEFAULT 0 NOT NULL,
+    media_type character varying(50) DEFAULT 'IMAGE'::character varying NOT NULL
 );
 
 
@@ -336,11 +542,11 @@ ALTER TABLE public.building_media OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_media_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_media_id_seq OWNER TO postgres;
@@ -357,10 +563,10 @@ ALTER SEQUENCE public.building_media_id_seq OWNED BY public.building_media.id;
 --
 
 CREATE TABLE public.building_rule (
-                                    id bigint NOT NULL,
-                                    regulation character varying(255) NOT NULL,
-                                    content text NOT NULL,
-                                    building_id bigint NOT NULL
+    id bigint NOT NULL,
+    regulation character varying(255) NOT NULL,
+    content text NOT NULL,
+    building_id bigint NOT NULL
 );
 
 
@@ -371,11 +577,11 @@ ALTER TABLE public.building_rule OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_rule_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_rule_id_seq OWNER TO postgres;
@@ -392,12 +598,12 @@ ALTER SEQUENCE public.building_rule_id_seq OWNED BY public.building_rule.id;
 --
 
 CREATE TABLE public.building_utility (
-                                       building_id bigint NOT NULL,
-                                       utility_id bigint,
-                                       name character varying(500) NOT NULL,
-                                       description character varying(500),
-                                       image character varying(500) NOT NULL,
-                                       id bigint NOT NULL
+    building_id bigint NOT NULL,
+    utility_id bigint,
+    name character varying(500) NOT NULL,
+    description character varying(500),
+    image character varying(500) NOT NULL,
+    id bigint NOT NULL
 );
 
 
@@ -408,11 +614,11 @@ ALTER TABLE public.building_utility OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.building_utility_building_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_utility_building_id_seq OWNER TO postgres;
@@ -429,11 +635,11 @@ ALTER SEQUENCE public.building_utility_building_id_seq OWNED BY public.building_
 --
 
 CREATE SEQUENCE public.building_utility_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.building_utility_id_seq OWNER TO postgres;
@@ -450,19 +656,19 @@ ALTER SEQUENCE public.building_utility_id_seq OWNED BY public.building_utility.i
 --
 
 CREATE TABLE public.contract_addendum (
-                                        id bigint NOT NULL,
-                                        code character varying(255) NOT NULL,
-                                        type character varying(50),
-                                        rental_contract_id bigint NOT NULL,
-                                        room_id bigint NOT NULL,
-                                        tenant_name character varying(255) NOT NULL,
-                                        tenant_ic character varying(50) NOT NULL,
-                                        to_date timestamp without time zone NOT NULL,
-                                        status character varying(50) NOT NULL,
-                                        sign_by_tenant_date timestamp without time zone,
-                                        effective_date timestamp without time zone NOT NULL,
-                                        created_at timestamp without time zone DEFAULT now(),
-                                        file_url character varying(500)
+    id bigint NOT NULL,
+    code character varying(255) NOT NULL,
+    type character varying(50),
+    rental_contract_id bigint NOT NULL,
+    room_id bigint NOT NULL,
+    tenant_name character varying(255) NOT NULL,
+    tenant_ic character varying(50) NOT NULL,
+    to_date timestamp without time zone NOT NULL,
+    status character varying(50) NOT NULL,
+    sign_by_tenant_date timestamp without time zone,
+    effective_date timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    file_url character varying(500)
 );
 
 
@@ -473,11 +679,11 @@ ALTER TABLE public.contract_addendum OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.contract_addendum_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.contract_addendum_id_seq OWNER TO postgres;
@@ -494,11 +700,11 @@ ALTER SEQUENCE public.contract_addendum_id_seq OWNED BY public.contract_addendum
 --
 
 CREATE SEQUENCE public.cost_building_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.cost_building_id_seq OWNER TO postgres;
@@ -515,11 +721,11 @@ ALTER SEQUENCE public.cost_building_id_seq OWNED BY public.building_cost.buildin
 --
 
 CREATE SEQUENCE public.cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.cost_id_seq OWNER TO postgres;
@@ -536,38 +742,38 @@ ALTER SEQUENCE public.cost_id_seq OWNED BY public.building_cost.id;
 --
 
 CREATE TABLE public.deposit_contract (
-                                       id bigint NOT NULL,
-                                       deposit_contract_code character varying(100) NOT NULL,
-                                       status character varying(20),
-                                       address character varying(255),
-                                       deposit_number numeric(18,2),
-                                       pdf_template bigint,
-                                       note character varying,
-                                       rental_term character varying,
-                                       from_date timestamp without time zone,
-                                       end_date timestamp without time zone,
-                                       name_pdf character varying(255),
-                                       file_path character varying(255),
-                                       status_payment character varying(255),
-                                       date_payment timestamp without time zone,
-                                       price numeric(18,2),
-                                       acreage numeric(18,2),
-                                       tenant bigint,
-                                       room_id bigint,
-                                       rental_contract_id bigint,
-                                       is_deleted boolean,
-                                       updated_at timestamp without time zone DEFAULT now(),
-                                       created_at timestamp without time zone DEFAULT now(),
-                                       created_by_id bigint,
-                                       updated_by_id bigint,
-                                       deposit_number_string character varying,
-                                       sign_by_lessor_date date,
-                                       sign_by_tenant_date date,
-                                       effective_date bigint,
-                                       deposit_day character varying(50),
-                                       is_liquidated boolean DEFAULT false,
-                                       deposit_reservation bigint DEFAULT 0,
-                                       is_rented boolean DEFAULT false
+    id bigint NOT NULL,
+    deposit_contract_code character varying(100) NOT NULL,
+    status character varying(20),
+    address character varying(255),
+    deposit_number numeric(18,2),
+    pdf_template bigint,
+    note character varying,
+    rental_term character varying,
+    from_date timestamp without time zone,
+    end_date timestamp without time zone,
+    name_pdf character varying(255),
+    file_path character varying(255),
+    status_payment character varying(255),
+    date_payment timestamp without time zone,
+    price numeric(18,2),
+    acreage numeric(18,2),
+    tenant bigint,
+    room_id bigint,
+    rental_contract_id bigint,
+    is_deleted boolean,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    created_by_id bigint,
+    updated_by_id bigint,
+    deposit_number_string character varying,
+    sign_by_lessor_date date,
+    sign_by_tenant_date date,
+    effective_date bigint,
+    deposit_day character varying(50),
+    is_liquidated boolean DEFAULT false,
+    deposit_reservation bigint DEFAULT 0,
+    is_rented boolean DEFAULT false
 );
 
 
@@ -578,19 +784,19 @@ ALTER TABLE public.deposit_contract OWNER TO postgres;
 --
 
 CREATE TABLE public.deposit_contract_cost (
-                                            id bigint NOT NULL,
-                                            name character varying(255),
-                                            description text,
-                                            unit_price numeric(18,2),
-                                            deposit_contract_id bigint,
-                                            room_cost_id bigint,
-                                            updated_at timestamp without time zone DEFAULT now(),
-                                            created_at timestamp without time zone DEFAULT now(),
-                                            unit character varying(50),
-                                            type character varying(50) DEFAULT NULL::character varying,
-                                            calculation_type character varying(50) DEFAULT NULL::character varying,
-                                            time_to_pay character varying(50),
-                                            can_delete boolean DEFAULT false
+    id bigint NOT NULL,
+    name character varying(255),
+    description text,
+    unit_price numeric(18,2),
+    deposit_contract_id bigint,
+    room_cost_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    unit character varying(50),
+    type character varying(50) DEFAULT NULL::character varying,
+    calculation_type character varying(50) DEFAULT NULL::character varying,
+    time_to_pay character varying(50),
+    can_delete boolean DEFAULT false
 );
 
 
@@ -601,11 +807,11 @@ ALTER TABLE public.deposit_contract_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.deposit_contract_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.deposit_contract_cost_id_seq OWNER TO postgres;
@@ -622,11 +828,11 @@ ALTER SEQUENCE public.deposit_contract_cost_id_seq OWNED BY public.deposit_contr
 --
 
 CREATE SEQUENCE public.deposit_contract_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.deposit_contract_id_seq OWNER TO postgres;
@@ -643,24 +849,24 @@ ALTER SEQUENCE public.deposit_contract_id_seq OWNED BY public.deposit_contract.i
 --
 
 CREATE TABLE public.deposit_contract_people (
-                                              id bigint NOT NULL,
-                                              name character varying(50) NOT NULL,
-                                              date_of_birthday timestamp without time zone,
-                                              passport character varying(30),
-                                              identity_card character varying(30),
-                                              ic_place character varying(255),
-                                              ic_date timestamp without time zone,
-                                              phone_number character varying(30),
-                                              bank character varying(50),
-                                              account_bank character varying(100),
-                                              type character varying(20),
-                                              sign_in character varying(255),
-                                              app_user_id bigint,
-                                              deposit_contract_id bigint,
-                                              created_at timestamp without time zone DEFAULT now(),
-                                              updated_at timestamp without time zone DEFAULT now(),
-                                              email character varying,
-                                              address character varying
+    id bigint NOT NULL,
+    name character varying(50) NOT NULL,
+    date_of_birthday timestamp without time zone,
+    passport character varying(30),
+    identity_card character varying(30),
+    ic_place character varying(255),
+    ic_date timestamp without time zone,
+    phone_number character varying(30),
+    bank character varying(50),
+    account_bank character varying(100),
+    type character varying(20),
+    sign_in character varying(255),
+    app_user_id bigint,
+    deposit_contract_id bigint,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    email character varying,
+    address character varying
 );
 
 
@@ -671,11 +877,11 @@ ALTER TABLE public.deposit_contract_people OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.deposit_contract_people_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.deposit_contract_people_id_seq OWNER TO postgres;
@@ -692,10 +898,10 @@ ALTER SEQUENCE public.deposit_contract_people_id_seq OWNED BY public.deposit_con
 --
 
 CREATE TABLE public.district (
-                               id bigint NOT NULL,
-                               code character varying(50),
-                               name character varying(500),
-                               province_code character varying(50)
+    id bigint NOT NULL,
+    code character varying(50),
+    name character varying(500),
+    province_code character varying(50)
 );
 
 
@@ -706,11 +912,11 @@ ALTER TABLE public.district OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.district_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.district_id_seq OWNER TO postgres;
@@ -727,15 +933,15 @@ ALTER SEQUENCE public.district_id_seq OWNED BY public.district.id;
 --
 
 CREATE TABLE public.document (
-                               id bigint,
-                               name character varying(255),
-                               description text,
-                               reference_id bigint,
-                               category character varying(50),
-                               document_type character varying(255),
-                               created_by bigint,
-                               updated_at timestamp without time zone DEFAULT now(),
-                               created_at timestamp without time zone DEFAULT now()
+    id bigint,
+    name character varying(255),
+    description text,
+    reference_id bigint,
+    category character varying(50),
+    document_type character varying(255),
+    created_by bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -746,14 +952,14 @@ ALTER TABLE public.document OWNER TO postgres;
 --
 
 CREATE TABLE public.electricity_water_detail (
-                                               id bigint NOT NULL,
-                                               first_index numeric(18,2) NOT NULL,
-                                               last_index numeric(18,2) NOT NULL,
-                                               index_used numeric(18,2) NOT NULL,
-                                               type character varying(255) NOT NULL,
-                                               amount numeric(18,2) NOT NULL,
-                                               electricity_water_information_id bigint NOT NULL,
-                                               room_cost_id bigint
+    id bigint NOT NULL,
+    first_index numeric(18,2) NOT NULL,
+    last_index numeric(18,2) NOT NULL,
+    index_used numeric(18,2) NOT NULL,
+    type character varying(255) NOT NULL,
+    amount numeric(18,2) NOT NULL,
+    electricity_water_information_id bigint NOT NULL,
+    room_cost_id bigint
 );
 
 
@@ -764,11 +970,11 @@ ALTER TABLE public.electricity_water_detail OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.electricity_water_detail_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.electricity_water_detail_id_seq OWNER TO postgres;
@@ -785,13 +991,13 @@ ALTER SEQUENCE public.electricity_water_detail_id_seq OWNED BY public.electricit
 --
 
 CREATE TABLE public.electricity_water_information (
-                                                    id bigint NOT NULL,
-                                                    bill_closing_date timestamp without time zone NOT NULL,
-                                                    date timestamp without time zone NOT NULL,
-                                                    total_amount numeric(18,2) NOT NULL,
-                                                    note character varying(500),
-                                                    rental_contract_id bigint NOT NULL,
-                                                    is_deleted boolean DEFAULT false
+    id bigint NOT NULL,
+    bill_closing_date timestamp without time zone NOT NULL,
+    date timestamp without time zone NOT NULL,
+    total_amount numeric(18,2) NOT NULL,
+    note character varying(500),
+    rental_contract_id bigint NOT NULL,
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -802,11 +1008,11 @@ ALTER TABLE public.electricity_water_information OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.electricity_water_information_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.electricity_water_information_id_seq OWNER TO postgres;
@@ -823,23 +1029,23 @@ ALTER SEQUENCE public.electricity_water_information_id_seq OWNED BY public.elect
 --
 
 CREATE TABLE public.extention_contract (
-                                         id bigint NOT NULL,
-                                         contract_addendum_id bigint NOT NULL,
-                                         created_at timestamp without time zone DEFAULT now() NOT NULL,
-                                         address character varying(255) NOT NULL,
-                                         appendix_number bigint NOT NULL,
-                                         rental_term character varying(255) NOT NULL,
-                                         from_date date NOT NULL,
-                                         to_date date NOT NULL,
-                                         note text,
-                                         number_of_contracts bigint NOT NULL,
-                                         each_side_number bigint NOT NULL,
-                                         sign_by_lessor_date timestamp without time zone,
-                                         sign_by_tenant_date timestamp without time zone,
-                                         new_deposit_amount double precision DEFAULT 0,
-                                         new_rental_amount double precision DEFAULT 0,
-                                         effect_date timestamp without time zone,
-                                         check_box_show boolean DEFAULT false
+    id bigint NOT NULL,
+    contract_addendum_id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    address character varying(255) NOT NULL,
+    appendix_number bigint NOT NULL,
+    rental_term character varying(255) NOT NULL,
+    from_date date NOT NULL,
+    to_date date NOT NULL,
+    note text,
+    number_of_contracts bigint NOT NULL,
+    each_side_number bigint NOT NULL,
+    sign_by_lessor_date timestamp without time zone,
+    sign_by_tenant_date timestamp without time zone,
+    new_deposit_amount double precision DEFAULT 0,
+    new_rental_amount double precision DEFAULT 0,
+    effect_date timestamp without time zone,
+    check_box_show boolean DEFAULT false
 );
 
 
@@ -850,11 +1056,11 @@ ALTER TABLE public.extention_contract OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.extention_contract_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.extention_contract_id_seq OWNER TO postgres;
@@ -871,16 +1077,16 @@ ALTER SEQUENCE public.extention_contract_id_seq OWNED BY public.extention_contra
 --
 
 CREATE TABLE public.extention_contract_people (
-                                                id bigint NOT NULL,
-                                                name character varying(255),
-                                                phone_number character varying(50),
-                                                identity_card character varying(50),
-                                                ic_place character varying(255),
-                                                ic_date date,
-                                                type character varying(20),
-                                                extention_contract_id bigint NOT NULL,
-                                                app_user_id bigint,
-                                                email character varying(500)
+    id bigint NOT NULL,
+    name character varying(255),
+    phone_number character varying(50),
+    identity_card character varying(50),
+    ic_place character varying(255),
+    ic_date date,
+    type character varying(20),
+    extention_contract_id bigint NOT NULL,
+    app_user_id bigint,
+    email character varying(500)
 );
 
 
@@ -891,11 +1097,11 @@ ALTER TABLE public.extention_contract_people OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.extention_contract_people_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.extention_contract_people_id_seq OWNER TO postgres;
@@ -912,42 +1118,42 @@ ALTER SEQUENCE public.extention_contract_people_id_seq OWNED BY public.extention
 --
 
 CREATE TABLE public.housing_expense (
-                                      id bigint NOT NULL,
-                                      code character varying(50) NOT NULL,
-                                      date timestamp without time zone DEFAULT now(),
-                                      room_id bigint,
-                                      old_debt_amount numeric(18,2) DEFAULT 0,
-                                      rental_contract_id bigint,
-                                      percentage_discount bigint DEFAULT 0,
-                                      deadline timestamp without time zone,
-                                      amount_discount numeric(18,2) DEFAULT 0,
-                                      total_other_expense numeric(18,2) DEFAULT 0,
-                                      total_amount numeric(18,2) DEFAULT 0,
-                                      payment_status character varying(100),
-                                      amount_received numeric(18,2) DEFAULT 0,
-                                      paid_date timestamp without time zone,
-                                      new_debt_amount numeric(18,2) DEFAULT 0,
-                                      status character varying(100),
-                                      file_url character varying(255),
-                                      note character varying(255),
-                                      is_deleted boolean DEFAULT false,
-                                      updated_at timestamp without time zone DEFAULT now(),
-                                      created_at timestamp without time zone DEFAULT now(),
-                                      created_by_id bigint,
-                                      updated_by_id bigint,
-                                      deposit_amount_received numeric(18,2) DEFAULT 0,
-                                      debt_paid numeric(18,2) DEFAULT 0,
-                                      total_fixed_expense numeric(18,2) DEFAULT 0,
-                                      is_sended boolean DEFAULT false,
-                                      non_debt_cost numeric(18,2) DEFAULT 0,
-                                      old_deposit_debt_amount numeric(18,2) DEFAULT 0,
-                                      old_room_cost_debt_amount numeric(18,2) DEFAULT 0,
-                                      room_cost_amount numeric(18,2) DEFAULT 0,
-                                      room_cost_amount_received numeric(18,2) DEFAULT 0,
-                                      total_rental_contract_cost numeric(18,2) DEFAULT 0,
-                                      rental_room_price numeric(18,2) DEFAULT 0,
-                                      is_liquidated boolean DEFAULT false,
-                                      excess_cash_amount double precision DEFAULT 0
+    id bigint NOT NULL,
+    code character varying(50) NOT NULL,
+    date timestamp without time zone DEFAULT now(),
+    room_id bigint,
+    old_debt_amount numeric(18,2) DEFAULT 0,
+    rental_contract_id bigint,
+    percentage_discount bigint DEFAULT 0,
+    deadline timestamp without time zone,
+    amount_discount numeric(18,2) DEFAULT 0,
+    total_other_expense numeric(18,2) DEFAULT 0,
+    total_amount numeric(18,2) DEFAULT 0,
+    payment_status character varying(100),
+    amount_received numeric(18,2) DEFAULT 0,
+    paid_date timestamp without time zone,
+    new_debt_amount numeric(18,2) DEFAULT 0,
+    status character varying(100),
+    file_url character varying(255),
+    note character varying(255),
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    created_by_id bigint,
+    updated_by_id bigint,
+    deposit_amount_received numeric(18,2) DEFAULT 0,
+    debt_paid numeric(18,2) DEFAULT 0,
+    total_fixed_expense numeric(18,2) DEFAULT 0,
+    is_sended boolean DEFAULT false,
+    non_debt_cost numeric(18,2) DEFAULT 0,
+    old_deposit_debt_amount numeric(18,2) DEFAULT 0,
+    old_room_cost_debt_amount numeric(18,2) DEFAULT 0,
+    room_cost_amount numeric(18,2) DEFAULT 0,
+    room_cost_amount_received numeric(18,2) DEFAULT 0,
+    total_rental_contract_cost numeric(18,2) DEFAULT 0,
+    rental_room_price numeric(18,2) DEFAULT 0,
+    is_liquidated boolean DEFAULT false,
+    excess_cash_amount double precision DEFAULT 0
 );
 
 
@@ -958,24 +1164,24 @@ ALTER TABLE public.housing_expense OWNER TO postgres;
 --
 
 CREATE TABLE public.housing_expense_cost (
-                                           id bigint NOT NULL,
-                                           name text,
-                                           price numeric(18,2) DEFAULT 0,
-                                           housing_expense_id bigint,
-                                           updated_at timestamp without time zone DEFAULT now(),
-                                           created_at timestamp without time zone DEFAULT now(),
-                                           calculation_unit character varying(500),
-                                           type character varying(500),
-                                           calculation_type character varying(500),
-                                           time_to_pay character varying(500),
-                                           is_fixed_expense boolean DEFAULT false,
-                                           electric_first_index integer,
-                                           electric_last_index integer,
-                                           total_amount numeric(18,2),
-                                           water_first_index integer,
-                                           water_last_index integer,
-                                           water_iper boolean DEFAULT false,
-                                           water_iper_qty integer
+    id bigint NOT NULL,
+    name text,
+    price numeric(18,2) DEFAULT 0,
+    housing_expense_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    calculation_unit character varying(500),
+    type character varying(500),
+    calculation_type character varying(500),
+    time_to_pay character varying(500),
+    is_fixed_expense boolean DEFAULT false,
+    electric_first_index integer,
+    electric_last_index integer,
+    total_amount numeric(18,2),
+    water_first_index integer,
+    water_last_index integer,
+    water_iper boolean DEFAULT false,
+    water_iper_qty integer
 );
 
 
@@ -986,11 +1192,11 @@ ALTER TABLE public.housing_expense_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.housing_expense_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_cost_id_seq OWNER TO postgres;
@@ -1007,20 +1213,20 @@ ALTER SEQUENCE public.housing_expense_cost_id_seq OWNED BY public.housing_expens
 --
 
 CREATE TABLE public.housing_expense_cost_v2 (
-                                              id bigint NOT NULL,
-                                              name character varying(500),
-                                              type character varying(255),
-                                              housing_expense_v2_id bigint,
-                                              total_amount double precision DEFAULT 0,
-                                              rental_amount double precision DEFAULT 0,
-                                              rental_amount_paid double precision DEFAULT 0,
-                                              rental_amount_balance double precision DEFAULT 0,
-                                              retail_price double precision DEFAULT 0,
-                                              is_per boolean DEFAULT false,
-                                              old_index double precision DEFAULT 0,
-                                              old_index_date date DEFAULT now(),
-                                              new_index double precision DEFAULT 0,
-                                              new_index_date date DEFAULT now()
+    id bigint NOT NULL,
+    name character varying(500),
+    type character varying(255),
+    housing_expense_v2_id bigint,
+    total_amount double precision DEFAULT 0,
+    rental_amount double precision DEFAULT 0,
+    rental_amount_paid double precision DEFAULT 0,
+    rental_amount_balance double precision DEFAULT 0,
+    retail_price double precision DEFAULT 0,
+    is_per boolean DEFAULT false,
+    old_index double precision DEFAULT 0,
+    old_index_date date DEFAULT now(),
+    new_index double precision DEFAULT 0,
+    new_index_date date DEFAULT now()
 );
 
 
@@ -1031,11 +1237,11 @@ ALTER TABLE public.housing_expense_cost_v2 OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.housing_expense_cost_v2_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_cost_v2_id_seq OWNER TO postgres;
@@ -1052,14 +1258,14 @@ ALTER SEQUENCE public.housing_expense_cost_v2_id_seq OWNED BY public.housing_exp
 --
 
 CREATE TABLE public.housing_expense_forfeit (
-                                              id bigint NOT NULL,
-                                              housing_expense_v2_id bigint,
-                                              forfeit_housing_expense_id bigint,
-                                              debt_amount double precision DEFAULT 0,
-                                              forfeit_days double precision DEFAULT 0,
-                                              total_amount double precision DEFAULT 0,
-                                              is_forfeit boolean DEFAULT false,
-                                              is_check boolean DEFAULT false
+    id bigint NOT NULL,
+    housing_expense_v2_id bigint,
+    forfeit_housing_expense_id bigint,
+    debt_amount double precision DEFAULT 0,
+    forfeit_days double precision DEFAULT 0,
+    total_amount double precision DEFAULT 0,
+    is_forfeit boolean DEFAULT false,
+    is_check boolean DEFAULT false
 );
 
 
@@ -1070,11 +1276,11 @@ ALTER TABLE public.housing_expense_forfeit OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.housing_expense_forfeit_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_forfeit_id_seq OWNER TO postgres;
@@ -1091,11 +1297,11 @@ ALTER SEQUENCE public.housing_expense_forfeit_id_seq OWNED BY public.housing_exp
 --
 
 CREATE SEQUENCE public.housing_expense_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_id_seq OWNER TO postgres;
@@ -1112,10 +1318,10 @@ ALTER SEQUENCE public.housing_expense_id_seq OWNED BY public.housing_expense.id;
 --
 
 CREATE TABLE public.housing_expense_other_cost (
-                                                 id bigint NOT NULL,
-                                                 housing_expense_v2_id bigint,
-                                                 name character varying(500),
-                                                 total_amount double precision DEFAULT 0
+    id bigint NOT NULL,
+    housing_expense_v2_id bigint,
+    name character varying(500),
+    total_amount double precision DEFAULT 0
 );
 
 
@@ -1126,11 +1332,11 @@ ALTER TABLE public.housing_expense_other_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.housing_expense_other_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_other_cost_id_seq OWNER TO postgres;
@@ -1147,43 +1353,43 @@ ALTER SEQUENCE public.housing_expense_other_cost_id_seq OWNED BY public.housing_
 --
 
 CREATE TABLE public.housing_expense_v2 (
-                                         id bigint NOT NULL,
-                                         uuid character varying(255),
-                                         housing_expense_code character varying(255),
-                                         rental_contract_id bigint,
-                                         title character varying(255),
-                                         status character varying(255),
-                                         total_cost_amount double precision DEFAULT 0,
-                                         discount_type character varying(255),
-                                         discount_percentage double precision DEFAULT 0,
-                                         discount_amount double precision DEFAULT 0,
-                                         pre_payment_amount double precision DEFAULT 0,
-                                         from_date date,
-                                         to_date date,
-                                         total_payment_amount double precision DEFAULT 0,
-                                         debt_amount double precision DEFAULT 0,
-                                         total_debt_amount double precision DEFAULT 0,
-                                         is_send boolean DEFAULT false,
-                                         is_forfeit boolean DEFAULT false,
-                                         forfeit_amount double precision DEFAULT 0,
-                                         vehicle_count double precision DEFAULT 0,
-                                         tenant_count double precision DEFAULT 0,
-                                         note text,
-                                         created_at timestamp without time zone,
-                                         created_by_id bigint,
-                                         updated_at timestamp without time zone,
-                                         updated_by_id bigint,
-                                         date_title character varying(255),
-                                         payment_status character varying(255),
-                                         room_id bigint,
-                                         deposit_received_amount double precision DEFAULT 0,
-                                         is_first_expense boolean DEFAULT false,
-                                         total_received_amount double precision DEFAULT 0,
-                                         housing_expense_type character varying(255),
-                                         deposit_debt_amount double precision DEFAULT 0,
-                                         send_year integer DEFAULT 0,
-                                         forfeit_days double precision DEFAULT 0,
-                                         liquidated_prepaid_amount double precision DEFAULT 0
+    id bigint NOT NULL,
+    uuid character varying(255),
+    housing_expense_code character varying(255),
+    rental_contract_id bigint,
+    title character varying(255),
+    status character varying(255),
+    total_cost_amount double precision DEFAULT 0,
+    discount_type character varying(255),
+    discount_percentage double precision DEFAULT 0,
+    discount_amount double precision DEFAULT 0,
+    pre_payment_amount double precision DEFAULT 0,
+    from_date date,
+    to_date date,
+    total_payment_amount double precision DEFAULT 0,
+    debt_amount double precision DEFAULT 0,
+    total_debt_amount double precision DEFAULT 0,
+    is_send boolean DEFAULT false,
+    is_forfeit boolean DEFAULT false,
+    forfeit_amount double precision DEFAULT 0,
+    vehicle_count double precision DEFAULT 0,
+    tenant_count double precision DEFAULT 0,
+    note text,
+    created_at timestamp without time zone,
+    created_by_id bigint,
+    updated_at timestamp without time zone,
+    updated_by_id bigint,
+    date_title character varying(255),
+    payment_status character varying(255),
+    room_id bigint,
+    deposit_received_amount double precision DEFAULT 0,
+    is_first_expense boolean DEFAULT false,
+    total_received_amount double precision DEFAULT 0,
+    housing_expense_type character varying(255),
+    deposit_debt_amount double precision DEFAULT 0,
+    send_year integer DEFAULT 0,
+    forfeit_days double precision DEFAULT 0,
+    liquidated_prepaid_amount double precision DEFAULT 0
 );
 
 
@@ -1194,11 +1400,11 @@ ALTER TABLE public.housing_expense_v2 OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.housing_expense_v2_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.housing_expense_v2_id_seq OWNER TO postgres;
@@ -1215,35 +1421,35 @@ ALTER SEQUENCE public.housing_expense_v2_id_seq OWNED BY public.housing_expense_
 --
 
 CREATE TABLE public.liquidated_contract (
-                                          id bigint NOT NULL,
-                                          code character varying(50) NOT NULL,
-                                          status character varying(50),
-                                          liquidate_from_date timestamp without time zone,
-                                          pdf_template bigint,
-                                          name_pdf character varying(255),
-                                          file_url character varying(255),
-                                          rental_contract_id bigint,
-                                          deposit_contract_id bigint,
-                                          total_depreciation double precision,
-                                          total_refund double precision,
-                                          updated_at timestamp without time zone DEFAULT now(),
-                                          created_at timestamp without time zone DEFAULT now(),
-                                          created_by_id bigint,
-                                          updated_by_id bigint,
-                                          sign_by_lessor_date timestamp without time zone,
-                                          sign_by_tenant_date timestamp without time zone,
-                                          is_deleted boolean DEFAULT false,
-                                          sign_address character varying(255),
-                                          sign_date timestamp without time zone,
-                                          is_have_expense boolean DEFAULT false,
-                                          total_deposit_received double precision DEFAULT 0,
-                                          total_in_dept double precision DEFAULT 0,
-                                          is_use_total_deduction boolean DEFAULT false,
-                                          total_deduction double precision DEFAULT 0,
-                                          total_payment double precision DEFAULT 0,
-                                          excess_cash_amount double precision DEFAULT 0,
-                                          from_date date DEFAULT now(),
-                                          to_date date DEFAULT now()
+    id bigint NOT NULL,
+    code character varying(50) NOT NULL,
+    status character varying(50),
+    liquidate_from_date timestamp without time zone,
+    pdf_template bigint,
+    name_pdf character varying(255),
+    file_url character varying(255),
+    rental_contract_id bigint,
+    deposit_contract_id bigint,
+    total_depreciation double precision,
+    total_refund double precision,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    created_by_id bigint,
+    updated_by_id bigint,
+    sign_by_lessor_date timestamp without time zone,
+    sign_by_tenant_date timestamp without time zone,
+    is_deleted boolean DEFAULT false,
+    sign_address character varying(255),
+    sign_date timestamp without time zone,
+    is_have_expense boolean DEFAULT false,
+    total_deposit_received double precision DEFAULT 0,
+    total_in_dept double precision DEFAULT 0,
+    is_use_total_deduction boolean DEFAULT false,
+    total_deduction double precision DEFAULT 0,
+    total_payment double precision DEFAULT 0,
+    excess_cash_amount double precision DEFAULT 0,
+    from_date date DEFAULT now(),
+    to_date date DEFAULT now()
 );
 
 
@@ -1254,12 +1460,12 @@ ALTER TABLE public.liquidated_contract OWNER TO postgres;
 --
 
 CREATE TABLE public.liquidated_contract_cost (
-                                               id bigint NOT NULL,
-                                               description text,
-                                               price numeric(18,2),
-                                               liquidated_contract_id bigint,
-                                               updated_at timestamp without time zone DEFAULT now(),
-                                               created_at timestamp without time zone DEFAULT now()
+    id bigint NOT NULL,
+    description text,
+    price numeric(18,2),
+    liquidated_contract_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1270,11 +1476,11 @@ ALTER TABLE public.liquidated_contract_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.liquidated_contract_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.liquidated_contract_cost_id_seq OWNER TO postgres;
@@ -1291,11 +1497,11 @@ ALTER SEQUENCE public.liquidated_contract_cost_id_seq OWNED BY public.liquidated
 --
 
 CREATE SEQUENCE public.liquidated_contract_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.liquidated_contract_id_seq OWNER TO postgres;
@@ -1312,20 +1518,20 @@ ALTER SEQUENCE public.liquidated_contract_id_seq OWNED BY public.liquidated_cont
 --
 
 CREATE TABLE public.liquidated_contract_people (
-                                                 id bigint NOT NULL,
-                                                 name character varying(255) NOT NULL,
-                                                 identity_card character varying(30),
-                                                 ic_place character varying(255),
-                                                 ic_date timestamp without time zone,
-                                                 phone_number character varying(30),
-                                                 type character varying(20),
-                                                 app_user_id bigint,
-                                                 liquidated_contract_id bigint,
-                                                 created_at timestamp without time zone DEFAULT now(),
-                                                 updated_at timestamp without time zone DEFAULT now(),
-                                                 email character varying(255),
-                                                 address character varying(255),
-                                                 date_of_birth date DEFAULT now()
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    identity_card character varying(30),
+    ic_place character varying(255),
+    ic_date timestamp without time zone,
+    phone_number character varying(30),
+    type character varying(20),
+    app_user_id bigint,
+    liquidated_contract_id bigint,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    email character varying(255),
+    address character varying(255),
+    date_of_birth date DEFAULT now()
 );
 
 
@@ -1336,11 +1542,11 @@ ALTER TABLE public.liquidated_contract_people OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.liquidated_contract_people_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.liquidated_contract_people_id_seq OWNER TO postgres;
@@ -1357,10 +1563,10 @@ ALTER SEQUENCE public.liquidated_contract_people_id_seq OWNED BY public.liquidat
 --
 
 CREATE TABLE public.liquidated_deduction_item (
-                                                id bigint NOT NULL,
-                                                content character varying(500),
-                                                price double precision DEFAULT 0,
-                                                liquidated_contract_id bigint
+    id bigint NOT NULL,
+    content character varying(500),
+    price double precision DEFAULT 0,
+    liquidated_contract_id bigint
 );
 
 
@@ -1371,11 +1577,11 @@ ALTER TABLE public.liquidated_deduction_item OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.liquidated_deduction_item_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.liquidated_deduction_item_id_seq OWNER TO postgres;
@@ -1392,15 +1598,15 @@ ALTER SEQUENCE public.liquidated_deduction_item_id_seq OWNED BY public.liquidate
 --
 
 CREATE TABLE public.mt_cost (
-                              id bigint NOT NULL,
-                              name character varying(500) NOT NULL,
-                              calculation_unit character varying(500) NOT NULL,
-                              unit_price numeric(18,2) NOT NULL,
-                              description character varying(500),
-                              type character varying(50) DEFAULT NULL::character varying,
-                              calculation_type character varying(50),
-                              is_default boolean DEFAULT false,
-                              time_to_pay character varying(50) DEFAULT 'END_OF_MONTH'::character varying
+    id bigint NOT NULL,
+    name character varying(500) NOT NULL,
+    calculation_unit character varying(500) NOT NULL,
+    unit_price numeric(18,2) NOT NULL,
+    description character varying(500),
+    type character varying(50) DEFAULT NULL::character varying,
+    calculation_type character varying(50),
+    is_default boolean DEFAULT false,
+    time_to_pay character varying(50) DEFAULT 'END_OF_MONTH'::character varying
 );
 
 
@@ -1411,11 +1617,11 @@ ALTER TABLE public.mt_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.mt_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.mt_cost_id_seq OWNER TO postgres;
@@ -1432,12 +1638,12 @@ ALTER SEQUENCE public.mt_cost_id_seq OWNED BY public.mt_cost.id;
 --
 
 CREATE TABLE public.mt_sub_supplies (
-                                      id bigint NOT NULL,
-                                      sub_service character varying(500) NOT NULL,
-                                      description character varying(500),
-                                      quantity bigint,
-                                      mt_supplies_id bigint NOT NULL,
-                                      is_default boolean DEFAULT false
+    id bigint NOT NULL,
+    sub_service character varying(500) NOT NULL,
+    description character varying(500),
+    quantity bigint,
+    mt_supplies_id bigint NOT NULL,
+    is_default boolean DEFAULT false
 );
 
 
@@ -1448,11 +1654,11 @@ ALTER TABLE public.mt_sub_supplies OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.mt_sub_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.mt_sub_supplies_id_seq OWNER TO postgres;
@@ -1469,11 +1675,11 @@ ALTER SEQUENCE public.mt_sub_supplies_id_seq OWNED BY public.mt_sub_supplies.id;
 --
 
 CREATE SEQUENCE public.mt_sub_supplies_mt_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.mt_sub_supplies_mt_supplies_id_seq OWNER TO postgres;
@@ -1490,13 +1696,13 @@ ALTER SEQUENCE public.mt_sub_supplies_mt_supplies_id_seq OWNED BY public.mt_sub_
 --
 
 CREATE TABLE public.mt_supplies (
-                                  id bigint NOT NULL,
-                                  service character varying(255),
-                                  description text,
-                                  quantity bigint,
-                                  updated_at timestamp without time zone DEFAULT now(),
-                                  updated_by bigint,
-                                  is_default boolean DEFAULT false
+    id bigint NOT NULL,
+    service character varying(255),
+    description text,
+    quantity bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    is_default boolean DEFAULT false
 );
 
 
@@ -1507,11 +1713,11 @@ ALTER TABLE public.mt_supplies OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.mt_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.mt_supplies_id_seq OWNER TO postgres;
@@ -1528,16 +1734,16 @@ ALTER SEQUENCE public.mt_supplies_id_seq OWNED BY public.mt_supplies.id;
 --
 
 CREATE TABLE public.notification (
-                                   id bigint NOT NULL,
-                                   title character varying(255) NOT NULL,
-                                   body character varying,
-                                   user_id bigint NOT NULL,
-                                   reference_id bigint NOT NULL,
-                                   type character varying(50) NOT NULL,
-                                   url character varying(500),
-                                   created_at timestamp without time zone DEFAULT now(),
-                                   mark_as_read boolean DEFAULT false,
-                                   reference_code character varying(255)
+    id bigint NOT NULL,
+    title character varying(255) NOT NULL,
+    body character varying,
+    user_id bigint NOT NULL,
+    reference_id bigint NOT NULL,
+    type character varying(50) NOT NULL,
+    url character varying(500),
+    created_at timestamp without time zone DEFAULT now(),
+    mark_as_read boolean DEFAULT false,
+    reference_code character varying(255)
 );
 
 
@@ -1548,11 +1754,11 @@ ALTER TABLE public.notification OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.notification_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.notification_id_seq OWNER TO postgres;
@@ -1569,18 +1775,18 @@ ALTER SEQUENCE public.notification_id_seq OWNED BY public.notification.id;
 --
 
 CREATE TABLE public.organization (
-                                   id bigint NOT NULL,
-                                   name character varying(500),
-                                   description character varying(500),
-                                   address character varying(500),
-                                   email character varying(500),
-                                   phone_number character varying(500),
-                                   admin_id bigint NOT NULL,
-                                   created_at timestamp without time zone,
-                                   updated_at timestamp without time zone,
-                                   created_by bigint NOT NULL,
-                                   is_deleted boolean DEFAULT false,
-                                   code_contract character varying
+    id bigint NOT NULL,
+    name character varying(500),
+    description character varying(500),
+    address character varying(500),
+    email character varying(500),
+    phone_number character varying(500),
+    admin_id bigint NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    created_by bigint NOT NULL,
+    is_deleted boolean DEFAULT false,
+    code_contract character varying
 );
 
 
@@ -1591,10 +1797,10 @@ ALTER TABLE public.organization OWNER TO postgres;
 --
 
 CREATE TABLE public.organization_user (
-                                        id bigint NOT NULL,
-                                        user_id bigint NOT NULL,
-                                        organization_id bigint NOT NULL,
-                                        created_at timestamp without time zone DEFAULT now()
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    organization_id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1605,9 +1811,9 @@ ALTER TABLE public.organization_user OWNER TO postgres;
 --
 
 CREATE TABLE public.province (
-                               id bigint NOT NULL,
-                               code character varying(50),
-                               name character varying(500)
+    id bigint NOT NULL,
+    code character varying(50),
+    name character varying(500)
 );
 
 
@@ -1618,11 +1824,11 @@ ALTER TABLE public.province OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.province_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.province_id_seq OWNER TO postgres;
@@ -1639,11 +1845,11 @@ ALTER SEQUENCE public.province_id_seq OWNED BY public.province.id;
 --
 
 CREATE SEQUENCE public.public_organization_user_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.public_organization_user_id_seq OWNER TO postgres;
@@ -1660,15 +1866,15 @@ ALTER SEQUENCE public.public_organization_user_id_seq OWNED BY public.organizati
 --
 
 CREATE TABLE public.receipt_debt_detail (
-                                          id bigint NOT NULL,
-                                          housing_expense_code character varying(500) NOT NULL,
-                                          old_debt_amount numeric(18,2) DEFAULT 0,
-                                          new_debt_amount numeric(18,2) DEFAULT 0,
-                                          amount_received numeric(18,2) DEFAULT 0,
-                                          receipt_information_id bigint,
-                                          updated_at timestamp without time zone DEFAULT now(),
-                                          created_at timestamp without time zone DEFAULT now(),
-                                          is_deleted boolean DEFAULT false
+    id bigint NOT NULL,
+    housing_expense_code character varying(500) NOT NULL,
+    old_debt_amount numeric(18,2) DEFAULT 0,
+    new_debt_amount numeric(18,2) DEFAULT 0,
+    amount_received numeric(18,2) DEFAULT 0,
+    receipt_information_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -1679,11 +1885,11 @@ ALTER TABLE public.receipt_debt_detail OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.receipt_debt_detail_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.receipt_debt_detail_id_seq OWNER TO postgres;
@@ -1700,33 +1906,33 @@ ALTER SEQUENCE public.receipt_debt_detail_id_seq OWNED BY public.receipt_debt_de
 --
 
 CREATE TABLE public.receipt_information (
-                                          id bigint NOT NULL,
-                                          code character varying(500) NOT NULL,
-                                          date timestamp without time zone NOT NULL,
-                                          amount_received numeric(18,2) NOT NULL,
-                                          payment_date timestamp without time zone NOT NULL,
-                                          note character varying(255),
-                                          status character varying(50),
-                                          room_id bigint NOT NULL,
-                                          rental_contract_id bigint,
-                                          pdf_url character varying(255),
-                                          is_sended boolean DEFAULT false,
-                                          excess_amount numeric(18,2) DEFAULT 0,
-                                          prepaid_expense numeric(18,2) DEFAULT 0,
-                                          total_debt_housing numeric(18,2) DEFAULT 0,
-                                          is_pay_for_housing boolean DEFAULT false,
-                                          is_pay_for_deposit boolean DEFAULT false,
-                                          is_pay_for_rental boolean DEFAULT false,
-                                          deposit_received numeric(18,2) DEFAULT 0,
-                                          tenant_name character varying(500) DEFAULT NULL::character varying,
-                                          tenant_phone character varying(50) DEFAULT NULL::character varying,
-                                          tenant_amount bigint DEFAULT 0,
-                                          vehicle_amount bigint DEFAULT 0,
-                                          date_created integer DEFAULT 0,
-                                          month_created integer DEFAULT 0,
-                                          year_created integer DEFAULT 0,
-                                          old_deposit_debt numeric(18,2) DEFAULT 0,
-                                          new_deposit_debt numeric(18,2) DEFAULT 0
+    id bigint NOT NULL,
+    code character varying(500) NOT NULL,
+    date timestamp without time zone NOT NULL,
+    amount_received numeric(18,2) NOT NULL,
+    payment_date timestamp without time zone NOT NULL,
+    note character varying(255),
+    status character varying(50),
+    room_id bigint NOT NULL,
+    rental_contract_id bigint,
+    pdf_url character varying(255),
+    is_sended boolean DEFAULT false,
+    excess_amount numeric(18,2) DEFAULT 0,
+    prepaid_expense numeric(18,2) DEFAULT 0,
+    total_debt_housing numeric(18,2) DEFAULT 0,
+    is_pay_for_housing boolean DEFAULT false,
+    is_pay_for_deposit boolean DEFAULT false,
+    is_pay_for_rental boolean DEFAULT false,
+    deposit_received numeric(18,2) DEFAULT 0,
+    tenant_name character varying(500) DEFAULT NULL::character varying,
+    tenant_phone character varying(50) DEFAULT NULL::character varying,
+    tenant_amount bigint DEFAULT 0,
+    vehicle_amount bigint DEFAULT 0,
+    date_created integer DEFAULT 0,
+    month_created integer DEFAULT 0,
+    year_created integer DEFAULT 0,
+    old_deposit_debt numeric(18,2) DEFAULT 0,
+    new_deposit_debt numeric(18,2) DEFAULT 0
 );
 
 
@@ -1737,11 +1943,11 @@ ALTER TABLE public.receipt_information OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.receipt_information_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.receipt_information_id_seq OWNER TO postgres;
@@ -1758,13 +1964,13 @@ ALTER SEQUENCE public.receipt_information_id_seq OWNED BY public.receipt_informa
 --
 
 CREATE TABLE public.receipt_information_service (
-                                                  id bigint NOT NULL,
-                                                  name text,
-                                                  price numeric(18,2) DEFAULT 0,
-                                                  receipt_information_id bigint,
-                                                  updated_at timestamp without time zone DEFAULT now(),
-                                                  created_at timestamp without time zone DEFAULT now(),
-                                                  is_deleted boolean DEFAULT false
+    id bigint NOT NULL,
+    name text,
+    price numeric(18,2) DEFAULT 0,
+    receipt_information_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -1775,11 +1981,11 @@ ALTER TABLE public.receipt_information_service OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.receipt_information_service_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.receipt_information_service_id_seq OWNER TO postgres;
@@ -1796,51 +2002,51 @@ ALTER SEQUENCE public.receipt_information_service_id_seq OWNED BY public.receipt
 --
 
 CREATE TABLE public.rental_contract (
-                                      id bigint NOT NULL,
-                                      code character varying(255),
-                                      status character varying(255),
-                                      address character varying(255),
-                                      effective_date date,
-                                      room_id bigint,
-                                      acreage numeric(18,2),
-                                      price numeric(18,2),
-                                      rental_term character varying(255),
-                                      from_date date,
-                                      to_date date,
-                                      number_of_tenants bigint,
-                                      water_indicator numeric(18,2),
-                                      electricity_indicator numeric(18,2),
-                                      deposit numeric(18,2),
-                                      deposit_contract_id bigint,
-                                      pdf_template bigint,
-                                      pdf_url character varying(500),
-                                      is_deleted boolean DEFAULT false,
-                                      created_date date DEFAULT now(),
-                                      created_at timestamp without time zone DEFAULT now(),
-                                      updated_at timestamp without time zone DEFAULT now(),
-                                      created_by bigint,
-                                      updated_by bigint,
-                                      sign_by_lessor_date date,
-                                      sign_by_tenant_date date,
-                                      deposit_amount_received numeric(18,2) DEFAULT 0,
-                                      pay_from_day character varying(20),
-                                      pay_to_day character varying(20),
-                                      punish_from_day character varying(20),
-                                      amount_punish_per_day double precision,
-                                      limit_late_day character varying(20),
-                                      terminate_contract_from_day character varying(20),
-                                      is_liquidated boolean DEFAULT false,
-                                      extension_deposit_balance_amount double precision DEFAULT 0,
-                                      extension_rental_balance_amount double precision DEFAULT 0,
-                                      extension_to_date timestamp without time zone,
-                                      effect_extension_contract_id bigint,
-                                      extension_start_date timestamp without time zone,
-                                      vehicle_number bigint DEFAULT 0,
-                                      extra_deposit_amount numeric(18,2),
-                                      deposit_debt numeric(18,2) DEFAULT 0,
-                                      electric_last_index double precision DEFAULT 0,
-                                      water_last_index double precision DEFAULT 0,
-                                      prepaid_expense double precision DEFAULT 0
+    id bigint NOT NULL,
+    code character varying(255),
+    status character varying(255),
+    address character varying(255),
+    effective_date date,
+    room_id bigint,
+    acreage numeric(18,2),
+    price numeric(18,2),
+    rental_term character varying(255),
+    from_date date,
+    to_date date,
+    number_of_tenants bigint,
+    water_indicator numeric(18,2),
+    electricity_indicator numeric(18,2),
+    deposit numeric(18,2),
+    deposit_contract_id bigint,
+    pdf_template bigint,
+    pdf_url character varying(500),
+    is_deleted boolean DEFAULT false,
+    created_date date DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    created_by bigint,
+    updated_by bigint,
+    sign_by_lessor_date date,
+    sign_by_tenant_date date,
+    deposit_amount_received numeric(18,2) DEFAULT 0,
+    pay_from_day character varying(20),
+    pay_to_day character varying(20),
+    punish_from_day character varying(20),
+    amount_punish_per_day double precision,
+    limit_late_day character varying(20),
+    terminate_contract_from_day character varying(20),
+    is_liquidated boolean DEFAULT false,
+    extension_deposit_balance_amount double precision DEFAULT 0,
+    extension_rental_balance_amount double precision DEFAULT 0,
+    extension_to_date timestamp without time zone,
+    effect_extension_contract_id bigint,
+    extension_start_date timestamp without time zone,
+    vehicle_number bigint DEFAULT 0,
+    extra_deposit_amount numeric(18,2),
+    deposit_debt numeric(18,2) DEFAULT 0,
+    electric_last_index double precision DEFAULT 0,
+    water_last_index double precision DEFAULT 0,
+    prepaid_expense double precision DEFAULT 0
 );
 
 
@@ -1851,9 +2057,9 @@ ALTER TABLE public.rental_contract OWNER TO postgres;
 --
 
 CREATE TABLE public.rental_contract_appendix_sequence (
-                                                        id bigint NOT NULL,
-                                                        rental_contract_id bigint NOT NULL,
-                                                        sequence bigint DEFAULT 0
+    id bigint NOT NULL,
+    rental_contract_id bigint NOT NULL,
+    sequence bigint DEFAULT 0
 );
 
 
@@ -1864,11 +2070,11 @@ ALTER TABLE public.rental_contract_appendix_sequence OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.rental_contract_appendix_sequence_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.rental_contract_appendix_sequence_id_seq OWNER TO postgres;
@@ -1885,19 +2091,19 @@ ALTER SEQUENCE public.rental_contract_appendix_sequence_id_seq OWNED BY public.r
 --
 
 CREATE TABLE public.rental_contract_cost (
-                                           id bigint NOT NULL,
-                                           name character varying(255),
-                                           description character varying(255),
-                                           unit_price numeric(18,2),
-                                           unit character varying(255),
-                                           rental_contract_id bigint,
-                                           room_cost_id bigint,
-                                           updated_at timestamp without time zone DEFAULT now(),
-                                           created_at timestamp without time zone DEFAULT now(),
-                                           type character varying(50) DEFAULT NULL::character varying,
-                                           calculation_type character varying(50) DEFAULT NULL::character varying,
-                                           time_to_pay character varying(50),
-                                           can_delete boolean DEFAULT false
+    id bigint NOT NULL,
+    name character varying(255),
+    description character varying(255),
+    unit_price numeric(18,2),
+    unit character varying(255),
+    rental_contract_id bigint,
+    room_cost_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    type character varying(50) DEFAULT NULL::character varying,
+    calculation_type character varying(50) DEFAULT NULL::character varying,
+    time_to_pay character varying(50),
+    can_delete boolean DEFAULT false
 );
 
 
@@ -1908,11 +2114,11 @@ ALTER TABLE public.rental_contract_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.rental_contract_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.rental_contract_cost_id_seq OWNER TO postgres;
@@ -1929,11 +2135,11 @@ ALTER SEQUENCE public.rental_contract_cost_id_seq OWNED BY public.rental_contrac
 --
 
 CREATE SEQUENCE public.rental_contract_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.rental_contract_id_seq OWNER TO postgres;
@@ -1950,19 +2156,19 @@ ALTER SEQUENCE public.rental_contract_id_seq OWNED BY public.rental_contract.id;
 --
 
 CREATE TABLE public.rental_contract_people (
-                                             id bigint NOT NULL,
-                                             name character varying(255),
-                                             phone_number character varying(50),
-                                             indentity_card character varying(50),
-                                             ic_place character varying(255),
-                                             ic_date date,
-                                             type character varying(20),
-                                             rental_contract_id bigint NOT NULL,
-                                             email character varying(500),
-                                             app_user_id bigint,
-                                             permanent_residence character varying(500),
-                                             career character varying(500),
-                                             date_of_birth date
+    id bigint NOT NULL,
+    name character varying(255),
+    phone_number character varying(50),
+    indentity_card character varying(50),
+    ic_place character varying(255),
+    ic_date date,
+    type character varying(20),
+    rental_contract_id bigint NOT NULL,
+    email character varying(500),
+    app_user_id bigint,
+    permanent_residence character varying(500),
+    career character varying(500),
+    date_of_birth date
 );
 
 
@@ -1973,11 +2179,11 @@ ALTER TABLE public.rental_contract_people OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.rental_contract_people_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.rental_contract_people_id_seq OWNER TO postgres;
@@ -1994,10 +2200,10 @@ ALTER SEQUENCE public.rental_contract_people_id_seq OWNED BY public.rental_contr
 --
 
 CREATE TABLE public.rental_contract_vehicle (
-                                              id bigint NOT NULL,
-                                              name character varying(255) NOT NULL,
-                                              license_plate character varying(50) NOT NULL,
-                                              rental_contract_id bigint NOT NULL
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    license_plate character varying(50) NOT NULL,
+    rental_contract_id bigint NOT NULL
 );
 
 
@@ -2008,11 +2214,11 @@ ALTER TABLE public.rental_contract_vehicle OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.rental_contract_vehicle_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.rental_contract_vehicle_id_seq OWNER TO postgres;
@@ -2029,15 +2235,15 @@ ALTER SEQUENCE public.rental_contract_vehicle_id_seq OWNED BY public.rental_cont
 --
 
 CREATE TABLE public.role_permission (
-                                      id bigint NOT NULL,
-                                      code character varying(255) NOT NULL,
-                                      name character varying(500),
-                                      is_active boolean,
-                                      is_deleted boolean,
-                                      org_id bigint,
-                                      is_default boolean,
-                                      permissions character varying[],
-                                      updated_at timestamp without time zone
+    id bigint NOT NULL,
+    code character varying(255) NOT NULL,
+    name character varying(500),
+    is_active boolean,
+    is_deleted boolean,
+    org_id bigint,
+    is_default boolean,
+    permissions character varying[],
+    updated_at timestamp without time zone
 );
 
 
@@ -2048,28 +2254,28 @@ ALTER TABLE public.role_permission OWNER TO postgres;
 --
 
 CREATE TABLE public.room (
-                           id bigint NOT NULL,
-                           room_number character varying(255) NOT NULL,
-                           type character varying(50),
-                           num_tenants bigint,
-                           acreage numeric(18,2),
-                           price numeric(18,2),
-                           bonus numeric(18,2),
-                           deposit numeric(18,2),
-                           note text,
-                           balcony boolean DEFAULT false,
-                           mezzanine boolean DEFAULT false,
-                           pet boolean DEFAULT false,
-                           building_id bigint,
-                           updated_at timestamp without time zone DEFAULT now(),
-                           created_at timestamp without time zone DEFAULT now(),
-                           updated_by bigint,
-                           status character varying(50),
-                           media character varying(500) DEFAULT NULL::character varying,
-                           is_deleted boolean DEFAULT false,
-                           rented_by bigint,
-                           is_public boolean DEFAULT false,
-                           bedroom_total integer DEFAULT 0
+    id bigint NOT NULL,
+    room_number character varying(255) NOT NULL,
+    type character varying(50),
+    num_tenants bigint,
+    acreage numeric(18,2),
+    price numeric(18,2),
+    bonus numeric(18,2),
+    deposit numeric(18,2),
+    note text,
+    balcony boolean DEFAULT false,
+    mezzanine boolean DEFAULT false,
+    pet boolean DEFAULT false,
+    building_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    status character varying(50),
+    media character varying(500) DEFAULT NULL::character varying,
+    is_deleted boolean DEFAULT false,
+    rented_by bigint,
+    is_public boolean DEFAULT false,
+    bedroom_total integer DEFAULT 0
 );
 
 
@@ -2080,15 +2286,15 @@ ALTER TABLE public.room OWNER TO postgres;
 --
 
 CREATE TABLE public.room_content (
-                                   id bigint NOT NULL,
-                                   room_id bigint NOT NULL,
-                                   content text NOT NULL,
-                                   slug text NOT NULL,
-                                   created_at timestamp without time zone DEFAULT now(),
-                                   updated_at timestamp without time zone DEFAULT now(),
-                                   created_by bigint NOT NULL,
-                                   updated_by bigint NOT NULL,
-                                   is_deleted boolean DEFAULT false
+    id bigint NOT NULL,
+    room_id bigint NOT NULL,
+    content text NOT NULL,
+    slug text NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    created_by bigint NOT NULL,
+    updated_by bigint NOT NULL,
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -2099,11 +2305,11 @@ ALTER TABLE public.room_content OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_content_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_content_id_seq OWNER TO postgres;
@@ -2120,14 +2326,14 @@ ALTER SEQUENCE public.room_content_id_seq OWNED BY public.room_content.id;
 --
 
 CREATE TABLE public.room_contract (
-                                    id bigint NOT NULL,
-                                    name character varying(255) NOT NULL,
-                                    type character varying(255) NOT NULL,
-                                    created_at timestamp without time zone DEFAULT now(),
-                                    updated_by bigint NOT NULL,
-                                    room_id bigint NOT NULL,
-                                    is_active boolean DEFAULT true,
-                                    file_path character varying(500)
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    type character varying(255) NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    updated_by bigint NOT NULL,
+    room_id bigint NOT NULL,
+    is_active boolean DEFAULT true,
+    file_path character varying(500)
 );
 
 
@@ -2138,11 +2344,11 @@ ALTER TABLE public.room_contract OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_contract_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_contract_id_seq OWNER TO postgres;
@@ -2159,18 +2365,18 @@ ALTER SEQUENCE public.room_contract_id_seq OWNED BY public.room_contract.id;
 --
 
 CREATE TABLE public.room_cost (
-                                id bigint NOT NULL,
-                                name character varying(255),
-                                description text,
-                                unit_price numeric(18,2),
-                                unit character varying(55),
-                                room_id bigint,
-                                updated_at timestamp without time zone DEFAULT now(),
-                                created_at timestamp without time zone DEFAULT now(),
-                                updated_by bigint,
-                                type character varying(50) DEFAULT NULL::character varying,
-                                calculation_type character varying(50) DEFAULT NULL::character varying,
-                                time_to_pay character varying(50)
+    id bigint NOT NULL,
+    name character varying(255),
+    description text,
+    unit_price numeric(18,2),
+    unit character varying(55),
+    room_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    type character varying(50) DEFAULT NULL::character varying,
+    calculation_type character varying(50) DEFAULT NULL::character varying,
+    time_to_pay character varying(50)
 );
 
 
@@ -2181,11 +2387,11 @@ ALTER TABLE public.room_cost OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_cost_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_cost_id_seq OWNER TO postgres;
@@ -2202,19 +2408,19 @@ ALTER SEQUENCE public.room_cost_id_seq OWNED BY public.room_cost.id;
 --
 
 CREATE TABLE public.room_deposited_customer (
-                                              id bigint NOT NULL,
-                                              identity_number character varying(50),
-                                              name character varying(255),
-                                              birth_day timestamp without time zone,
-                                              address text,
-                                              document text[],
-                                              job character varying(255),
-                                              working_address text,
-                                              phone_number character varying(50),
-                                              created_at timestamp without time zone DEFAULT now(),
-                                              updated_at timestamp without time zone DEFAULT now(),
-                                              created_by bigint,
-                                              room_id bigint
+    id bigint NOT NULL,
+    identity_number character varying(50),
+    name character varying(255),
+    birth_day timestamp without time zone,
+    address text,
+    document text[],
+    job character varying(255),
+    working_address text,
+    phone_number character varying(50),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    created_by bigint,
+    room_id bigint
 );
 
 
@@ -2225,11 +2431,11 @@ ALTER TABLE public.room_deposited_customer OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_deposited_customer_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_deposited_customer_id_seq OWNER TO postgres;
@@ -2246,31 +2452,31 @@ ALTER SEQUENCE public.room_deposited_customer_id_seq OWNED BY public.room_deposi
 --
 
 CREATE TABLE public.room_customer (
-                                    id bigint DEFAULT nextval('public.room_deposited_customer_id_seq'::regclass) NOT NULL,
-                                    identity_number character varying(50),
-                                    name character varying(255),
-                                    birth_day timestamp without time zone,
-                                    address text,
-                                    document text[],
-                                    job character varying(255),
-                                    working_address text,
-                                    phone_number character varying(50),
-                                    created_at timestamp without time zone DEFAULT now(),
-                                    updated_at timestamp without time zone DEFAULT now(),
-                                    created_by bigint,
-                                    room_id bigint,
-                                    is_deposited boolean DEFAULT false,
-                                    is_rented boolean DEFAULT false,
-                                    customer_type character varying,
-                                    customer_rent_status character varying,
-                                    rate_customer character varying,
-                                    date_into_home timestamp(0) without time zone,
-                                    is_deleted boolean,
-                                    place_of_id character varying,
-                                    gender character varying,
-                                    date_of_id timestamp(0) without time zone,
-                                    media json DEFAULT '{}'::json,
-                                    relationship_main_rent character varying
+    id bigint DEFAULT nextval('public.room_deposited_customer_id_seq'::regclass) NOT NULL,
+    identity_number character varying(50),
+    name character varying(255),
+    birth_day timestamp without time zone,
+    address text,
+    document text[],
+    job character varying(255),
+    working_address text,
+    phone_number character varying(50),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    created_by bigint,
+    room_id bigint,
+    is_deposited boolean DEFAULT false,
+    is_rented boolean DEFAULT false,
+    customer_type character varying,
+    customer_rent_status character varying,
+    rate_customer character varying,
+    date_into_home timestamp(0) without time zone,
+    is_deleted boolean,
+    place_of_id character varying,
+    gender character varying,
+    date_of_id timestamp(0) without time zone,
+    media json DEFAULT '{}'::json,
+    relationship_main_rent character varying
 );
 
 
@@ -2281,20 +2487,20 @@ ALTER TABLE public.room_customer OWNER TO postgres;
 --
 
 CREATE TABLE public.room_history_payment (
-                                           id bigint NOT NULL,
-                                           payment_term timestamp without time zone,
-                                           status character varying(20),
-                                           amount_money bigint,
-                                           old_debt bigint,
-                                           new_debt bigint,
-                                           total_money bigint,
-                                           room_id bigint,
-                                           payment_time timestamp without time zone,
-                                           is_deleted boolean,
-                                           updated_at timestamp without time zone DEFAULT now(),
-                                           created_at timestamp without time zone DEFAULT now(),
-                                           created_by_id bigint,
-                                           price bigint
+    id bigint NOT NULL,
+    payment_term timestamp without time zone,
+    status character varying(20),
+    amount_money bigint,
+    old_debt bigint,
+    new_debt bigint,
+    total_money bigint,
+    room_id bigint,
+    payment_time timestamp without time zone,
+    is_deleted boolean,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    created_by_id bigint,
+    price bigint
 );
 
 
@@ -2305,11 +2511,11 @@ ALTER TABLE public.room_history_payment OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_history_payment_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_history_payment_id_seq OWNER TO postgres;
@@ -2326,11 +2532,11 @@ ALTER SEQUENCE public.room_history_payment_id_seq OWNED BY public.room_history_p
 --
 
 CREATE SEQUENCE public.room_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_id_seq OWNER TO postgres;
@@ -2347,15 +2553,15 @@ ALTER SEQUENCE public.room_id_seq OWNED BY public.room.id;
 --
 
 CREATE TABLE public.room_media (
-                                 id bigint NOT NULL,
-                                 name character varying(255),
-                                 created_at timestamp without time zone DEFAULT now(),
-                                 updated_at timestamp without time zone DEFAULT now(),
-                                 updated_by bigint,
-                                 room_id bigint,
-                                 is_default boolean DEFAULT false,
-                                 size bigint DEFAULT 0 NOT NULL,
-                                 media_type character varying(50) DEFAULT 'IMAGE'::character varying NOT NULL
+    id bigint NOT NULL,
+    name character varying(255),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    room_id bigint,
+    is_default boolean DEFAULT false,
+    size bigint DEFAULT 0 NOT NULL,
+    media_type character varying(50) DEFAULT 'IMAGE'::character varying NOT NULL
 );
 
 
@@ -2366,11 +2572,11 @@ ALTER TABLE public.room_media OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_media_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_media_id_seq OWNER TO postgres;
@@ -2387,13 +2593,13 @@ ALTER SEQUENCE public.room_media_id_seq OWNED BY public.room_media.id;
 --
 
 CREATE TABLE public.room_rate_customer (
-                                         id bigint NOT NULL,
-                                         rate_customer character varying(255) NOT NULL,
-                                         date_into_home timestamp without time zone,
-                                         date_out_home timestamp without time zone,
-                                         created_at timestamp without time zone DEFAULT now(),
-                                         room_customer_id bigint NOT NULL,
-                                         reviewer_id bigint
+    id bigint NOT NULL,
+    rate_customer character varying(255) NOT NULL,
+    date_into_home timestamp without time zone,
+    date_out_home timestamp without time zone,
+    created_at timestamp without time zone DEFAULT now(),
+    room_customer_id bigint NOT NULL,
+    reviewer_id bigint
 );
 
 
@@ -2404,11 +2610,11 @@ ALTER TABLE public.room_rate_customer OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_rate_customer_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_rate_customer_id_seq OWNER TO postgres;
@@ -2425,10 +2631,10 @@ ALTER SEQUENCE public.room_rate_customer_id_seq OWNED BY public.room_rate_custom
 --
 
 CREATE TABLE public.room_rule (
-                                id bigint NOT NULL,
-                                regulation character varying(255) NOT NULL,
-                                content text NOT NULL,
-                                room_id bigint NOT NULL
+    id bigint NOT NULL,
+    regulation character varying(255) NOT NULL,
+    content text NOT NULL,
+    room_id bigint NOT NULL
 );
 
 
@@ -2439,11 +2645,11 @@ ALTER TABLE public.room_rule OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_rule_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_rule_id_seq OWNER TO postgres;
@@ -2460,22 +2666,22 @@ ALTER SEQUENCE public.room_rule_id_seq OWNED BY public.room_rule.id;
 --
 
 CREATE TABLE public.room_schedule (
-                                    id bigint NOT NULL,
-                                    customer_name character varying(255),
-                                    customer_phone_number character varying(20),
-                                    customer_zalo character varying(50),
-                                    appointment_time timestamp without time zone,
-                                    receiver_name character varying(255),
-                                    receiver_phone_number character varying(20),
-                                    receiver_zalo character varying(50),
-                                    receiver_identity_number character varying(50),
-                                    security_name character varying(255),
-                                    security_phone_number character varying(20),
-                                    security_zalo character varying(50),
-                                    security_identity_number character varying(50),
-                                    room_id bigint,
-                                    updated_at timestamp without time zone DEFAULT now(),
-                                    updated_by bigint
+    id bigint NOT NULL,
+    customer_name character varying(255),
+    customer_phone_number character varying(20),
+    customer_zalo character varying(50),
+    appointment_time timestamp without time zone,
+    receiver_name character varying(255),
+    receiver_phone_number character varying(20),
+    receiver_zalo character varying(50),
+    receiver_identity_number character varying(50),
+    security_name character varying(255),
+    security_phone_number character varying(20),
+    security_zalo character varying(50),
+    security_identity_number character varying(50),
+    room_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    updated_by bigint
 );
 
 
@@ -2486,11 +2692,11 @@ ALTER TABLE public.room_schedule OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_schedule_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_schedule_id_seq OWNER TO postgres;
@@ -2507,11 +2713,11 @@ ALTER SEQUENCE public.room_schedule_id_seq OWNED BY public.room_schedule.id;
 --
 
 CREATE TABLE public.room_sub_supplies (
-                                        id bigint NOT NULL,
-                                        room_id bigint NOT NULL,
-                                        sub_supplies_id bigint NOT NULL,
-                                        sub_service character varying(500),
-                                        description character varying(500)
+    id bigint NOT NULL,
+    room_id bigint NOT NULL,
+    sub_supplies_id bigint NOT NULL,
+    sub_service character varying(500),
+    description character varying(500)
 );
 
 
@@ -2522,11 +2728,11 @@ ALTER TABLE public.room_sub_supplies OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_sub_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_sub_supplies_id_seq OWNER TO postgres;
@@ -2543,11 +2749,11 @@ ALTER SEQUENCE public.room_sub_supplies_id_seq OWNED BY public.room_sub_supplies
 --
 
 CREATE SEQUENCE public.room_sub_supplies_sub_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_sub_supplies_sub_supplies_id_seq OWNER TO postgres;
@@ -2564,15 +2770,15 @@ ALTER SEQUENCE public.room_sub_supplies_sub_supplies_id_seq OWNED BY public.room
 --
 
 CREATE TABLE public.room_supplies (
-                                    id bigint NOT NULL,
-                                    service character varying(255),
-                                    description text,
-                                    quantity bigint,
-                                    room_id bigint,
-                                    updated_at timestamp without time zone DEFAULT now(),
-                                    created_at timestamp without time zone DEFAULT now(),
-                                    updated_by bigint,
-                                    mt_supplies_id bigint
+    id bigint NOT NULL,
+    service character varying(255),
+    description text,
+    quantity bigint,
+    room_id bigint,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    updated_by bigint,
+    mt_supplies_id bigint
 );
 
 
@@ -2583,11 +2789,11 @@ ALTER TABLE public.room_supplies OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_supplies_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_supplies_id_seq OWNER TO postgres;
@@ -2604,13 +2810,13 @@ ALTER SEQUENCE public.room_supplies_id_seq OWNED BY public.room_supplies.id;
 --
 
 CREATE TABLE public.room_utility (
-                                   id bigint NOT NULL,
-                                   room_id bigint NOT NULL,
-                                   utility_id bigint,
-                                   name character varying(500) NOT NULL,
-                                   description character varying(500) NOT NULL,
-                                   image character varying(500) NOT NULL,
-                                   is_active boolean
+    id bigint NOT NULL,
+    room_id bigint NOT NULL,
+    utility_id bigint,
+    name character varying(500) NOT NULL,
+    description character varying(500) NOT NULL,
+    image character varying(500) NOT NULL,
+    is_active boolean
 );
 
 
@@ -2621,11 +2827,11 @@ ALTER TABLE public.room_utility OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.room_utility_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.room_utility_id_seq OWNER TO postgres;
@@ -2642,9 +2848,9 @@ ALTER SEQUENCE public.room_utility_id_seq OWNED BY public.room_utility.id;
 --
 
 CREATE TABLE public.sequence (
-                               id bigint NOT NULL,
-                               type character varying(255),
-                               sequence bigint DEFAULT 0
+    id bigint NOT NULL,
+    type character varying(255),
+    sequence bigint DEFAULT 0
 );
 
 
@@ -2655,11 +2861,11 @@ ALTER TABLE public.sequence OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.sequence_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.sequence_id_seq OWNER TO postgres;
@@ -2676,10 +2882,10 @@ ALTER SEQUENCE public.sequence_id_seq OWNED BY public.sequence.id;
 --
 
 CREATE TABLE public.user_notification (
-                                        id bigint NOT NULL,
-                                        user_id bigint NOT NULL,
-                                        fcm_key character varying(500),
-                                        is_active boolean DEFAULT true
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    fcm_key character varying(500),
+    is_active boolean DEFAULT true
 );
 
 
@@ -2690,11 +2896,11 @@ ALTER TABLE public.user_notification OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.user_notification_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.user_notification_id_seq OWNER TO postgres;
@@ -2711,16 +2917,16 @@ ALTER SEQUENCE public.user_notification_id_seq OWNED BY public.user_notification
 --
 
 CREATE TABLE public.user_permission (
-                                      id bigint NOT NULL,
-                                      role_id bigint NOT NULL,
-                                      user_id bigint NOT NULL,
-                                      building_id bigint,
-                                      permission character varying[],
-                                      status character varying(255),
-                                      organization_id bigint,
-                                      role_name character varying(500),
-                                      is_deleted boolean DEFAULT false,
-                                      updated_at timestamp without time zone DEFAULT now()
+    id bigint NOT NULL,
+    role_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    building_id bigint,
+    permission character varying[],
+    status character varying(255),
+    organization_id bigint,
+    role_name character varying(500),
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -2731,11 +2937,11 @@ ALTER TABLE public.user_permission OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.user_permission_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.user_permission_id_seq OWNER TO postgres;
@@ -2752,11 +2958,11 @@ ALTER SEQUENCE public.user_permission_id_seq OWNED BY public.user_permission.id;
 --
 
 CREATE TABLE public.utility (
-                              id bigint NOT NULL,
-                              name character varying(500) NOT NULL,
-                              description character varying(500) NOT NULL,
-                              image character varying(500),
-                              is_default boolean DEFAULT false
+    id bigint NOT NULL,
+    name character varying(500) NOT NULL,
+    description character varying(500) NOT NULL,
+    image character varying(500),
+    is_default boolean DEFAULT false
 );
 
 
@@ -2767,11 +2973,11 @@ ALTER TABLE public.utility OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.utility_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.utility_id_seq OWNER TO postgres;
@@ -2788,15 +2994,15 @@ ALTER SEQUENCE public.utility_id_seq OWNED BY public.utility.id;
 --
 
 CREATE TABLE public.vehicles (
-                               id bigint NOT NULL,
-                               vehicle_brand character varying(100),
-                               license_plate character varying(100),
-                               type_vehicle character varying(100),
-                               contract_id bigint,
-                               is_deleted boolean,
-                               updated_at timestamp without time zone DEFAULT now(),
-                               created_at timestamp without time zone DEFAULT now(),
-                               created_by_id bigint
+    id bigint NOT NULL,
+    vehicle_brand character varying(100),
+    license_plate character varying(100),
+    type_vehicle character varying(100),
+    contract_id bigint,
+    is_deleted boolean,
+    updated_at timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    created_by_id bigint
 );
 
 
@@ -2807,11 +3013,11 @@ ALTER TABLE public.vehicles OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.vehicles_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.vehicles_id_seq OWNER TO postgres;
@@ -2828,10 +3034,10 @@ ALTER SEQUENCE public.vehicles_id_seq OWNED BY public.vehicles.id;
 --
 
 CREATE TABLE public.ward (
-                           id bigint NOT NULL,
-                           code character varying(50),
-                           name character varying(500),
-                           district_code character varying(50)
+    id bigint NOT NULL,
+    code character varying(50),
+    name character varying(500),
+    district_code character varying(50)
 );
 
 
@@ -2842,11 +3048,11 @@ ALTER TABLE public.ward OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.ward_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER SEQUENCE public.ward_id_seq OWNER TO postgres;
@@ -2857,6 +3063,127 @@ ALTER SEQUENCE public.ward_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.ward_id_seq OWNED BY public.ward.id;
 
+
+--
+-- Name: address; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user".address (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "codeProvince" character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL,
+    "codeWard" character varying NOT NULL,
+    "specificAddress" character varying NOT NULL,
+    "userId" uuid NOT NULL
+);
+
+
+ALTER TABLE "user".address OWNER TO postgres;
+
+--
+-- Name: address_district; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user".address_district (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeProvince" character varying NOT NULL
+);
+
+
+ALTER TABLE "user".address_district OWNER TO postgres;
+
+--
+-- Name: address_province; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user".address_province (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL
+);
+
+
+ALTER TABLE "user".address_province OWNER TO postgres;
+
+--
+-- Name: address_ward; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user".address_ward (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    code character varying NOT NULL,
+    "codeDistrict" character varying NOT NULL
+);
+
+
+ALTER TABLE "user".address_ward OWNER TO postgres;
+
+--
+-- Name: user; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user"."user" (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL,
+    avatar character varying,
+    password character varying NOT NULL,
+    "refreshToken" character varying,
+    otp character varying,
+    email character varying NOT NULL,
+    "phoneNumber" character varying NOT NULL,
+    dob timestamp without time zone NOT NULL,
+    description character varying,
+    "roleCode" character varying,
+    "positionCode" character varying,
+    "startDate" timestamp without time zone NOT NULL,
+    "dateLeave" real,
+    "dateOff" real DEFAULT '0'::real
+);
+
+
+ALTER TABLE "user"."user" OWNER TO postgres;
+
+--
+-- Name: user_role; Type: TABLE; Schema: user; Owner: postgres
+--
+
+CREATE TABLE "user".user_role (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    "isDeleted" timestamp without time zone,
+    "isDisabled" timestamp without time zone,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
+    code character varying NOT NULL,
+    name character varying NOT NULL,
+    "isSystemAdmin" boolean DEFAULT false NOT NULL,
+    permissions jsonb DEFAULT '[]'::jsonb NOT NULL
+);
+
+
+ALTER TABLE "user".user_role OWNER TO postgres;
 
 --
 -- Name: building id; Type: DEFAULT; Schema: public; Owner: postgres
@@ -3321,6 +3648,86 @@ ALTER TABLE ONLY public.ward ALTER COLUMN id SET DEFAULT nextval('public.ward_id
 
 
 --
+-- Data for Name: code; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.code (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, type, name, description) FROM stdin;
+\.
+
+
+--
+-- Data for Name: code_type; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.code_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary") FROM stdin;
+\.
+
+
+--
+-- Data for Name: data; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, name, image, "order") FROM stdin;
+\.
+
+
+--
+-- Data for Name: data_translation; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", content, "dataId") FROM stdin;
+\.
+
+
+--
+-- Data for Name: data_type; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.data_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary") FROM stdin;
+\.
+
+
+--
+-- Data for Name: file; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.file (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, url, description, data, status, "userId") FROM stdin;
+\.
+
+
+--
+-- Data for Name: parameter; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en) FROM stdin;
+\.
+
+
+--
+-- Data for Name: post; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.post (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, "thumbnailUrl") FROM stdin;
+\.
+
+
+--
+-- Data for Name: post_translation; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, slug, content, "postId") FROM stdin;
+\.
+
+
+--
+-- Data for Name: post_type; Type: TABLE DATA; Schema: core; Owner: postgres
+--
+
+COPY core.post_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary", mpath, parent_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: app_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3441,12 +3848,12 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 131	5555555555	phúc		\N	Ninh Thuận	5555555555	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
 132	testmobileprod@gmail.com	Test Mobile Prod	testmobileprod@gmail.com	102004208181	Thừa Thiên Huế	0374208181	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2000-01-01 00:00:00	2022-11-30	Thừa Thiên Huế
 133	prodmobile@gmail.com	Prod Mobile	prodmobile@gmail.com	102005058181	Thừa Thiên Huế	0345058181	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2000-01-01 00:00:00	2022-11-30	Thừa Thiên Huế
-153	0342756203	Nguyễn Duy Thắng 		197454001	Gio Việt Gio Linh Quảng Trị 	0342756203	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-01-12 00:00:00	2017-06-15	Tỉnh Quảng Trị
-134	tranminhkhuong123z@gmail.com	Trần Minh Khương	tranminhkhuong123z@gmail.com	080204013420	phòng số9, 246 Thạch Lam, Phú Thạnh, Tân Phú	0937659013	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2004-10-07 00:00:00	2021-11-22	Cục Cảnh Sát
-135	duonghoang2001py@gmail.com	Dương Minh Hoàng	duonghoang2001py@gmail.com	054201008518	293 Nguyễn Tất Thành, phường 9 , thành phố Tuy Hoà	0901958310	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-11-12 00:00:00	2021-11-18	công an thành phố Tuy Hòa
+153	0342756203	Nguyễn Duy Thắng 		197454001	Gio Việt Gio Linh Quảng Trị 	0342756203	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-01-12 00:00:00	2017-06-15	Tỉnh Quảng Trị 
+134	tranminhkhuong123z@gmail.com	Trần Minh Khương	tranminhkhuong123z@gmail.com	080204013420	phòng số9, 246 Thạch Lam, Phú Thạnh, Tân Phú	0937659013	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2004-10-07 00:00:00	2021-11-22	Cục Cảnh Sát 
+135	duonghoang2001py@gmail.com	Dương Minh Hoàng	duonghoang2001py@gmail.com	054201008518	293 Nguyễn Tất Thành, phường 9 , thành phố Tuy Hoà	0901958310	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-11-12 00:00:00	2021-11-18	công an thành phố Tuy Hòa 
 136	0412536981	phúc		\N	NT	0412536981	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
 137	oanhntk0441@gmail.com	KIM OANH	oanhntk0441@gmail.com	052199011517	Cát Minh, Phù Cát, Bình Định 	0345312946	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	1998-08-20 00:00:00	2021-06-28	Bình định
-138	khennguyen20001@gmail.com	Nguyễn Văn Khen	khennguyen20001@gmail.com	054201007824	22/1 Nguyễn Hữu Tiến 	0334920983	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-03-25 00:00:00	2021-12-05	Phú Yên
+138	khennguyen20001@gmail.com	Nguyễn Văn Khen	khennguyen20001@gmail.com	054201007824	22/1 Nguyễn Hữu Tiến 	0334920983	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-03-25 00:00:00	2021-12-05	Phú Yên 
 139	nguyenthotanan2003@gmail.com	Nguyễn Thị Hoàng Thơ	nguyenthotanan2003@gmail.com	080303012810	76/13 châu văn bảy, phường 7, thành phố Tân An , tỉnh Long An	0866513361	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-06-21 00:00:00	2020-11-22	cục cảnh sát
 140	phuongdung031001@gmail.com	Trần Phương Dung	phuongdung031001@gmail.com	\N	22/1 Nguyễn Hữu Tiến, phường Tây Thạnh, quận Tân Phú	0859941083	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-10-03 00:00:00	\N	\N
 141	tp7045@gmail.com	Phạm Nguyễn Ngọc Trân	tp7045@gmail.com	312528394	138 Nguyễn Văn Côn,kp1,phường 3,Thị Xã Gò Công	0939075502	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-07-23 00:00:00	2017-09-14	Tỉnh Tiền Giang
@@ -3463,7 +3870,7 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 151	hangpham.06112003.@gmail.com	Phan Thị Thúy Hằng	hangpham.06112003.@gmail.com	052303003098	22/1 Nguyễn Hữu Tiến,Tây Thạnh, Tân Phú,Hồ Chí Minh	0374350061	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-11-06 00:00:00	2021-05-01	Bình Định
 152	0974101235	Trần Trung Nghĩa		241598564	22/1 nguyễn hữu tiến 	0974101235	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	1996-10-23 00:00:00	\N	\N
 155	lehuynh2703@gmail.com	LÊ THỊ THÚY HUỲNH	lehuynh2703@gmail.com	321810624	22/1 nguyễn hữu tiến tây thạnh tân phú	0387235751	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-11-14 00:00:00	2018-03-08	tỉnh Bến Tre
-156	maithaomai450@gmail.com	Nguyễn Thị Mai Thảo 	maithaomai450@gmail.com	087301009668	22/1 Nguyễn Hữu Tiến, Tây Thạnh, Tân Phú, TPHCM	0764513329	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-05-04 00:00:00	2021-12-18	Đồng Tháp
+156	maithaomai450@gmail.com	Nguyễn Thị Mai Thảo 	maithaomai450@gmail.com	087301009668	22/1 Nguyễn Hữu Tiến, Tây Thạnh, Tân Phú, TPHCM	0764513329	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-05-04 00:00:00	2021-12-18	Đồng Tháp 
 157	hongvy08082020@gmail.com	Lê Nguyễn Hồng Vy	hongvy08082020@gmail.com	087302008855	K.An Lợi, P.An Lộc, TP. Hồng Ngự, Đồng Tháp	0707650829	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-12-19 00:00:00	2022-01-03	Đồng Tháp
 158	nhutle25032001@gmail.com	Lê Hoàng Nhựt 	nhutle25032001@gmail.com	\N	22/1 Nguyễn Hữu Tiến Phuong Tây Thạnh Quân Tân Phú 	0338599876	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-08-14 00:00:00	\N	\N
 159	Xumhopnnhh@gmail.com	Lê Thị Xum Họp	Xumhopnnhh@gmail.com	064302007727	Phú Yên - Hra - Mang Yang - Gia Lai	0333666330	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-09-24 00:00:00	2021-05-31	công an huyện Mang Yang
@@ -32802,6 +33209,54 @@ COPY public.ward (id, code, name, district_code) FROM stdin;
 
 
 --
+-- Data for Name: address; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user".address (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", "codeProvince", "codeDistrict", "codeWard", "specificAddress", "userId") FROM stdin;
+\.
+
+
+--
+-- Data for Name: address_district; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user".address_district (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "codeProvince") FROM stdin;
+\.
+
+
+--
+-- Data for Name: address_province; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user".address_province (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code) FROM stdin;
+\.
+
+
+--
+-- Data for Name: address_ward; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user".address_ward (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "codeDistrict") FROM stdin;
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, description, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff") FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_role; Type: TABLE DATA; Schema: user; Owner: postgres
+--
+
+COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, name, "isSystemAdmin", permissions) FROM stdin;
+\.
+
+
+--
 -- Name: building_address_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -33264,11 +33719,131 @@ SELECT pg_catalog.setval('public.ward_id_seq', 1, false);
 
 
 --
+-- Name: post_translation PK_0410fbb063b8214218be7639ea9; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post_translation
+    ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
+
+
+--
+-- Name: data PK_2533602bd9247937e3a4861e173; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data
+    ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
+
+
+--
+-- Name: code PK_367e70f79a9106b8e802e1a9825; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.code
+    ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
+
+
+--
+-- Name: file PK_36b46d232307066b3a2c9ea3a1d; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.file
+    ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
+
+
+--
+-- Name: code_type PK_aee67663d3bf78ece882e953afd; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.code_type
+    ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
+
+
+--
+-- Name: post PK_be5fda3aac270b134ff9c21cdee; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post
+    ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
+
+
+--
+-- Name: parameter PK_cc5c047040f9c69f0e0d6a844a0; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.parameter
+    ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
+
+
+--
+-- Name: data_type PK_d7dc4348c702c83c5ff959dfaac; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data_type
+    ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
+
+
+--
+-- Name: data_translation PK_e48e7820fb4c959630441506fc3; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data_translation
+    ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
+
+
+--
+-- Name: post_type PK_fbd367b0f90f065f0e54f858a6a; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post_type
+    ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
+
+
+--
+-- Name: post_type UQ_1564a516eb281b60ae54e01a36c; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post_type
+    ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
+
+
+--
+-- Name: code_type UQ_26e48b5ff442e5a476363c7c289; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.code_type
+    ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
+
+
+--
+-- Name: code UQ_3aab60cbcf5684b4a89fb46147e; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.code
+    ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
+
+
+--
+-- Name: data_type UQ_e407b5b8f08191a39e15c0559eb; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data_type
+    ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
+
+
+--
+-- Name: file UQ_ff5d246bb5831ad7351f87e67cb; Type: CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.file
+    ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
+
+
+--
 -- Name: app_user app_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.app_user
-  ADD CONSTRAINT app_user_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT app_user_pkey PRIMARY KEY (id);
 
 
 --
@@ -33276,7 +33851,7 @@ ALTER TABLE ONLY public.app_user
 --
 
 ALTER TABLE ONLY public.building_address
-  ADD CONSTRAINT building_address_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT building_address_pkey PRIMARY KEY (id);
 
 
 --
@@ -33284,7 +33859,7 @@ ALTER TABLE ONLY public.building_address
 --
 
 ALTER TABLE ONLY public.building_content
-  ADD CONSTRAINT building_content_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT building_content_pkey PRIMARY KEY (id);
 
 
 --
@@ -33292,7 +33867,7 @@ ALTER TABLE ONLY public.building_content
 --
 
 ALTER TABLE ONLY public.building_manager
-  ADD CONSTRAINT building_manager_building_id_manager_id_key UNIQUE (building_id, manager_id);
+    ADD CONSTRAINT building_manager_building_id_manager_id_key UNIQUE (building_id, manager_id);
 
 
 --
@@ -33300,7 +33875,7 @@ ALTER TABLE ONLY public.building_manager
 --
 
 ALTER TABLE ONLY public.building_manager
-  ADD CONSTRAINT building_manager_pk PRIMARY KEY (id);
+    ADD CONSTRAINT building_manager_pk PRIMARY KEY (id);
 
 
 --
@@ -33308,7 +33883,7 @@ ALTER TABLE ONLY public.building_manager
 --
 
 ALTER TABLE ONLY public.building_media
-  ADD CONSTRAINT building_media_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT building_media_pkey PRIMARY KEY (id);
 
 
 --
@@ -33316,7 +33891,7 @@ ALTER TABLE ONLY public.building_media
 --
 
 ALTER TABLE ONLY public.building
-  ADD CONSTRAINT building_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT building_pkey PRIMARY KEY (id);
 
 
 --
@@ -33324,7 +33899,7 @@ ALTER TABLE ONLY public.building
 --
 
 ALTER TABLE ONLY public.building_utility
-  ADD CONSTRAINT building_utility_building_id_utility_id_key UNIQUE (building_id, utility_id);
+    ADD CONSTRAINT building_utility_building_id_utility_id_key UNIQUE (building_id, utility_id);
 
 
 --
@@ -33332,7 +33907,7 @@ ALTER TABLE ONLY public.building_utility
 --
 
 ALTER TABLE ONLY public.building_utility
-  ADD CONSTRAINT building_utility_pk PRIMARY KEY (id);
+    ADD CONSTRAINT building_utility_pk PRIMARY KEY (id);
 
 
 --
@@ -33340,7 +33915,7 @@ ALTER TABLE ONLY public.building_utility
 --
 
 ALTER TABLE ONLY public.contract_addendum
-  ADD CONSTRAINT contract_addendum_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT contract_addendum_pkey PRIMARY KEY (id);
 
 
 --
@@ -33348,7 +33923,7 @@ ALTER TABLE ONLY public.contract_addendum
 --
 
 ALTER TABLE ONLY public.building_cost
-  ADD CONSTRAINT cost_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT cost_pkey PRIMARY KEY (id);
 
 
 --
@@ -33356,7 +33931,7 @@ ALTER TABLE ONLY public.building_cost
 --
 
 ALTER TABLE ONLY public.deposit_contract_cost
-  ADD CONSTRAINT deposit_contract_cost_pk PRIMARY KEY (id);
+    ADD CONSTRAINT deposit_contract_cost_pk PRIMARY KEY (id);
 
 
 --
@@ -33364,7 +33939,7 @@ ALTER TABLE ONLY public.deposit_contract_cost
 --
 
 ALTER TABLE ONLY public.deposit_contract_people
-  ADD CONSTRAINT deposit_contract_people_pk PRIMARY KEY (id);
+    ADD CONSTRAINT deposit_contract_people_pk PRIMARY KEY (id);
 
 
 --
@@ -33372,7 +33947,7 @@ ALTER TABLE ONLY public.deposit_contract_people
 --
 
 ALTER TABLE ONLY public.deposit_contract
-  ADD CONSTRAINT deposit_contract_pk PRIMARY KEY (id);
+    ADD CONSTRAINT deposit_contract_pk PRIMARY KEY (id);
 
 
 --
@@ -33380,7 +33955,7 @@ ALTER TABLE ONLY public.deposit_contract
 --
 
 ALTER TABLE ONLY public.district
-  ADD CONSTRAINT district_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT district_pkey PRIMARY KEY (id);
 
 
 --
@@ -33388,7 +33963,7 @@ ALTER TABLE ONLY public.district
 --
 
 ALTER TABLE ONLY public.document
-  ADD CONSTRAINT document_pk UNIQUE (reference_id, category);
+    ADD CONSTRAINT document_pk UNIQUE (reference_id, category);
 
 
 --
@@ -33396,7 +33971,7 @@ ALTER TABLE ONLY public.document
 --
 
 ALTER TABLE ONLY public.electricity_water_detail
-  ADD CONSTRAINT electricity_water_detail_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT electricity_water_detail_pkey PRIMARY KEY (id);
 
 
 --
@@ -33404,7 +33979,7 @@ ALTER TABLE ONLY public.electricity_water_detail
 --
 
 ALTER TABLE ONLY public.electricity_water_information
-  ADD CONSTRAINT electricity_water_information_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT electricity_water_information_pkey PRIMARY KEY (id);
 
 
 --
@@ -33412,7 +33987,7 @@ ALTER TABLE ONLY public.electricity_water_information
 --
 
 ALTER TABLE ONLY public.extention_contract_people
-  ADD CONSTRAINT extention_contract_people_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT extention_contract_people_pkey PRIMARY KEY (id);
 
 
 --
@@ -33420,7 +33995,7 @@ ALTER TABLE ONLY public.extention_contract_people
 --
 
 ALTER TABLE ONLY public.extention_contract
-  ADD CONSTRAINT extention_contract_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT extention_contract_pkey PRIMARY KEY (id);
 
 
 --
@@ -33428,7 +34003,7 @@ ALTER TABLE ONLY public.extention_contract
 --
 
 ALTER TABLE ONLY public.housing_expense_cost
-  ADD CONSTRAINT housing_expense_cost_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_cost_pk PRIMARY KEY (id);
 
 
 --
@@ -33436,7 +34011,7 @@ ALTER TABLE ONLY public.housing_expense_cost
 --
 
 ALTER TABLE ONLY public.housing_expense_cost_v2
-  ADD CONSTRAINT housing_expense_cost_v2_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_cost_v2_pk PRIMARY KEY (id);
 
 
 --
@@ -33444,7 +34019,7 @@ ALTER TABLE ONLY public.housing_expense_cost_v2
 --
 
 ALTER TABLE ONLY public.housing_expense_forfeit
-  ADD CONSTRAINT housing_expense_forfeit_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_forfeit_pk PRIMARY KEY (id);
 
 
 --
@@ -33452,7 +34027,7 @@ ALTER TABLE ONLY public.housing_expense_forfeit
 --
 
 ALTER TABLE ONLY public.housing_expense_other_cost
-  ADD CONSTRAINT housing_expense_other_cost_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_other_cost_pk PRIMARY KEY (id);
 
 
 --
@@ -33460,7 +34035,7 @@ ALTER TABLE ONLY public.housing_expense_other_cost
 --
 
 ALTER TABLE ONLY public.housing_expense
-  ADD CONSTRAINT housing_expense_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_pk PRIMARY KEY (id);
 
 
 --
@@ -33468,7 +34043,7 @@ ALTER TABLE ONLY public.housing_expense
 --
 
 ALTER TABLE ONLY public.housing_expense_v2
-  ADD CONSTRAINT housing_expense_v2_pk PRIMARY KEY (id);
+    ADD CONSTRAINT housing_expense_v2_pk PRIMARY KEY (id);
 
 
 --
@@ -33476,7 +34051,7 @@ ALTER TABLE ONLY public.housing_expense_v2
 --
 
 ALTER TABLE ONLY public.liquidated_contract_cost
-  ADD CONSTRAINT liquidated_contract_cost_pk PRIMARY KEY (id);
+    ADD CONSTRAINT liquidated_contract_cost_pk PRIMARY KEY (id);
 
 
 --
@@ -33484,7 +34059,7 @@ ALTER TABLE ONLY public.liquidated_contract_cost
 --
 
 ALTER TABLE ONLY public.liquidated_contract_people
-  ADD CONSTRAINT liquidated_contract_people_pk PRIMARY KEY (id);
+    ADD CONSTRAINT liquidated_contract_people_pk PRIMARY KEY (id);
 
 
 --
@@ -33492,7 +34067,7 @@ ALTER TABLE ONLY public.liquidated_contract_people
 --
 
 ALTER TABLE ONLY public.liquidated_contract
-  ADD CONSTRAINT liquidated_contract_pk PRIMARY KEY (id);
+    ADD CONSTRAINT liquidated_contract_pk PRIMARY KEY (id);
 
 
 --
@@ -33500,7 +34075,7 @@ ALTER TABLE ONLY public.liquidated_contract
 --
 
 ALTER TABLE ONLY public.liquidated_deduction_item
-  ADD CONSTRAINT liquidated_deduction_item_pk PRIMARY KEY (id);
+    ADD CONSTRAINT liquidated_deduction_item_pk PRIMARY KEY (id);
 
 
 --
@@ -33508,7 +34083,7 @@ ALTER TABLE ONLY public.liquidated_deduction_item
 --
 
 ALTER TABLE ONLY public.mt_cost
-  ADD CONSTRAINT mt_cost_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT mt_cost_pkey PRIMARY KEY (id);
 
 
 --
@@ -33516,7 +34091,7 @@ ALTER TABLE ONLY public.mt_cost
 --
 
 ALTER TABLE ONLY public.mt_sub_supplies
-  ADD CONSTRAINT mt_sub_supplies_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT mt_sub_supplies_pkey PRIMARY KEY (id);
 
 
 --
@@ -33524,7 +34099,7 @@ ALTER TABLE ONLY public.mt_sub_supplies
 --
 
 ALTER TABLE ONLY public.mt_supplies
-  ADD CONSTRAINT mt_supplies_pk PRIMARY KEY (id);
+    ADD CONSTRAINT mt_supplies_pk PRIMARY KEY (id);
 
 
 --
@@ -33532,7 +34107,7 @@ ALTER TABLE ONLY public.mt_supplies
 --
 
 ALTER TABLE ONLY public.notification
-  ADD CONSTRAINT notification_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT notification_pkey PRIMARY KEY (id);
 
 
 --
@@ -33540,7 +34115,7 @@ ALTER TABLE ONLY public.notification
 --
 
 ALTER TABLE ONLY public.organization
-  ADD CONSTRAINT organization_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT organization_pkey PRIMARY KEY (id);
 
 
 --
@@ -33548,7 +34123,7 @@ ALTER TABLE ONLY public.organization
 --
 
 ALTER TABLE ONLY public.organization_user
-  ADD CONSTRAINT organization_user_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT organization_user_pkey PRIMARY KEY (id);
 
 
 --
@@ -33556,7 +34131,7 @@ ALTER TABLE ONLY public.organization_user
 --
 
 ALTER TABLE ONLY public.province
-  ADD CONSTRAINT province_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT province_pkey PRIMARY KEY (id);
 
 
 --
@@ -33564,7 +34139,7 @@ ALTER TABLE ONLY public.province
 --
 
 ALTER TABLE ONLY public.room_rate_customer
-  ADD CONSTRAINT rate_customer_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rate_customer_pkey PRIMARY KEY (id);
 
 
 --
@@ -33572,7 +34147,7 @@ ALTER TABLE ONLY public.room_rate_customer
 --
 
 ALTER TABLE ONLY public.receipt_debt_detail
-  ADD CONSTRAINT receipt_debt_detail_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT receipt_debt_detail_pkey PRIMARY KEY (id);
 
 
 --
@@ -33580,7 +34155,7 @@ ALTER TABLE ONLY public.receipt_debt_detail
 --
 
 ALTER TABLE ONLY public.receipt_information
-  ADD CONSTRAINT receipt_information_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT receipt_information_pkey PRIMARY KEY (id);
 
 
 --
@@ -33588,7 +34163,7 @@ ALTER TABLE ONLY public.receipt_information
 --
 
 ALTER TABLE ONLY public.receipt_information_service
-  ADD CONSTRAINT receipt_information_service_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT receipt_information_service_pkey PRIMARY KEY (id);
 
 
 --
@@ -33596,7 +34171,7 @@ ALTER TABLE ONLY public.receipt_information_service
 --
 
 ALTER TABLE ONLY public.rental_contract_appendix_sequence
-  ADD CONSTRAINT rental_contract_appendix_sequence_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rental_contract_appendix_sequence_pkey PRIMARY KEY (id);
 
 
 --
@@ -33604,7 +34179,7 @@ ALTER TABLE ONLY public.rental_contract_appendix_sequence
 --
 
 ALTER TABLE ONLY public.rental_contract_cost
-  ADD CONSTRAINT rental_contract_cost_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rental_contract_cost_pkey PRIMARY KEY (id);
 
 
 --
@@ -33612,7 +34187,7 @@ ALTER TABLE ONLY public.rental_contract_cost
 --
 
 ALTER TABLE ONLY public.rental_contract_people
-  ADD CONSTRAINT rental_contract_people_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rental_contract_people_pkey PRIMARY KEY (id);
 
 
 --
@@ -33620,7 +34195,7 @@ ALTER TABLE ONLY public.rental_contract_people
 --
 
 ALTER TABLE ONLY public.rental_contract
-  ADD CONSTRAINT rental_contract_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rental_contract_pkey PRIMARY KEY (id);
 
 
 --
@@ -33628,7 +34203,7 @@ ALTER TABLE ONLY public.rental_contract
 --
 
 ALTER TABLE ONLY public.rental_contract_vehicle
-  ADD CONSTRAINT rental_contract_vehicle_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rental_contract_vehicle_pkey PRIMARY KEY (id);
 
 
 --
@@ -33636,7 +34211,7 @@ ALTER TABLE ONLY public.rental_contract_vehicle
 --
 
 ALTER TABLE ONLY public.role_permission
-  ADD CONSTRAINT role_permission_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT role_permission_pkey PRIMARY KEY (id);
 
 
 --
@@ -33644,7 +34219,7 @@ ALTER TABLE ONLY public.role_permission
 --
 
 ALTER TABLE ONLY public.room_content
-  ADD CONSTRAINT room_content_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT room_content_pkey PRIMARY KEY (id);
 
 
 --
@@ -33652,7 +34227,7 @@ ALTER TABLE ONLY public.room_content
 --
 
 ALTER TABLE ONLY public.room_contract
-  ADD CONSTRAINT room_contract_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT room_contract_pkey PRIMARY KEY (id);
 
 
 --
@@ -33660,7 +34235,7 @@ ALTER TABLE ONLY public.room_contract
 --
 
 ALTER TABLE ONLY public.room_cost
-  ADD CONSTRAINT room_cost_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_cost_pk PRIMARY KEY (id);
 
 
 --
@@ -33668,7 +34243,7 @@ ALTER TABLE ONLY public.room_cost
 --
 
 ALTER TABLE ONLY public.room_customer
-  ADD CONSTRAINT room_customer_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_customer_pk PRIMARY KEY (id);
 
 
 --
@@ -33676,7 +34251,7 @@ ALTER TABLE ONLY public.room_customer
 --
 
 ALTER TABLE ONLY public.room_deposited_customer
-  ADD CONSTRAINT room_deposited_customer_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_deposited_customer_pk PRIMARY KEY (id);
 
 
 --
@@ -33684,7 +34259,7 @@ ALTER TABLE ONLY public.room_deposited_customer
 --
 
 ALTER TABLE ONLY public.room_history_payment
-  ADD CONSTRAINT room_history_payment_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_history_payment_pk PRIMARY KEY (id);
 
 
 --
@@ -33692,7 +34267,7 @@ ALTER TABLE ONLY public.room_history_payment
 --
 
 ALTER TABLE ONLY public.room_media
-  ADD CONSTRAINT room_media_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_media_pk PRIMARY KEY (id);
 
 
 --
@@ -33700,7 +34275,7 @@ ALTER TABLE ONLY public.room_media
 --
 
 ALTER TABLE ONLY public.room
-  ADD CONSTRAINT room_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_pk PRIMARY KEY (id);
 
 
 --
@@ -33708,7 +34283,7 @@ ALTER TABLE ONLY public.room
 --
 
 ALTER TABLE ONLY public.room_rule
-  ADD CONSTRAINT room_rule_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT room_rule_pkey PRIMARY KEY (id);
 
 
 --
@@ -33716,7 +34291,7 @@ ALTER TABLE ONLY public.room_rule
 --
 
 ALTER TABLE ONLY public.room_schedule
-  ADD CONSTRAINT room_schedule_pk PRIMARY KEY (id);
+    ADD CONSTRAINT room_schedule_pk PRIMARY KEY (id);
 
 
 --
@@ -33724,7 +34299,7 @@ ALTER TABLE ONLY public.room_schedule
 --
 
 ALTER TABLE ONLY public.room_sub_supplies
-  ADD CONSTRAINT room_sub_supplies_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT room_sub_supplies_pkey PRIMARY KEY (id);
 
 
 --
@@ -33732,7 +34307,7 @@ ALTER TABLE ONLY public.room_sub_supplies
 --
 
 ALTER TABLE ONLY public.room_utility
-  ADD CONSTRAINT room_utility_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT room_utility_pkey PRIMARY KEY (id);
 
 
 --
@@ -33740,7 +34315,7 @@ ALTER TABLE ONLY public.room_utility
 --
 
 ALTER TABLE ONLY public.building_rule
-  ADD CONSTRAINT rule_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT rule_pkey PRIMARY KEY (id);
 
 
 --
@@ -33748,7 +34323,7 @@ ALTER TABLE ONLY public.building_rule
 --
 
 ALTER TABLE ONLY public.sequence
-  ADD CONSTRAINT sequence_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT sequence_pkey PRIMARY KEY (id);
 
 
 --
@@ -33756,7 +34331,7 @@ ALTER TABLE ONLY public.sequence
 --
 
 ALTER TABLE ONLY public.room_supplies
-  ADD CONSTRAINT supplies_pk PRIMARY KEY (id);
+    ADD CONSTRAINT supplies_pk PRIMARY KEY (id);
 
 
 --
@@ -33764,7 +34339,7 @@ ALTER TABLE ONLY public.room_supplies
 --
 
 ALTER TABLE ONLY public.user_notification
-  ADD CONSTRAINT user_notification_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT user_notification_pkey PRIMARY KEY (id);
 
 
 --
@@ -33772,7 +34347,7 @@ ALTER TABLE ONLY public.user_notification
 --
 
 ALTER TABLE ONLY public.user_permission
-  ADD CONSTRAINT user_permission_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT user_permission_pkey PRIMARY KEY (id);
 
 
 --
@@ -33780,7 +34355,7 @@ ALTER TABLE ONLY public.user_permission
 --
 
 ALTER TABLE ONLY public.utility
-  ADD CONSTRAINT utility_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT utility_pkey PRIMARY KEY (id);
 
 
 --
@@ -33788,7 +34363,7 @@ ALTER TABLE ONLY public.utility
 --
 
 ALTER TABLE ONLY public.vehicles
-  ADD CONSTRAINT vehicles_pk PRIMARY KEY (id);
+    ADD CONSTRAINT vehicles_pk PRIMARY KEY (id);
 
 
 --
@@ -33796,7 +34371,87 @@ ALTER TABLE ONLY public.vehicles
 --
 
 ALTER TABLE ONLY public.ward
-  ADD CONSTRAINT ward_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT ward_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: address_province PK_4f4f5db6965d8b7efcea357f330; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_province
+    ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
+
+
+--
+-- Name: address_district PK_64989ed42a39bc4b40d51d13e0e; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_district
+    ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
+
+
+--
+-- Name: user PK_cace4a159ff9f2512dd42373760; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user"."user"
+    ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
+
+
+--
+-- Name: address PK_d92de1f82754668b5f5f5dd4fd5; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address
+    ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
+
+
+--
+-- Name: address_ward PK_e5ad8623648a0deb50ddf4e9550; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_ward
+    ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
+
+
+--
+-- Name: user_role PK_fb2e442d14add3cefbdf33c4561; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".user_role
+    ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
+
+
+--
+-- Name: user_role UQ_00c232124015d4998bdc6036310; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".user_role
+    ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
+
+
+--
+-- Name: address_ward UQ_3b11e3dd0964b66967ce5acdfd8; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_ward
+    ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
+
+
+--
+-- Name: address_district UQ_7444cd6ee100f493b1463722b98; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_district
+    ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
+
+
+--
+-- Name: address_province UQ_858a97d2423118631af080793f1; Type: CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_province
+    ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
 
 
 --
@@ -33940,11 +34595,59 @@ CREATE TRIGGER set_current_timestamp BEFORE UPDATE ON public.user_permission FOR
 
 
 --
+-- Name: post_type FK_0e271348dc86606bcb78bb5baf0; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post_type
+    ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
+
+
+--
+-- Name: data FK_5411ba018172ec73e64e74bf5b0; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data
+    ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
+
+
+--
+-- Name: code FK_927209d9e3f6f87ace1a933c978; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.code
+    ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
+
+
+--
+-- Name: post FK_b499447822de3f24ad355e19b8c; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post
+    ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
+
+
+--
+-- Name: post_translation FK_c3b205aea6eff06096f6f439240; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.post_translation
+    ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: data_translation FK_eae311ec0c99d120558506acd05; Type: FK CONSTRAINT; Schema: core; Owner: postgres
+--
+
+ALTER TABLE ONLY core.data_translation
+    ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: building building_app_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.building
-  ADD CONSTRAINT building_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT building_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -33952,7 +34655,7 @@ ALTER TABLE ONLY public.building
 --
 
 ALTER TABLE ONLY public.building
-  ADD CONSTRAINT building_app_user_id_fk_2 FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT building_app_user_id_fk_2 FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -33960,7 +34663,7 @@ ALTER TABLE ONLY public.building
 --
 
 ALTER TABLE ONLY public.building_content
-  ADD CONSTRAINT building_content_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT building_content_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -33968,7 +34671,7 @@ ALTER TABLE ONLY public.building_content
 --
 
 ALTER TABLE ONLY public.building_content
-  ADD CONSTRAINT building_content_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT building_content_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -33976,7 +34679,7 @@ ALTER TABLE ONLY public.building_content
 --
 
 ALTER TABLE ONLY public.building_content
-  ADD CONSTRAINT building_content_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT building_content_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -33984,7 +34687,7 @@ ALTER TABLE ONLY public.building_content
 --
 
 ALTER TABLE ONLY public.building
-  ADD CONSTRAINT building_fk FOREIGN KEY (org_id) REFERENCES public.organization(id);
+    ADD CONSTRAINT building_fk FOREIGN KEY (org_id) REFERENCES public.organization(id);
 
 
 --
@@ -33992,7 +34695,7 @@ ALTER TABLE ONLY public.building
 --
 
 ALTER TABLE ONLY public.building_media
-  ADD CONSTRAINT building_media_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT building_media_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34000,7 +34703,7 @@ ALTER TABLE ONLY public.building_media
 --
 
 ALTER TABLE ONLY public.building_media
-  ADD CONSTRAINT building_media_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT building_media_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34008,7 +34711,7 @@ ALTER TABLE ONLY public.building_media
 --
 
 ALTER TABLE ONLY public.contract_addendum
-  ADD CONSTRAINT contract_addendum_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT contract_addendum_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34016,7 +34719,7 @@ ALTER TABLE ONLY public.contract_addendum
 --
 
 ALTER TABLE ONLY public.contract_addendum
-  ADD CONSTRAINT contract_addendum_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT contract_addendum_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34024,7 +34727,7 @@ ALTER TABLE ONLY public.contract_addendum
 --
 
 ALTER TABLE ONLY public.vehicles
-  ADD CONSTRAINT contract_vehicles_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT contract_vehicles_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34032,7 +34735,7 @@ ALTER TABLE ONLY public.vehicles
 --
 
 ALTER TABLE ONLY public.vehicles
-  ADD CONSTRAINT contract_vehicles_pk FOREIGN KEY (contract_id) REFERENCES public.room_contract(id);
+    ADD CONSTRAINT contract_vehicles_pk FOREIGN KEY (contract_id) REFERENCES public.room_contract(id);
 
 
 --
@@ -34040,7 +34743,7 @@ ALTER TABLE ONLY public.vehicles
 --
 
 ALTER TABLE ONLY public.deposit_contract_cost
-  ADD CONSTRAINT deposit_contract_cost_deposit_contract_id_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
+    ADD CONSTRAINT deposit_contract_cost_deposit_contract_id_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
 
 
 --
@@ -34048,7 +34751,7 @@ ALTER TABLE ONLY public.deposit_contract_cost
 --
 
 ALTER TABLE ONLY public.deposit_contract
-  ADD CONSTRAINT deposit_contract_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT deposit_contract_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34056,7 +34759,7 @@ ALTER TABLE ONLY public.deposit_contract
 --
 
 ALTER TABLE ONLY public.deposit_contract_people
-  ADD CONSTRAINT deposit_contract_people_app_user_id_fk FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT deposit_contract_people_app_user_id_fk FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34064,7 +34767,7 @@ ALTER TABLE ONLY public.deposit_contract_people
 --
 
 ALTER TABLE ONLY public.deposit_contract_people
-  ADD CONSTRAINT deposit_contract_people_deposit_contract_id_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
+    ADD CONSTRAINT deposit_contract_people_deposit_contract_id_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
 
 
 --
@@ -34072,7 +34775,7 @@ ALTER TABLE ONLY public.deposit_contract_people
 --
 
 ALTER TABLE ONLY public.deposit_contract
-  ADD CONSTRAINT deposit_contract_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT deposit_contract_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34080,7 +34783,7 @@ ALTER TABLE ONLY public.deposit_contract
 --
 
 ALTER TABLE ONLY public.deposit_contract
-  ADD CONSTRAINT deposit_contract_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT deposit_contract_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34088,7 +34791,7 @@ ALTER TABLE ONLY public.deposit_contract
 --
 
 ALTER TABLE ONLY public.deposit_contract
-  ADD CONSTRAINT deposit_contract_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT deposit_contract_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34096,7 +34799,7 @@ ALTER TABLE ONLY public.deposit_contract
 --
 
 ALTER TABLE ONLY public.electricity_water_detail
-  ADD CONSTRAINT electricity_water_detail_electricity_water_information_id_fkey FOREIGN KEY (electricity_water_information_id) REFERENCES public.electricity_water_information(id);
+    ADD CONSTRAINT electricity_water_detail_electricity_water_information_id_fkey FOREIGN KEY (electricity_water_information_id) REFERENCES public.electricity_water_information(id);
 
 
 --
@@ -34104,7 +34807,7 @@ ALTER TABLE ONLY public.electricity_water_detail
 --
 
 ALTER TABLE ONLY public.electricity_water_information
-  ADD CONSTRAINT electricity_water_information_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT electricity_water_information_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34112,7 +34815,7 @@ ALTER TABLE ONLY public.electricity_water_information
 --
 
 ALTER TABLE ONLY public.extention_contract
-  ADD CONSTRAINT extention_contract_contract_addendum_id_fkey FOREIGN KEY (contract_addendum_id) REFERENCES public.contract_addendum(id);
+    ADD CONSTRAINT extention_contract_contract_addendum_id_fkey FOREIGN KEY (contract_addendum_id) REFERENCES public.contract_addendum(id);
 
 
 --
@@ -34120,7 +34823,7 @@ ALTER TABLE ONLY public.extention_contract
 --
 
 ALTER TABLE ONLY public.extention_contract_people
-  ADD CONSTRAINT extention_contract_people_extention_contract_id_fkey FOREIGN KEY (extention_contract_id) REFERENCES public.extention_contract(id);
+    ADD CONSTRAINT extention_contract_people_extention_contract_id_fkey FOREIGN KEY (extention_contract_id) REFERENCES public.extention_contract(id);
 
 
 --
@@ -34128,7 +34831,7 @@ ALTER TABLE ONLY public.extention_contract_people
 --
 
 ALTER TABLE ONLY public.building_manager
-  ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34136,7 +34839,7 @@ ALTER TABLE ONLY public.building_manager
 --
 
 ALTER TABLE ONLY public.building_cost
-  ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34144,7 +34847,7 @@ ALTER TABLE ONLY public.building_cost
 --
 
 ALTER TABLE ONLY public.building_utility
-  ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34152,7 +34855,7 @@ ALTER TABLE ONLY public.building_utility
 --
 
 ALTER TABLE ONLY public.building_rule
-  ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT fk_building FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34160,7 +34863,7 @@ ALTER TABLE ONLY public.building_rule
 --
 
 ALTER TABLE ONLY public.building_manager
-  ADD CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34168,7 +34871,7 @@ ALTER TABLE ONLY public.building_manager
 --
 
 ALTER TABLE ONLY public.building_cost
-  ADD CONSTRAINT fk_mt_cost FOREIGN KEY (mt_cost_id) REFERENCES public.mt_cost(id);
+    ADD CONSTRAINT fk_mt_cost FOREIGN KEY (mt_cost_id) REFERENCES public.mt_cost(id);
 
 
 --
@@ -34176,7 +34879,7 @@ ALTER TABLE ONLY public.building_cost
 --
 
 ALTER TABLE ONLY public.room_supplies
-  ADD CONSTRAINT fk_mt_supplies FOREIGN KEY (mt_supplies_id) REFERENCES public.mt_supplies(id);
+    ADD CONSTRAINT fk_mt_supplies FOREIGN KEY (mt_supplies_id) REFERENCES public.mt_supplies(id);
 
 
 --
@@ -34184,7 +34887,7 @@ ALTER TABLE ONLY public.room_supplies
 --
 
 ALTER TABLE ONLY public.room_utility
-  ADD CONSTRAINT fk_room FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT fk_room FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34192,7 +34895,7 @@ ALTER TABLE ONLY public.room_utility
 --
 
 ALTER TABLE ONLY public.room_rule
-  ADD CONSTRAINT fk_room FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT fk_room FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34200,7 +34903,7 @@ ALTER TABLE ONLY public.room_rule
 --
 
 ALTER TABLE ONLY public.room_rate_customer
-  ADD CONSTRAINT fk_room_customer FOREIGN KEY (room_customer_id) REFERENCES public.room_customer(id);
+    ADD CONSTRAINT fk_room_customer FOREIGN KEY (room_customer_id) REFERENCES public.room_customer(id);
 
 
 --
@@ -34208,7 +34911,7 @@ ALTER TABLE ONLY public.room_rate_customer
 --
 
 ALTER TABLE ONLY public.room_sub_supplies
-  ADD CONSTRAINT fk_room_sub_supplies FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT fk_room_sub_supplies FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34216,7 +34919,7 @@ ALTER TABLE ONLY public.room_sub_supplies
 --
 
 ALTER TABLE ONLY public.user_permission
-  ADD CONSTRAINT fk_user_permission_organization FOREIGN KEY (organization_id) REFERENCES public.organization(id);
+    ADD CONSTRAINT fk_user_permission_organization FOREIGN KEY (organization_id) REFERENCES public.organization(id);
 
 
 --
@@ -34224,7 +34927,7 @@ ALTER TABLE ONLY public.user_permission
 --
 
 ALTER TABLE ONLY public.building_utility
-  ADD CONSTRAINT fk_utility FOREIGN KEY (utility_id) REFERENCES public.utility(id);
+    ADD CONSTRAINT fk_utility FOREIGN KEY (utility_id) REFERENCES public.utility(id);
 
 
 --
@@ -34232,7 +34935,7 @@ ALTER TABLE ONLY public.building_utility
 --
 
 ALTER TABLE ONLY public.housing_expense_cost
-  ADD CONSTRAINT housing_expense_cost_housing_expense_id_fk FOREIGN KEY (housing_expense_id) REFERENCES public.housing_expense(id);
+    ADD CONSTRAINT housing_expense_cost_housing_expense_id_fk FOREIGN KEY (housing_expense_id) REFERENCES public.housing_expense(id);
 
 
 --
@@ -34240,7 +34943,7 @@ ALTER TABLE ONLY public.housing_expense_cost
 --
 
 ALTER TABLE ONLY public.housing_expense_cost_v2
-  ADD CONSTRAINT housing_expense_cost_v2_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
+    ADD CONSTRAINT housing_expense_cost_v2_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
 
 
 --
@@ -34248,7 +34951,7 @@ ALTER TABLE ONLY public.housing_expense_cost_v2
 --
 
 ALTER TABLE ONLY public.housing_expense
-  ADD CONSTRAINT housing_expense_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT housing_expense_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34256,7 +34959,7 @@ ALTER TABLE ONLY public.housing_expense
 --
 
 ALTER TABLE ONLY public.housing_expense_forfeit
-  ADD CONSTRAINT housing_expense_forfeit_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
+    ADD CONSTRAINT housing_expense_forfeit_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
 
 
 --
@@ -34264,7 +34967,7 @@ ALTER TABLE ONLY public.housing_expense_forfeit
 --
 
 ALTER TABLE ONLY public.housing_expense_other_cost
-  ADD CONSTRAINT housing_expense_other_cost_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
+    ADD CONSTRAINT housing_expense_other_cost_housing_expense_v2_id_fk FOREIGN KEY (housing_expense_v2_id) REFERENCES public.housing_expense_v2(id);
 
 
 --
@@ -34272,7 +34975,7 @@ ALTER TABLE ONLY public.housing_expense_other_cost
 --
 
 ALTER TABLE ONLY public.housing_expense
-  ADD CONSTRAINT housing_expense_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT housing_expense_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34280,7 +34983,7 @@ ALTER TABLE ONLY public.housing_expense
 --
 
 ALTER TABLE ONLY public.housing_expense
-  ADD CONSTRAINT housing_expense_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT housing_expense_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34288,7 +34991,7 @@ ALTER TABLE ONLY public.housing_expense
 --
 
 ALTER TABLE ONLY public.housing_expense_v2
-  ADD CONSTRAINT housing_expense_v2_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT housing_expense_v2_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34296,7 +34999,7 @@ ALTER TABLE ONLY public.housing_expense_v2
 --
 
 ALTER TABLE ONLY public.housing_expense_v2
-  ADD CONSTRAINT housing_expense_v2_app_user_id_fk_2 FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT housing_expense_v2_app_user_id_fk_2 FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34304,7 +35007,7 @@ ALTER TABLE ONLY public.housing_expense_v2
 --
 
 ALTER TABLE ONLY public.housing_expense_v2
-  ADD CONSTRAINT housing_expense_v2_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT housing_expense_v2_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34312,7 +35015,7 @@ ALTER TABLE ONLY public.housing_expense_v2
 --
 
 ALTER TABLE ONLY public.liquidated_contract_cost
-  ADD CONSTRAINT liquidated_contract_cost_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
+    ADD CONSTRAINT liquidated_contract_cost_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
 
 
 --
@@ -34320,7 +35023,7 @@ ALTER TABLE ONLY public.liquidated_contract_cost
 --
 
 ALTER TABLE ONLY public.liquidated_contract
-  ADD CONSTRAINT liquidated_contract_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT liquidated_contract_created_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34328,7 +35031,7 @@ ALTER TABLE ONLY public.liquidated_contract
 --
 
 ALTER TABLE ONLY public.liquidated_contract
-  ADD CONSTRAINT liquidated_contract_deposit_contract_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
+    ADD CONSTRAINT liquidated_contract_deposit_contract_fk FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
 
 
 --
@@ -34336,7 +35039,7 @@ ALTER TABLE ONLY public.liquidated_contract
 --
 
 ALTER TABLE ONLY public.liquidated_contract_people
-  ADD CONSTRAINT liquidated_contract_people_app_user_id_fk FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT liquidated_contract_people_app_user_id_fk FOREIGN KEY (app_user_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34344,7 +35047,7 @@ ALTER TABLE ONLY public.liquidated_contract_people
 --
 
 ALTER TABLE ONLY public.liquidated_contract_people
-  ADD CONSTRAINT liquidated_contract_people_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
+    ADD CONSTRAINT liquidated_contract_people_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
 
 
 --
@@ -34352,7 +35055,7 @@ ALTER TABLE ONLY public.liquidated_contract_people
 --
 
 ALTER TABLE ONLY public.liquidated_contract
-  ADD CONSTRAINT liquidated_contract_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT liquidated_contract_rental_contract_id_fk FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34360,7 +35063,7 @@ ALTER TABLE ONLY public.liquidated_contract
 --
 
 ALTER TABLE ONLY public.liquidated_contract
-  ADD CONSTRAINT liquidated_contract_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT liquidated_contract_updated_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34368,7 +35071,7 @@ ALTER TABLE ONLY public.liquidated_contract
 --
 
 ALTER TABLE ONLY public.liquidated_deduction_item
-  ADD CONSTRAINT liquidated_deduction_item_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
+    ADD CONSTRAINT liquidated_deduction_item_liquidated_contract_id_fk FOREIGN KEY (liquidated_contract_id) REFERENCES public.liquidated_contract(id);
 
 
 --
@@ -34376,7 +35079,7 @@ ALTER TABLE ONLY public.liquidated_deduction_item
 --
 
 ALTER TABLE ONLY public.room_sub_supplies
-  ADD CONSTRAINT mt_sub_supplies_fk FOREIGN KEY (sub_supplies_id) REFERENCES public.mt_sub_supplies(id);
+    ADD CONSTRAINT mt_sub_supplies_fk FOREIGN KEY (sub_supplies_id) REFERENCES public.mt_sub_supplies(id);
 
 
 --
@@ -34384,7 +35087,7 @@ ALTER TABLE ONLY public.room_sub_supplies
 --
 
 ALTER TABLE ONLY public.mt_supplies
-  ADD CONSTRAINT mt_supplies_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT mt_supplies_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34392,7 +35095,7 @@ ALTER TABLE ONLY public.mt_supplies
 --
 
 ALTER TABLE ONLY public.mt_sub_supplies
-  ADD CONSTRAINT mt_supplies_fk FOREIGN KEY (mt_supplies_id) REFERENCES public.mt_supplies(id);
+    ADD CONSTRAINT mt_supplies_fk FOREIGN KEY (mt_supplies_id) REFERENCES public.mt_supplies(id);
 
 
 --
@@ -34400,7 +35103,7 @@ ALTER TABLE ONLY public.mt_sub_supplies
 --
 
 ALTER TABLE ONLY public.organization
-  ADD CONSTRAINT organization_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT organization_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34408,7 +35111,7 @@ ALTER TABLE ONLY public.organization
 --
 
 ALTER TABLE ONLY public.organization
-  ADD CONSTRAINT organization_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT organization_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34416,7 +35119,7 @@ ALTER TABLE ONLY public.organization
 --
 
 ALTER TABLE ONLY public.organization_user
-  ADD CONSTRAINT organization_user_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organization(id);
+    ADD CONSTRAINT organization_user_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organization(id);
 
 
 --
@@ -34424,7 +35127,7 @@ ALTER TABLE ONLY public.organization_user
 --
 
 ALTER TABLE ONLY public.organization_user
-  ADD CONSTRAINT organization_user_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT organization_user_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34432,7 +35135,7 @@ ALTER TABLE ONLY public.organization_user
 --
 
 ALTER TABLE ONLY public.receipt_debt_detail
-  ADD CONSTRAINT receipt_debt_detail_receipt_information_id_fkey FOREIGN KEY (receipt_information_id) REFERENCES public.receipt_information(id);
+    ADD CONSTRAINT receipt_debt_detail_receipt_information_id_fkey FOREIGN KEY (receipt_information_id) REFERENCES public.receipt_information(id);
 
 
 --
@@ -34440,7 +35143,7 @@ ALTER TABLE ONLY public.receipt_debt_detail
 --
 
 ALTER TABLE ONLY public.receipt_information
-  ADD CONSTRAINT receipt_information_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT receipt_information_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34448,7 +35151,7 @@ ALTER TABLE ONLY public.receipt_information
 --
 
 ALTER TABLE ONLY public.receipt_information
-  ADD CONSTRAINT receipt_information_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT receipt_information_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34456,7 +35159,7 @@ ALTER TABLE ONLY public.receipt_information
 --
 
 ALTER TABLE ONLY public.receipt_information_service
-  ADD CONSTRAINT receipt_information_service_receipt_information_id_fkey FOREIGN KEY (receipt_information_id) REFERENCES public.receipt_information(id);
+    ADD CONSTRAINT receipt_information_service_receipt_information_id_fkey FOREIGN KEY (receipt_information_id) REFERENCES public.receipt_information(id);
 
 
 --
@@ -34464,7 +35167,7 @@ ALTER TABLE ONLY public.receipt_information_service
 --
 
 ALTER TABLE ONLY public.rental_contract_appendix_sequence
-  ADD CONSTRAINT rental_contract_appendix_sequence_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT rental_contract_appendix_sequence_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34472,7 +35175,7 @@ ALTER TABLE ONLY public.rental_contract_appendix_sequence
 --
 
 ALTER TABLE ONLY public.rental_contract_cost
-  ADD CONSTRAINT rental_contract_cost_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT rental_contract_cost_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34480,7 +35183,7 @@ ALTER TABLE ONLY public.rental_contract_cost
 --
 
 ALTER TABLE ONLY public.rental_contract
-  ADD CONSTRAINT rental_contract_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT rental_contract_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34488,7 +35191,7 @@ ALTER TABLE ONLY public.rental_contract
 --
 
 ALTER TABLE ONLY public.rental_contract
-  ADD CONSTRAINT rental_contract_deposit_contract_id_fkey FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
+    ADD CONSTRAINT rental_contract_deposit_contract_id_fkey FOREIGN KEY (deposit_contract_id) REFERENCES public.deposit_contract(id);
 
 
 --
@@ -34496,7 +35199,7 @@ ALTER TABLE ONLY public.rental_contract
 --
 
 ALTER TABLE ONLY public.rental_contract_people
-  ADD CONSTRAINT rental_contract_people_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT rental_contract_people_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34504,7 +35207,7 @@ ALTER TABLE ONLY public.rental_contract_people
 --
 
 ALTER TABLE ONLY public.rental_contract
-  ADD CONSTRAINT rental_contract_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT rental_contract_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34512,7 +35215,7 @@ ALTER TABLE ONLY public.rental_contract
 --
 
 ALTER TABLE ONLY public.rental_contract
-  ADD CONSTRAINT rental_contract_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT rental_contract_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34520,7 +35223,7 @@ ALTER TABLE ONLY public.rental_contract
 --
 
 ALTER TABLE ONLY public.rental_contract_vehicle
-  ADD CONSTRAINT rental_contract_vehicle_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
+    ADD CONSTRAINT rental_contract_vehicle_rental_contract_id_fkey FOREIGN KEY (rental_contract_id) REFERENCES public.rental_contract(id);
 
 
 --
@@ -34528,7 +35231,7 @@ ALTER TABLE ONLY public.rental_contract_vehicle
 --
 
 ALTER TABLE ONLY public.room
-  ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34536,7 +35239,7 @@ ALTER TABLE ONLY public.room
 --
 
 ALTER TABLE ONLY public.room_supplies
-  ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34544,7 +35247,7 @@ ALTER TABLE ONLY public.room_supplies
 --
 
 ALTER TABLE ONLY public.room_cost
-  ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34552,7 +35255,7 @@ ALTER TABLE ONLY public.room_cost
 --
 
 ALTER TABLE ONLY public.room
-  ADD CONSTRAINT room_app_user_rented_fk FOREIGN KEY (rented_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_app_user_rented_fk FOREIGN KEY (rented_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34560,7 +35263,7 @@ ALTER TABLE ONLY public.room
 --
 
 ALTER TABLE ONLY public.room
-  ADD CONSTRAINT room_building_id_fk FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT room_building_id_fk FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34568,7 +35271,7 @@ ALTER TABLE ONLY public.room
 --
 
 ALTER TABLE ONLY public.room_contract
-  ADD CONSTRAINT room_contact_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_contact_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34576,7 +35279,7 @@ ALTER TABLE ONLY public.room_contract
 --
 
 ALTER TABLE ONLY public.room_contract
-  ADD CONSTRAINT room_contact_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_contact_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34584,7 +35287,7 @@ ALTER TABLE ONLY public.room_contract
 --
 
 ALTER TABLE ONLY public.room_content
-  ADD CONSTRAINT room_content_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_content_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34592,7 +35295,7 @@ ALTER TABLE ONLY public.room_content
 --
 
 ALTER TABLE ONLY public.room_content
-  ADD CONSTRAINT room_content_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_content_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34600,7 +35303,7 @@ ALTER TABLE ONLY public.room_content
 --
 
 ALTER TABLE ONLY public.room_content
-  ADD CONSTRAINT room_content_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_content_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34608,7 +35311,7 @@ ALTER TABLE ONLY public.room_content
 --
 
 ALTER TABLE ONLY public.room_cost
-  ADD CONSTRAINT room_cost_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_cost_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34616,7 +35319,7 @@ ALTER TABLE ONLY public.room_cost
 --
 
 ALTER TABLE ONLY public.room_customer
-  ADD CONSTRAINT room_customer_app_user_id_fk FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_customer_app_user_id_fk FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34624,7 +35327,7 @@ ALTER TABLE ONLY public.room_customer
 --
 
 ALTER TABLE ONLY public.room_customer
-  ADD CONSTRAINT room_customer_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_customer_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34632,7 +35335,7 @@ ALTER TABLE ONLY public.room_customer
 --
 
 ALTER TABLE ONLY public.room_deposited_customer
-  ADD CONSTRAINT room_deposited_customer_app_user_id_fk FOREIGN KEY (created_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_deposited_customer_app_user_id_fk FOREIGN KEY (created_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34640,7 +35343,7 @@ ALTER TABLE ONLY public.room_deposited_customer
 --
 
 ALTER TABLE ONLY public.room_deposited_customer
-  ADD CONSTRAINT room_deposited_customer_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_deposited_customer_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34648,7 +35351,7 @@ ALTER TABLE ONLY public.room_deposited_customer
 --
 
 ALTER TABLE ONLY public.room_history_payment
-  ADD CONSTRAINT room_history_payment_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_history_payment_app_user_id_fk FOREIGN KEY (created_by_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34656,7 +35359,7 @@ ALTER TABLE ONLY public.room_history_payment
 --
 
 ALTER TABLE ONLY public.room_history_payment
-  ADD CONSTRAINT room_history_payment_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_history_payment_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34664,7 +35367,7 @@ ALTER TABLE ONLY public.room_history_payment
 --
 
 ALTER TABLE ONLY public.room_media
-  ADD CONSTRAINT room_media_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_media_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34672,7 +35375,7 @@ ALTER TABLE ONLY public.room_media
 --
 
 ALTER TABLE ONLY public.room_media
-  ADD CONSTRAINT room_media_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_media_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34680,7 +35383,7 @@ ALTER TABLE ONLY public.room_media
 --
 
 ALTER TABLE ONLY public.room_rate_customer
-  ADD CONSTRAINT room_rate_customer_app_user_id_fk FOREIGN KEY (reviewer_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_rate_customer_app_user_id_fk FOREIGN KEY (reviewer_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34688,7 +35391,7 @@ ALTER TABLE ONLY public.room_rate_customer
 --
 
 ALTER TABLE ONLY public.room_schedule
-  ADD CONSTRAINT room_schedule_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
+    ADD CONSTRAINT room_schedule_app_user_id_fk FOREIGN KEY (updated_by) REFERENCES public.app_user(id);
 
 
 --
@@ -34696,7 +35399,7 @@ ALTER TABLE ONLY public.room_schedule
 --
 
 ALTER TABLE ONLY public.room_schedule
-  ADD CONSTRAINT room_schedule_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT room_schedule_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34704,7 +35407,7 @@ ALTER TABLE ONLY public.room_schedule
 --
 
 ALTER TABLE ONLY public.room_supplies
-  ADD CONSTRAINT supplies_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
+    ADD CONSTRAINT supplies_room_id_fk FOREIGN KEY (room_id) REFERENCES public.room(id);
 
 
 --
@@ -34712,7 +35415,7 @@ ALTER TABLE ONLY public.room_supplies
 --
 
 ALTER TABLE ONLY public.user_notification
-  ADD CONSTRAINT user_notification_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT user_notification_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
 
 
 --
@@ -34720,7 +35423,7 @@ ALTER TABLE ONLY public.user_notification
 --
 
 ALTER TABLE ONLY public.user_permission
-  ADD CONSTRAINT user_permission_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
+    ADD CONSTRAINT user_permission_building_id_fkey FOREIGN KEY (building_id) REFERENCES public.building(id);
 
 
 --
@@ -34728,7 +35431,71 @@ ALTER TABLE ONLY public.user_permission
 --
 
 ALTER TABLE ONLY public.user_permission
-  ADD CONSTRAINT user_permission_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
+    ADD CONSTRAINT user_permission_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.app_user(id);
+
+
+--
+-- Name: user FK_22188999bf0339b3fb2ff462aeb; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user"."user"
+    ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
+
+
+--
+-- Name: address FK_33470d4bca4693d5f3facd88ee0; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address
+    ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
+
+
+--
+-- Name: address_ward FK_87744dd279eab2b47939da6e8c3; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_ward
+    ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+
+
+--
+-- Name: user FK_b823b9f2266b6a54de4e5b88294; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user"."user"
+    ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
+
+
+--
+-- Name: address FK_cef5f32fbbfbe7d8d1fb6bbd7e0; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address
+    ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
+
+
+--
+-- Name: address FK_d25f1ea79e282cc8a42bd616aa3; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address
+    ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
+
+
+--
+-- Name: address_district FK_d28b9ad190bbcb4728a225baebe; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address_district
+    ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+
+
+--
+-- Name: address FK_de67160900785eb9f9123b16e84; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+--
+
+ALTER TABLE ONLY "user".address
+    ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
 
 
 --
