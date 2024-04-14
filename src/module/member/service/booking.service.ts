@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { Booking } from '@model';
 import { BaseService } from '@shared';
+import { BookingRepository } from '@repository';
 
 export const P_BOOKING_LISTED = '941f5380-cfde-4bdf-9400-c6b3964c82ce';
 export const P_BOOKING_DETAIL = '50267915-c98b-46a8-a310-ffa9f0aa00d3';
@@ -13,10 +12,7 @@ export const P_BOOKING_DELETE = '8c93d8f8-7db8-4a4c-a5e6-1cb0f53cc684';
 
 @Injectable()
 export class BookingService extends BaseService<Booking> {
-  constructor(
-    @InjectRepository(Booking)
-    public repo: Repository<Booking>,
-  ) {
+  constructor(public repo: BookingRepository) {
     super(repo);
     this.listJoin = ['item', 'user'];
   }

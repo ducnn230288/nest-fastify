@@ -15,9 +15,11 @@ export * from './module/user/repository/address-ward.repository';
 export * from './module/user/repository/user.repository';
 export * from './module/user/repository/user-role.repository';
 
+export * from './module/member/repository/booking.repository';
 export * from './module/member/repository/dayoff.repository';
 export * from './module/member/repository/user-team.repository';
 export * from './module/member/repository/task-timesheet.repository';
 export * from './module/member/repository/task.repository';
+export * from './module/member/repository/task-sub.repository';
 export * from './module/member/repository/question.repository';
 export * from './module/member/repository/question-test.repository';

@@ -24,7 +24,7 @@ export class TaskController {
     @AuthUser() user: User,
   ): Promise<TaskResponseDto> {
     if (!body.code) {
-      const [_, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
+      const [, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
       body.code = body.projectCode + `_${total < 10 ? '0' + total : total}`;
     }
     const task = await this.service.createTask(body, user);
