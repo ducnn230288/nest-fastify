@@ -110,7 +110,7 @@ export class User extends Base {
   roleCode?: string;
 
   @ManyToOne(() => UserRole, (role) => role.users, { eager: true }) //
-  @JoinColumn({ name: 'roleCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'role_code', referencedColumnName: 'code' })
   @Type(() => UserRole)
   readonly role?: UserRole;
 
@@ -122,7 +122,7 @@ export class User extends Base {
   readonly positionCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   readonly position?: Code;
 
   @Column() // { name: 'start_date' }
@@ -169,7 +169,7 @@ export class User extends Base {
   })
   teams?: UserTeam[];
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   @IsUUID()
@@ -177,7 +177,7 @@ export class User extends Base {
 
   @ManyToOne(() => User, (user) => user.members, { eager: true })
   @Type(() => User)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   readonly manager?: User;
 
   @OneToMany(() => User, (user) => user.manager)
@@ -199,15 +199,6 @@ export class User extends Base {
   @ManyToMany(() => Task, (team) => team.assignees, { eager: true })
   @Type(() => Task)
   @IsOptional()
-  @JoinTable({
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'user_task_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   tasksAssignees?: Task[];
 }

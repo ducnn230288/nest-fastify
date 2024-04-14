@@ -42,7 +42,7 @@ export class DayOff extends Base {
   @Max(2)
   time: number;
 
-  @Column({ nullable: true, type: 'real', name: 'time_number' })
+  @Column({ nullable: true, type: 'real' })
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 1 }), description: '' })
   @IsDecimal()
   @Min(0.5)
@@ -56,50 +56,50 @@ export class DayOff extends Base {
   @IsOptional()
   image: string;
 
-  @Column({ name: 'date_leave_start' })
+  @Column()
   @ApiProperty({ example: faker.date.soon({ days: 1 }), description: '' })
   @IsDateString()
   dateLeaveStart: Date;
 
-  @Column({ name: 'date_leave_end' })
+  @Column()
   @ApiProperty({ example: faker.date.soon({ days: 10 }), description: '' })
   @IsDateString()
   dateLeaveEnd: Date;
 
-  @Column({ nullable: true, name: 'approved_at' })
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.date.soon({ days: 10 }), description: '' })
   @IsDateString()
   approvedAt: Date;
 
-  @Column({ nullable: true, name: 'approved_by_id' })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   approvedById: string;
 
   @ManyToOne(() => User, (user) => user.id, { eager: true })
-  @JoinColumn({ name: 'approved_by_id', referencedColumnName: 'id' })
+  @JoinColumn()
   @Type(() => User)
   @Expose({ groups: [MaxGroup] })
   approvedBy: User;
 
-  @Column({ nullable: true, name: 'reason_reject' })
+  @Column({ nullable: true })
   @IsString()
   @IsOptional()
   reasonReject: string;
 
-  @Column({ name: 'staff_id' })
+  @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()
   staffId: string;
 
   @ManyToOne(() => User, (user) => user.id, { eager: true })
-  @JoinColumn({ name: 'staff_id', referencedColumnName: 'id' })
+  @JoinColumn()
   @Type(() => User)
   @Expose({ groups: [MaxGroup] })
   staff: User;
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   @IsUUID()
@@ -107,7 +107,7 @@ export class DayOff extends Base {
 
   @ManyToOne(() => User, (user) => user.members, { eager: true })
   @Type(() => User)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   @Expose({ groups: [MaxGroup] })
   readonly manager?: User;
 }

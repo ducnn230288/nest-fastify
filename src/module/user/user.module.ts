@@ -27,8 +27,7 @@ import {
 } from '@service';
 import { FileRepository, UserRepository, DayoffRepository, UserTeamRepository } from '@repository';
 
-import { AccessTokenStrategy } from './strategy/accessToken.strategy';
-import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
+import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
 
 @Module({
   imports: [

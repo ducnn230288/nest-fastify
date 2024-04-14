@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FormInstance, Select } from 'antd';
 
-import { FormItem, TableGet, TableItemFilterList } from '@models';
+import { TableGet, TableItemFilterList } from '@models';
 import { arrayUnique, cleanObjectKeyNull } from '@utils';
 
 const Component = ({
-  formItem,
   form,
   value,
   showSearch = true,
@@ -17,6 +16,7 @@ const Component = ({
   get,
   list,
   mode,
+  firstLoad,
   ...prop
 }: Type) => {
   const [_list, set_list] = useState(list ? list : []);
@@ -44,8 +44,8 @@ const Component = ({
     }
   };
   useEffect(() => {
-    if (formItem?.firstLoad) {
-      facade[get?.method || 'get'](formItem.firstLoad(value));
+    if (firstLoad) {
+      facade[get?.method || 'get'](firstLoad(value));
     }
   }, []);
 
@@ -54,7 +54,7 @@ const Component = ({
     if (get?.data) {
       let data = get.data();
       if (get?.format && data) {
-        if (formItem?.mode === 'multiple') data = data.map(get.format);
+        if (mode === 'multiple') data = data.map(get.format);
         else data = [get.format(data)];
         if (JSON.stringify(data) !== JSON.stringify(_temp)) set_temp(data);
       }
@@ -92,7 +92,6 @@ const Component = ({
   );
 };
 type Type = {
-  formItem?: FormItem;
   form?: FormInstance;
   value?: any;
   showSearch?: boolean;
@@ -100,9 +99,10 @@ type Type = {
   onChange: (e: any) => any;
   onBlur?: (e: any) => any;
   placeholder?: string;
-  disabled: boolean;
+  disabled?: boolean;
   get?: TableGet;
   list?: TableItemFilterList[];
   mode?: 'multiple' | 'tags';
+  firstLoad?: (data: any) => any;
 };
 export default Component;

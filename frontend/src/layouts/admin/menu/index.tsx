@@ -1,5 +1,5 @@
 import { Collapse, Popover } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -29,10 +29,8 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
   }, [location.hash]);
 
   useEffect(() => {
-    if (isCollapsed) {
-      refMenu!.current!.scrollTop = 0;
-    }
-  }, [isCollapsed]);
+    if (document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')) refMenu!.current!.scrollTop = 0;
+  }, [document.querySelectorAll('main')[0]?.classList?.contains('isCollapsed')]);
 
   const subMenu = (child: any[]) => (
     <ul className={'menu'}>
@@ -79,12 +77,14 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
             if (!item.child) {
               return (
                 <li
-                  className={classNames('flex items-center text-gray-300 h-12 m-2 relative cursor-pointer py-1 px-2', {
-                    'bg-teal-700 text-white !fill-gray-300 rounded-2xl opacity-100':
-                      location.pathname === `/${lang}${routerLinks(item.name)}`,
-                    'fill-gray-300': location.pathname !== `/${lang}${routerLinks(item.name)}`,
-                    'justify-center': isCollapsed,
-                  })}
+                  className={classNames(
+                    'div14 flex items-center text-gray-300 h-12 m-2 relative cursor-pointer py-1 px-2',
+                    {
+                      'bg-teal-700 text-white !fill-gray-300 rounded-2xl opacity-100':
+                        location.pathname === `/${lang}${routerLinks(item.name)}`,
+                      'fill-gray-300': location.pathname !== `/${lang}${routerLinks(item.name)}`,
+                    },
+                  )}
                   onClick={() =>
                     location.pathname !== `/${lang}${routerLinks(item.name)}` &&
                     navigate({
@@ -94,71 +94,63 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
                   }
                   key={index}
                 >
-                  <div className={classNames({ absolute: isCollapsed })}>{item.icon}</div>
-                  <span
+                  <div className={'div15'}>{item.icon}</div>
+                  <p
                     className={classNames(
-                      'ml-2.5 transition-all duration-300 ease-in-out font-medium text-base !h-8 flex items-center',
-                      {
-                        'opacity-100': !isCollapsed,
-                        hidden: isCollapsed,
-                      },
+                      'div17 ml-2.5 transition-all duration-300 ease-in-out font-medium text-base !h-8 flex items-center',
                     )}
                   >
                     {t(`titles.${item.name}`)}
-                  </span>
+                  </p>
                 </li>
               );
             } else {
-              return isCollapsed ? (
-                <Popover key={index} placement="rightTop" trigger={'hover'} content={subMenu(item.child)}>
-                  <li className="flex items-center justify-center h-12 m-2 px-2 text-gray-300 fill-gray-300 ">
-                    <div className={classNames({ 'ml-1': !isCollapsed })}>{item.icon}</div>
+              return (
+                <Fragment key={index}>
+                  <div className="div22">
+                    <Popover placement="rightTop" trigger={'hover'} content={subMenu(item.child)}>
+                      <li className="flex items-center justify-center h-12 m-2 px-2 text-gray-300 fill-gray-300 ">
+                        <div className={classNames({ 'ml-1': !isCollapsed })}>{item.icon}</div>
+                      </li>
+                    </Popover>
+                  </div>
+                  <li className="div21 my-1 px-1">
+                    <Collapse
+                      accordion
+                      bordered={false}
+                      className={classNames('bg-teal-900', {
+                        'active-menu': location.pathname.indexOf(`/${lang}${routerLinks(item.name)}`) > -1,
+                      })}
+                      defaultActiveKey={menuActive}
+                      items={[
+                        {
+                          key: `/${lang}${routerLinks(item.name)}`,
+                          showArrow: !isCollapsed,
+                          label: (
+                            <ul>
+                              <li className={'div18 flex items-center text-gray-300 fill-gray-300 menu'}>
+                                <span className={'div19'}>{item.icon}</span>
+                                <span
+                                  className={
+                                    'div20 pl-2.5 transition-all duration-300 ease-in-out font-medium text-base text-gray-300'
+                                  }
+                                >
+                                  {t(`titles.${item.name}`)}
+                                </span>
+                              </li>
+                            </ul>
+                          ),
+                          children: subMenu(item.child),
+                        },
+                      ]}
+                    />
                   </li>
-                </Popover>
-              ) : (
-                <li className="my-1 px-1" key={index}>
-                  <Collapse
-                    accordion
-                    bordered={false}
-                    className={classNames('bg-teal-900', {
-                      'active-menu': location.pathname.indexOf(`/${lang}${routerLinks(item.name)}`) > -1,
-                    })}
-                    defaultActiveKey={menuActive}
-                    items={[
-                      {
-                        key: `/${lang}${routerLinks(item.name)}`,
-                        showArrow: !isCollapsed,
-                        label: (
-                          <ul>
-                            <li
-                              className={classNames('flex items-center text-gray-300 fill-gray-300 menu', {
-                                'justify-center ': isCollapsed,
-                              })}
-                            >
-                              <span className={classNames({ 'ml-1': !isCollapsed })}>{item.icon}</span>
-                              <span
-                                className={classNames(
-                                  'pl-2.5 transition-all duration-300 ease-in-out font-medium text-base text-gray-300',
-                                  {
-                                    'opacity-100': !isCollapsed,
-                                    'opacity-0 text-[0]': isCollapsed,
-                                  },
-                                )}
-                              >
-                                {t(`titles.${item.name}`)}
-                              </span>
-                            </li>
-                          </ul>
-                        ),
-                        children: subMenu(item.child),
-                      },
-                    ]}
-                  />
-                </li>
+                </Fragment>
               );
             }
           })}
     </ul>
   );
 };
+
 export default Layout;

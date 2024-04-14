@@ -22,7 +22,7 @@ export enum ETaskStatus {
 
 @Entity({ schema: 'member' })
 export class Task extends Base {
-  @Column({ nullable: true, name: 'project_code' })
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'ARI', description: '' })
   @IsString()
@@ -129,14 +129,14 @@ export class Task extends Base {
   @Type(() => User)
   assignees?: User[];
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @IsUUID()
   @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   managerId?: string;
 
   @ManyToOne(() => User, (user) => user.task)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   readonly manager?: User;
 
   @OneToMany(() => TaskSub, (taskSub) => taskSub.task)

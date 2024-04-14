@@ -125,6 +125,10 @@ export const renderTitleBreadcrumbs = (title: string, breadcrumbs: { title: stri
       )),
   );
 };
+export const isNumeric = (str: string) => {
+  return !isNaN(Number(str)) && !isNaN(parseFloat(str));
+};
+
 export const mapTreeObject = (item: any) => {
   return {
     ...item,
@@ -160,18 +164,20 @@ export const reorderArray = (list: any[], startIndex: any, endIndex: any) => {
 };
 export const cssInObject = (styles: string) =>
   styles
-    .trim()
-    .split(';')
-    .map((cur) =>
-      cur
+    ? styles
         .trim()
-        .split(':')
-        .map((i) => i.trim()),
-    )
-    .filter((i) => i.length === 2)
-    .reduce((acc: any, val) => {
-      const [key, value] = val;
-      const newKey = key.replace(/-./g, (css) => css.toUpperCase()[1]);
-      acc[newKey] = value;
-      return acc;
-    }, {});
+        .split(';')
+        .map((cur) =>
+          cur
+            .trim()
+            .split(':')
+            .map((i) => i.trim()),
+        )
+        .filter((i) => i.length === 2)
+        .reduce((acc: any, val) => {
+          const [key, value] = val;
+          const newKey = key.replace(/-./g, (css) => css.toUpperCase()[1]);
+          acc[newKey] = value;
+          return acc;
+        }, {})
+    : {};

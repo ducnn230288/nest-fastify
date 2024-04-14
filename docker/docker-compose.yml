@@ -1,12 +1,12 @@
 version: '3.9'
-
+name: ari
 services:
   database:
     env_file:
       - ../.env
     build:
       context: ..
-      dockerfile: docker/Dockerfile-init
+      dockerfile: docker/Dockerfile-database
     volumes:
       - database:/database
     ports:

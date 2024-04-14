@@ -9,7 +9,7 @@ import { Base, setImage } from '@shared';
 
 @Entity({ schema: 'member' })
 export class Question extends Base {
-  @Column({ nullable: true, name: 'type_code' })
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'TEST_IQ', description: '' })
   @IsString()

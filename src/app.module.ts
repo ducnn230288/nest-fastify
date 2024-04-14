@@ -9,6 +9,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
 import { SchedulerModule, CoreModule, UserModule, MemberModule } from '@module';
+import { NamingStrategy } from '@shared';
 
 @Module({
   controllers: [AppController],
@@ -41,6 +42,7 @@ import { SchedulerModule, CoreModule, UserModule, MemberModule } from '@module';
         synchronize: appConfig.NODE_ENV !== 'prod',
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
+        namingStrategy: new NamingStrategy(),
       }),
     }),
     CacheModule.registerAsync({
