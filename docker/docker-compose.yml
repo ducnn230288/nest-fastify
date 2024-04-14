@@ -1,5 +1,5 @@
 version: '3.9'
-
+name: api-shop
 services:
   database:
     env_file:
