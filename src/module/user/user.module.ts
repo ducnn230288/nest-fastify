@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -13,19 +12,28 @@ import {
   UserRoleController,
   AddressWardController,
 } from '@controller';
-import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   AddressService,
   AuthService,
   AddressDistrictService,
-  // EmailService,
+  EmailService,
   FileService,
   AddressProvinceService,
   UserRoleService,
   UserService,
   AddressWardService,
 } from '@service';
-import { FileRepository, UserRepository, DayoffRepository, UserTeamRepository } from '@repository';
+import {
+  AddressDistrictRepository,
+  AddressProvinceRepository,
+  AddressRepository,
+  AddressWardRepository,
+  FileRepository,
+  UserRepository,
+  UserRoleRepository,
+  DayoffRepository,
+  UserTeamRepository,
+} from '@repository';
 
 import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
 
@@ -42,7 +50,6 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, AddressProvince, AddressDistrict, AddressWard, Address]),
   ],
   controllers: [
     AuthController,
@@ -56,16 +63,21 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
   providers: [
     AccessTokenStrategy,
     RefreshTokenStrategy,
-    // EmailService,
+    EmailService,
     AuthService,
     UserRepository,
     UserService,
+    UserRoleRepository,
     UserRoleService,
     FileRepository,
     FileService,
+    AddressProvinceRepository,
     AddressProvinceService,
+    AddressDistrictRepository,
     AddressDistrictService,
+    AddressWardRepository,
     AddressWardService,
+    AddressRepository,
     AddressService,
     UserTeamRepository,
     DayoffRepository,
@@ -74,12 +86,17 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
     AuthService,
     UserRepository,
     UserService,
+    UserRoleRepository,
     UserRoleService,
     FileRepository,
     FileService,
+    AddressProvinceRepository,
     AddressProvinceService,
+    AddressDistrictRepository,
     AddressDistrictService,
+    AddressWardRepository,
     AddressWardService,
+    AddressRepository,
     AddressService,
   ],
 })

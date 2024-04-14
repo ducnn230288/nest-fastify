@@ -8,7 +8,7 @@ import { IsOptional, IsString } from 'class-validator';
 
 @Entity({ schema: 'user' })
 export class Address extends Base {
-  @Column() // { name: 'code_province' }
+  @Column()
   @IsString()
   @ApiProperty({ example: faker.location.countryCode('alpha-2'), description: '' })
   codeProvince: string;
@@ -17,7 +17,7 @@ export class Address extends Base {
   @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public provinceItem: AddressProvince;
 
-  @Column() // { name: 'code_district' }
+  @Column()
   @IsString()
   @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
   codeDistrict: string;
@@ -26,7 +26,7 @@ export class Address extends Base {
   @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem: AddressDistrict;
 
-  @Column() // { name: 'code_ward' }
+  @Column()
   @IsString()
   @ApiProperty({ example: faker.string.alpha({ length: 4, casing: 'upper', exclude: ['A'] }), description: '' })
   codeWard: string;
@@ -35,14 +35,14 @@ export class Address extends Base {
   @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public wardItem: AddressWard;
 
-  @Column() // { name: 'specific_address' }
+  @Column()
   @Expose()
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString()
   @IsOptional()
   specificAddress: string;
 
-  @Column() // { name: 'user_id' }
+  @Column()
   @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
