@@ -23,7 +23,7 @@ export class DataType extends Base {
   @MaxLength(100)
   code: string;
 
-  @Column({ default: false }) // , name: 'is_primary'
+  @Column({ default: false })
   @Expose()
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()

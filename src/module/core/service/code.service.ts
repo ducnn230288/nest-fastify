@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { BaseService } from '@shared';
 import { Code } from '@model';
+import { CodeRepository } from '@repository';
 
 export const P_CODE_LISTED = '5d808d76-bf99-4a51-b4b6-d5aa37bdb398';
 export const P_CODE_DETAIL = 'eb510a79-4f75-4b14-a118-f036c1daa430';
@@ -13,10 +12,7 @@ export const P_CODE_DELETE = 'e21ac25b-1651-443e-9834-e593789807c9';
 
 @Injectable()
 export class CodeService extends BaseService<Code> {
-  constructor(
-    @InjectRepository(Code)
-    public repo: Repository<Code>,
-  ) {
+  constructor(public repo: CodeRepository) {
     super(repo);
     this.listQuery = ['code', 'name', 'description'];
   }

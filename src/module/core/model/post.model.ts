@@ -14,7 +14,7 @@ export class Post extends Base {
   @IsString()
   type: string;
 
-  @Column({ nullable: true }) // , name: 'thumbnail_url'
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
   @IsString()
   @IsOptional()

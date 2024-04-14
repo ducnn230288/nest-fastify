@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
   CodeController,
@@ -12,18 +11,6 @@ import {
   PostTypeController,
 } from '@controller';
 import {
-  Code,
-  CodeType,
-  Data,
-  DataTranslation,
-  DataType,
-  File,
-  Parameter,
-  Post,
-  PostTranslation,
-  PostType,
-} from '@model';
-import {
   CodeService,
   CodeTypeService,
   DataService,
@@ -34,8 +21,10 @@ import {
   PostTypeService,
 } from '@service';
 import {
+  CodeRepository,
   CodeTypeRepository,
   DataRepository,
+  DataTypeRepository,
   FileRepository,
   ParameterRepository,
   PostRepository,
@@ -44,20 +33,7 @@ import {
 } from '@repository';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Code,
-      CodeType,
-      Data,
-      DataTranslation,
-      DataType,
-      File,
-      Parameter,
-      Post,
-      PostType,
-      PostTranslation,
-    ]),
-  ],
+  imports: [],
   controllers: [
     CodeController,
     CodeTypeController,
@@ -69,11 +45,13 @@ import {
     PostTypeController,
   ],
   providers: [
+    CodeRepository,
     CodeService,
     CodeTypeRepository,
     CodeTypeService,
     DataRepository,
     DataService,
+    DataTypeRepository,
     DataTypeService,
     FileRepository,
     FileService,

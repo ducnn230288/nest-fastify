@@ -47,7 +47,7 @@ export class PostTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column() // { name: 'post_id' }
+  @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()

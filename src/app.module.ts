@@ -8,17 +8,16 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { SchedulerModule, CoreModule, UserModule, ProductModule } from '@module';
+import { NotificationModule, chedulerModule, CoreModule, UserModule, ProductModule } from '@module';
 import { NamingStrategy } from '@shared';
 
 @Module({
   controllers: [AppController],
   imports: [
     WinstonModule.forRoot(loggerOptions),
-    // NotificationModule,
+    NotificationModule,
     SchedulerModule,
     UserModule,
-    ProductModule,
     CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
@@ -40,6 +39,7 @@ import { NamingStrategy } from '@shared';
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
         autoLoadEntities: true,
+        entities: [__dirname + '/**/*.{entity,model}.{js,ts}'],
         synchronize: appConfig.NODE_ENV !== 'prod',
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
@@ -58,6 +58,7 @@ import { NamingStrategy } from '@shared';
       }),
       isGlobal: true,
     }),
+    ProductModule,
   ],
 })
 export class AppModule {}
