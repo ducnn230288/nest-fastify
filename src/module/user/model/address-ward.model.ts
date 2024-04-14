@@ -28,7 +28,7 @@ export class AddressWard extends Base {
   codeDistrict: string;
 
   @ManyToOne(() => AddressDistrict, (district) => district.wardItem, { eager: false })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem?: AddressDistrict;
 
   @OneToMany(() => Address, (address) => address.wardItem, { eager: false })
