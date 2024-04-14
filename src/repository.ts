@@ -19,3 +19,5 @@ export * from './module/product/repository/product-category.repository';
 export * from './module/product/repository/product.repository';
 export * from './module/product/repository/product-store.repository';
 export * from './module/product/repository/order.repository';
+export * from './module/product/repository/order-address.repository';
+export * from './module/product/repository/order-product.repository';

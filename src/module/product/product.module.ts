@@ -1,7 +1,5 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import { ProductCategory, Product, ProductStore, Order, OrderAddress, OrderProduct, User } from '@model';
 import { OrderController, ProductCategoryController, ProductController, ProductStoreController } from '@controller';
 import {
   ProductCategoryService,
@@ -18,38 +16,43 @@ import {
   ProductStoreRepository,
   OrderRepository,
   UserRepository,
+  OrderAddressRepository,
+  OrderProductRepository,
 } from '@repository';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [
-    UserModule,
-    TypeOrmModule.forFeature([Product, ProductCategory, ProductStore, Order, OrderAddress, OrderProduct]),
-  ],
+  imports: [UserModule],
   controllers: [ProductController, ProductCategoryController, ProductStoreController, OrderController],
   providers: [
+    ProductRepository,
     ProductService,
+    ProductCategoryRepository,
     ProductCategoryService,
     ProductStoreService,
-    ProductRepository,
-    ProductCategoryRepository,
     ProductStoreRepository,
-    OrderService,
-    OrderAddressService,
-    OrderProductService,
     OrderRepository,
+    OrderService,
+    OrderAddressRepository,
+    OrderAddressService,
+    OrderProductRepository,
+    OrderProductService,
     UserService,
     UserRepository,
   ],
   exports: [
-    ProductService,
-    ProductCategoryService,
     ProductRepository,
+    ProductService,
     ProductCategoryRepository,
-    OrderService,
-    OrderAddressService,
-    OrderProductService,
+    ProductCategoryService,
+    ProductStoreService,
+    ProductStoreRepository,
     OrderRepository,
+    OrderService,
+    OrderAddressRepository,
+    OrderAddressService,
+    OrderProductRepository,
+    OrderProductService,
   ],
 })
 export class ProductModule {}

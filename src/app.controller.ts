@@ -1,22 +1,17 @@
 import { Get, Controller, Render, ValidationPipe, Query, Param } from '@nestjs/common';
-import { ProductCategoryService, DataService, PostService, ParameterService, ProductService } from '@service';
-import { PaginationQueryDto } from './shared/base';
-import { ProductCategoryDto, ProductDto, ProductCategoryResponseDto } from '@dto';
+import { ProductCategoryService, ProductService } from '@service';
+import { ProductCategoryResponseDto } from '@dto';
 import { I18nContext } from 'nestjs-i18n';
-import { FastifyReply } from 'fastify';
+import { PaginationQueryDto } from '@shared';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly dataService: DataService,
-    private readonly postService: PostService,
-    private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
     private readonly categoryService: ProductCategoryService,
     private readonly productService: ProductService,
-  ) { }
+  ) {}
   @Get('')
   @Render('pages/home/index')
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async root(
     language: string = 'en',
     urlLang = '/vn',
@@ -24,9 +19,8 @@ export class AppController {
   ): Promise<any> {
     const { data } = await this.common(language);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, prefer-const
-    let [categories, ...a] = await this.categoryService.findAll(paginationQuery);
-    const [products, ...b] = await this.productService.findAll(paginationQuery);
+    let [categories] = await this.categoryService.findAll(paginationQuery);
+    const [products] = await this.productService.findAll(paginationQuery);
     const featureCate = categories.slice(0, 3);
     categories = categories.map((item) => Object.assign(item, { countProds: item.products?.length }));
 
@@ -59,7 +53,6 @@ export class AppController {
 
   @Get('/vn')
   @Render('pages/home/index')
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async rootEn(
     language: string = 'vn',
     urlLang = '/en',
@@ -167,115 +160,7 @@ export class AppController {
       },
     };
   }
-
-  /*
-  // @Get('auth/profile')
-  // @Render('auth/profile')
-  // profile(): void {}
-
-  @Get('')
-  @Render('index')
-  @UseInterceptors(CacheInterceptor)
-  async root(language: string = 'vn', urlLang = '/en'): Promise<IHome> {
-    // let product = await this.managerCache.get<ProductEntity>(`product-${id}`);
-    // if (!product) {
-    //   product = await this.productService.findById(id);
-    //   await this.managerCache.set(`product-${id}`, product);
-    // }
-    const i18n = I18nContext.current()!;
-    const { data, dataArray } = await this.common(language, ['mission', 'services', 'value', 'member']);
-    return {
-      urlLang,
-      ...data,
-      language: {
-        ...data.language,
-        page: {
-          EnhanceVietnam: i18n.t('client.page.home.EnhanceVietnam', { lang: language }),
-          ChooseService: i18n.t('client.page.home.ChooseService', { lang: language }),
-          DigitalTransformation: i18n.t('client.page.home.DigitalTransformation', { lang: language }),
-          RDServices: i18n.t('client.page.home.RDServices', { lang: language }),
-          OutsourcingServices: i18n.t('client.page.home.OutsourcingServices', { lang: language }),
-          ProductDevelopment: i18n.t('client.page.home.ProductDevelopment', { lang: language }),
-          GetStarted: i18n.t('client.page.home.GetStarted', { lang: language }),
-          ABOUT: i18n.t('client.page.home.ABOUT', { lang: language }),
-          ARIIs: i18n.t('client.page.home.ARIIs', { lang: language }),
-          BestTechnicalAgency: i18n.t('client.page.home.BestTechnicalAgency', { lang: language }),
-          About1: i18n.t('client.page.home.About1', { lang: language }),
-          About2: i18n.t('client.page.home.About2', { lang: language }),
-          About3: i18n.t('client.page.home.About3', { lang: language }),
-          OurMission: i18n.t('client.page.home.OurMission', { lang: language }),
-          WeProvide: i18n.t('client.page.home.WeProvide', { lang: language }),
-          Services: i18n.t('client.page.home.Services', { lang: language }),
-          ARightChoice: i18n.t('client.page.home.ARightChoice', { lang: language }),
-          ARINotStrives: i18n.t('client.page.home.ARINotStrives', { lang: language }),
-          CoreValue: i18n.t('client.page.home.CoreValue', { lang: language }),
-          ExecutiveBoard: i18n.t('client.page.home.ExecutiveBoard', { lang: language }),
-          WeLove: i18n.t('client.page.home.WeLove', { lang: language }),
-        },
-      },
-      mission: dataArray['mission'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      services: dataArray['services'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      value: dataArray['value'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      JSON: {
-        member: dataArray['member'].map((item) => {
-          const translation = item.translations?.filter((subItem) => subItem.language === language)[0];
-          return {
-            ...item,
-            SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
-            translation: {
-              ...translation,
-            },
-          };
-        }),
-      },
-    };
-  }
-
-   private categoryService : ProductCategoryService
-  ) { }
-  @Get()
-  @Render('pages/home/index')
- async root( @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
-  constructor(private categoryService: ProductCategoryService) {}
-  @Get('/')
-  @Render('pages/home/index')
-  async root(@Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto): Promise<any> {
-    const cate = await this.categoryService.findAll(paginationQuery);
-    return {
-      title: 'Home Page',
-      content: 'Home Page',
-      categories: cate[0] || [],
-    };
-  }
-  */
   @Get('/administrator')
   @Render('administrator')
   administrator(): void {}
-}
-
-interface ICommon {
-  title: string;
-  content: string;
-  lang: string;
-  isEnglish: boolean;
-  language: object;
-}
-interface Category {
-  category: ProductCategoryDto;
-  countProds: number;
-}
-
-interface Ihome extends ICommon {
-  urlLang: string;
-  categories: Array<object>;
-  products: ProductDto[];
 }

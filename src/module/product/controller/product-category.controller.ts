@@ -2,7 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import { CATEGORY_CREATE, ProductCategoryService, CATEGORY_UPDATE, CATEGORY_DETAIL, CATEGORY_DELETE } from '@service';
+import { CATEGORY_CREATE, ProductCategoryService, CATEGORY_UPDATE, CATEGORY_DELETE } from '@service';
 import {
   ListProductCategoryResponseDto,
   ProductCategoryResponseDto,

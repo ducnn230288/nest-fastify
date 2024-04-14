@@ -3,7 +3,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseService } from '@shared';
 import { Product } from '@model';
 import { ProductRepository } from '@repository';
-import { ProductStoreService } from '@service';
 import { I18nContext } from 'nestjs-i18n';
 // import { CreateProductRequestDto, ProductResponseDto } from '../dto/product.dto';
 // import { ProductStoreService } from '@service';

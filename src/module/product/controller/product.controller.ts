@@ -2,14 +2,7 @@ import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nes
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
-import {
-  ProductService,
-  PRODUCT_CREATE,
-  PRODUCT_DETAIL,
-  ProductStoreService,
-  PRODUCT_UPDATE,
-  PRODUCT_DELETE,
-} from '@service';
+import { ProductService, PRODUCT_CREATE, ProductStoreService, PRODUCT_UPDATE, PRODUCT_DELETE } from '@service';
 import { CreateProductRequestDto, ListProductResponseDto, ProductResponseDto, UpdateProductRequestDto } from '@dto';
 import { User } from '@model';
 import dayjs from 'dayjs';

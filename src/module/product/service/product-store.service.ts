@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '@shared';
 import { ProductStore } from '@model';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ProductStoreRepository } from '@repository';
 
 export const STORE_LISTED = 'zz0c4f13-776d-4b71-be4d-f9952734a319';

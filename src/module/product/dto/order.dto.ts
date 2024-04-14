@@ -1,8 +1,7 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
-import { Order } from '../model/order.model';
-import { OrderAddress, Product } from '@model';
-import { IsString, IsUUID, IsArray, IsNumber, IsEmpty, IsOptional } from 'class-validator';
+import { Order, OrderAddress, Product } from '@model';
+import { IsString, IsUUID, IsArray, IsOptional } from 'class-validator';
 
 export class OrderProductDto extends PickType(Product, [
   'id',

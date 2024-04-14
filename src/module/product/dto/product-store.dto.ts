@@ -1,7 +1,6 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { ProductStore } from '@model';
-import { DefaultAuthResponsesUserDto, UserDto } from '@dto';
 
 export class ProductUpdateStoreRequestDto extends PickType(ProductStore, [
   'name',
