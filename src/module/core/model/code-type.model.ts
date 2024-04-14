@@ -34,7 +34,7 @@ export class CodeType extends Base {
   /**
    * Indicates if the CodeType is primary.
    */
-  @Column({ default: false }) // , name: 'is_primary'
+  @Column({ default: false })
   @ApiProperty({ example: false, description: '' })
   @IsBoolean()
   isPrimary?: boolean;
