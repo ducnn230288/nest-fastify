@@ -46,7 +46,7 @@ export class DataTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column() // { name: 'data_id' }
+  @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()

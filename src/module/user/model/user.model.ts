@@ -54,7 +54,7 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true, type: 'varchar' }) // , name: 'refresh_token'
+  @Column({ nullable: true, type: 'varchar' })
   @Exclude()
   refreshToken?: string | null;
   @BeforeUpdate()
@@ -71,7 +71,7 @@ export class User extends Base {
   @IsEmail()
   email?: string;
 
-  @Column() // { name: 'phone_number' }
+  @Column()
   @ApiProperty({ example: faker.phone.number(), description: '' })
   @IsString()
   @MinLength(8)
@@ -90,7 +90,7 @@ export class User extends Base {
   @IsOptional()
   description: string;
 
-  @Column({ nullable: true }) // , name: 'role_code'
+  @Column({ nullable: true })
   @Expose()
   @IsString()
   @IsOptional()
@@ -101,7 +101,7 @@ export class User extends Base {
   @Type(() => UserRole)
   readonly role?: UserRole;
 
-  @Column({ nullable: true }) // , name: 'position_code'
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'DEV', description: '' })
   @IsString()
@@ -112,18 +112,18 @@ export class User extends Base {
   @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   readonly position?: Code;
 
-  @Column() // { name: 'start_date' }
+  @Column()
   @ApiProperty({ example: faker.date.past(), description: '' })
   @IsDateString()
   startDate?: Date;
 
-  @Column({ nullable: true, type: 'real' }) // , name: 'date_leave'
+  @Column({ nullable: true, type: 'real' })
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsNumber()
   @IsOptional()
   dateLeave?: number;
 
-  @Column({ nullable: true, type: 'real', default: 0 }) // , name: 'date_off'
+  @Column({ nullable: true, type: 'real', default: 0 })
   @Expose()
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()

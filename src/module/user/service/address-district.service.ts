@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { BaseService } from '@shared';
 import { AddressDistrict } from '@model';
+import { AddressDistrictRepository } from '../repository/address-district.repository';
 
 @Injectable()
 export class AddressDistrictService extends BaseService<AddressDistrict> {
-  constructor(
-    @InjectRepository(AddressDistrict)
-    public repo: Repository<AddressDistrict>,
-  ) {
+  constructor(public repo: AddressDistrictRepository) {
     super(repo);
     this.listQuery = ['name', 'code', 'codeProvince'];
     // this.listJoin = ['wardItem']

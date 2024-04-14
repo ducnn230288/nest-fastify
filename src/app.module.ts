@@ -17,9 +17,8 @@ import { NamingStrategy } from '@shared';
     WinstonModule.forRoot(loggerOptions),
     NotificationModule,
     SchedulerModule,
-    // UserModule,
-    // CoreModule,
-    BuildingModule,
+    UserModule,
+    CoreModule,
     I18nModule.forRootAsync({
       useFactory: () => ({
         fallbackLanguage: 'vn',
@@ -58,6 +57,7 @@ import { NamingStrategy } from '@shared';
       }),
       isGlobal: true,
     }),
+    BuildingModule,
   ],
 })
 export class AppModule {}

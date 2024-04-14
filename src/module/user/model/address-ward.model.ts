@@ -21,7 +21,7 @@ export class AddressWard extends Base {
   @IsString()
   code: string;
 
-  @Column() // { name: 'code_district' }
+  @Column()
   @ApiProperty({ example: faker.finance.bic(), description: '' })
   @Expose()
   @IsString()
