@@ -40,6 +40,7 @@ import { NamingStrategy } from '@shared';
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
         synchronize: false,
+        entities: [__dirname + '/**/*.{entity,model}.{js,ts}'],
         logging: ['error'],
         logger: appConfig.NODE_ENV !== 'prod' ? 'advanced-console' : new DbCustomLogger(),
         namingStrategy: new NamingStrategy(),
