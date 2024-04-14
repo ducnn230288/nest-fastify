@@ -29,7 +29,7 @@ export class AddressDistrict extends Base {
   codeProvince: string;
 
   @ManyToOne(() => AddressProvince, (province) => province.districtItem, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public provinceItem?: AddressProvince;
 
   @OneToMany(() => Address, (address) => address.districtItem, { eager: false })

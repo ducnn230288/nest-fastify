@@ -14,7 +14,7 @@ export class Address extends Base {
   codeProvince: string;
 
   @ManyToOne(() => AddressProvince, (province) => province.items, { eager: false })
-  @JoinColumn({ name: 'codeProvince', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_province', referencedColumnName: 'code' })
   public provinceItem: AddressProvince;
 
   @Column() // { name: 'code_district' }
@@ -23,7 +23,7 @@ export class Address extends Base {
   codeDistrict: string;
 
   @ManyToOne(() => AddressDistrict, (district) => district.item, { eager: true })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem: AddressDistrict;
 
   @Column() // { name: 'code_ward' }
@@ -32,7 +32,7 @@ export class Address extends Base {
   codeWard: string;
 
   @ManyToOne(() => AddressWard, (ward) => ward.item, { eager: true })
-  @JoinColumn({ name: 'codeWard', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_ward', referencedColumnName: 'code' })
   public wardItem: AddressWard;
 
   @Column() // { name: 'specific_address' }
@@ -49,7 +49,7 @@ export class Address extends Base {
   userId?: string;
 
   @ManyToOne(() => User, (user) => user.address, { eager: true })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn()
   @Type(() => User)
   readonly user: User;
 
