@@ -22,10 +22,10 @@ export class UserTeam extends Base {
 
   @ManyToOne(() => User, (user) => user.managers, { eager: true }) //
   @Type(() => User)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   manager: User;
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @IsUUID()
   @IsOptional()
   managerId?: string;

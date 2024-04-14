@@ -16,25 +16,25 @@ export class TaskWork extends Base {
   @IsOptional()
   hours?: number;
 
-  @Column({ name: 'task_id' })
+  @Column()
   @IsUUID()
   @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   taskId?: string;
 
   @ManyToOne(() => Task, (data) => data.works, { eager: true })
-  @JoinColumn({ name: 'task_id' })
+  @JoinColumn()
   @Type(() => Task)
   readonly task?: Task;
 
-  @Column({ name: 'timesheet_id' })
+  @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Expose()
   @IsUUID()
   timesheetId?: string;
 
   @ManyToOne(() => TaskTimesheet, (data) => data.works, { eager: true })
-  @JoinColumn({ name: 'timesheet_id' })
+  @JoinColumn()
   @Type(() => TaskTimesheet)
   readonly timesheet?: TaskTimesheet;
 }

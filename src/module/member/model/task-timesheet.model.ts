@@ -25,14 +25,14 @@ export class TaskTimesheet extends Base {
   @IsOptional()
   note?: string;
 
-  @Column({ name: 'user_id' })
+  @Column()
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   readonly userId?: string;
 
   @ManyToOne(() => User, (user) => user.timesheet, { eager: true })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   @Type(() => User)
   user?: User;
 

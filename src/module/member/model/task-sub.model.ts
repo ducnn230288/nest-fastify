@@ -25,14 +25,14 @@ export class TaskSub extends Base {
   @IsOptional()
   image: string;
 
-  @Column({ name: 'task_id' })
+  @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Expose()
   @IsUUID()
   taskId: string;
 
   @ManyToOne(() => Task, (task) => task.taskSubs, { eager: true })
-  @JoinColumn({ name: 'task_id' })
+  @JoinColumn()
   @Type(() => Task)
   task: Task;
 }

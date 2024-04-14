@@ -4,11 +4,8 @@ export class Member1698359719624 implements MigrationInterface {
   name = 'Member1698359719624'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb"`);
-    await queryRunner.query(`CREATE TABLE "base" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ee39d2f844e458c187af0e5383f" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE TABLE "member"."task_timesheet" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "start" TIMESTAMP NOT NULL, "finish" TIMESTAMP, "note" character varying, "user_id" uuid NOT NULL, CONSTRAINT "PK_d556100ebc2e29cb0471a48583b" PRIMARY KEY ("id"))`);
-    await queryRunner.query(`CREATE TABLE "member"."booking" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "description" character varying NOT NULL, "start_time" TIMESTAMP, "end_time" TIMESTAMP, "user_id" uuid NOT NULL, "type_code" character varying, "item_code" character varying, CONSTRAINT "PK_49171efc69702ed84c812f33540" PRIMARY KEY ("id"))`);
+    await queryRunner.query(`CREATE TABLE "member"."booking" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "description" character varying NOT NULL, "start_time" TIMESTAMP, "end_time" TIMESTAMP, "user_id" uuid NOT NULL, "type_code" character varying, "item_code" character varying NOT NULL, CONSTRAINT "PK_49171efc69702ed84c812f33540" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE TABLE "member"."day_off" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "code" character varying NOT NULL, "type" integer NOT NULL, "status" integer NOT NULL DEFAULT '0', "reason" character varying, "time" integer NOT NULL, "time_number" real, "image" character varying, "date_leave_start" TIMESTAMP NOT NULL, "date_leave_end" TIMESTAMP NOT NULL, "approved_at" TIMESTAMP, "approved_by_id" uuid, "reason_reject" character varying, "staff_id" uuid NOT NULL, "manager_id" uuid, CONSTRAINT "UQ_6ae9d51238edf6234ac33b37ad0" UNIQUE ("code"), CONSTRAINT "PK_4ebe4c08c950e3dbc87f0249811" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE TABLE "member"."user_team" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "description" character varying, "manager_id" uuid, CONSTRAINT "PK_155dbc144ff2bd4713fdf1f6c77" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE TABLE "member"."question" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "is_deleted" TIMESTAMP, "is_disabled" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "type_code" character varying, "question" character varying, "options" character varying NOT NULL, "correct" character varying NOT NULL, "image" character varying, "level" real, CONSTRAINT "PK_21e5786aa0ea704ae185a79b2d5" PRIMARY KEY ("id"))`);
@@ -22,15 +19,11 @@ export class Member1698359719624 implements MigrationInterface {
     await queryRunner.query(`CREATE TABLE "user"."user_teams_user_team" ("user_id" uuid NOT NULL, "user_team_id" uuid NOT NULL, CONSTRAINT "PK_f9eb57c0af40535cd6badb8ebd3" PRIMARY KEY ("user_id", "user_team_id"))`);
     await queryRunner.query(`CREATE INDEX "IDX_74dbad62b5fd384aa05c9222bb" ON "user"."user_teams_user_team" ("user_id") `);
     await queryRunner.query(`CREATE INDEX "IDX_edc18edef49726f2bcd9237530" ON "user"."user_teams_user_team" ("user_team_id") `);
-    await queryRunner.query(`CREATE TABLE "user"."user_tasks_assignees_task" ("user_id" uuid NOT NULL, "user_task_id" uuid NOT NULL, CONSTRAINT "PK_61b3b808a5c8a5fd0f896fb3213" PRIMARY KEY ("user_id", "user_task_id"))`);
+    await queryRunner.query(`CREATE TABLE "user"."user_tasks_assignees_task" ("user_id" uuid NOT NULL, "task_id" uuid NOT NULL, CONSTRAINT "PK_2e25ff056a56487e01d10e6339b" PRIMARY KEY ("user_id", "task_id"))`);
     await queryRunner.query(`CREATE INDEX "IDX_ca6bc2b9e03c31d76c1d343801" ON "user"."user_tasks_assignees_task" ("user_id") `);
-    await queryRunner.query(`CREATE INDEX "IDX_93d2e1c81a267bb3779bab5f80" ON "user"."user_tasks_assignees_task" ("user_task_id") `);
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP COLUMN "roleCode"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP COLUMN "positionCode"`);
+    await queryRunner.query(`CREATE INDEX "IDX_bc69838e53ce14c6197965e728" ON "user"."user_tasks_assignees_task" ("task_id") `);
     await queryRunner.query(`ALTER TABLE "user"."user" ADD "manager_id" uuid`);
     await queryRunner.query(`ALTER TABLE "member"."task_timesheet" ADD CONSTRAINT "FK_267f1f62058296378129e0c013c" FOREIGN KEY ("user_id") REFERENCES "user"."user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD CONSTRAINT "FK_00c232124015d4998bdc6036310" FOREIGN KEY ("role_code") REFERENCES "user"."user_role"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD CONSTRAINT "FK_4dd17565fdaf6605da3629e48cb" FOREIGN KEY ("position_code") REFERENCES "core"."code"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     await queryRunner.query(`ALTER TABLE "user"."user" ADD CONSTRAINT "FK_b925754780ce53c20179d7204f9" FOREIGN KEY ("manager_id") REFERENCES "user"."user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     await queryRunner.query(`ALTER TABLE "member"."booking" ADD CONSTRAINT "FK_276896d1a1a30be6de9d7d43f53" FOREIGN KEY ("user_id") REFERENCES "user"."user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     await queryRunner.query(`ALTER TABLE "member"."booking" ADD CONSTRAINT "FK_e53fc837a6287a601e370691e30" FOREIGN KEY ("type_code") REFERENCES "core"."code_type"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -49,11 +42,11 @@ export class Member1698359719624 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "user"."user_teams_user_team" ADD CONSTRAINT "FK_74dbad62b5fd384aa05c9222bbd" FOREIGN KEY ("user_id") REFERENCES "user"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
     await queryRunner.query(`ALTER TABLE "user"."user_teams_user_team" ADD CONSTRAINT "FK_edc18edef49726f2bcd92375302" FOREIGN KEY ("user_team_id") REFERENCES "member"."user_team"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" ADD CONSTRAINT "FK_ca6bc2b9e03c31d76c1d3438018" FOREIGN KEY ("user_id") REFERENCES "user"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
-    await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" ADD CONSTRAINT "FK_93d2e1c81a267bb3779bab5f803" FOREIGN KEY ("user_task_id") REFERENCES "member"."task"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" ADD CONSTRAINT "FK_bc69838e53ce14c6197965e7282" FOREIGN KEY ("task_id") REFERENCES "member"."task"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" DROP CONSTRAINT "FK_93d2e1c81a267bb3779bab5f803"`);
+    await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" DROP CONSTRAINT "FK_bc69838e53ce14c6197965e7282"`);
     await queryRunner.query(`ALTER TABLE "user"."user_tasks_assignees_task" DROP CONSTRAINT "FK_ca6bc2b9e03c31d76c1d3438018"`);
     await queryRunner.query(`ALTER TABLE "user"."user_teams_user_team" DROP CONSTRAINT "FK_edc18edef49726f2bcd92375302"`);
     await queryRunner.query(`ALTER TABLE "user"."user_teams_user_team" DROP CONSTRAINT "FK_74dbad62b5fd384aa05c9222bbd"`);
@@ -72,13 +65,9 @@ export class Member1698359719624 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "member"."booking" DROP CONSTRAINT "FK_e53fc837a6287a601e370691e30"`);
     await queryRunner.query(`ALTER TABLE "member"."booking" DROP CONSTRAINT "FK_276896d1a1a30be6de9d7d43f53"`);
     await queryRunner.query(`ALTER TABLE "user"."user" DROP CONSTRAINT "FK_b925754780ce53c20179d7204f9"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP CONSTRAINT "FK_4dd17565fdaf6605da3629e48cb"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" DROP CONSTRAINT "FK_00c232124015d4998bdc6036310"`);
     await queryRunner.query(`ALTER TABLE "member"."task_timesheet" DROP CONSTRAINT "FK_267f1f62058296378129e0c013c"`);
     await queryRunner.query(`ALTER TABLE "user"."user" DROP COLUMN "manager_id"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD "positionCode" character varying`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD "roleCode" character varying`);
-    await queryRunner.query(`DROP INDEX "user"."IDX_93d2e1c81a267bb3779bab5f80"`);
+    await queryRunner.query(`DROP INDEX "user"."IDX_bc69838e53ce14c6197965e728"`);
     await queryRunner.query(`DROP INDEX "user"."IDX_ca6bc2b9e03c31d76c1d343801"`);
     await queryRunner.query(`DROP TABLE "user"."user_tasks_assignees_task"`);
     await queryRunner.query(`DROP INDEX "user"."IDX_edc18edef49726f2bcd9237530"`);
@@ -96,9 +85,6 @@ export class Member1698359719624 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "member"."day_off"`);
     await queryRunner.query(`DROP TABLE "member"."booking"`);
     await queryRunner.query(`DROP TABLE "member"."task_timesheet"`);
-    await queryRunner.query(`DROP TABLE "base"`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES "core"."code"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-    await queryRunner.query(`ALTER TABLE "user"."user" ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user"."user_role"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
   }
 
 }

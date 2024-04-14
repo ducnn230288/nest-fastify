@@ -157,16 +157,7 @@ export class User extends Base {
   @ManyToMany(() => UserTeam, (team) => team.users, { eager: true })
   @Type(() => UserTeam)
   @IsOptional()
-  @JoinTable({
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'user_team_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   teams?: UserTeam[];
 
   @Column({ nullable: true })
