@@ -5,6 +5,9 @@
   "Create Success": "Tạo thành công",
   "Update Success": "Cập nhật thành công",
   "Delete Success": "Xóa thành công",
+  "CheckIn Success": "Check In thành công",
+  "CheckOut Success": "Check Out thành công",
+  "Get Check In success": "Lấy Check In thành công",
   "Auth": {
     "Invalid credentials for user": "Thông tin đăng nhập không hợp lệ cho người dùng {email}",
     "Email is already taken": "Địa chỉ email đã được sử dụng",
@@ -17,7 +20,7 @@
   "Data": {
     "Name is already taken": "Tên đã tồn tại"
   },
-  "user" : {
+  "user": {
     "Other leave requests need approval": "Còn những yêu cầu nghỉ cần duyệt",
     "Data id not found": "Dữ liệu {id} không tồn tại",
     "Can't be deleted because there's still link data": "Không thể xóa được do vẫn còn dữ liệu liên kết"

@@ -177,7 +177,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
    */
   async getCountToday(): Promise<number> {
     return await this.createQueryBuilder('base')
-      .where(`"createdAt" BETWEEN :startDate AND :endDate`, {
+      .where(`"created_at" BETWEEN :startDate AND :endDate`, {
         startDate: dayjs().startOf('days').toDate(),
         endDate: dayjs().endOf('days').toDate(),
       })
@@ -195,7 +195,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
     });
     const data = await request
       .innerJoin(TaskTimesheet, 'timesheet')
-      .andWhere(`base.createdAt BETWEEN :startDate AND :endDate`, {
+      .andWhere(`base.created_at BETWEEN :startDate AND :endDate`, {
         startDate: dayjs(timesheets.start).startOf('days').toDate(),
         endDate: dayjs(timesheets.start).endOf('days').toDate(),
       })

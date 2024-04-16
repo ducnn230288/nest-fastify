@@ -36,7 +36,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       .post('/api/dayoff')
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .send(dataDayoff)
-
       .expect(type ? HttpStatus.CREATED : HttpStatus.FORBIDDEN);
 
     if (type) {

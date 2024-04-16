@@ -168,11 +168,11 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...test } = await factoryManager.get(User).make({ roleCode: resultRole?.code });
     dataUpdate = test;
-    console.log(dataUpdate);
+
     const { body } = await request(BaseTest.server)
       .put('/api/user/' + result?.id)
       .set('Authorization', 'Bearer ' + BaseTest.token)
-      .send(dataUpdate)
+      .send({ ...dataUpdate, dateOff: '3' })
       .expect(type ? HttpStatus.OK : HttpStatus.FORBIDDEN);
 
     if (type) {
