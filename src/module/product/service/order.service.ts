@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 
 import { Address, EStatusOrder, Order, OrderAddress, OrderProduct, Product, User } from '@model';
 import { OrderRepository, ProductRepository } from '@repository';
-import { CreateOrderRequestDto, OrderDto, OrderUpdateStatusDto } from '@dto';
+import { CreateOrderRequestDto, ListOrderResponseDto, OrderDto, OrderUpdateStatusDto } from '@dto';
 import { BaseService } from '@shared';
 
 export const P_ORDER_LISTED = '54e3dc6a-5e96-11ee-8c99-0242ac120002';
@@ -23,7 +23,7 @@ export class OrderService extends BaseService<Order> {
     this.listJoin = ['orderAddress', 'orderProducts'];
   }
 
-  async createOrder(body: CreateOrderRequestDto, user: User): Promise<object> {
+  async createOrder(body: CreateOrderRequestDto, user: User): Promise<null> {
     const i18n = I18nContext.current()!;
     const { products, codeProvince, codeDistrict, codeWard, specificAddress, reason, addressId = '' } = body;
     let listProdsInDB: Array<Product | undefined> = [];
@@ -103,7 +103,7 @@ export class OrderService extends BaseService<Order> {
       await entityManager.save(listProdsInDB);
     });
 
-    return {};
+    return null;
   }
 
   async updateStatus(id: string, status: number): Promise<OrderUpdateStatusDto> {

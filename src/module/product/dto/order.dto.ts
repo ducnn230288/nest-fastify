@@ -35,7 +35,7 @@ export class CreateOrderRequestDto extends PickType(Order, ['reason'] as const) 
 }
 
 export class ListOrderResponseDto extends PartialType(PaginationResponsesDto) {
-  readonly data: OrderDto[] | object;
+  readonly data: OrderDto[] | null;
 }
 
 export class OrderUpdateStatusDto extends PartialType(PaginationResponsesDto) {
