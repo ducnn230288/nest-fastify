@@ -1,11 +1,12 @@
-import { OrderAddress, OrderProduct, ProductStore, User } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
-import { Base, MaxGroup } from '@shared';
 import { Expose, Type } from 'class-transformer';
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { IsOptional, IsUUID, IsString, IsNumber } from 'class-validator';
 import { customAlphabet } from 'nanoid';
+
+import { OrderAddress, OrderProduct, ProductStore, User } from '@model';
+import { Base, MaxGroup } from '@shared';
 
 export enum EStatusOrder {
   Pending = 0,

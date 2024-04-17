@@ -1,11 +1,11 @@
-import { Base } from '@shared';
 import { Type } from 'class-transformer';
 import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { faker } from '@faker-js/faker/locale/vi';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsNumber, Max, Min } from 'class-validator';
-import { Order } from './order.model';
-import { Product } from './product.model';
+
+import { Order, Product } from '@model';
+import { Base } from '@shared';
 
 @Entity({ schema: 'product' })
 export class OrderProduct extends Base {

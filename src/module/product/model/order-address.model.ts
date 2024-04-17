@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
-import { Address, AddressDistrict, Order, AddressProvince, AddressWard } from '@model';
 import { ApiProperty } from '@nestjs/swagger';
-import { Base } from '@shared';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+
+import { Address, AddressDistrict, Order, AddressProvince, AddressWard } from '@model';
+import { Base } from '@shared';
 
 @Entity({ schema: 'product' })
 export class OrderAddress extends Base {

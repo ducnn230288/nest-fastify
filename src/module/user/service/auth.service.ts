@@ -30,7 +30,7 @@ export class AuthService extends BaseService<User> {
   constructor(
     public readonly repo: UserRepository,
     private readonly jwtService: JwtService,
-    private emailService: EmailService,
+    // private emailService: EmailService,
     private schedulerRegistry: SchedulerRegistry,
   ) {
     super(repo);
@@ -109,7 +109,7 @@ export class AuthService extends BaseService<User> {
       this.update(user.id!, { otp: null });
       this.schedulerRegistry.deleteCronJob(name);
     });
-    this.schedulerRegistry.addCronJob(name, job);
+    this.schedulerRegistry.addCronJob(name, job as any);
     job.start();
 
     return user.otp;
@@ -135,7 +135,7 @@ export class AuthService extends BaseService<User> {
    *
    */
   async sendMailContact(body: ContactRequestDto): Promise<boolean> {
-    await this.emailService.sendUserContact(body);
+    // await this.emailService.sendUserContact(body);
     return true;
   }
 

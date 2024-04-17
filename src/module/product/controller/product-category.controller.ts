@@ -1,5 +1,6 @@
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
+import dayjs from 'dayjs';
 
 import { Auth, Headers, MaxGroup, PaginationQueryDto, Public, SerializerBody } from '@shared';
 import { CATEGORY_CREATE, ProductCategoryService, CATEGORY_UPDATE, CATEGORY_DELETE } from '@service';
@@ -9,7 +10,6 @@ import {
   CreateProductCategoryRequestDto,
   UpdateProductCategoryRequestDto,
 } from '@dto';
-import dayjs from 'dayjs';
 
 @Headers('product-category')
 export class ProductCategoryController {

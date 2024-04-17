@@ -1,10 +1,11 @@
-import { Address, EStatusOrder, Order, OrderAddress, OrderProduct, Product, User } from '@model';
-import { BaseService } from '@shared';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderRequestDto } from '../dto/order.dto';
-import { OrderRepository, ProductRepository } from '@repository';
 import { I18nContext } from 'nestjs-i18n';
 import { DataSource } from 'typeorm';
+
+import { Address, EStatusOrder, Order, OrderAddress, OrderProduct, Product, User } from '@model';
+import { OrderRepository, ProductRepository } from '@repository';
+import { CreateOrderRequestDto, OrderDto, OrderUpdateStatusDto } from '@dto';
+import { BaseService } from '@shared';
 
 export const P_ORDER_LISTED = '54e3dc6a-5e96-11ee-8c99-0242ac120002';
 export const P_ORDER_CREATE = 'f4dc7e8b-84e4-469b-8342-946fd8f24f13';
@@ -22,11 +23,9 @@ export class OrderService extends BaseService<Order> {
     this.listJoin = ['orderAddress', 'orderProducts'];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async createOrder(body: CreateOrderRequestDto, user: User): Promise<object | any> {
+  async createOrder(body: CreateOrderRequestDto, user: User): Promise<object> {
     const i18n = I18nContext.current()!;
     const { products, codeProvince, codeDistrict, codeWard, specificAddress, reason, addressId = '' } = body;
-    // eslint-disable-next-line prefer-const
     let listProdsInDB: Array<Product | undefined> = [];
     let address: Address | null;
 
@@ -47,34 +46,10 @@ export class OrderService extends BaseService<Order> {
           throw new BadRequestException(i18n.t(`addressId was not found`));
         }
       }
-      /*
-      await Promise.all(
-        await products.map(async (product) => {
-          const dataProd = await entityManager.findOneBy(Product, {
-            id: product.id,
-          });
 
-          if (!dataProd) {
-            throw new BadRequestException(i18n.t(`common.Data ${dataProd!.id} is not found`));
-          }
-
-          Object.keys(product).forEach((key) => {
-            if (key === 'quantity' && product[key] > Number(dataProd[key])) {
-              throw new BadRequestException(i18n.t(`common.Data ${key} is not enough`));
-            } else if (key !== 'quantity' && product[key] !== dataProd[key]) {
-              throw new BadRequestException(i18n.t(`common.Data ${key} was changed`));
-            }
-          });
-
-          dataProd.quantity -= product.quantity;
-          listProdsInDB.push(dataProd);
-        }),
-      );
-      */
       const dataProds: Array<Product | undefined> = await this.productRepo.findProductsWitdId(
-        products.map((product) => product.id),
+        products.map((product) => product.id as string),
       );
-      //console.log(dataProds);
 
       listProdsInDB = dataProds.map((item, index) => {
         item!.quantity -= products[index].quantity;
@@ -83,8 +58,7 @@ export class OrderService extends BaseService<Order> {
 
       const dataGroupBy = this.productRepo.groupByProperty(products, 'productStoreId');
       for (const storeId in dataGroupBy) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (dataGroupBy.hasOwnProperty(storeId)) {
+        if (Object.prototype.hasOwnProperty.call(dataGroupBy, storeId)) {
           const products: Array<OrderProduct | null> = dataGroupBy[storeId];
 
           const total = dataGroupBy[storeId].reduce((init, curProd) => {
@@ -99,8 +73,7 @@ export class OrderService extends BaseService<Order> {
             entityManager.create(Order, { userId: user.id, total: total, reason: reason, productStoreId: storeId }),
           );
 
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const orderAddress = await entityManager.save(
+          await entityManager.save(
             entityManager.create(OrderAddress, {
               codeProvince,
               codeDistrict,
@@ -123,8 +96,7 @@ export class OrderService extends BaseService<Order> {
             });
           });
 
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const orderProducts = await entityManager.save(productsData);
+          await entityManager.save(productsData);
         }
       }
 
@@ -134,20 +106,21 @@ export class OrderService extends BaseService<Order> {
     return {};
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async updateStatus(id: string, status: number): Promise<Order | any> {
+  async updateStatus(id: string, status: number): Promise<OrderUpdateStatusDto> {
     const i18n = I18nContext.current()!;
     const order = await this.findOne(id);
 
     const { result, message } = this.checkOrderStatus(order!.status!, status);
     if (!result) throw new BadRequestException(i18n.t('common.StatusOrder.Not Found'));
 
-    const data = await this.update(order!.id!, { status: status });
-    return { data, message };
+    const data = (await this.update(order!.id!, { status: status })) as OrderDto;
+    return {
+      message,
+      data,
+    };
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  checkOrderStatus(orderStatus: number, paramStatus: number) {
+  checkOrderStatus(orderStatus: number, paramStatus: number): { result: boolean; message: string } {
     const i18n = I18nContext.current()!;
     if (orderStatus >= EStatusOrder.Pending && paramStatus === orderStatus + 1) {
       return {

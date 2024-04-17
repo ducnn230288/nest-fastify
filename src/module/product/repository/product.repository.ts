@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BaseRepository } from '@shared';
 import { DataSource } from 'typeorm';
-import { Product } from '@model';
 import { I18nContext } from 'nestjs-i18n';
+
+import { BaseRepository } from '@shared';
+import { Product } from '@model';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {
@@ -25,8 +26,7 @@ export class ProductRepository extends BaseRepository<Product> {
     return await this.save(product!);
   }
 
-  async findProductsWitdId(listProdIds: Array<string> | any): Promise<Product[] | any> {
-    // eslint-disable-next-line prefer-const
+  async findProductsWitdId(listProdIds: string[]): Promise<Product[]> {
     const datas = await this.createQueryBuilder('base')
       .where(`base.id IN(:...ids)`, {
         ids: listProdIds,
@@ -39,8 +39,7 @@ export class ProductRepository extends BaseRepository<Product> {
     return datas;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  groupByProperty(arr, property) {
+  groupByProperty(arr, property): object {
     const grouped = {};
     for (const item of arr) {
       const key = item[property]; // = "productStoreId"

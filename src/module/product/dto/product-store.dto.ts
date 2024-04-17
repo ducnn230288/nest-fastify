@@ -23,16 +23,7 @@ export class ProductCreateStoreRequestDto extends PickType(ProductStore, [
 
 export class ProductStoreDto extends PartialType(
   OmitType(ProductStore, [
-    'isDeleted',
-    'createdAt',
-    'updatedAt',
-    'name',
-    'phone',
-    'description',
-    'slug',
-    'avatar',
-    'userId',
-    'status',
+    /* Thêm attibute nếu không muốn trả về*/
   ] as const),
 ) {}
 

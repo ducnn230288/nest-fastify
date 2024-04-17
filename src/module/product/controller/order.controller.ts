@@ -1,6 +1,7 @@
 import { Body, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { I18n, I18nContext } from 'nestjs-i18n';
+
+import { Auth, AuthUser, Headers, MaxGroup, PaginationQueryDto, SerializerBody } from '@shared';
 import { OrderService, P_ORDER_LISTED, P_ORDER_DELETE, UserService, P_ORDER_UPDATE } from '@service';
 import { CreateOrderRequestDto, ListOrderResponseDto, OrderResponseDto } from '@dto';
 import { User } from '@model';
@@ -77,7 +78,7 @@ export class OrderController {
     @I18n() i18n: I18nContext,
     @Body(new SerializerBody([MaxGroup])) body: CreateOrderRequestDto,
     @AuthUser() user: User,
-  ): Promise<ListOrderResponseDto | any> {
+  ): Promise<ListOrderResponseDto> {
     user = (await this.userService.findOne(user!.id!)) as User;
     return {
       message: i18n.t('common.Create Success'),

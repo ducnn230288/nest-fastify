@@ -8,14 +8,20 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { AppController } from '@controller';
 import { appConfig, DbCustomLogger, loggerOptions } from '@config';
-import { NotificationModule, SchedulerModule, CoreModule, UserModule, ProductModule } from '@module';
+import {
+  // NotificationModule,
+  SchedulerModule,
+  CoreModule,
+  UserModule,
+  ProductModule,
+} from '@module';
 import { NamingStrategy } from '@shared';
 
 @Module({
   controllers: [AppController],
   imports: [
     WinstonModule.forRoot(loggerOptions),
-    NotificationModule,
+    // NotificationModule,
     SchedulerModule,
     UserModule,
     CoreModule,

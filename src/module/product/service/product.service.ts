@@ -1,11 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { I18nContext } from 'nestjs-i18n';
 
 import { BaseService } from '@shared';
 import { Product } from '@model';
+
 import { ProductRepository } from '@repository';
-import { I18nContext } from 'nestjs-i18n';
-// import { CreateProductRequestDto, ProductResponseDto } from '../dto/product.dto';
-// import { ProductStoreService } from '@service';
 
 export const PRODUCT_CREATE = '55f014c0-9ebe-497e-9766-2054ebb7e1d8';
 export const PRODUCT_LIST = '56f014c0-9ebe-497e-9766-2054ebb7e1d9';
@@ -39,9 +38,9 @@ export class ProductService extends BaseService<Product> {
       throw new BadRequestException(i18n.t('common.Data not found'));
     }
     if (cancel) {
-      product.quantity += quantity;
+      product.quantity! += quantity;
     } else {
-      product.quantity -= quantity;
+      product.quantity! -= quantity;
     }
     return await this.update(id, { quantity: product.quantity });
   }

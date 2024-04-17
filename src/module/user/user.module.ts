@@ -16,7 +16,7 @@ import {
   AddressService,
   AuthService,
   AddressDistrictService,
-  EmailService,
+  // EmailService,
   FileService,
   AddressProvinceService,
   UserRoleService,
@@ -61,7 +61,7 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
   providers: [
     AccessTokenStrategy,
     RefreshTokenStrategy,
-    EmailService,
+    // EmailService,
     AuthService,
     UserRepository,
     UserService,

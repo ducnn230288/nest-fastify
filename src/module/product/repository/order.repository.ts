@@ -1,7 +1,8 @@
 /* eslint-disable prefer-const */
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@shared';
 import { DataSource } from 'typeorm';
+
+import { BaseRepository } from '@shared';
 import { Order } from '@model';
 
 @Injectable()

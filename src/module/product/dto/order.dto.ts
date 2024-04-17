@@ -1,7 +1,8 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
+import { IsString, IsUUID, IsArray, IsOptional } from 'class-validator';
+
 import { DefaultResponsesDto, PaginationResponsesDto } from '@shared';
 import { Order, OrderAddress, Product } from '@model';
-import { IsString, IsUUID, IsArray, IsOptional } from 'class-validator';
 
 export class OrderProductDto extends PickType(Product, [
   'id',
@@ -34,7 +35,11 @@ export class CreateOrderRequestDto extends PickType(Order, ['reason'] as const) 
 }
 
 export class ListOrderResponseDto extends PartialType(PaginationResponsesDto) {
-  readonly data: OrderDto[];
+  readonly data: OrderDto[] | object;
+}
+
+export class OrderUpdateStatusDto extends PartialType(PaginationResponsesDto) {
+  readonly data: OrderDto;
 }
 
 export class OrderResponseDto extends PartialType(DefaultResponsesDto) {
