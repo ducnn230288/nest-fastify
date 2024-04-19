@@ -6,6 +6,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Arrow } from '@svgs';
+import { ETypeChart } from '@models';
 
 export * from './init/reportWebVitals';
 export * from './api';
@@ -181,3 +182,68 @@ export const cssInObject = (styles: string) =>
           return acc;
         }, {})
     : {};
+export const formatDataChart = (
+  obj: any,
+  type: ETypeChart = ETypeChart.pie,
+  title: string,
+  level = 1,
+  list?: string[],
+) => {
+  const listXy = [ETypeChart.scatter, ETypeChart.bubble];
+  const listNumber = [ETypeChart.pie, ETypeChart.ring];
+  let series: any[] = [];
+  const category = obj.data
+    .filter((i: any) => !level || (i.level === level && !i.isSummary))
+    .map((i: any) => i.content);
+  if (listXy.indexOf(type) > -1) {
+    const listField: any[] = [];
+    obj.meta
+      .filter((i: any) => i.type === 'number' && (!list?.length || list.indexOf(i.field) > -1))
+      .forEach((i: any, j: number, array: any[]) => {
+        switch (type) {
+          case ETypeChart.bubble:
+            if (j % 3 === 2)
+              listField.push({
+                name: array[j - 1].fullName + ' vs ' + array[j - 2].fullName + ' vs ' + i.fullName,
+                field: array[j - 1].field + '|' + array[j - 2].field + '|' + i.field,
+                value: [],
+              });
+            break;
+          default:
+            if (j % 2 === 1)
+              listField.push({
+                name: array[j - 1].fullName + ' vs ' + i.fullName,
+                field: array[j - 1].field + '|' + i.field,
+                value: [],
+              });
+        }
+      });
+    obj.data
+      .filter((i: any) => !level || (i.level === level && !i.isSummary))
+      .forEach((e: any) => {
+        series.push({ name: e.content, value: [] });
+        listField.forEach((i: any, index: number) => {
+          const arrayField = listField[index].field.split('|');
+          const value: number[] = [];
+          arrayField.forEach((i: string) => {
+            value.push(isNumeric(e[i]) ? parseFloat(e[i]) : 0);
+          });
+          series[series.length - 1].value.push([...value, ...listField[index].name.split(' vs ')]);
+        });
+      });
+  } else {
+    const listField = obj.meta
+      .filter((i: any) => i.type === 'number' && (!list?.length || list.indexOf(i.field) > -1))
+      .map((i: any) => ({ value: listNumber.indexOf(type) > -1 ? 0 : [], name: i.fullName, field: i.field }));
+    obj.data
+      .filter((i: any) => !level || (i.level === level && !i.isSummary))
+      .forEach((e: any) => {
+        listField.forEach((i: any, index: number) => {
+          if (listNumber.indexOf(type) > -1 && isNumeric(e[i.field])) listField[index].value += parseFloat(e[i.field]);
+          else listField[index].value.push(isNumeric(e[i.field]) ? parseFloat(e[i.field]) : 0);
+        });
+      });
+    series = listNumber.indexOf(type) > -1 ? [{ data: listField }] : listField;
+  }
+  return { title, type, series, category };
+};

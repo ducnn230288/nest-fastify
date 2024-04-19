@@ -17,7 +17,7 @@ const Component = ({
   list,
   mode,
   firstLoad,
-  ...prop
+  className = '',
 }: Type) => {
   const [_list, set_list] = useState(list ? list : []);
   const facade = get?.facade() || {};
@@ -81,7 +81,7 @@ const Component = ({
       onBlur={onBlur}
       // onSelect={(value) => formItem?.onSelect && formItem?.onSelect(value, form)}
       onDropdownVisibleChange={(open) => open && !!facade?.isLoading && loadData('')}
-      {...prop}
+      className={className}
     >
       {__list?.map((item: any, index: number) => (
         <Select.Option key={`${item.value}${index}`} value={item.value} disabled={item.disabled}>
@@ -99,6 +99,7 @@ type Type = {
   onChange: (e: any) => any;
   onBlur?: (e: any) => any;
   placeholder?: string;
+  className?: string;
   disabled?: boolean;
   get?: TableGet;
   list?: TableItemFilterList[];

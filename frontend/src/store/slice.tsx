@@ -12,6 +12,7 @@ export class Slice<T extends CommonEntity, Y = EStatusState> {
     data: undefined,
     isLoading: true,
     isVisible: false,
+    reRender: false,
     status: EStatusState.idle,
     queryParams: '',
     keepUnusedDataFor: 60,
@@ -170,6 +171,7 @@ export interface State<T = object, Y = EStatusState> {
   data?: T;
   isLoading?: boolean;
   isVisible?: boolean;
+  reRender?: boolean;
   status?: EStatusState | Y;
   queryParams?: string;
   keepUnusedDataFor?: number;

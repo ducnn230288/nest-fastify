@@ -1,6 +1,7 @@
-import React, { forwardRef, useImperativeHandle, PropsWithChildren, Ref } from 'react';
+import React, { forwardRef, useImperativeHandle, PropsWithChildren, Ref, useEffect } from 'react';
 import { Modal as AntModal, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
 import { Button } from '../button';
 
@@ -10,7 +11,7 @@ export const Modal = forwardRef(
       facade,
       keyState = 'isVisible',
       title,
-      widthModal = 800,
+      widthModal = 9999,
       onOk,
       firstChange = true,
       textSubmit,
@@ -18,10 +19,12 @@ export const Modal = forwardRef(
       className = '',
       footerCustom,
       children,
+      name,
     }: Type,
-    ref: Ref<{ handleCancel: () => any }>,
+    ref: Ref<{ handleCancel: () => void }>,
   ) => {
     useImperativeHandle(ref, () => ({ handleCancel }));
+    const [searchParams, setSearchParams] = useSearchParams();
     const { data, isLoading, ...state } = facade;
     const { t } = useTranslation();
     const handleCancel = () => facade.set({ [keyState]: false });
@@ -29,6 +32,26 @@ export const Modal = forwardRef(
       if (onOk) onOk();
       else handleCancel();
     };
+
+    useEffect(() => {
+      if (searchParams.get('modal')) facade.set({ [keyState]: true, isLoading: false });
+    }, []);
+
+    useEffect(() => {
+      if (name) {
+        if (facade[keyState]) {
+          setSearchParams((params) => {
+            params.set('modal', name);
+            return params;
+          });
+        } else {
+          setSearchParams((params) => {
+            params.delete('modal');
+            return params;
+          });
+        }
+      }
+    }, [facade[keyState]]);
 
     return (
       <AntModal
@@ -71,7 +94,7 @@ type Type = PropsWithChildren<{
   facade: any;
   keyState?: string;
   title?: (data: any) => string;
-  widthModal: number;
+  widthModal?: number;
   onOk?: () => any;
   onCancel?: () => void;
   firstChange?: boolean;
@@ -79,4 +102,5 @@ type Type = PropsWithChildren<{
   textCancel?: string;
   className?: string;
   footerCustom?: (handleOk: () => Promise<void>, handleCancel: () => void) => JSX.Element[] | JSX.Element;
+  name?: string;
 }>;
