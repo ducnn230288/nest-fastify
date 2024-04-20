@@ -23,7 +23,7 @@ export const Upload = ({
 }: Type) => {
   const { t } = useTranslation();
   // const { formatDate } = useAuth();
-  const [isLoading, set_isLoading] = useState(false);
+  const isLoading = useRef(false);
   const ref = useRef<any>();
   const [listFiles, set_listFiles] = useState(
     multiple && value && typeof value === 'object'
@@ -101,10 +101,10 @@ export const Upload = ({
       } else {
         listFiles.push(dataFile);
       }
+      isLoading.current = true;
       set_listFiles(listFiles);
 
       if (action) {
-        set_isLoading(true);
         if (typeof action === 'string') {
           const bodyFormData = new FormData();
           bodyFormData.append('file', file);
@@ -130,9 +130,11 @@ export const Upload = ({
                   return item;
                 })
               : [{ ...data, status: 'done' }];
+            isLoading.current = false;
             set_listFiles(files);
             onChange && (await onChange(files));
           } else {
+            isLoading.current = false;
             set_listFiles(listFiles.filter((_item: any) => _item.id !== dataFile.id));
           }
         } else {
@@ -158,14 +160,15 @@ export const Upload = ({
                   return item;
                 })
               : [{ ...data.data, status: 'done' }];
+            isLoading.current = false;
             set_listFiles(files);
             onChange && (await onChange(files));
           } catch (e: any) {
+            isLoading.current = false;
             set_listFiles(listFiles.filter((_item: any) => _item.id !== dataFile.id));
           }
         }
         setTimeout(() => GLightbox());
-        set_isLoading(false);
       }
     }
     ref.current.value = '';
@@ -192,7 +195,7 @@ export const Upload = ({
     <Fragment>
       <div className={'flex gap-2 mb-2'}>
         <Button
-          isLoading={isLoading}
+          isLoading={isLoading.current}
           onClick={() => ref.current.click()}
           className={'!px-2 !py-0.5 !font-normal'}
           icon={<UploadSVG className={'h-4 w-4'} />}

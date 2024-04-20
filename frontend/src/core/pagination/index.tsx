@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { Select } from 'antd';
 import classNames from 'classnames';
 import { Arrow, DoubleArrow } from '@svgs';
+import { Select } from '@core/form/input';
 
 export const Pagination: any = ({
   total = 4,
@@ -10,7 +10,6 @@ export const Pagination: any = ({
   page = 1,
   queryParams = () => null,
   pageSizeRender = (sizePage: number) => sizePage + ' / page',
-  pageSizeWidth = '115px',
   paginationDescription = (from: number, to: number, total: number) => from + '-' + to + ' of ' + total + ' items',
   idElement = 'pagination',
   className = 'pagination',
@@ -137,17 +136,10 @@ export const Pagination: any = ({
             {showSizeChanger && (
               <Select
                 className={'w-full sm:w-auto'}
-                id={idElement + '_page_size'}
-                defaultValue={perPage}
-                style={{ minWidth: pageSizeWidth }}
+                value={perPage}
                 onChange={(value) => onPageSizeChange(value)}
-              >
-                {pageSizeOptions.map((item: any, index: number) => (
-                  <Select.Option key={index} value={item}>
-                    {pageSizeRender(item)}
-                  </Select.Option>
-                ))}
-              </Select>
+                list={pageSizeOptions.map((item: number) => ({ value: item, label: pageSizeRender(item) }))}
+              />
             )}
           </label>
           {showTotal && (
@@ -156,7 +148,6 @@ export const Pagination: any = ({
         </div>
         <div className="mt-3 sm:mt-0 right flex justify-center p-1 rounded-xl bg-white">
           <div className="flex sm:flex-wrap justify-center duration-300 transition-all">
-            {/* { disabled: boolean; type: string; index: number;   } */}
             {listOfPageItem.current.map((item: any, index: number) => (
               <button
                 type={'button'}
@@ -194,7 +185,6 @@ type Type = {
   page: number;
   queryParams: ({ perPage, page }: { perPage: number; page: number }) => void;
   pageSizeRender: (sizePage: number) => string;
-  pageSizeWidth: string;
   paginationDescription: (from: number, to: number, total: number) => string;
   idElement: string;
   className: string;

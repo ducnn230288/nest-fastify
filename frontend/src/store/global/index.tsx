@@ -168,10 +168,6 @@ export const globalSlice = createSlice({
         state.status = EStatusGlobal.logoutFulfilled;
       })
 
-      .addCase(action.profile.pending, (state: State) => {
-        state.isLoading = true;
-        state.status = EStatusGlobal.profilePending;
-      })
       .addCase(action.profile.fulfilled, (state: State, action: PayloadAction<User>) => {
         if (action.payload) {
           state.user = action.payload;
