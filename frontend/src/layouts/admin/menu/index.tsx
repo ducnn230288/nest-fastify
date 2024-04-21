@@ -17,7 +17,6 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
   const clearTime = useRef<NodeJS.Timeout>();
 
   const menuActive = useRef<string[]>([]);
-  // const [menuActive, set_menuActive] = useState<string[]>();
   useEffect(() => {
     clearTimeout(clearTime.current);
     let linkActive = '';

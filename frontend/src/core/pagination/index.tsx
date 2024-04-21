@@ -21,12 +21,14 @@ export const Pagination: any = ({
   showTotal = true,
 }: Type) => {
   const listOfPageItem = useRef<{ disabled: boolean; type: string; index: number }[]>([]);
-  const [ranges, setRanges] = useState<[number, number]>([(page - 1) * perPage + 1, Math.min(page * perPage, total)]);
-  const [lastNumber, set_lastNumber] = useState(0);
+  const [_temp, set_temp] = useState<{ ranges: [number, number] }>({
+    ranges: [(page - 1) * perPage + 1, Math.min(page * perPage, total)],
+  });
+  const lastNumber = useRef(0);
   const buildIndexes = useCallback(() => {
     const lastIndex = getLastIndex(total, perPage);
     listOfPageItem.current = getListOfPageItem(page, lastIndex);
-    setRanges([(page - 1) * perPage + 1, Math.min(page * perPage, total)]);
+    set_temp((pre) => ({ ...pre, ranges: [(page - 1) * perPage + 1, Math.min(page * perPage, total)] }));
   }, [page, perPage, total]);
 
   useEffect(() => {
@@ -48,13 +50,13 @@ export const Pagination: any = ({
         index = page - 1;
         break;
       case 'prev_10':
-        index = firstPage({ page, lastIndex: lastNumber });
+        index = firstPage({ page, lastIndex: lastNumber.current });
         break;
       case 'next':
         index = page + 1;
         break;
       case 'next_10':
-        index = lastPage({ page, lastIndex: lastNumber });
+        index = lastPage({ page, lastIndex: lastNumber.current });
         break;
       default:
     }
@@ -83,7 +85,7 @@ export const Pagination: any = ({
         index: -1,
         disabled: lastPageDisabled({ page, lastIndex }),
       };
-      set_lastNumber(listOfPage.length);
+      lastNumber.current = listOfPage.length;
       return [prev10Item, prevItem, ...listOfPage, nextItem, next10Item];
     };
     const generatePage = (start: number, end: number) => {
@@ -143,7 +145,9 @@ export const Pagination: any = ({
             )}
           </label>
           {showTotal && (
-            <span className="sm:ml-3 text-black my-3">{paginationDescription(ranges[0], ranges[1], total)}</span>
+            <span className="sm:ml-3 text-black my-3">
+              {paginationDescription(_temp.ranges[0], _temp.ranges[1], total)}
+            </span>
           )}
         </div>
         <div className="mt-3 sm:mt-0 right flex justify-center p-1 rounded-xl bg-white">

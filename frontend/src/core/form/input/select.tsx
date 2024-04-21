@@ -19,11 +19,11 @@ const Component = ({
   firstLoad,
   className = '',
 }: Type) => {
-  const [_list, set_list] = useState(list ? list : []);
+  const [_temp, set_temp] = useState({ current: [], list: list || [] });
   const facade = get?.facade() || {};
   let __list = !get
-    ? _list
-    : facade[get?.key || 'result']
+    ? _temp.list
+    : (get?.key ? facade[get?.key] : facade.result.data)
         ?.map((e: any) => (get.format ? get.format(e) : e))
         .filter((item: any) => !!item.value);
   const loadData = async (fullTextSearch: string) => {
@@ -32,15 +32,20 @@ const Component = ({
       const params = cleanObjectKeyNull(
         get.params ? get.params(fullTextSearch, form?.getFieldValue) : { fullTextSearch },
       );
-      if (!facade[get.key || 'result'] || new Date().getTime() > time || JSON.stringify(params) != queryParams)
+      if (
+        !(get?.key ? facade[get?.key] : facade.result.data) ||
+        new Date().getTime() > time ||
+        JSON.stringify(params) != queryParams
+      )
         facade[get.method || 'get'](params);
     } else if (list) {
-      set_list(
-        list.filter(
+      set_temp((pre) => ({
+        ...pre,
+        list: list.filter(
           (item: any) =>
             !item?.label?.toUpperCase || item?.label?.toUpperCase().indexOf(fullTextSearch.toUpperCase()) > -1,
         ),
-      );
+      }));
     }
   };
   useEffect(() => {
@@ -49,18 +54,17 @@ const Component = ({
     }
   }, []);
 
-  const [_temp, set_temp] = useState([]);
   useEffect(() => {
     if (get?.data) {
       let data = get.data();
       if (get?.format && data) {
-        if (mode === 'multiple') data = data.map(get.format);
-        else data = [get.format(data)];
-        if (JSON.stringify(data) !== JSON.stringify(_temp)) set_temp(data);
+        data = mode === 'multiple' ? data.map(get.format) : [get.format(data)];
+        if (JSON.stringify(data) !== JSON.stringify(_temp.current)) set_temp((pre) => ({ ...pre, current: data }));
       }
     }
   }, [get?.data]);
-  if (_temp) __list = __list?.length ? arrayUnique([..._temp, ...__list], 'value') : _temp;
+  if (_temp.current.length)
+    __list = __list?.length ? arrayUnique([..._temp.current, ...__list], 'value') : _temp.current;
 
   return (
     <Select

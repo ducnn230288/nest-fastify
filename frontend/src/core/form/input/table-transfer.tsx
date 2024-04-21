@@ -13,15 +13,13 @@ const Component = ({
   onChange?: (e: any) => any;
   value?: any;
 }) => {
-  const [_dataSource, set_dataSource] = useState([]);
-  const [_targetKeys, set_targetKeys]: any = useState([]);
+  const [_temp, set_temp] = useState<{ dataSource: any[]; targetKeys: any[] }>({ dataSource: [], targetKeys: [] });
 
   const initFunction = useCallback(async () => {
-    const data = await formItem.transfer.dataSource(value, form);
-    set_dataSource(data);
-    const keys = formItem.transfer.targetKeys(data, form, value);
-    set_targetKeys(keys);
-    onChange && onChange(keys);
+    const dataSource = await formItem.transfer.dataSource(value, form);
+    const targetKeys = formItem.transfer.targetKeys(dataSource, form, value);
+    set_temp({ dataSource, targetKeys });
+    onChange && onChange(targetKeys);
   }, [form, formItem, onChange, value]);
 
   useEffect(() => {
@@ -33,11 +31,11 @@ const Component = ({
       {...restProps}
       showSearch
       showSelectAll={false}
-      dataSource={_dataSource}
-      targetKeys={_targetKeys}
-      onChange={(nextTargetKeys) => {
-        set_targetKeys(nextTargetKeys);
-        onChange && onChange(nextTargetKeys);
+      dataSource={_temp.dataSource}
+      targetKeys={_temp.targetKeys}
+      onChange={(targetKeys) => {
+        set_temp((pre) => ({ ...pre, targetKeys }));
+        onChange && onChange(targetKeys);
       }}
       // filterOption={(inputValue, item) =>
       //   formItem.transfer.filter
