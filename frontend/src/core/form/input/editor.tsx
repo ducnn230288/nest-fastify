@@ -1,21 +1,22 @@
-import React from 'react';
-import SunEditor from 'suneditor-react';
-import { API, keyToken } from '@utils';
+import React, { useEffect, useRef } from 'react';
+import { API, keyToken, uuidv4 } from '@utils';
 
 const Component = ({
   onChange,
   value = '',
   placeholder,
-  disabled,
 }: {
   onChange?: (values: string) => void;
   value?: string;
   placeholder: string;
   disabled: boolean;
 }) => {
-  return (
-    <SunEditor
-      setOptions={{
+  const _id = useRef(uuidv4());
+  useEffect(() => {
+    setTimeout(() => {
+      const editor = SUNEDITOR.create(document.getElementById(_id.current), {
+        value,
+        placeholder,
         width: 'auto',
         height: 'auto',
         fontSize: [11, 13, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128],
@@ -36,8 +37,9 @@ const Component = ({
           // ['save', 'template'],
           /** ['dir', 'dir_ltr', 'dir_rtl'] */ // "dir": Toggle text direction, "dir_ltr": Right to Left, "dir_rtl": Left to Right
         ],
-      }}
-      onImageUploadBefore={(files, info, uploadHandler) => {
+      });
+      editor.onChange = onChange;
+      editor.onImageUploadBefore = (files: any, info: any, uploadHandler: any) => {
         const bodyFormData = new FormData();
         bodyFormData.append('file', files[0]);
         API.responsible(
@@ -64,12 +66,9 @@ const Component = ({
           });
         });
         return false;
-      }}
-      setContents={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disable={disabled}
-    />
-  );
+      };
+    });
+  }, []);
+  return <div id={_id.current} />;
 };
 export default Component;

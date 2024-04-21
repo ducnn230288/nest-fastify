@@ -56,12 +56,12 @@ export const Upload = ({
       listFiles.filter((item: any) => item.status === 'uploading').length === 0
     ) {
       set_listFiles(tempData);
-      setTimeout(() => GLightbox());
+      setTimeout(() => GLightbox({}));
     }
   }, [value, multiple]);
 
   useEffect(() => {
-    setTimeout(() => GLightbox());
+    setTimeout(() => GLightbox({}));
   }, []);
 
   const onUpload = async ({ target }: any) => {
@@ -168,7 +168,7 @@ export const Upload = ({
             set_listFiles(listFiles.filter((_item: any) => _item.id !== dataFile.id));
           }
         }
-        setTimeout(() => GLightbox());
+        setTimeout(() => GLightbox({}));
       }
     }
     ref.current.value = '';
