@@ -6,7 +6,7 @@ import { ETypeChart } from '@models';
 import { CallbackDataParams, CommonTooltipOption, OptionDataValue } from 'echarts/types/src/util/types';
 import { uuidv4 } from '@utils';
 
-export const EChart = forwardRef(({ option }: Type, ref: Ref<any>) => {
+export const EChart = forwardRef(({ option, style = { height: '20rem' } }: Type, ref: Ref<any>) => {
   useImperativeHandle(ref, () => ({
     // onChartReady, onChartReady: (echarts: any) => void
   }));
@@ -222,9 +222,10 @@ export const EChart = forwardRef(({ option }: Type, ref: Ref<any>) => {
     const reg = /(?=(\B)(\d{3})+$)/g;
     return num.toString().replace(reg, ',');
   };
-  return <div className="h-10" id={_id.current} />;
+  return <div style={style} id={_id.current} />;
 });
 EChart.displayName = 'EChart';
 type Type = {
   option: any;
+  style?: React.CSSProperties;
 };

@@ -135,7 +135,7 @@ export const Pagination: any = ({
       <div className={classNames(className, 'flex flex-col lg:flex-row items-center justify-between mt-3 select-none')}>
         <div className={'left relative flex items-center'}>
           <label htmlFor={idElement + '_page_size'}>
-            {showSizeChanger && (
+            {showSizeChanger && pageSizeOptions.length > 0 && (
               <Select
                 className={'w-full sm:w-auto'}
                 value={perPage}

@@ -19,7 +19,7 @@ export const Modal = forwardRef(
       className = '',
       footerCustom,
       children,
-      name,
+      name = 'create',
     }: Type,
     ref: Ref<{ handleCancel: () => void }>,
   ) => {
@@ -34,7 +34,8 @@ export const Modal = forwardRef(
     };
 
     useEffect(() => {
-      if (searchParams.get('modal')) facade.set({ [keyState]: true, isLoading: false });
+      if (searchParams.get('modal') === 'create') facade.set({ [keyState]: true, isLoading: false });
+      else facade.getById({ id: searchParams.get('modal') });
     }, []);
 
     useEffect(() => {
