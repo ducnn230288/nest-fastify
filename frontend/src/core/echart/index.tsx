@@ -1,6 +1,6 @@
 import React, { forwardRef, Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import { LegendComponentOption, TitleOption, TooltipOption, XAXisOption, YAXisOption } from 'echarts/types/dist/shared';
-import { SeriesOption } from 'echarts';
+import { EChartsType, SeriesOption } from 'echarts';
 
 import { ETypeChart } from '@models';
 import { CallbackDataParams, CommonTooltipOption, OptionDataValue } from 'echarts/types/src/util/types';
@@ -11,6 +11,7 @@ export const EChart = forwardRef(({ option, style = { height: '20rem' } }: Type,
     // onChartReady, onChartReady: (echarts: any) => void
   }));
   const _id = useRef(uuidv4());
+  const _myChart = useRef<EChartsType>();
   useEffect(() => {
     if (option) {
       let title: TitleOption = { text: option.title, left: 'center' };
@@ -212,10 +213,12 @@ export const EChart = forwardRef(({ option, style = { height: '20rem' } }: Type,
           }));
           break;
       }
-      setTimeout(() => {
-        const myChart = echarts.init(document.getElementById(_id.current));
-        myChart.setOption({ title, xAxis, yAxis, series, tooltip, legend });
-      });
+      if (!_myChart.current)
+        setTimeout(() => {
+          _myChart.current = echarts.init(document.getElementById(_id.current));
+          _myChart.current.setOption({ title, xAxis, yAxis, series, tooltip, legend });
+        });
+      else _myChart.current.setOption({ title, xAxis, yAxis, series, tooltip, legend }, true);
     }
   }, [option]);
   const formatNumber = (num: number) => {
