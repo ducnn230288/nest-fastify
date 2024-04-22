@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
@@ -14,6 +14,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    splitVendorChunkPlugin(),
     tsconfigPaths(),
     svgr({
       include: '**/*.svg',
@@ -55,6 +56,14 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 600,
     outDir: './build',
+    rollupOptions: {
+      output: {
+        minifyInternalExports: true,
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+      },
+    },
   },
   resolve: {
     alias: [{ find: /^~/, replacement: '' }],
