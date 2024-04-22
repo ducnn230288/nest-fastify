@@ -556,8 +556,8 @@ export const DataTable = forwardRef(
             {refPageSizeOptions.current && showPagination && (
               <Pagination
                 total={result?.count}
-                page={+params.current!.page!}
-                perPage={+params.current!.perPage!}
+                page={params.current!.page!}
+                perPage={params.current!.perPage!}
                 pageSizeOptions={refPageSizeOptions.current}
                 pageSizeRender={pageSizeRender}
                 pageSizeWidth={pageSizeWidth}

@@ -215,7 +215,7 @@ export const EChart = forwardRef(({ option, style = { height: '20rem' } }: Type,
       setTimeout(() => {
         const myChart = echarts.init(document.getElementById(_id.current));
         myChart.setOption({ title, xAxis, yAxis, series, tooltip, legend });
-      }, 1000);
+      });
     }
   }, [option]);
   const formatNumber = (num: number) => {

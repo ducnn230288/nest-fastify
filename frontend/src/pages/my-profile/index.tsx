@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 const Page = () => {
   const { user, isLoading, profile, status, putProfile, data, formatDate } = GlobalFacade();
   useEffect(() => {
-    // profile();
+    profile();
     renderTitleBreadcrumbs(t('pages.MyProfile'), []);
   }, []);
   useEffect(() => {
