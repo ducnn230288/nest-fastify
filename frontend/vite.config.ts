@@ -55,14 +55,6 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 600,
     outDir: './build',
-    rollupOptions: {
-      output: {
-        minifyInternalExports: true,
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`,
-      },
-    },
   },
   resolve: {
     alias: [{ find: /^~/, replacement: '' }],
