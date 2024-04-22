@@ -1,7 +1,6 @@
 version: '3.9'
-name: 'test'
 services:
-  database:
+  db:
     env_file:
       - ../.env.test
     build:
@@ -25,10 +24,10 @@ services:
     environment:
       HOST_ADDRESS: 'http://localhost:3000/administrator'
       REDIS_HOST: 'cache'
-      DATABASE_HOST: 'database'
+      DATABASE_HOST: 'db'
     ports:
       - '3000:3000'
     depends_on:
-      - database
+      - db
       - cache
     command: npm run start:prod
