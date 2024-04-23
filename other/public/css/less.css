@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .text-stroke{
+        -webkit-text-stroke: 1px black;
+        -webkit-text-fill-color: transparent;
+    }
+}
+@layer utilities {
+  .cursor-active {
+    transform: translate(-50%, -50%) scale(8);
+    opacity: .1;
+  }
+}
+.sub-dropdown {
+    &:hover .sub-dropdown-content {
+      @apply top-20 visible opacity-100;
+    }
+}
+.hover-increase-width {
+  &:hover .hover-increase-width-content {
+    @apply w-3;
+  }
+}
+.sticky {
+  @apply animate-headerSticky;
+}
+
+.goverlay {
+  @apply !bg-black !opacity-70;
+}
+.html {
+  @apply !scroll-smooth;
+}

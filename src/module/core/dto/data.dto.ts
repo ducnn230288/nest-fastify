@@ -14,6 +14,7 @@ export class CreateDataRequestDto extends PickType(Data, [
   // 'userId',
   'startTime',
   'endTime',
+  'icon',
 ] as const) {
   @IsArray()
   @IsOptional()

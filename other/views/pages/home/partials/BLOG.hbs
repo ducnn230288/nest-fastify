@@ -1,0 +1,62 @@
+ <section class="py-32 h-fit font-epilogue">
+      <div class="px-3 sm:px-9 md:px-14 lg:px-9 xl:px-28">
+        <div class="mb-20">
+          <div class="lg:flex lg:justify-between lg:relative">
+            <div class="px-1">
+              <h6
+                  class="px-7 py-2 border rounded-full border-gray-900 w-fit h-9 text-xs text-gray-900 flex items-center justify-center mb-4 cursor-pointer wow fadeIn" data-wow-duration="1200ms">
+                  {{paraBlog.code}}</h6>
+              <h2 class="text-3xl lg:text-5xl md:text-3xl font-semibold mb-2 text-black-100 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="400ms">{{paraBlog.description}}</h2>
+            </div>
+            <div class="px-1 mt-5">
+              <a href="blog-classic.html" class="flex items-center wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="400ms">
+                <div class="w-12 h-12 bg-gray-200 rounded-full text-black-100 text-sm font-light flex items-center"></div>
+                <span class="text-sm font-light left-9 md:left-20  flex items-center -ml-6">View All Our News
+                  <span>
+                    <svg width="18px" height="18px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#1D1D1D"
+                        d="M768 256H353.6a32 32 0 1 1 0-64H800a32 32 0 0 1 32 32v448a32 32 0 0 1-64 0V256z" />
+                      <path fill="#1D1D1D"
+                        d="M777.344 201.344a32 32 0 0 1 45.312 45.312l-544 544a32 32 0 0 1-45.312-45.312l544-544z" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <script id="template-ourblogs" type="text/x-handlebars-template">
+          <ul class="px-1 lg:grid lg:grid-cols-2 lg:gap-5">
+            {{#each blog}}
+            <li class="mb-12 wow fadeIn" data-wow-duration="1200ms" data-wow-delay="600ms">
+              <div class="w-full h-fit border border-gray-300 rounded-md sm:grid sm:grid-cols-2">
+                <div class="px-4">
+                  <div class="mt-4">
+                    <img src="{{image}}" alt="">
+                  </div>
+                </div>
+                <div class="px-4 sm:mt-10 lg:mt-0">
+                  <div class="py-8">
+                    <span class="text-xs text-black-100 mb-4 font-normal">{{startTime}}</span>
+                    <h5 class="text-lg md:text-2xl text-black-100 font-medium mt-2">
+                      <a href="#">{{#with (lookup translations 0)}}
+                          {{this.name}}
+                        {{/with}}</a>
+                    </h5>
+                    <div class="mt-4 flex">
+                      <a href="#"
+                        class="bg-gray-200 px-5 py-2 rounded-md text-xs text-black-100  flex items-center justify-center">Marketing</a>
+                      <a href="#"
+                        class="bg-gray-200 px-5 py-2 rounded-md text-xs text-black-100 flex items-center justify-center ml-1">Design</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            {{/each}}
+          </ul>
+        </script>
+        <div class="ourblogs">
+        </div>
+      </div>
+    </section>

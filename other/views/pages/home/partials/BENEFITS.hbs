@@ -1,0 +1,84 @@
+<section class="py-32">
+      <div class="mb-20 px-3 sm:px-9 md:px-14 lg:px-9 xl:px-24">
+        <div class="px-0.5">
+          <div>
+            <h6 class="mb-4 w-36 h-9 border border-gray-900 rounded-full text-xs flex items-center justify-center wow fadeIn" data-wow-duration="1200ms">
+              {{#with (lookup paraBenefits 0)}}
+                  {{this.code}}
+              {{/with}}</h6>
+            <div class="block lg:flex lg:justify-between xl:grid xl:grid-cols-2">
+              <h2 class="wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="400ms">
+                <span
+                  class="text-3xl md:text-4xl lg:text-5xl lg:leading-tight lg:max-w-96 md:leading-snug font-semibold text-gray-900">
+                  {{#with (lookup paraBenefits 0)}}
+                    {{this.description}}
+                  {{/with}}
+                </span>
+              </h2>
+              <div class="px-0.5 lg:px-0">
+                <div class="lg:ml-40 xl:ml-32 xl:-mt-10 lg:relative">
+                  <p class="leading-loose sm:leading-10 lg:leading-7 mt-2">
+                    <span class="text-gray-500 text-base font-light inline-block leading-7 wow fadeInUp" data-wow-duration="1200ms">
+                      {{#with (lookup paraBenefits 1)}}
+                        {{this.description}}
+                      {{/with}}
+                  </span>
+                  </p>
+                  <div class="mt-10 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="600ms">
+                    <a href="blog-classic.html"
+                      class="w-12 h-12 bg-gray-200 rounded-full text-sm font-light flex items-center">
+                      <span class="absolute left-9 sm:left-14 md:left-20 lg:left-6 flex items-center">View All Our News
+                        <span class="ml-1.5">
+                          <svg width="16px" height="16px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#1D1D1D"
+                              d="M768 256H353.6a32 32 0 1 1 0-64H800a32 32 0 0 1 32 32v448a32 32 0 0 1-64 0V256z" />
+                            <path fill="#1D1D1D"
+                              d="M777.344 201.344a32 32 0 0 1 45.312 45.312l-544 544a32 32 0 0 1-45.312-45.312l544-544z" />
+                          </svg>
+                        </span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full sm:px-14 md:px-32 lg:px-24 xl:px-32 lg:grid lg:grid-cols-2">
+        <div class="mb-24 lg:mb-10 flex">
+          <div class="relative w-full lg:h-96 xl:h-full">
+            <img src="/images/01.jpg" alt="" class="w-3/4 h-full wow fadeInLeft" data-wow-duration="1200ms" data-wow-delay="600ms">
+            <div
+              class="absolute w-52 xl:w-64 border-t-8 border-l-8 border-white -bottom-7 right-0 lg:-right-4 xl:-right-10 wow fadeInLeft" data-wow-duration="1200ms" data-wow-delay="600ms">
+              <img src="/images/1.jpg" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="-mt-8 xl:mt-14 ml-7">
+          <h2 class="text-3xl md:text-4xl lg:-ml-2 lg:text-5xl lg:leading-tight font-semibold text-gray-900 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="600ms">
+            {{#with (lookup paraBenefits 2)}}
+              {{this.description}}
+            {{/with}}
+            </h2>
+          <div class="flex justify-center flex-col pl-8 pr-8 mt-24 sm:pl-24 sm:pr-0">
+            {{#each benefits}}
+            <div class="flex items-center justify-center mb-12 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="600ms">
+              <img src="{{icon}}" alt="" class="w-12 h-12 mr-8">
+              <div class="flex flex-col">
+                <h6 class="text-base md:text-xl font-semibold text-gray-900 sm:mb-3">
+                  {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}
+                </h6>
+                <p class="text-gray-500 font-light sm:leading-7">      {{#with (lookup translations 0)}}
+                    {{this.description}}
+                  {{/with}}
+                </p>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </section>

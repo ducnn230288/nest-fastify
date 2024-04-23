@@ -1,0 +1,406 @@
+ <div id="header" class="fixed z-30 top-0 w-full bg-gray-100 text-black border-b">
+    <div class="container max-w-7xl relative">
+      <div class="-mx-2 ">
+        <div class="flex justify-between items-center h-14 lg:h-20 mx-9 lg:mx-14 xl:mx-0">
+          <!-- Logo -->
+          <div class="w-20 lg:w-28 h-6 cursor-pointer">
+            <img src="https://ui-themez.smartinnovates.net/items/geekfolio/light/assets/imgs/logo-dark.png
+            " alt="">
+          </div>
+          <!-- navbar web -->
+          <nav class="hidden lg:block h-full">
+            <ul class="flex justify-between text-sm font-semibold items-center h-full">
+              <!-- Home -->
+              <li class="sub-dropdown cursor-pointer h-full flex items-center px-3 mx-4">
+                <div class="flex items-center text-sm font-medium tracking-widest">
+                  HOME 
+                  <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+                </div>
+                <ul class="sub-dropdown-content w-full invisible opacity-0 top-32 transition-all ease-in duration-300 absolute  left-1/2 transform -translate-x-1/2">
+                  <div class="lg:mx-6 xl:-mx-14 py-8 font-light bg-white border-2 border-gray-100">
+                    <div class="mx-16 grid grid-cols-12">
+                      <!-- Home Dark -->
+                      <li class="col-span-3 ">
+                        <h6 class="font-medium text-base mb-8"> HOME DARK</h6>
+                        <div class="homedark-light"></div>
+                        <script id="template-homedark-light" type="text/x-handlebars-template">
+                          {{#each home}}
+                          <a href={{image}}>
+                            <div class="group flex items-center">
+                              <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                              <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                                {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                            </div>
+                          </a>
+                        {{/each}}
+                        </script>
+                      </li>
+                      <!-- Home Light -->
+                      <li class="col-span-3 ">
+                        <h6 class="font-medium text-base mb-8"> HOME LIGHT</h6>
+                        <div class="homedark-light"></div>
+                      </li>  
+                      <!-- Show Cases -->
+                      <li class="col-span-3 ">
+                        <h6 class="font-medium text-base mb-8"> SHOWCASES</h6>
+                        <div class="showcase"></div>
+                        <script id="template-showcase" type="text/x-handlebars-template">
+                         {{#each showcase}}
+                          <a href={{image}}>
+                            <div class="group flex items-center">
+                              <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                              <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                                {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                            </div>
+                          </a>
+                        {{/each}}
+                        </script>
+                      </li>  
+                      <!-- Show Cases Light -->
+                      <li class="col-span-3 ">
+                        <h6 class="font-medium text-base mb-8"> SHOWCASES LIGHT</h6>
+                        <div class="showcaselight"></div>
+                        <script id="template-showcaselight" type="text/x-handlebars-template">
+                          {{#showcaselight}}
+                          <a href={{href}}>
+                            <div class="group flex items-center">
+                              <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                              <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                                {{p}}</p>
+                            </div>
+                          </a>
+                        {{/showcaselight}}
+                        </script>
+                      </li>    
+                    </div>
+                  </div>
+                </ul>
+              </li>
+              <!-- Pages -->
+              <li class="sub-dropdown cursor-pointer h-full flex items-center px-3 mx-4">
+                <div class="flex items-center text-sm font-medium tracking-widest">
+                  PAGES 
+                  <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+                </div>
+                <ul class="page sub-dropdown-content invisible opacity-0 top-32 transition-all ease-in duration-300 border-2 absolute z-50 font-normal w-64 bg-white border-gray-100 px-3 py-5 text-sm">
+                  <script id="template-page" type="text/x-handlebars-template">
+                    {{#each page}}
+                    <a href={{image}}>
+                      <div class="group flex items-center pl-5">
+                        <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                        <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                        {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                      </div>
+                    </a>
+                  {{/each}}
+                  </script>
+                </ul>
+              </li>
+              <!-- PORFOLIO -->
+              <li class="sub-dropdown cursor-pointer h-full flex items-center px-3 mx-4">
+                  <div class="flex items-center text-sm font-medium tracking-widest">
+                    PORFOLIO 
+                    <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+                  </div>
+                  <ul class="sub-dropdown-content invisible opacity-0 top-32 transition-all ease-in duration-300 border-2 absolute z-50 font-normal w-64 bg-white border-gray-100 px-3 py-5 text-sm  -10 ">
+                    <li class="group flex justify-between text-center items-center">
+                      <div class="group flex items-center px-5">
+                        <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                        <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                          Classic Grid</p>
+                      </div>
+                      <i class="fas fa-angle-right icon-arrow font-black text-sm pr-4"></i>
+                      <ul
+                        class="classicGrid invisible group-hover:visible opacity-0 group-hover:opacity-100 text-left top-1/4 group-hover:top-8 transition-all ease-in duration-300 border-2 right-40 absolute font-normal w-56  left-64 bg-white px-3 py-5 text-sm  ">
+                        <!-- handlebars -->
+                        <script id="template-classicGrid" type="text/x-handlebars-template">
+                          {{#classicGrid}}
+                            <a href="{{href}}">
+                              <div class="py-2.5 flex items-center hover-increase-width pl-5">
+                                <div class="w-0 hover-increase-width-content h-0.5 bg-black transition-all duration-500 ease">
+                                </div>
+                                <p class="hover:ml-2.5 transition-all duration-500 ease">
+                                  {{p}}</p>
+                              </div>
+                            </a>                     
+                          {{/classicGrid}}
+                        </script>
+                      </ul>
+                    </li>
+                    <li class="group flex justify-between text-center items-center">
+                      <div class="group flex items-center px-5">
+                        <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                        <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                          Mansory</p>
+                      </div>
+                      <i class="fas fa-angle-right icon-arrow font-black text-sm pr-4"></i>
+                      <ul
+                        class="mansory invisible group-hover:visible opacity-0 group-hover:opacity-100 text-left top-28 group-hover:top-20 transition-all ease-in duration-300 border-2 right-40 absolute font-normal w-56  left-64 bg-white px-3 py-5 text-sm">
+                        <!-- handlebars -->
+                        <script id="template-mansory" type="text/x-handlebars-template">
+                          {{#mansory}}
+                            <a href="{{href}}">
+                              <div class="py-2.5 flex items-center hover-increase-width pl-5">
+                                <div class="w-0 hover-increase-width-content h-0.5 bg-black transition-all duration-500 ease">
+                                </div>
+                                <p class="hover:ml-2.5 transition-all duration-500 ease">
+                                  {{p}}</p>
+                              </div>
+                            </a>                     
+                          {{/mansory}}
+                        </script> 
+                      </ul>
+                    </li>
+                    <div class="porfolio pl-5"></div>
+                      <script id="template-porfolio" type="text/x-handlebars-template">
+                        {{#each porfolio}}
+                        <a href={{image}}>
+                          <div class="group flex items-center">
+                            <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                            <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                              {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                          </div>
+                        </a>
+                      {{/each}}
+                      </script>
+                </ul>
+              </li>
+              <!-- BLOGS -->
+              <li class="sub-dropdown cursor-pointer h-full flex items-center px-3 mx-4">
+                <div class="flex items-center text-sm font-medium tracking-widest">
+                  BLOGS
+                  <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+                </div>
+                <ul
+                  class="blog sub-dropdown-content invisible opacity-0 top-32 transition-all ease-in duration-300 border-2 absolute z-50 font-normal w-64 bg-white border-gray-100 px-3 py-5 text-sm">
+                  <script id="template-blog" type="text/x-handlebars-template">
+                    {{#each blg}}
+                    <a href={{image}}>
+                      <div class="group flex items-center pl-5">
+                        <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                        <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                          {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                      </div>
+                    </a>
+                  {{/each}}
+                  </script>
+                </ul>
+              </li>
+              <!-- SHOP -->
+              <li class="sub-dropdown cursor-pointer h-full flex items-center px-3 mx-4">
+                <div class="flex items-center text-sm font-medium tracking-widest">
+                  SHOP
+                  <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+                </div>
+                <ul
+                  class="shop sub-dropdown-content invisible opacity-0 top-32 transition-all ease-in duration-300 border-2 absolute z-50 font-normal w-64 bg-white border-gray-100 px-3 py-5 text-sm">
+                  <script id="template-shop" type="text/x-handlebars-template">
+                    {{#each shop}}
+                    <a href={{image}}>
+                      <div class="group flex items-center pl-5">
+                        <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                        <p class="py-2.5 text-sm group-hover:ml-2.5 transition-all duration-500 ease">
+                        {{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</p>
+                      </div>
+                    </a>
+                  {{/each}}
+                  </script>
+                </ul>
+              </li>
+
+              <!-- CONTACT -->
+              <a class="h-full flex items-center px-3 mx-4"
+                href="https://ui-themez.smartinnovates.net/items/geekfolio/light/page-contact.html">
+                <div class="cursor-pointer text-center text-sm font-medium tracking-widest">
+                  CONTACT
+                </div>
+              </a>
+
+            </ul>
+          </nav>
+          <!-- Container hamburger and search -->
+          <div id="hamburger"
+            class="handle-search hidden lg:flex cursor-pointer h-20 w-20 border-x-2 border-solid p-4 justify-center items-center relative">
+            <span id="icon-search"
+              class="pe-7s-search open-search text-sm opacity-100 transition-all ease-in duration-300"></span>
+            <span id="icon-close"
+              class="pe-7s-close close-search absolute text-xl invisible -translate-y-4  transition-all ease-in duration-300"></span>
+            <div id="bg-search"
+              class="absolute inset-0 flex justify-center items-center transition-all ease-in duration-300">
+            </div>
+          </div>
+          <div id="search-container"
+            class="absolute hidden lg:flex invisible opacity-0 w-64 top-28 right-0 p-4 backdrop-blur-sm transition-all ease-in duration-300">
+            <input type="text" placeholder="Search" class="rounded-md pl-4 flex-1 text-sm outline-none border">
+
+            <button type="button"
+              class="-ml-11 w-11 h-11 bg-black opacity-20 rounded-md flex items-center justify-center relative">
+            </button>
+            <span class="pe-7s-search absolute translate-y-3.5 -translate-x-8 right-0 -ml-11 text-sm"></span>
+
+          </div>
+          <!-- Nút respomsive -->
+          <div id="hamburger" class="handle-menu cursor-pointer lg:hidden">
+            <div class="flex justify-center items-center ">
+              <i class="fa-solid fa-bars text-xl"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </div>
+    <!-- Dropdown menu -->
+
+    <!-- navbar Responsive -->
+    <div id="menu" class="pb-2 absolute invisible opacity-0 top-full w-full bg-gray-100 h-96 lg:hidden overflow-scroll">
+      <ul class="text-xs font-semibold tracking-widest">
+        <!-- Home -->
+        <li>
+          <div id="Home" class="handle-collapse cursor-pointer py-5 border-b">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              HOME
+              <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+            </div>
+          </div>
+          <ul id="Home" class="handle-content bg-white overflow-hidden h-0">
+            <!-- HOME DARK  -->
+            <div class="mx-0.5">
+              <div class="py-4 mt-4 px-8 border-b bg-white text-sm"> HOME DARK</div>
+              <!-- handlebars -->
+              <ul class="homedark-light px-4 pt-3 mx-4 font-light leading-loose overflow-hidden">
+              </ul>
+            </div>
+            <!-- HOME LIGHT  -->
+            <div class="mx-0.5">
+              <div class="py-4 mt-4 px-8 border-b bg-white text-sm"> HOME LIGHT</div>
+              <!-- handlebars -->
+              <ul class="homedark-light px-4 pt-3 mx-4 font-light leading-loose overflow-hidden">
+              </ul>
+            </div>
+            <!-- SHOWCASES -->
+            <div class="mx-0.5">
+              <div class="py-4 mt-4 px-8 border-b bg-white text-sm"> SHOWCASES</div>
+              <!-- handlebars -->
+              <ul class="showcase px-4 pt-3 mx-4 font-light leading-loose overflow-hidden">
+              </ul>
+            </div>
+            <!-- SHOWCASES LIGHT -->
+            <div class="mx-0.5">
+              <div class="py-4 mt-4 px-8 border-b bg-white text-sm"> SHOWCASES LIGHT</div>
+              <!-- handlebars -->
+              <ul class="showcaselight px-4 py-3 mx-4 font-light leading-loose overflow-hidden">
+              </ul>
+            </div>
+          </ul>
+        </li>
+        <!-- Pages -->
+        <li>
+          <div id="Pages" class="handle-collapse cursor-pointer border border-t-0 py-5">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              PAGES
+              <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+            </div>
+          </div>
+
+          <div id="Pages" class="handle-content overflow-hidden h-0">
+            <!-- handlebars -->
+            <ul class="page font-light py-3 bg-white leading-loose pl-3 mx-0.5">
+            </ul>
+          </div>
+        </li>
+        <!-- PORFOLIO -->
+        <li>
+          <div id="PORFOLIO" class="handle-collapse cursor-pointer border border-t-0  py-5">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              PORFOLIO
+              <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+            </div>
+          </div>
+          <div id="PORFOLIO" class="handle-content overflow-hidden h-0">
+            <ul class="font-light py-3 bg-white leading-loose pl-8 mx-0.5">
+              <li class="group">
+                <div class="py-2.5 flex items-center justify-between pr-7">
+                  <div class="flex items-center">
+                    <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                    <p class="group-hover:ml-2.5 transition-all duration-500 ease text-sm font-light">
+                      Classic Grid</p>
+                  </div>
+                  <i class="fas fa-angle-right icon-arrow font-black text-sm"></i>
+                </div>
+                <!-- handlebars -->
+                <div
+                  class="classicGrid border-2 text-sm font-light invisible group-hover:visible opacity-0 group-hover:opacity-100 group-hover:ml-6 mr-7 h-0 group-hover:h-full transition-all duration-300 ease">
+                </div>
+              </li>
+              <li class="group">
+                <div class="py-2.5 flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="w-0 group-hover:w-3 h-0.5 bg-black transition-all duration-500 ease"></div>
+                    <p class="text-sm font-light group-hover:ml-2.5 transition-all duration-500 ease">
+                      Mansory</p>
+                  </div>
+                  <i class="fas fa-angle-right icon-arrow font-black text-sm pr-7"></i>
+                </div>
+                <!-- handlebars -->
+                <div
+                  class="text-sm font-light mansory border-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 group-hover:ml-6 mr-7 h-0 group-hover:h-full transition-all duration-300 ease">
+                </div>
+              </li>
+              <!-- handlebars -->
+              <div class="porfolio"></div>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Blog -->
+        <li>
+          <div id="Blog" class="handle-collapse cursor-pointer border border-t-0  py-5">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              BLOGS
+              <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+            </div>
+          </div>
+          <div id="Blog" class="handle-content overflow-hidden h-0">
+            <ul class="blog font-light py-3 bg-white leading-loose pl-3 mx-0.5">
+            </ul>
+          </div>
+        </li>
+        <!-- Shop -->
+        <li>
+          <div id="Shop" class="handle-collapse cursor-pointer border border-t-0  py-5">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              SHOP
+              <div class="ml-1 w-0.5 border-solid border-t-4 border-x-4 border-x-transparent border-black"></div>
+            </div>
+          </div>
+
+          <div id="Shop" class="handle-content overflow-hidden h-0">
+            <ul class="shop font-light py-3 bg-white leading-loose pl-3 mx-0.5">
+            </ul>
+          </div>
+        </li>
+        <!-- Contact -->
+        <li class="border-b cursor-pointer">
+          <a class="block py-5" href="https://ui-themez.smartinnovates.net/items/geekfolio/light/page-contact.html">
+            <div class="px-3 mx-4 flex items-center text-sm font-medium tracking-widest">
+              CONTACT
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>

@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./other/views/**/*.hbs'],
-  safelist: ['!border', '!border-solid', '!border-teal-900', '!bg-white', '!text-teal-900', 'hover:!bg-none', 'right-0', 'opacity-50'],
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {
-      fontSize: {
-        xs: ['.6875rem', '.9375rem'],
-        sm: ['.8125rem', '1.1875rem'],
-      },
+    fontFamily: {
+      epilogue: "'Epilogue', serif",
+      sora: "'Sora', serif",
+    },
+    boxShadow: {
+      xls: '0 6px 30px -8px rgb(0 0 0 / 0.1), 5px 0px 8px -6px rgb(0 0 0 / 0.1)',
     },
     screens: {
       sm: '640px',
@@ -40,11 +40,20 @@ module.exports = {
         200: '#e5e7eb',
         300: '#d1d5db',
         400: '#9ca3af',
-        500: '#6b7280',
+        500: '#696969',
         600: '#4b5563',
         700: '#374151',
         800: '#1f2937',
-        900: '#111827',
+        900: '#1D1D1D',
+        ligsoc: '#D8F1E5',
+        grey: '#808080',
+        '7e': '#7E7E7E',
+        ad: '#adadad',
+        f46: '#F4F6FA',
+        b6: '#B6B6B6',
+        blck: '#253D4E',
+        af: '#AFADAD',
+        F234: '#F2F3F4',
       },
       zinc: {
         50: '#fafafa',
@@ -105,6 +114,8 @@ module.exports = {
         700: '#c2410c',
         800: '#9a3412',
         900: '#7c2d12',
+        orn: '#FDC040',
+        F5: '#F59758',
       },
       amber: {
         50: '#fffbeb',
@@ -129,6 +140,7 @@ module.exports = {
         700: '#a16207',
         800: '#854d0e',
         900: '#713f12',
+        darkyellow: '#FFD55A',
       },
       lime: {
         50: '#f7fee7',
@@ -153,6 +165,12 @@ module.exports = {
         700: '#15803d',
         800: '#166534',
         900: '#14532d',
+        grn: '#3BB77E',
+        grntxt: '#3BB7A3',
+        ligrn: '#BCE3C9',
+        darkgrn: '#81B13D',
+        bggrn: '#9DDBC9',
+        grnbtn: '#DEF9EC',
       },
       emerald: {
         50: '#ecfdf5',
@@ -203,16 +221,17 @@ module.exports = {
         900: '#0c4a6e',
       },
       blue: {
-        50: '#AAD8FF',
-        100: '#95CEFF',
-        200: '#6CBBFF',
-        300: '#44A9FF',
-        400: '#1B96FF',
-        500: '#0082F1',
-        600: '#0064B9',
-        700: '#004581',
-        800: '#002749',
-        900: '#000911',
+        50: '#eff6ff',
+        100: '#dbeafe',
+        200: '#bfdbfe',
+        300: '#93c5fd',
+        400: '#60a5fa',
+        500: '#3b82f6',
+        600: '#2563eb',
+        700: '#1d4ed8',
+        800: '#1e40af',
+        900: '#1e3a8a',
+        67: '#67BCEE',
       },
       indigo: {
         50: '#eef2ff',
@@ -273,6 +292,8 @@ module.exports = {
         700: '#be185d',
         800: '#9d174d',
         900: '#831843',
+        pnk: '#FD6E6E',
+        f74: '#F74B81',
       },
       rose: {
         50: '#fff1f2',
@@ -287,8 +308,23 @@ module.exports = {
         900: '#881337',
       },
     }),
+    container: {
+      center: true,
+    },
     extend: {
       keyframes: {
+        headerSticky: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        infinitescroll: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        },
+        rotate: {
+          from: { transform: 'rotate(-360deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
         shine: {
           '100%': { left: '125%' },
         },
@@ -302,16 +338,23 @@ module.exports = {
             opacity: '1',
             transform: 'translateX(0px)',
           },
-        }
+        },
       },
       animation: {
+        headerSticky: 'headerSticky .5s ease-in-out 1 forwards',
+        infinitescroll: 'infinitescroll 60s linear infinite',
+        rotate: 'rotate 50s linear infinite',
         shine: 'shine 0.8s',
         'intro-x-animation': 'introXAnimation .4s ease-in-out forwards .33333s',
         'burger-hover-2': 'burgerHover 1s infinite ease-in-out alternate forwards 200ms',
         'burger-hover-4': 'burgerHover 1s infinite ease-in-out alternate forwards 400ms',
         'burger-hover-6': 'burgerHover 1s infinite ease-in-out alternate forwards 600ms',
       },
-    }
+    },
+    variants: {
+      fill: ['hover', 'focus'],
+      width: ['responsive', 'hover', 'focus'],
+    },
   },
-  plugins: [],
+  plugins: [require('tailwindcss'), require('autoprefixer')],
 };

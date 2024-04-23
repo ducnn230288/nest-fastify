@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { faker } from '@faker-js/faker';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID, IsInt, Min } from 'class-validator';
 
 import { Base } from '@shared';
 import { Expose } from 'class-transformer';
@@ -15,12 +15,19 @@ export class Parameter extends Base {
   @IsOptional()
   code: string;
 
-  @Column({ type: 'text', array: true, nullable: true })
+  @Column({ nullable: true })
   @Expose()
-  @ApiProperty({ example: [faker.lorem.paragraph()], description: '' })
+  @ApiProperty({ example: faker.lorem.paragraph(), description: '' })
   @IsString({ each: true })
   @IsOptional()
-  description: string[];
+  description: string;
+
+  @Column({ nullable: true })
+  @ApiProperty({ example: faker.number.int({ min: 0, max: 10 }), description: '' })
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  order?: number;
 
   @Column({ nullable: true })
   @ApiProperty({ example: faker.lorem.paragraph(), description: '' })

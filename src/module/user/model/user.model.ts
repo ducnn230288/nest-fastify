@@ -26,6 +26,11 @@ export class User extends Base {
   name: string;
 
   @Column({ nullable: true })
+  @ApiProperty({ example: faker.lorem.slug(), description: '' })
+  @IsString()
+  slug: string;
+
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.image.url(), description: '' })
   @IsString()
   @IsOptional()

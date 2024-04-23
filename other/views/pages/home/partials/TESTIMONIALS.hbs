@@ -1,0 +1,152 @@
+<section class="bg-white pl-2.5 h-fit font-epilogue py-32">
+      <div class="px-3 sm:px-8 md:px-12 lg:px-9 xl:px-20">
+        <div>
+          <div class="px-1">
+            <div class="mb-20">
+              <div class="flex flex-col items-center justify-center">
+                <h6
+                  class="px-7 py-2 border rounded-full border-gray-900 w-40 h-9 text-xs text-gray-900 font-medium flex items-center justify-center mb-4 cursor-pointer
+                  wow fadeIn" data-wow-duration="1200ms">
+                  {{paraTestimonials.code}}</h6>
+                <h2 class="text-gray-900 text-3xl md:text-4xl lg:text-5xl font-semibold wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="600ms">{{paraTestimonials.description}}</h2>
+              </div>
+            </div>
+            <div class="lg:flex lg:justify-between wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="400ms">
+              <div class="basis-2/5 mr-20">
+                <div
+                  class="w-32 h-32 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full border border-gray-900 flex items-center justify-center mb-8 relative">
+                  <div
+                    class="w-24 h-24 lg:w-36 lg:h-36 bg-gray-100 rounded-full flex items-center justify-center absolute z-20 lg:left-20">
+                    <img src="/images/quote.png" alt="q" class="w-12 h-12">
+                  </div>
+                  <div class="lg:block hidden lg:w-72 lg:h-72 xl:w-80 xl:h-80 lg:rounded-full lg:overflow-hidden  absolute z-10 left-32">
+                    <img src="/images/sq1.jpg" alt="1" class="object-cover">
+                  </div>
+                </div>
+              </div>
+              <div class="peoplesays swiper mySwiper basis-3/5 h-full">
+                <!-- handlebars -->
+                <script id="template-peoplesays" type="text/x-handlebars-template">
+                  <ul class="swiper-wrapper flex flex-nowrap">
+                    {{#each testimonials}}
+                    <li class="min-w-full swiper-slide">
+                      <div class="mb-5">
+                        <div class="stars flex">
+                          <svg class="ml-1" width="20px" height="20px" viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                            preserveAspectRatio="xMidYMid meet">
+                            <path fill="#FFAC33"
+                              d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379z">
+                            </path>
+                          </svg>
+                          <svg class="ml-1" width="20px" height="20px" viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                            preserveAspectRatio="xMidYMid meet">
+                            <path fill="#FFAC33"
+                              d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379z">
+                            </path>
+                          </svg>
+                          <svg class="ml-1" width="20px" height="20px" viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                            preserveAspectRatio="xMidYMid meet">
+                            <path fill="#FFAC33"
+                              d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379z">
+                            </path>
+                          </svg>
+                          <svg class="ml-1" width="20px" height="20px" viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                            preserveAspectRatio="xMidYMid meet">
+                            <path fill="#FFAC33"
+                              d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379z">
+                            </path>
+                          </svg>
+                          <svg class="ml-1" width="20px" height="20px" viewBox="0 0 36 36"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                            preserveAspectRatio="xMidYMid meet">
+                            <path fill="#FFAC33"
+                              d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834a1.97 1.97 0 0 1-2.312-.008a1.971 1.971 0 0 1-.721-2.194l3.034-9.792l-8.062-5.681a1.98 1.98 0 0 1-.708-2.203a1.978 1.978 0 0 1 1.866-1.363L12.947 13l3.179-9.549a1.976 1.976 0 0 1 3.749 0L23 13l10.036.015a1.975 1.975 0 0 1 1.159 3.566l-8.062 5.681l3.034 9.792a1.97 1.97 0 0 1-.72 2.194a1.957 1.957 0 0 1-1.16.379z">
+                            </path>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="mb-10">
+                        <h5 class="text-lg md:text-2xl font-normal text-gray-900 leading-7">{{#with (lookup translations 0)}}
+                          {{this.description}}
+                        {{/with}}</h5>
+                      </div>
+                      <div class="flex items-center">
+                        <div>
+                          <img src="{{image}}" alt="1" class="w-16 h-16 rounded-full object-cover">
+                        </div>
+                        <div class="ml-8 flex flex-col">
+                          <h6 class="mb-2 text-base text-gray-900 font-semibold">{{#with (lookup translations 0)}}
+                          {{this.name}}
+                        {{/with}}</h6>
+                          <span class="text-sm text-gray-900 font-normal">{{name}}</span>
+                        </div>
+                      </div>
+                    </li>
+                    {{/each}}
+                  </ul>
+                  <!-- button -->
+                  <div class="flex items-center justify-end">
+                    <div
+                      class="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center cursor-pointer button-next">
+                      <svg class="w-5 h-5" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32"
+                        xml:space="preserve">
+                        <line fill="none" stroke="#1D1D1D" stroke-width="2" stroke-miterlimit="10" x1="6" y1="16"
+                          x2="28" y2="16" />
+                        <polyline fill="none" stroke="#1D1D1D" stroke-width="2" stroke-miterlimit="10"
+                          points="14,24.5 5.5,16 14,7.5 " />
+                      </svg>
+                    </div>
+                    <div
+                      class="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center cursor-pointer ml-5 button-prev">
+                      <svg class="w-5 h-5" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32"
+                        xml:space="preserve">
+                        <line fill="none" stroke="#1D1D1D" stroke-width="2" stroke-miterlimit="10" x1="26" y1="16"
+                          x2="4" y2="16" />
+                        <polyline fill="none" stroke="#1D1D1D" stroke-width="2" stroke-miterlimit="10"
+                          points="18,7.5 26.5,16 18,24.5 " />
+                      </svg>
+                    </div>
+                  </div>
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-20 pt-20 border-t border-gray-200 sm:grid sm:grid-cols-2 lg:grid lg:grid-cols-4 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="400ms">
+          <div class="px-1 text-gray-900 flex flex-col justify-center">
+            <h2 class="text-8xl md:text-9xl font-extrabold text-stroke mb-6 lg:mb-7 flex items-center">16</h2>
+            <h6 class="mb-12 lg:mb-2 text-base text-gray-900 font-medium">Years of Experience</h6>
+          </div>
+
+          <div class="px-1 text-gray-900 flex flex-col lg:items-center lg:justify-center">
+            <h2 class="text-8xl md:text-9xl font-extrabold mb-6 lg:mb-7">4
+              <span class="text-7xl font-semibold  -ml-5 md:-ml-7 lg:-ml-7">k</span>
+            </h2>
+            <h6 class="mb-12 lg:mb-2 text-base text-gray-900 font-medium">Projects Complated</h6>
+          </div>
+
+          <div class="px-1 text-gray-900 flex flex-col lg:items-center lg:justify-center">
+            <h2 class="text-8xl md:text-9xl font-extrabold text-stroke mb-6 lg:mb-7">9
+              <span class="text-7xl font-semibold text-strok  -ml-5 md:-ml-7 lg:-ml-7">k</span>
+            </h2>
+            <h6 class="mb-12 lg:mb-2 text-base text-gray-900 font-medium">Happy Customers</h6>
+          </div>
+
+          <div class="px-1 text-gray-900 flex flex-col lg:items-end">
+            <h2 class="text-8xl md:text-9xl font-extrabold mb-6 lg:mb-7 flex items-center">12</h2>
+            <h6 class="lg:mb-2 text-base text-gray-900 font-medium">Awards Winning</h6>
+          </div>
+        </div>
+      </div>
+    </section>

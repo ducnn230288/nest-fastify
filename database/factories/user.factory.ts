@@ -6,6 +6,7 @@ export default setSeederFactory(User, (faker) => {
   const data = new User();
   data.avatar = faker.image.url();
   data.name = faker.person.fullName();
+  data.slug = faker.lorem.slug();
   data.password = Example.password;
   data.email = faker.internet.email().toLowerCase();
   data.phoneNumber = faker.finance.accountNumber(12);

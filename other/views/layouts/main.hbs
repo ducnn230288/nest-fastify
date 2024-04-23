@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@100..900&family=Sora:wght@100..800&display=swap"
+    rel="stylesheet">
+  <title>Geekfolio</title>
+  <link rel="stylesheet" href="../css/less.css">
+  <link rel="stylesheet" href="../css/icon.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/7ca42f71ef.js" crossorigin="anonymous"></script>
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <!-- wow 1-->
+  <link href="https://cdn.jsdelivr.net/npm/wowjs@1.1.3/css/libs/animate.min.css" rel="stylesheet">
+  <!-- Glightbox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
+</head>
+
+<!-- https://ui-themez.smartinnovates.net/items/geekfolio/light/home-main.html# -->
+
+<body class="font-epilogue box-border">
+
+  <div id="cursor"
+    class="fixed z-50 p-1.5 bg-white mix-blend-difference rounded-full pointer-events-none transition-transform duration-300 ease-in">
+  </div>
+
+  <!-- Header -->
+ {{> header}}
+
+  <!-- Body mobile -->
+ {{> body}}
+
+  <!-- footer -->
+ {{> footer}}
+ 
+  <!-- wowjs 1:sử dụng thuộc tính của thư viện WOW.js để tạo hiệu ứng khi cuộn trang web -->
+  <script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.3/dist/wow.min.js"></script>
+  <!-- Smoother scroll -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.min.js"></script> -->
+  <!-- Swiper -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!--  Glightboxjs: thư viện hộp đèn cho phép bạn tạo các phòng trưng bày hình ảnh đơn giản, video, iframe và các yếu tố nội tuyến  -->
+  <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+  <!-- handlebars 4 -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@4/dist/handlebars.js"></script>
+  <!-- gsap3 -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <!-- ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+
+  <script type="module" src="../js/index.js"></script>
+</body>
+
+</html>

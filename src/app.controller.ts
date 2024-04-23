@@ -1,11 +1,11 @@
-import { Get, Controller, Render, Res, Param, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Render, Res, Param, UseInterceptors, Req } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
-import { FastifyReply } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import dayjs from 'dayjs';
 // import { Cache } from 'cache-manager'; CACHE_MANAGER Inject
-import { CacheInterceptor,  } from '@nestjs/cache-manager';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
-import { DataService, ParameterService, PostService } from '@service';
+import { AuthService, DataService, ParameterService, PostService } from '@service';
 import { Data } from '@model';
 import { DataDto, IEditor, PostDto } from '@dto';
 
@@ -14,82 +14,124 @@ export class AppController {
   constructor(
     private readonly dataService: DataService,
     private readonly postService: PostService,
-    private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
+    private readonly parameterService: ParameterService,
+    private readonly authService: AuthService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   ) {}
 
-  @Get('')
-  @Render('index')
-  @UseInterceptors(CacheInterceptor)
-  async root(language: string = 'vn', urlLang = '/en'): Promise<IHome> {
-    // let product = await this.managerCache.get<ProductEntity>(`product-${id}`);
-    // if (!product) {
-    //   product = await this.productService.findById(id);
-    //   await this.managerCache.set(`product-${id}`, product);
-    // }
-    const i18n = I18nContext.current()!;
-    const { data, dataArray } = await this.common(language, ['mission', 'services', 'value', 'member']);
+  @Get('/page/:slug')
+  @Render('pages/home/index')
+  async root(
+    language: string = 'vn',
+    urlLang = '/en',
+    @Param('slug') slug: string,
+    @Req() req: FastifyRequest,
+  ): Promise<any> {
+    const user = await this.authService.login({ email: 'nhom1@user.com', password: 'Password1!' });
+
+    const [benefits, a] = await this.dataService.findAll({
+      where: [{ type: 'BENEFITS' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [services, b] = await this.dataService.findAll({
+      where: [{ type: 'SERVICES' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [design, c] = await this.dataService.findAll({
+      where: [{ type: 'DESIGN' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [ser, d] = await this.dataService.findAll({
+      where: [{ type: 'SER' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [testimonials, e] = await this.dataService.findAll({
+      where: [{ type: 'TESTIMONIALS' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [blog, i] = await this.dataService.findAll({
+      where: [{ type: 'BLOG' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [home, h] = await this.dataService.findAll({
+      where: [{ type: 'HDL' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [showcase, k] = await this.dataService.findAll({
+      where: [{ type: 'SHC' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [page, j] = await this.dataService.findAll({
+      where: [{ type: 'PAGE' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [porfolio, m] = await this.dataService.findAll({
+      where: [{ type: 'POR' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [blg, n] = await this.dataService.findAll({
+      where: [{ type: 'BLG' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [shop, p] = await this.dataService.findAll({
+      where: [{ type: 'SHP' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const [paraServices, f] = await this.parameterService.findAll({
+      where: [{ code: 'FEATURED SERVICES' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    const paraDesign = await this.parameterService.findOne('DESIGN');
+    const paraBlog = await this.parameterService.findOne('OUR BLOG');
+    const paraSer = await this.parameterService.findOne('SERVICES');
+    const paraTestimonials = await this.parameterService.findOne('TESTIMONIALS');
+    const [paraBenefits, g] = await this.parameterService.findAll({
+      where: [{ code: 'OUR BENEFITS' }, { userId: user.id }],
+      sorts: '{"order": "ASC"}',
+    });
+
+    req.session.set('user', user);
+
     return {
-      urlLang,
-      ...data,
-      language: {
-        ...data.language,
-        page: {
-          EnhanceVietnam: i18n.t('client.page.home.EnhanceVietnam', { lang: language }),
-          ChooseService: i18n.t('client.page.home.ChooseService', { lang: language }),
-          DigitalTransformation: i18n.t('client.page.home.DigitalTransformation', { lang: language }),
-          RDServices: i18n.t('client.page.home.RDServices', { lang: language }),
-          OutsourcingServices: i18n.t('client.page.home.OutsourcingServices', { lang: language }),
-          ProductDevelopment: i18n.t('client.page.home.ProductDevelopment', { lang: language }),
-          GetStarted: i18n.t('client.page.home.GetStarted', { lang: language }),
-          ABOUT: i18n.t('client.page.home.ABOUT', { lang: language }),
-          ARIIs: i18n.t('client.page.home.ARIIs', { lang: language }),
-          BestTechnicalAgency: i18n.t('client.page.home.BestTechnicalAgency', { lang: language }),
-          About1: i18n.t('client.page.home.About1', { lang: language }),
-          About2: i18n.t('client.page.home.About2', { lang: language }),
-          About3: i18n.t('client.page.home.About3', { lang: language }),
-          OurMission: i18n.t('client.page.home.OurMission', { lang: language }),
-          WeProvide: i18n.t('client.page.home.WeProvide', { lang: language }),
-          Services: i18n.t('client.page.home.Services', { lang: language }),
-          ARightChoice: i18n.t('client.page.home.ARightChoice', { lang: language }),
-          ARINotStrives: i18n.t('client.page.home.ARINotStrives', { lang: language }),
-          CoreValue: i18n.t('client.page.home.CoreValue', { lang: language }),
-          ExecutiveBoard: i18n.t('client.page.home.ExecutiveBoard', { lang: language }),
-          WeLove: i18n.t('client.page.home.WeLove', { lang: language }),
-        },
-      },
-      mission: dataArray['mission'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      services: dataArray['services'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      value: dataArray['value'].map((item) => ({
-        ...item,
-        translation: item.translations?.filter((subItem) => subItem.language === language)[0],
-      })),
-      JSON: {
-        member: dataArray['member'].map((item) => {
-          const translation = item.translations?.filter((subItem) => subItem.language === language)[0];
-          return {
-            ...item,
-            SeeMore: i18n.t('client.page.home.SeeMore', { lang: language }),
-            translation: {
-              ...translation,
-            },
-          };
-        }),
-      },
+      user: user,
+      benefits: benefits,
+      services: services,
+      design: design,
+      ser: ser,
+      testimonials: testimonials,
+      blog: blog,
+      home: home,
+      showcase: showcase,
+      page: page,
+      porfolio: porfolio,
+      blg: blg,
+      shop: shop,
+      paraServices: paraServices,
+      paraBlog: paraBlog,
+      paraBenefits: paraBenefits,
+      paraDesign: paraDesign,
+      paraSer: paraSer,
+      paraTestimonials: paraTestimonials,
     };
   }
 
-  @Get('/en')
-  @Render('index')
-  @UseInterceptors(CacheInterceptor)
-  async rootLang(): Promise<IHome> {
-    return await this.root('en', '/');
-  }
+  // @Get('/en')
+  // @Render('index')
+  // async rootLang(@Req() req: FastifyRequest): Promise<any> {
+  //   return await this.root('en', '/', req);
+  // }
 
   @Get('/tin-tuc')
   @Render('post/list')
@@ -373,8 +415,6 @@ export class AppController {
       dataArray,
     };
   }
-
-
 }
 interface ICommon {
   title: string;

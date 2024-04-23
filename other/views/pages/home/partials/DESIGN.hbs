@@ -1,0 +1,27 @@
+<section id="horizontal">
+      <div class="px-8 lg:px-20 xl:px-28">
+        <div class="w-full lg:w-max lg:flex scrollimg">
+          <script id="template-scrollimg" type="text/x-handlebars-template">
+            {{#each design}}
+            <div class="horizontal__item mb-16 lg:-mr-44 xl:-mr-4">
+              <div class="w-full">
+                <img src="{{image}}" alt="1"
+                  class="w-full object-cover lg:w-8/12 xl:w-10/12">
+                </div>
+              <div class="flex justify-between w-full lg:w-8/12 xl:w-10/12">
+                <div class="leading-relaxed">
+                  <span class="text-base font-medium mt-6 inline-block text-gray-500">{{name}}</span>
+                  <h5 class="text-2xl font-semibold">{{#with (lookup translations 0)}}
+                    {{this.name}}
+                  {{/with}}</h5>
+                </div>
+                <div>
+                  <h6 class="text-2xl font-semibold mt-12">{{startTime}}</h6>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </script>
+        </div>
+      </div>
+    </section>

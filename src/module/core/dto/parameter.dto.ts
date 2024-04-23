@@ -8,6 +8,7 @@ export class CreateParameterRequestDto extends PickType(Parameter, [
   'vn',
   'en',
   'description',
+  'order',
   // 'userId',
 ] as const) {}
 export class UpdateParameterRequestDto extends PartialType(CreateParameterRequestDto) {}
