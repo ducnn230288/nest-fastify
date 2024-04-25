@@ -40,12 +40,12 @@ export const Modal = forwardRef(
 
     useEffect(() => {
       if (name) {
-        if (facade[keyState]) {
+        if (facade[keyState] && !searchParams.has('modal')) {
           setSearchParams((params) => {
             params.set('modal', name);
             return params;
           });
-        } else {
+        } else if (searchParams.has('modal')) {
           setSearchParams((params) => {
             params.delete('modal');
             return params;
