@@ -43,9 +43,7 @@
   &-content .ant-table-thead > tr { @apply relative;
     .bg { @apply absolute top-0 left-0 w-full h-full z-50; }
 
-    > th { @apply relative;
-      .dragging { @apply opacity-0 cursor-col-resize !absolute right-0 top-0 z-50 h-full w-1; }
-    }
+    > th { @apply relative !bg-gray-100;}
   }
   &-column-sorter-inner > .anticon { @apply !mt-0;
     &:not(.active){ @apply hidden; }

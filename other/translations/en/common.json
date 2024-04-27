@@ -5,7 +5,10 @@
   "Create Success": "Create Success",
   "Update Success": "Update Success",
   "Delete Success": "Delete Success",
+  "CheckIn Success": "Check In Success",
+  "CheckOut Success": "Check Out Success",
   "Data id not found": "Data {id} not found",
+  "Get Check In success": "Get Check In Success",
   "Auth": {
     "Invalid credentials for user": "Invalid credentials for user {email}",
     "Email is already taken": "Email is already taken",

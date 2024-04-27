@@ -37,7 +37,7 @@ export class TaskSubController {
     @Query(new ValidationPipe({ transform: true })) paginationQuery: PaginationQueryDto,
   ): Promise<ListTaskSubResponeDto> {
     const [result, total] = await this.service.findAll(paginationQuery);
-    return { message: i18n.t('common.Get List success'), count: total, data: result };
+    return { message: i18n.t('common.Get List Success'), count: total, data: result };
   }
 
   @Auth({

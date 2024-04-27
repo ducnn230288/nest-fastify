@@ -67,7 +67,7 @@ export class User extends Base {
     }
   }
 
-  @Column({ nullable: true, type: 'varchar' }) // , name: 'refresh_token'
+  @Column({ nullable: true, type: 'varchar' })
   @Exclude()
   refreshToken?: string | null;
   @BeforeUpdate()
@@ -84,7 +84,7 @@ export class User extends Base {
   @IsEmail()
   email?: string;
 
-  @Column() // { name: 'phone_number' }
+  @Column()
   @ApiProperty({ example: faker.phone.number(), description: '' })
   @IsString()
   @MinLength(8)
@@ -103,18 +103,18 @@ export class User extends Base {
   @IsOptional()
   description?: string;
 
-  @Column({ nullable: true }) // , name: 'role_code'
+  @Column({ nullable: true })
   @Expose()
   @IsString()
   @IsOptional()
   roleCode?: string;
 
   @ManyToOne(() => UserRole, (role) => role.users, { eager: true }) //
-  @JoinColumn({ name: 'roleCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'role_code', referencedColumnName: 'code' })
   @Type(() => UserRole)
   readonly role?: UserRole;
 
-  @Column({ nullable: true }) // , name: 'position_code'
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'DEV', description: '' })
   @IsString()
@@ -122,21 +122,21 @@ export class User extends Base {
   readonly positionCode?: string;
 
   @ManyToOne(() => Code)
-  @JoinColumn({ name: 'positionCode', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'position_code', referencedColumnName: 'code' })
   readonly position?: Code;
 
-  @Column() // { name: 'start_date' }
+  @Column()
   @ApiProperty({ example: faker.date.past(), description: '' })
   @IsDateString()
   startDate?: Date;
 
-  @Column({ nullable: true, type: 'real' }) // , name: 'date_leave'
+  @Column({ nullable: true, type: 'real' })
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsNumber()
   @IsOptional()
   dateLeave?: number;
 
-  @Column({ nullable: true, type: 'real', default: 0 }) // , name: 'date_off'
+  @Column({ nullable: true, type: 'real', default: 0 })
   @Expose()
   @ApiProperty({ example: faker.number.int({ min: 0.5, max: 12 }), description: '' })
   @IsDecimal()
@@ -157,19 +157,10 @@ export class User extends Base {
   @ManyToMany(() => UserTeam, (team) => team.users, { eager: true })
   @Type(() => UserTeam)
   @IsOptional()
-  @JoinTable({
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'user_team_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   teams?: UserTeam[];
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @Expose({ groups: [MaxGroup] })
   @IsOptional()
   @IsUUID()
@@ -177,7 +168,7 @@ export class User extends Base {
 
   @ManyToOne(() => User, (user) => user.members, { eager: true })
   @Type(() => User)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   readonly manager?: User;
 
   @OneToMany(() => User, (user) => user.manager)
@@ -199,15 +190,6 @@ export class User extends Base {
   @ManyToMany(() => Task, (team) => team.assignees, { eager: true })
   @Type(() => Task)
   @IsOptional()
-  @JoinTable({
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'user_task_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   tasksAssignees?: Task[];
 }

@@ -24,7 +24,7 @@ export class TaskController {
     @AuthUser() user: User,
   ): Promise<TaskResponseDto> {
     if (!body.code) {
-      const [_, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
+      const [, total] = await this.codeService.findAll({ where: [{ code: body.projectCode }] });
       body.code = body.projectCode + `_${total < 10 ? '0' + total : total}`;
     }
     const task = await this.service.createTask(body, user);
@@ -56,7 +56,7 @@ export class TaskController {
     const [result, total] = await this.service.findAll(paginationQuery);
     // console.log(datas);
     return {
-      message: i18n.t('common.Get List success'),
+      message: i18n.t('common.Get List Success'),
       count: total,
       data: result,
     };

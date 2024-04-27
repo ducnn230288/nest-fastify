@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -13,7 +12,6 @@ import {
   UserRoleController,
   AddressWardController,
 } from '@controller';
-import { Address, AddressDistrict, AddressProvince, User, UserRole, AddressWard } from '@model';
 import {
   AddressService,
   AuthService,
@@ -25,10 +23,19 @@ import {
   UserService,
   AddressWardService,
 } from '@service';
-import { FileRepository, UserRepository, DayoffRepository, UserTeamRepository } from '@repository';
+import {
+  AddressDistrictRepository,
+  AddressProvinceRepository,
+  AddressRepository,
+  AddressWardRepository,
+  FileRepository,
+  UserRepository,
+  UserRoleRepository,
+  DayoffRepository,
+  UserTeamRepository,
+} from '@repository';
 
-import { AccessTokenStrategy } from './strategy/accessToken.strategy';
-import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
+import { AccessTokenStrategy, RefreshTokenStrategy } from '@shared';
 
 @Module({
   imports: [
@@ -43,7 +50,6 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
       },
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([User, UserRole, AddressProvince, AddressDistrict, AddressWard, Address]),
   ],
   controllers: [
     AuthController,
@@ -61,12 +67,17 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     AuthService,
     UserRepository,
     UserService,
+    UserRoleRepository,
     UserRoleService,
     FileRepository,
     FileService,
+    AddressProvinceRepository,
     AddressProvinceService,
+    AddressDistrictRepository,
     AddressDistrictService,
+    AddressWardRepository,
     AddressWardService,
+    AddressRepository,
     AddressService,
     UserTeamRepository,
     DayoffRepository,
@@ -75,12 +86,17 @@ import { RefreshTokenStrategy } from './strategy/refreshToken.strategy';
     AuthService,
     UserRepository,
     UserService,
+    UserRoleRepository,
     UserRoleService,
     FileRepository,
     FileService,
+    AddressProvinceRepository,
     AddressProvinceService,
+    AddressDistrictRepository,
     AddressDistrictService,
+    AddressWardRepository,
     AddressWardService,
+    AddressRepository,
     AddressService,
   ],
 })

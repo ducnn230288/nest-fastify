@@ -12,13 +12,13 @@ export class Comment extends Base {
   @IsString()
   content: string;
 
-  @Column({ name: 'user_id' })
+  @Column()
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Expose()
   readonly userId?: string;
 
-  @Column({ name: 'table_id' })
+  @Column()
   @IsUUID()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Expose()

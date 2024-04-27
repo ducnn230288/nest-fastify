@@ -12,7 +12,7 @@ import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, type } = useParams();
-  console.log(id)
+  console.log(id);
   const codeFacade = CodeFacade();
   const { set } = GlobalFacade();
   const param = JSON.parse(codeFacade.queryParams || `{"filter":"{\\"type\\":\\"${type}\\"}"}`);
@@ -46,7 +46,9 @@ const Page = () => {
 
   const handleBack = () => {
     codeFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), type })}).toString()}`);
+    navigate(
+      `/${lang}${routerLinks('Code')}?${new URLSearchParams({ ...param, filter: JSON.stringify({ ...JSON.parse(param?.filter || '{}'), type }) }).toString()}`,
+    );
   };
   const handleSubmit = (values: Code) => {
     if (id) codeFacade.put({ ...values, id, type });
@@ -85,8 +87,8 @@ const Page = () => {
                 col: 6,
                 rules: [{ type: EFormRuleType.required }],
                 onBlur: (e, form) => {
-                  if (e.target.value && !form.getFieldValue('code')) {
-                    form.setFieldValue('code', slug(e.target.value).toUpperCase());
+                  if (e && !form.getFieldValue('code')) {
+                    form.setFieldValue('code', slug(e).toUpperCase());
                   }
                 },
               },

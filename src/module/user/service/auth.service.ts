@@ -101,7 +101,7 @@ export class AuthService extends BaseService<User> {
 
     user.otp = customAlphabet('0123456789', 10)(6);
     await this.update(user.id!, user);
-    if (!body.notSendEmail) await this.emailService.sendUserConfirmation(user, user.otp);
+    // if (!body.notSendEmail) await this.emailService.sendUserConfirmation(user, user.otp);
 
     const name = user.id + 'forgottenPassword';
     if (this.schedulerRegistry.doesExist('cron', name)) this.schedulerRegistry.deleteCronJob(name);

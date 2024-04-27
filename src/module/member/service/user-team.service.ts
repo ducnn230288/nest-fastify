@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import { UserTeam } from '@model';
 import { BaseService } from '@shared';
+import { UserTeamRepository } from '@repository';
 // import { User } from '@modules/user/user.entity';
 // import { UserHistory } from '@modules/user/user.history';
 // import { UserTeamHistory } from '@modules/user/team/team.history';
@@ -16,10 +15,7 @@ export const P_USER_TEAM_DELETE = 'a3988171-8aaa-4925-9a8b-8e3190d92fd4';
 
 @Injectable()
 export class UserTeamService extends BaseService<UserTeam> {
-  constructor(
-    @InjectRepository(UserTeam)
-    public repo: Repository<UserTeam>, // @InjectRepository(UserTeamHistory) // public repoHistory: Repository<UserTeamHistory>, // @InjectRepository(UserHistory) // public repoHistoryUser: Repository<UserHistory>,
-  ) {
+  constructor(public repo: UserTeamRepository) {
     super(repo);
     this.listQuery = ['name', 'description'];
     this.listJoin = ['manager'];

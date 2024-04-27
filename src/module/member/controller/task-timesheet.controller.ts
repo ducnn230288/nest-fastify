@@ -81,7 +81,7 @@ export class TaskTimesheetController {
     const timesheet = await this.service.getCheckIn(user);
     if (!timesheet) throw new BadRequestException(i18n.t('common.User not check in'));
     return {
-      message: i18n.t('Get Check In success'),
+      message: i18n.t('common.Get Check In success'),
       data: timesheet,
     };
   }

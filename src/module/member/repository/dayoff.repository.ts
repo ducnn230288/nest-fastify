@@ -195,7 +195,7 @@ export class DayoffRepository extends BaseRepository<DayOff> {
     });
     const data = await request
       .innerJoin(TaskTimesheet, 'timesheet')
-      .andWhere(`base.createdAt BETWEEN :startDate AND :endDate`, {
+      .andWhere(`base.created_at BETWEEN :startDate AND :endDate`, {
         startDate: dayjs(timesheets.start).startOf('days').toDate(),
         endDate: dayjs(timesheets.start).endOf('days').toDate(),
       })

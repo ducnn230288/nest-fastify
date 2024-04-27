@@ -30,7 +30,7 @@ export class QuestionTestService extends BaseService<QuestionTest> {
     const { answer } = body;
     let point = 0;
 
-    for (const [key, value] of Object.entries({ answer })) {
+    for (const [key, value] of Object.entries(answer!)) {
       const question = await this.questionServive.findOne(key);
       if (question && question?.correct === value) point += 1;
     }

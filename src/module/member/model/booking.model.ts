@@ -19,29 +19,29 @@ export class Booking extends Base {
   @IsString()
   description: string;
 
-  @Column({ nullable: true, name: 'start_time' })
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.date.soon(), description: '' })
   @IsString()
   @IsOptional()
   startTime: Date;
 
-  @Column({ nullable: true, name: 'end_time' })
+  @Column({ nullable: true })
   @ApiProperty({ example: faker.date.soon(), description: '' })
   @IsString()
   @IsOptional()
   endTime: Date;
 
-  @Column({ name: 'user_id' })
+  @Column()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @IsString()
   userId: string;
 
   @ManyToOne(() => User, (user) => user.bookingRoom, { eager: true })
   @Type(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   readonly user: User;
 
-  @Column({ nullable: true, name: 'type_code' })
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'room', description: '' })
   @IsString()
@@ -52,7 +52,7 @@ export class Booking extends Base {
   @JoinColumn({ name: 'type_code', referencedColumnName: 'code' })
   readonly type?: CodeType;
 
-  @Column({ nullable: true, name: 'item_code' })
+  @Column()
   @Expose()
   @ApiProperty({ example: 'ROOM', description: '' })
   @IsString()

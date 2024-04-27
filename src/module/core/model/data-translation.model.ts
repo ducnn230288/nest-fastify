@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Data } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
-import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class DataTranslation extends Base {
@@ -47,7 +46,7 @@ export class DataTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column() // { name: 'data_id' }
+  @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()

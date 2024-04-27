@@ -6,7 +6,6 @@ import { Expose } from 'class-transformer';
 
 import { Post } from '@model';
 import { MaxGroup, Base, setImageContent } from '@shared';
-import { IEditor } from '@dto';
 
 @Entity({ schema: 'core' })
 export class PostTranslation extends Base {
@@ -48,7 +47,7 @@ export class PostTranslation extends Base {
     this.content = setImageContent(this.content, false);
   }
 
-  @Column() // { name: 'post_id' }
+  @Column()
   @Expose({ groups: [MaxGroup] })
   @IsUUID()
   @IsOptional()

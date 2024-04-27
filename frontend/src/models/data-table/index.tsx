@@ -58,3 +58,28 @@ export class TableRefObject {
     public handleDelete: (id: string) => void,
   ) {}
 }
+export class MEditTable {
+  fields?: {
+    columns?: MColumnEditTable[];
+    rows?: string[];
+  };
+  meta?: {
+    field?: string;
+    name?: string;
+    fullName?: string;
+    type?: string;
+    formula?: string;
+  }[];
+  totals?: {
+    row?: {
+      subTotalsDimensions?: string[];
+      reverseSubLayout?: boolean;
+      subLabel?: string;
+    };
+  };
+  data?: any[];
+}
+export class MColumnEditTable {
+  key?: string;
+  children?: MColumnEditTable[];
+}

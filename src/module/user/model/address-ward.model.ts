@@ -21,14 +21,14 @@ export class AddressWard extends Base {
   @IsString()
   code: string;
 
-  @Column() // { name: 'code_district' }
+  @Column()
   @ApiProperty({ example: faker.finance.bic(), description: '' })
   @Expose()
   @IsString()
   codeDistrict: string;
 
   @ManyToOne(() => AddressDistrict, (district) => district.wardItem, { eager: false })
-  @JoinColumn({ name: 'codeDistrict', referencedColumnName: 'code' })
+  @JoinColumn({ name: 'code_district', referencedColumnName: 'code' })
   public districtItem?: AddressDistrict;
 
   @OneToMany(() => Address, (address) => address.wardItem, { eager: false })

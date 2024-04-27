@@ -51,7 +51,7 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
     }
 
     const { body } = await request(BaseTest.server)
-      .get('/api/question?level=1&typeCode=' + code.code)
+      .get('/api/question?level=1&perPage=20&typeCode=' + code.code)
       .set('Authorization', 'Bearer ' + BaseTest.token)
       .expect(HttpStatus.OK || HttpStatus.FORBIDDEN);
 
@@ -151,6 +151,6 @@ export const testCase = (type?: string, permissions: string[] = []): void => {
       expect(body.data).toEqual(jasmine.objectContaining(test));
     }
   });
-  /* */
+
   return afterAll(BaseTest.initAfterAll);
 };

@@ -6,7 +6,6 @@ import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, IsUUID }
 
 import { Code, TaskWork, User } from '@model';
 import { Base, MaxGroup } from '@shared';
-import { IEditor } from '@dto';
 import { TaskSub } from '@model';
 
 export enum ETaskPriority {
@@ -23,7 +22,7 @@ export enum ETaskStatus {
 
 @Entity({ schema: 'member' })
 export class Task extends Base {
-  @Column({ nullable: true, name: 'project_code' })
+  @Column({ nullable: true })
   @Expose()
   @ApiProperty({ example: 'ARI', description: '' })
   @IsString()
@@ -53,7 +52,7 @@ export class Task extends Base {
   @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: [], description: '' })
   @IsOptional()
-  content?: { blocks: IEditor[] };
+  content?: string;
 
   @Column()
   @ApiProperty({ example: faker.date.past(), description: '' })
@@ -130,14 +129,14 @@ export class Task extends Base {
   @Type(() => User)
   assignees?: User[];
 
-  @Column({ nullable: true, name: 'manager_id' })
+  @Column({ nullable: true })
   @IsUUID()
   @Expose()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   managerId?: string;
 
   @ManyToOne(() => User, (user) => user.task)
-  @JoinColumn({ name: 'manager_id' })
+  @JoinColumn()
   readonly manager?: User;
 
   @OneToMany(() => TaskSub, (taskSub) => taskSub.task)

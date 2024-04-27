@@ -12,21 +12,19 @@ export const Message = {
     cancelButtonColor = '#ef4444',
     padding = 0,
   }: Type) =>
-    import('sweetalert2').then(({ default: Swal }) =>
-      Swal.fire({
-        icon: 'success',
-        timer: 1500,
-        title,
-        text,
-        cancelButtonText,
-        showCloseButton,
-        showCancelButton,
-        showConfirmButton,
-        confirmButtonColor,
-        cancelButtonColor,
-        padding,
-      }),
-    ),
+    Swal.fire({
+      icon: 'success',
+      timer: 1500,
+      title,
+      text,
+      cancelButtonText,
+      showCloseButton,
+      showCancelButton,
+      showConfirmButton,
+      confirmButtonColor,
+      cancelButtonColor,
+      padding,
+    }),
   warning: ({
     text = '',
     title = t('components.message.Warning'),
@@ -37,19 +35,17 @@ export const Message = {
     showConfirmButton = true,
     padding = 0,
   }: Type) =>
-    import('sweetalert2').then(({ default: Swal }) =>
-      Swal.fire({
-        icon: 'warning',
-        title,
-        text,
-        cancelButtonText,
-        confirmButtonText,
-        showCloseButton,
-        showCancelButton,
-        showConfirmButton,
-        padding,
-      }),
-    ),
+    Swal.fire({
+      icon: 'warning',
+      title,
+      text,
+      cancelButtonText,
+      confirmButtonText,
+      showCloseButton,
+      showCancelButton,
+      showConfirmButton,
+      padding,
+    }),
   error: ({
     text = '',
     title = t('components.message.Fail'),
@@ -59,20 +55,18 @@ export const Message = {
     showConfirmButton = false,
     padding = 0,
   }: Type) =>
-    import('sweetalert2').then(({ default: Swal }) =>
-      Swal.fire({
-        icon: 'error',
-        title,
-        text,
-        cancelButtonText,
-        showCloseButton,
-        showCancelButton,
-        showConfirmButton,
-        padding,
-        focusCancel: showCancelButton,
-        timer: 6000,
-      }),
-    ),
+    Swal.fire({
+      icon: 'error',
+      title,
+      text,
+      cancelButtonText,
+      showCloseButton,
+      showCancelButton,
+      showConfirmButton,
+      padding,
+      focusCancel: showCancelButton,
+      timer: 6000,
+    }),
   confirm: ({
     text = '',
     title = '',
@@ -89,38 +83,36 @@ export const Message = {
     showConfirmButton = true,
     padding = 0,
   }: Type) =>
-    import('sweetalert2').then(({ default: Swal }) =>
-      Swal.fire({
-        icon: 'warning',
-        text,
-        title,
-        cancelButtonText,
-        confirmButtonText,
-        confirmButtonColor,
-        cancelButtonColor,
-        showCancelButton,
-        showConfirmButton,
-        showCloseButton,
-        padding,
-        input,
-        inputAttributes: {
-          autocapitalize: 'off',
-        },
-        preConfirm: async (value) => {
-          try {
-            await preConfirm(value);
-          } catch (error) {
-            Swal.showValidationMessage(error!.toString());
-          }
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          onConfirm();
-        } else if (result.isDismissed) {
-          onDenied();
+    Swal.fire({
+      icon: 'warning',
+      text,
+      title,
+      cancelButtonText,
+      confirmButtonText,
+      confirmButtonColor,
+      cancelButtonColor,
+      showCancelButton,
+      showConfirmButton,
+      showCloseButton,
+      padding,
+      input,
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      preConfirm: async (value: any) => {
+        try {
+          await preConfirm(value);
+        } catch (error) {
+          Swal.showValidationMessage(error!.toString());
         }
-      }),
-    ),
+      },
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        onConfirm();
+      } else if (result.isDismissed) {
+        onDenied();
+      }
+    }),
 };
 type Type = {
   text: string;

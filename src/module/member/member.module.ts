@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
   BookingController,
@@ -11,19 +10,6 @@ import {
   QuestionTestController,
   TaskSubController,
 } from '@controller';
-import {
-  Booking,
-  Code,
-  Comment,
-  DayOff,
-  Question,
-  QuestionTest,
-  Task,
-  TaskSub,
-  TaskTimesheet,
-  TaskWork,
-  UserTeam,
-} from '@model';
 import {
   BookingService,
   DayoffService,
@@ -47,24 +33,14 @@ import {
   TaskRepository,
   QuestionRepository,
   QuestionTestRepository,
+  BookingRepository,
+  TaskSubRepository,
+  CodeRepository,
 } from '@repository';
+import { TaskWorkRepository } from './repository/task-work.repository';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Booking,
-      UserTeam,
-      DayOff,
-      Question,
-      QuestionTest,
-      TaskTimesheet,
-      TaskWork,
-      Task,
-      Comment,
-      Code,
-      TaskSub,
-    ]),
-  ],
+  imports: [],
   controllers: [
     BookingController,
     UserTeamController,
@@ -76,26 +52,30 @@ import {
     TaskSubController,
   ],
   providers: [
+    BookingRepository,
     BookingService,
-    UserTeamRepository,
-    UserTeamService,
     DayoffRepository,
     DayoffService,
-    FileRepository,
-    FileService,
-    UserService,
-    UserRepository,
-    TaskService,
-    TaskRepository,
-    TaskTimesheetService,
-    TaskTimesheetRepository,
-    TaskWorkService,
-    TaskSubService,
     QuestionRepository,
     QuestionService,
     QuestionTestService,
     QuestionTestRepository,
+    UserTeamRepository,
+    UserTeamService,
+    TaskService,
+    TaskRepository,
+    TaskTimesheetRepository,
+    TaskTimesheetService,
+    TaskWorkRepository,
+    TaskWorkService,
+    TaskSubRepository,
+    TaskSubService,
 
+    FileRepository,
+    FileService,
+    UserRepository,
+    UserService,
+    CodeRepository,
     CodeService,
   ],
   exports: [UserTeamRepository, DayoffRepository],

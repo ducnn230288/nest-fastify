@@ -24,16 +24,16 @@ export class QuestionTest extends Base {
   // @Expose({ groups: [MaxGroup] })
   @ApiProperty({ example: {}, description: '' })
   @IsOptional()
-  answer?: string;
+  answer?: object;
 
-  @Column({ name: 'user_id' })
+  @Column()
   @IsString()
   @ApiProperty({ example: faker.string.uuid(), description: '' })
   @Exclude()
   userId?: string;
 
   @ManyToOne(() => User, (user) => user.tests, { eager: true })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   @Type(() => User)
   readonly user: User;
 

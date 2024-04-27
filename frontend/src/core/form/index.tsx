@@ -315,6 +315,7 @@ export const Form = ({
               t(formItem.placeholder || '') || t('components.form.Enter') + ' ' + t(item.title)!.toLowerCase()
             }
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
+            list={formItem.list}
           />
         );
       case EFormType.select:
@@ -326,10 +327,11 @@ export const Form = ({
             placeholder={
               t(formItem.placeholder || '') || t('components.form.Choose') + ' ' + t(item.title)!.toLowerCase()
             }
-            formItem={formItem}
             form={form}
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
             get={formItem.get}
+            list={formItem.list}
+            mode={formItem.mode}
           />
         );
       case EFormType.selectTable:
@@ -383,6 +385,7 @@ export const Form = ({
         // @ts-ignore
         return (
           <Mask
+            list={formItem.list}
             form={form}
             mask={formItem.mask}
             addonBefore={formItem.addonBefore}
@@ -602,9 +605,9 @@ export const Form = ({
                   rules.forEach((item: any) => item.min && (min = item.min));
                   if (value.trim().length < min)
                     return Promise.reject(t('components.form.ruleMinNumberLength', { min }));
-                  if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/.test(value))
-                    return Promise.resolve();
-                  else return Promise.reject(t('components.form.rulePassword'));
+                  // if (/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/.test(value))
+                  //   return Promise.resolve();
+                  // else return Promise.reject(t('components.form.rulePassword'));
                 } else return Promise.resolve();
               },
             }));
@@ -743,7 +746,7 @@ export const Form = ({
               text={t(textSubmit)}
               id={idSubmit}
               onClick={() => form && form.submit()}
-              disabled={disableSubmit}
+              disabled={disableSubmit || spinning}
               className={'sm:min-w-44 justify-center w-full sm:w-auto '}
             />
           )}
