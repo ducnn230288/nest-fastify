@@ -47,6 +47,9 @@ async function bootstrap(): Promise<void> {
   await app.register(secureSession, { secret: appConfig.ACCESS_SECRET, salt: appConfig.SESSION_SALT });
   app.useStaticAssets({ root: join(process.cwd(), './other', 'public') });
   hbs.registerPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbs.registerPartials(join(process.cwd(), './other', '/views/partials'));
+  hbs.registerPartials(join(process.cwd(), './other', '/views/pages'));
+  hbs.registerPartials(join(process.cwd(), './other', '/views/detail2'));
   hbs.registerHelper('json', function (context) {
     return JSON.stringify(context);
   });
@@ -54,6 +57,9 @@ async function bootstrap(): Promise<void> {
     return options.fn();
   });
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/partials'));
+  hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/detail2'));
   app.setViewEngine({
     engine: { handlebars: hbs },
     includeViewExtension: true,

@@ -68,9 +68,9 @@ export class AuthService extends BaseService<User> {
       ),
       returnRefresh
         ? this.jwtService.signAsync(
-            { userId: user.id, email: user.email },
-            { secret: appConfig.REFRESH_SECRET, expiresIn: '1d' },
-          )
+          { userId: user.id, email: user.email },
+          { secret: appConfig.REFRESH_SECRET, expiresIn: '1d' },
+        )
         : '',
     ]);
 

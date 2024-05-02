@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail - Page</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!--  vanilla-lazyload 17 -->
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17/dist/lazyload.min.js"></script>
+  <script>
+    setTimeout(() => {
+      new LazyLoad({ callback_error: (el) => (el.src = 'https://via.placeholder.com/1x1/?text=') });
+    }, 1000);
+  </script>
+
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <!-- End Icons -->
+
+
+</head>
+
+<body class="items-center ">
+  <!--Header start-->
+  {{> header/index}}
+  <!--Header end-->
+
+  <main class="container mx-auto">
+    {{> body}}
+  </main>
+
+  <!--Footer start-->
+  {{> footer/index}}
+  <!--Footer end-->
+
+  <!-- Icons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- End Icons -->
+
+  <script src="js/index.js"></script>
+</body>
+
+</html>

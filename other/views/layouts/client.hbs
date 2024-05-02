@@ -1,508 +1,54 @@
-<!DOCTYPE html>
-<html lang="{{lang}}">
+<!doctype html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <title>{{#if title}}{{title}}{{else}} Client website{{/if}}</title>
-    <meta name="description" content="ARI TECHNOLOGY" />
-    <meta name="robots" content="noarchive,index,follow" />
-    <link id="canonical" rel="canonical" href="https://ari.com.vn" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <!--  line-swiper slide  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1" name="viewport" />
-    <meta http-equiv="X-UA-Compatible" content="IE=100" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- META FOR FACEBOOK -->
-    <meta property="fb:app_id" content="110837687935741" />
-    <meta property="og:locale" content="vi_VN" />
-    <meta property="og:site_name" content="ari.com.vn" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://ari.com.vn/assets/images/logo.svg" />
-    <meta property="og:image:width" content="596" />
-    <meta property="og:image:height" content="596" />
-    <meta property="og:url" itemprop="url" content="https://ari.com.vn" />
-    <meta property="og:title" itemprop="headline" content="ARI TECHNOLOGY" />
-    <meta property="og:description" content="ARI is one of the Best Technical Agency - ARI Technology Joint Stock Company was established in 2018 and headquartered in Ho Chi Minh City." />
-    <!-- END META FOR FACEBOOK -->
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@ari" />
-    <meta name="twitter:creator" content="@ari" />
-    <meta name="twitter:url" content="https://ari.com.vn" />
-    <meta name="twitter:image" content="https://ari.com.vn/assets/images/logo.svg" />
-    <meta name="twitter:title" content="ARI TECHNOLOGY" />
-    <meta name="twitter:description" content="ARI is one of the Best Technical Agency - ARI Technology Joint Stock Company was established in 2018 and headquartered in Ho Chi Minh City." />
-    <!-- End Twitter Card -->
-
-    <base href="/">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
-    <script id="jsonLD" type='application/ld+json'></script>
-    <meta name="google-signin-client_id" content="458714151950-fv7bp4u656lk3bel41agq6jh2j4b27pb.apps.googleusercontent.com" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L3TLVBTM19"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'G-L3TLVBTM19');
-    </script>
-    <link rel="apple-touch-icon" href="/images/logo192.png" />
-    <link rel="apple-touch-icon" href="/images/logo512.png" />
-    <link rel="manifest" href="/images/manifest.webmanifest" />
-    <meta name="theme-color" content="#2563eb" />
-  <!-- swiper -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <!--  vanilla-lazyload 17 -->
   <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17/dist/lazyload.min.js"></script>
-  <!-- gsap -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+  <script>
+    setTimeout(() => {
+      new LazyLoad({ callback_error: (el) => (el.src = 'https://via.placeholder.com/1x1/?text=') });
+    }, 1000);
+  </script>
 
-  <!--  glightbox 3  -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3/dist/css/glightbox.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/glightbox@3/dist/js/glightbox.min.js"></script>
+  <!--HandleBar-->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 
-  <!--  sweetalert2 11  -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css">
 
-  <!--  pretty checkbox 3 -->
-  <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3/dist/pretty-checkbox.min.css" rel="stylesheet">
 
-  <!--  choices.js 10 -->
-  <script src="https://cdn.jsdelivr.net/npm/choices.js@10/public/assets/scripts/choices.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/choices.js@10/public/assets/styles/choices.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-<!-- header -->
-<div class="max-w-screen-2xl px-6 mx-auto py-5 items-center justify-between hidden lg:flex">
-  <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="flex items-center">
-    <img src="/images/logo.svg" class="h-12 lg:h-14" alt="logo" />
-  </a>
-  <div class="flex items-center">
-    <div class="flex items-center pr-5 mr-5 border-r">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-        <path
-          d="M 22 3 C 18.699 3 16 5.699 16 9 C 16 9.992 16.383 11.004 16.875 12.125 C 17.367 13.246 17.988 14.43425 18.625 15.53125 C 19.898 17.72625 21.1875 19.5625 21.1875 19.5625 L 22 20.75 L 22.8125 19.5625 C 22.8125 19.5625 24.101 17.72625 25.375 15.53125 C 26.012 14.43325 26.633 13.246 27.125 12.125 C 27.617 11.004 28 9.992 28 9 C 28 5.699 25.301 3 22 3 z M 11.96875 4.9375 L 4 8.34375 L 4 27.53125 L 12.03125 24.0625 L 20.03125 27.0625 L 28 23.65625 L 28 14.9375 C 27.363 16.1605 26.656 17.332 26 18.375 L 26 22.34375 L 21 24.46875 L 21 22.84375 L 19.53125 20.71875 C 19.37525 20.49175 19.191 20.2225 19 19.9375 L 19 24.5625 L 13 22.3125 L 13 7.4375 L 14.09375 7.84375 C 14.19175 7.16775 14.367 6.51625 14.625 5.90625 L 11.96875 4.9375 z M 22 5 C 24.219 5 26 6.781 26 9 C 26 9.387 25.7585 10.3005 25.3125 11.3125 C 24.8675 12.3245 24.238 13.47225 23.625 14.53125 C 22.809 15.93725 22.457 16.438953 22 17.126953 C 21.543 16.438953 21.191 15.93725 20.375 14.53125 C 19.762 13.47225 19.1335 12.3245 18.6875 11.3125 C 18.2425 10.3005 18 9.387 18 9 C 18 6.781 19.781 5 22 5 z M 11 7.5 L 11 22.34375 L 6 24.46875 L 6 9.65625 L 11 7.5 z" />
-      </svg>
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Location }}</strong>
-        <br />
-        <span class="text-gray-600 text-sm">{{parameter.address}}</span>
-      </div>
-    </div>
 
-    <div class="flex items-center pr-5 mr-5 border-r">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-        <path
-          d="M 3 8 L 3 26 L 29 26 L 29 8 Z M 7.3125 10 L 24.6875 10 L 16 15.78125 Z M 5 10.875 L 15.4375 17.84375 L 16 18.1875 L 16.5625 17.84375 L 27 10.875 L 27 24 L 5 24 Z" />
-      </svg>
+<body class="items-center ">
+  <!--Header start-->
+  {{> header/index}}
+  <!--Header end-->
 
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Mail }}</strong>
-        <br />
-        <a class="text-gray-600 text-sm" href="mailto:{{parameter.email}}">{{parameter.email}}</a>
-      </div>
-    </div>
+  <main>
+    {{> body}}
+  </main>
 
-    <div class="flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-        <path
-          d="M 8.65625 3 C 8.132813 3 7.617188 3.1875 7.1875 3.53125 L 7.125 3.5625 L 7.09375 3.59375 L 3.96875 6.8125 L 4 6.84375 C 3.035156 7.734375 2.738281 9.066406 3.15625 10.21875 C 3.160156 10.226563 3.152344 10.242188 3.15625 10.25 C 4.003906 12.675781 6.171875 17.359375 10.40625 21.59375 C 14.65625 25.84375 19.402344 27.925781 21.75 28.84375 L 21.78125 28.84375 C 22.996094 29.25 24.3125 28.960938 25.25 28.15625 L 28.40625 25 C 29.234375 24.171875 29.234375 22.734375 28.40625 21.90625 L 24.34375 17.84375 L 24.3125 17.78125 C 23.484375 16.953125 22.015625 16.953125 21.1875 17.78125 L 19.1875 19.78125 C 18.464844 19.433594 16.742188 18.542969 15.09375 16.96875 C 13.457031 15.40625 12.621094 13.609375 12.3125 12.90625 L 14.3125 10.90625 C 15.152344 10.066406 15.167969 8.667969 14.28125 7.84375 L 14.3125 7.8125 L 14.21875 7.71875 L 10.21875 3.59375 L 10.1875 3.5625 L 10.125 3.53125 C 9.695313 3.1875 9.179688 3 8.65625 3 Z M 8.65625 5 C 8.730469 5 8.804688 5.035156 8.875 5.09375 L 12.875 9.1875 L 12.96875 9.28125 C 12.960938 9.273438 13.027344 9.378906 12.90625 9.5 L 10.40625 12 L 9.9375 12.4375 L 10.15625 13.0625 C 10.15625 13.0625 11.304688 16.136719 13.71875 18.4375 L 13.9375 18.625 C 16.261719 20.746094 19 21.90625 19 21.90625 L 19.625 22.1875 L 22.59375 19.21875 C 22.765625 19.046875 22.734375 19.046875 22.90625 19.21875 L 27 23.3125 C 27.171875 23.484375 27.171875 23.421875 27 23.59375 L 23.9375 26.65625 C 23.476563 27.050781 22.988281 27.132813 22.40625 26.9375 C 20.140625 26.046875 15.738281 24.113281 11.8125 20.1875 C 7.855469 16.230469 5.789063 11.742188 5.03125 9.5625 C 4.878906 9.15625 4.988281 8.554688 5.34375 8.25 L 5.40625 8.1875 L 8.4375 5.09375 C 8.507813 5.035156 8.582031 5 8.65625 5 Z" />
-      </svg>
+  <!--Footer start-->
+  {{> footer/index}}
+  <!--Footer end-->
 
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Call }}</strong>
-        <br />
-        <a class="text-gray-600 text-sm" href="tel:{{parameter.phone}}">{{parameter.phone}}</a>
-      </div>
-    </div>
-  </div>
-</div>
-<header class="w-full sticky top-0 left-0 z-30">
-  <div class="max-w-screen-2xl mx-auto py-4 pl-5 pr-4 flex items-center justify-between bg-blue-500">
-    <div class="text-center hidden lg:block">
-      <div class="flex gap-10 font-bold items-center">
-          <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
-            {{ language.layout.header.Home }}
-          </a>
-        <div class="text-white font-bold hover:text-white cursor-pointer relative group">
-            {{ language.layout.header.About }}
-            <ul
-              class="bg-blue-400 p-2 text-left text-sm absolute w-44 top-7 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-              <a href="{{#if isEnglish}}/en/about-tech{{else}}/ve-cong-nghe{{/if}}" class="font-normal p-1 mb-2 block">{{ language.layout.header.AboutTech }}</a>
-              <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="font-normal p-1 mb-1 block">{{ language.layout.header.OurCoreTeam }}</a>
-            </ul>
-          </div>
-        <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
-          {{ language.layout.header.News }}
-          </a>
-        <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white font-bold hover:text-white cursor-pointer">
-          {{ language.layout.header.Projects }}
-          </a>
-        <button class="text-white font-bold hover:text-white cursor-pointer">
-          {{ language.layout.header.ContactUs }}
-          </button>
-      </div>
-    </div>
-    <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="flex items-center lg:hidden">
-      <img src="/images/logo.svg" class="h-12" alt="logo" />
-    </a>
-    <div class="flex items-center mr-12 lg:mr-0 pr-3 lg:pr-0 border-r lg:border-none border-white">
-      <div class="lg:mr-4 lg:border-r lg:pr-4 relative group">
-        <img src='/images/{{lang}}.svg' alt="" class="h-6" />
-        <ul
-          class="bg-blue-400 text-white p-2 text-left text-sm absolute w-24 top-6 left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 duration-500 transition-all ease-in-out">
-            <a href="{{urlLang}}" class="font-normal p-1">{{#if isEnglish}}{{ language.layout.header.Vietnamese }}{{else}}{{ language.layout.header.English }}{{/if}}</a>
+  <!-- Icons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-        </ul>
-      </div>
-      <div class="hidden lg:flex items-center gap-2">
-        <a class="text-white inline-flex" href="{{parameter.facebook}}"
-           target="_blank" rel="noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-6 h-6 inline fill-white'>
-            <path
-              d="M 16 4 C 9.3844276 4 4 9.3844276 4 16 C 4 22.615572 9.3844276 28 16 28 C 22.615572 28 28 22.615572 28 16 C 28 9.3844276 22.615572 4 16 4 z M 16 6 C 21.534692 6 26 10.465308 26 16 C 26 21.027386 22.311682 25.161277 17.488281 25.878906 L 17.488281 18.916016 L 20.335938 18.916016 L 20.783203 16.023438 L 17.488281 16.023438 L 17.488281 14.443359 C 17.488281 13.242359 17.882859 12.175781 19.005859 12.175781 L 20.810547 12.175781 L 20.810547 9.6523438 C 20.493547 9.6093438 19.822688 9.515625 18.554688 9.515625 C 15.906688 9.515625 14.355469 10.913609 14.355469 14.099609 L 14.355469 16.023438 L 11.632812 16.023438 L 11.632812 18.916016 L 14.355469 18.916016 L 14.355469 25.853516 C 9.6088556 25.070647 6 20.973047 6 16 C 6 10.465308 10.465308 6 16 6 z" />
-          </svg>
-        </a>
-        <a class="text-white inline-flex" href="{{parameter.linkedin}}" target="_blank"
-           rel="noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-6 h-6 inline fill-white'>
-            <path
-              d="M 7.5 5 C 6.132813 5 5 6.132813 5 7.5 L 5 24.5 C 5 25.867188 6.132813 27 7.5 27 L 24.5 27 C 25.867188 27 27 25.867188 27 24.5 L 27 7.5 C 27 6.132813 25.867188 5 24.5 5 Z M 7.5 7 L 24.5 7 C 24.785156 7 25 7.214844 25 7.5 L 25 24.5 C 25 24.785156 24.785156 25 24.5 25 L 7.5 25 C 7.214844 25 7 24.785156 7 24.5 L 7 7.5 C 7 7.214844 7.214844 7 7.5 7 Z M 10.4375 8.71875 C 9.488281 8.71875 8.71875 9.488281 8.71875 10.4375 C 8.71875 11.386719 9.488281 12.15625 10.4375 12.15625 C 11.386719 12.15625 12.15625 11.386719 12.15625 10.4375 C 12.15625 9.488281 11.386719 8.71875 10.4375 8.71875 Z M 19.46875 13.28125 C 18.035156 13.28125 17.082031 14.066406 16.6875 14.8125 L 16.625 14.8125 L 16.625 13.5 L 13.8125 13.5 L 13.8125 23 L 16.75 23 L 16.75 18.3125 C 16.75 17.074219 16.996094 15.875 18.53125 15.875 C 20.042969 15.875 20.0625 17.273438 20.0625 18.375 L 20.0625 23 L 23 23 L 23 17.78125 C 23 15.226563 22.457031 13.28125 19.46875 13.28125 Z M 9 13.5 L 9 23 L 11.96875 23 L 11.96875 13.5 Z" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</header>
-<span id="hamburger" class='handle-menu hamburger lg:!hidden fixed z-50 right-6 top-7'>
-    <span class="top-bun"></span>
-    <span class="meat"></span>
-    <span class="bottom-bun"></span>
-  </span>
-<!-- responesive menu -->
-<div id="bg-menu"
-     class='handle-menu fixed top-0 h-full bg-white transition-all duration-500 ease-in-out w-full z-30 opacity-0 -right-full'>
-</div>
-<div id="menu"
-     class='w-80 bg-blue-500 h-screen z-40 fixed top-0 p-5 text-white transition-all duration-500 ease-in-out flex justify-between flex-col -right-80'>
-  <div id="list-menu" class='transition-all duration-1000 ease-in-out relative top-10 opacity-0'>
-    <div class="font-medium flex flex-col text-white mt-10">
-      <a href="#" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ language.layout.header.Home }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </a>
-      <a class="text-white border-white py-3 flex justify-between">
-        {{ language.layout.header.About }}
-      </a>
-      <a href="{{#if isEnglish}}/en/about-tech{{else}}/ve-cong-nghe{{/if}}" class="text-white border-white py-3 flex justify-between pl-5 ">
-        {{ language.layout.header.AboutTech }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </a>
-      <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="text-white border-white py-3 flex justify-between pl-5 ">
-        {{ language.layout.header.OurCoreTeam }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </a>
-      <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ language.layout.header.News }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </a>
-      <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white border-white py-3 flex justify-between border-b ">
-        {{ language.layout.header.Projects }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </a>
-      <button class="text-white border-white py-3 flex justify-between">
-        {{ language.layout.header.ContactUs }}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-4 h-4 relative fill-white">
-          <path
-            d="M 12.96875 4.28125 L 11.53125 5.71875 L 21.8125 16 L 11.53125 26.28125 L 12.96875 27.71875 L 23.96875 16.71875 L 24.65625 16 L 23.96875 15.28125 Z" />
-        </svg>
-      </button>
-    </div>
-  </div>
-  <div id="contact-menu" class='transition-all duration-1000 ease-in-out relative  opacity-100'>
-    <div class="mt-4">
-      <a class="text-white inline-flex" href="{{parameter.facebook}}" target="_blank"
-         rel="noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-1 inline fill-white'>
-          <path
-            d="M 16 4 C 9.3844276 4 4 9.3844276 4 16 C 4 22.615572 9.3844276 28 16 28 C 22.615572 28 28 22.615572 28 16 C 28 9.3844276 22.615572 4 16 4 z M 16 6 C 21.534692 6 26 10.465308 26 16 C 26 21.027386 22.311682 25.161277 17.488281 25.878906 L 17.488281 18.916016 L 20.335938 18.916016 L 20.783203 16.023438 L 17.488281 16.023438 L 17.488281 14.443359 C 17.488281 13.242359 17.882859 12.175781 19.005859 12.175781 L 20.810547 12.175781 L 20.810547 9.6523438 C 20.493547 9.6093438 19.822688 9.515625 18.554688 9.515625 C 15.906688 9.515625 14.355469 10.913609 14.355469 14.099609 L 14.355469 16.023438 L 11.632812 16.023438 L 11.632812 18.916016 L 14.355469 18.916016 L 14.355469 25.853516 C 9.6088556 25.070647 6 20.973047 6 16 C 6 10.465308 10.465308 6 16 6 z" />
-        </svg>
-      </a>
-      <a class="text-white inline-flex" href="{{parameter.linkedin}}" target="_blank"
-         rel="noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 inline fill-white'>
-          <path
-            d="M 7.5 5 C 6.132813 5 5 6.132813 5 7.5 L 5 24.5 C 5 25.867188 6.132813 27 7.5 27 L 24.5 27 C 25.867188 27 27 25.867188 27 24.5 L 27 7.5 C 27 6.132813 25.867188 5 24.5 5 Z M 7.5 7 L 24.5 7 C 24.785156 7 25 7.214844 25 7.5 L 25 24.5 C 25 24.785156 24.785156 25 24.5 25 L 7.5 25 C 7.214844 25 7 24.785156 7 24.5 L 7 7.5 C 7 7.214844 7.214844 7 7.5 7 Z M 10.4375 8.71875 C 9.488281 8.71875 8.71875 9.488281 8.71875 10.4375 C 8.71875 11.386719 9.488281 12.15625 10.4375 12.15625 C 11.386719 12.15625 12.15625 11.386719 12.15625 10.4375 C 12.15625 9.488281 11.386719 8.71875 10.4375 8.71875 Z M 19.46875 13.28125 C 18.035156 13.28125 17.082031 14.066406 16.6875 14.8125 L 16.625 14.8125 L 16.625 13.5 L 13.8125 13.5 L 13.8125 23 L 16.75 23 L 16.75 18.3125 C 16.75 17.074219 16.996094 15.875 18.53125 15.875 C 20.042969 15.875 20.0625 17.273438 20.0625 18.375 L 20.0625 23 L 23 23 L 23 17.78125 C 23 15.226563 22.457031 13.28125 19.46875 13.28125 Z M 9 13.5 L 9 23 L 11.96875 23 L 11.96875 13.5 Z" />
-        </svg>
-      </a>
-    </div>
-    <div class="flex items-center mt-5">
-        <span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-white'>
-            <path
-              d="M 22 3 C 18.699 3 16 5.699 16 9 C 16 9.992 16.383 11.004 16.875 12.125 C 17.367 13.246 17.988 14.43425 18.625 15.53125 C 19.898 17.72625 21.1875 19.5625 21.1875 19.5625 L 22 20.75 L 22.8125 19.5625 C 22.8125 19.5625 24.101 17.72625 25.375 15.53125 C 26.012 14.43325 26.633 13.246 27.125 12.125 C 27.617 11.004 28 9.992 28 9 C 28 5.699 25.301 3 22 3 z M 11.96875 4.9375 L 4 8.34375 L 4 27.53125 L 12.03125 24.0625 L 20.03125 27.0625 L 28 23.65625 L 28 14.9375 C 27.363 16.1605 26.656 17.332 26 18.375 L 26 22.34375 L 21 24.46875 L 21 22.84375 L 19.53125 20.71875 C 19.37525 20.49175 19.191 20.2225 19 19.9375 L 19 24.5625 L 13 22.3125 L 13 7.4375 L 14.09375 7.84375 C 14.19175 7.16775 14.367 6.51625 14.625 5.90625 L 11.96875 4.9375 z M 22 5 C 24.219 5 26 6.781 26 9 C 26 9.387 25.7585 10.3005 25.3125 11.3125 C 24.8675 12.3245 24.238 13.47225 23.625 14.53125 C 22.809 15.93725 22.457 16.438953 22 17.126953 C 21.543 16.438953 21.191 15.93725 20.375 14.53125 C 19.762 13.47225 19.1335 12.3245 18.6875 11.3125 C 18.2425 10.3005 18 9.387 18 9 C 18 6.781 19.781 5 22 5 z M 11 7.5 L 11 22.34375 L 6 24.46875 L 6 9.65625 L 11 7.5 z" />
-          </svg>
-        </span>
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Location }}</strong>
-        <br />
-        <span class="text-sm">{{parameter.address}}</span>
-      </div>
-    </div>
-    <div class="flex items-center mt-3 border-t border-white pt-3">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-white'>
-        <path
-          d="M 3 8 L 3 26 L 29 26 L 29 8 Z M 7.3125 10 L 24.6875 10 L 16 15.78125 Z M 5 10.875 L 15.4375 17.84375 L 16 18.1875 L 16.5625 17.84375 L 27 10.875 L 27 24 L 5 24 Z" />
-      </svg>
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Mail }}</strong>
-        <br />
-        <a class="text-sm text-white" href="mailto:{{parameter.email}}">{{parameter.email}}</a>
-      </div>
-    </div>
-    <div class="flex items-center mt-3 border-t border-white pt-3">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-white'>
-        <path
-          d="M 8.65625 3 C 8.132813 3 7.617188 3.1875 7.1875 3.53125 L 7.125 3.5625 L 7.09375 3.59375 L 3.96875 6.8125 L 4 6.84375 C 3.035156 7.734375 2.738281 9.066406 3.15625 10.21875 C 3.160156 10.226563 3.152344 10.242188 3.15625 10.25 C 4.003906 12.675781 6.171875 17.359375 10.40625 21.59375 C 14.65625 25.84375 19.402344 27.925781 21.75 28.84375 L 21.78125 28.84375 C 22.996094 29.25 24.3125 28.960938 25.25 28.15625 L 28.40625 25 C 29.234375 24.171875 29.234375 22.734375 28.40625 21.90625 L 24.34375 17.84375 L 24.3125 17.78125 C 23.484375 16.953125 22.015625 16.953125 21.1875 17.78125 L 19.1875 19.78125 C 18.464844 19.433594 16.742188 18.542969 15.09375 16.96875 C 13.457031 15.40625 12.621094 13.609375 12.3125 12.90625 L 14.3125 10.90625 C 15.152344 10.066406 15.167969 8.667969 14.28125 7.84375 L 14.3125 7.8125 L 14.21875 7.71875 L 10.21875 3.59375 L 10.1875 3.5625 L 10.125 3.53125 C 9.695313 3.1875 9.179688 3 8.65625 3 Z M 8.65625 5 C 8.730469 5 8.804688 5.035156 8.875 5.09375 L 12.875 9.1875 L 12.96875 9.28125 C 12.960938 9.273438 13.027344 9.378906 12.90625 9.5 L 10.40625 12 L 9.9375 12.4375 L 10.15625 13.0625 C 10.15625 13.0625 11.304688 16.136719 13.71875 18.4375 L 13.9375 18.625 C 16.261719 20.746094 19 21.90625 19 21.90625 L 19.625 22.1875 L 22.59375 19.21875 C 22.765625 19.046875 22.734375 19.046875 22.90625 19.21875 L 27 23.3125 C 27.171875 23.484375 27.171875 23.421875 27 23.59375 L 23.9375 26.65625 C 23.476563 27.050781 22.988281 27.132813 22.40625 26.9375 C 20.140625 26.046875 15.738281 24.113281 11.8125 20.1875 C 7.855469 16.230469 5.789063 11.742188 5.03125 9.5625 C 4.878906 9.15625 4.988281 8.554688 5.34375 8.25 L 5.40625 8.1875 L 8.4375 5.09375 C 8.507813 5.035156 8.582031 5 8.65625 5 Z" />
-      </svg>
-      <div class="leading-5">
-        <strong>{{ language.layout.header.Call }}</strong>
-        <br />
-        <a class="text-sm text-white" href="tel:{{parameter.phone}}">{{parameter.phone}}</a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- end header -->
+  <!-- End Icons -->
 
-<main class="min-h-[calc(100vh-103.7rem)]">
-  {{> content}}
-</main>
-
-<!-- contact  -->
-<section class="bg-[url('/images/partner.jpg')] w-full bg-cover bg-center">
-  <div class="container px-6 mx-auto sm:py-24 py-10">
-    <p class="text-blue-500 uppercase font-bold text-center mb-4">{{ language.layout.footer.PartnersAndCustomers }}</p>
-    <h2 class="text-3xl text-blue-900 text-center font-bold">{{ language.layout.footer.OurSupportPartner }}</h2>
-    <div class="swiper swiperSectionContact mt-14 pb-10">
-      <div class="swiper-wrapper pb-10">
-        {{#each partner}}
-          <div class="swiper-slide border border-gray-200 rounded-lg bg-white">
-            <img alt="{{name}}" class="lazy p-2 h-20 w-full" src="/images/lazyload.png"
-                 data-src="{{image}}">
-          </div>
-        {{/each}}
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <div id="form-contact-us" class="bg-gray-100 bg-opacity-80 rounded-3xl px-10 pt-10 pb-7 mt-14 xl:flex">
-      <div class="xl:w-1/3 xl:pr-14">
-        <h2 class="text-4xl text-blue-500 font-bold mb-4">{{ language.layout.footer.Contact }}</h2>
-        <p class="mb-4">{{ language.layout.footer.QuestionsOrConcerns }}</p>
-      </div>
-      <div class="xl:w-2/3">
-        <form
-          class="grid grid-cols-2 gap-x-5"
-          novalidate
-          name="send-email-contact"
-          onsubmit="setTimeout(() => {
-            if(window._FORMSTATUS_['send-email-contact']){
-              API.post('api/auth/send-email-contact', window._FORM_['send-email-contact']).then(e => {
-                Message.success({text: e.message}).then(() => location.reload());
-              })
-            }
-          })"
-        >
-          <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="firstName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.FirstName }}" required />
-          </div>
-          <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="lastName" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.LastName }}" required />
-          </div>
-          <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="phoneNumber" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.PhoneNumber }}" required />
-          </div>
-          <div class="group col-span-2 sm:col-span-1 mb-4">
-            <input name="email" class="w-full h-10 text-gray-600 bg-white px-4 border border-gray-300 rounded-xl"
-                   placeholder="{{ language.layout.footer.Email }}" required />
-          </div>
-          <div class="group col-span-2 mb-4">
-            <textarea name="description" class="px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid border-gray-300"
-                      placeholder="{{ language.layout.footer.Message }}" rows="4" required></textarea>
-          </div>
-          <div class="col-span-2 flex w-full justify-center">
-            <div class="flex gap-2">
-              <button type="submit" title="{{ language.layout.footer.SubmitNow }}"
-                      class="inline-flex items-center rounded-3xl border border-transparent bg-blue-500 text-white px-10 py-3 font-medium w-full justify-center"
-                      id="idSubmit">{{ language.layout.footer.SubmitNow }}</button>
-            </div>
-          </div>
-        </form>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- footer  -->
-<footer
-  class="text-white font-medium bg-gray-900 bg-[url('/images/footer-shape.png')] bg-cover bg-[center_top_9rem] bg-no-repeat">
-  <div class="container mx-auto px-6 py-28 leading-8">
-    <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-8">
-      <div class='mb-4 xl:mb-0'>
-        <img src="/images/logo-white.svg" class="h-12 mb-5" alt="logo" />
-        <div class='gap-4 flex mt-8'>
-          <a class="text-white inline-flex bg-gray-700 p-3 rounded-md"
-             href="{{parameter.facebook}}" target="_blank" rel="noreferrer">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="134.1px" height="134.1px"
-                 viewBox="0 0 134.1 134.1" enable-background="new 0 0 134.1 134.1" xml:space="preserve"
-                 class='w-5 h-5 inline fill-white'>
-                <path
-                  d="M133.9,63.2c0,2.6,0,5.2,0,7.8c-0.1,0.4-0.2,0.8-0.2,1.3c-0.5,3.3-0.7,6.7-1.5,9.9c-6.2,24.3-21.3,40.5-44.9,48.6c-3.8,1.3-7.9,1.9-12,2.9c0-17.8,0-35.1,0-52.7c5.4,0,10.7,0,16,0c0.8-6.3,1.6-12.4,2.4-18.7c-6.2,0-12.3,0-18.5,0c0-4.6-0.1-9.1,0-13.6c0-1.3,0.4-2.6,1-3.7c1.2-2.5,3.6-3.3,6.2-3.5c3.5-0.2,7-0.1,10.4-0.2c0.5,0,0.9,0,1.5-0.1c0-5.4,0-10.6,0-15.8c0-0.3-0.6-0.9-0.9-0.9c-5.3-0.2-10.5-0.6-15.8-0.5c-5.1,0.1-9.8,1.8-13.8,5.1c-5.2,4.4-7.4,10.2-7.7,16.7c-0.3,5-0.1,9.9-0.2,14.9c0,0.5,0,1,0,1.7c-5.4,0-10.7,0-16,0c0,6.3,0,12.4,0,18.7c5.4,0,10.6,0,15.9,0c0,17.4,0,34.6,0,51.8c-0.3,0-0.6,0-0.8-0.1c-10.7-2-20.3-6.3-28.9-13c-10.2-7.9-17.6-18-22-30.2c-5.7-16-5.3-31.9,0.9-47.7c9.6-24.2,33.6-41,59.5-41.7c12-0.4,23.5,2.1,34,7.9c18.8,10.4,30.3,26.2,34.3,47.4C133.4,58.2,133.6,60.7,133.9,63.2z" />
-              </svg>
-          </a>
-          <a class="text-white inline-flex bg-gray-700 p-3 rounded-md"
-             href="{{parameter.linkedin}}" target="_blank" rel="noreferrer">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="384px" height="384px"
-                 viewBox="0 0 384 384" enable-background="new 0 0 384 384" xml:space="preserve"
-                 class='w-5 h-5 inline fill-white'>
-                <path
-                  d="M135.8,384c0-83.7,0-167.5,0-251.2c0-1.6,0-3.2,0-5c25.5,0,50.7,0,76.4,0c0,11.5,0,23,0,35.6c1.3-1.6,1.8-2.1,2.2-2.8c13.8-22.5,34.5-34.5,60.1-38.3c15.7-2.3,31.4-1.2,46.9,2.6c28.9,7.1,46.6,25.7,55.1,53.7c4.1,13.3,5.9,27,6.8,40.9c0.1,2.1,0.5,4.2,0.7,6.2c0,52.8,0,105.5,0,158.2c-26.5,0-53,0-79.5,0c0-44.6,0.1-89.2-0.2-133.8c0-8.3-0.9-16.7-2.2-25c-3.2-20.4-14.3-31.8-33.5-33.5c-26.2-2.4-45,8-50.4,35.5c-2,10.1-2.7,20.6-2.8,30.9c-0.3,42-0.2,84-0.2,125.9C188.8,384,162.2,384,135.8,384z M86.2,384c-0.1-1.7-0.2-3.5-0.2-5.2c0-82,0-164,0-246c0-1.7,0-3.4,0-5c-26.9,0-53.1,0-79.7,0c0,1.9,0,3.7,0,5.4c0,81.9,0,163.7,0,245.6c0,1.7-0.2,3.5-0.3,5.2C32.8,384,59.5,384,86.2,384z M40.5,0c-7.7,1.8-15.1,4.1-21.6,8.9C9.1,16.3,3,26,0.7,38c-0.2,0.8-0.5,1.7-0.7,2.5c0,3.8,0,7.5,0,11.2c0.3,1.1,0.6,2.1,0.8,3.2c4.2,21.7,23.8,37.9,45.6,37.7c21.9-0.2,41.2-16.4,45-37.8c4-22.4-8.1-44.1-29.3-51.9c-3.4-1.2-6.9-2-10.4-3C48,0,44.2,0,40.5,0z" />
-              </svg>
-          </a>
-        </div>
-      </div>
-      <div class='mb-4 xl:mb-0'>
-        <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
-          {{ language.layout.footer.OurServices }}
-          <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
-        </h3>
-        <div class='leading-10'>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.footer.DigitalTransformation }}
-          </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.footer.RDServices }}
-          </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.footer.OutsourcingServices }}
-          </a>
-          <a class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.footer.ProductDevelopment }}
-          </a>
-        </div>
-      </div>
-
-      <div class='mb-4 xl:mb-0'>
-        <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
-          {{ language.layout.footer.UsefulLinks }}
-          <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
-        </h3>
-        <div class='leading-10'>
-          <a href="{{#if isEnglish}}/en{{else}}/{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.header.Home }}
-          </a>
-          <a href="{{#if isEnglish}}/en/about-core-member{{else}}/doi-ngu-phat-trien-chinh{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.header.OurCoreTeam }}
-          </a>
-          <a href="{{#if isEnglish}}/en/news{{else}}/tin-tuc{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.header.News }}
-          </a>
-          <a href="{{#if isEnglish}}/en/projects{{else}}/du-an{{/if}}" class="text-white font-bold hover:text-white cursor-pointer block">
-            {{ language.layout.header.Projects }}
-          </a>
-        </div>
-      </div>
-      <div class='mb-4 xl:mb-0'>
-        <h3 class='text-white text-xl leading-7 font-semibold tracking-normal relative mb-7 pb-3.5 uppercase'>
-          <div class="w-12 h-1 absolute bottom-0 left-0 bg-blue-500"></div>
-          {{ language.layout.header.ContactUs }}
-        </h3>
-
-        <div class='flex flex-col gap-6'>
-          <div class="flex items-center">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-                  <path
-                    d="M 22 3 C 18.699 3 16 5.699 16 9 C 16 9.992 16.383 11.004 16.875 12.125 C 17.367 13.246 17.988 14.43425 18.625 15.53125 C 19.898 17.72625 21.1875 19.5625 21.1875 19.5625 L 22 20.75 L 22.8125 19.5625 C 22.8125 19.5625 24.101 17.72625 25.375 15.53125 C 26.012 14.43325 26.633 13.246 27.125 12.125 C 27.617 11.004 28 9.992 28 9 C 28 5.699 25.301 3 22 3 z M 11.96875 4.9375 L 4 8.34375 L 4 27.53125 L 12.03125 24.0625 L 20.03125 27.0625 L 28 23.65625 L 28 14.9375 C 27.363 16.1605 26.656 17.332 26 18.375 L 26 22.34375 L 21 24.46875 L 21 22.84375 L 19.53125 20.71875 C 19.37525 20.49175 19.191 20.2225 19 19.9375 L 19 24.5625 L 13 22.3125 L 13 7.4375 L 14.09375 7.84375 C 14.19175 7.16775 14.367 6.51625 14.625 5.90625 L 11.96875 4.9375 z M 22 5 C 24.219 5 26 6.781 26 9 C 26 9.387 25.7585 10.3005 25.3125 11.3125 C 24.8675 12.3245 24.238 13.47225 23.625 14.53125 C 22.809 15.93725 22.457 16.438953 22 17.126953 C 21.543 16.438953 21.191 15.93725 20.375 14.53125 C 19.762 13.47225 19.1335 12.3245 18.6875 11.3125 C 18.2425 10.3005 18 9.387 18 9 C 18 6.781 19.781 5 22 5 z M 11 7.5 L 11 22.34375 L 6 24.46875 L 6 9.65625 L 11 7.5 z" />
-                </svg>
-              </span>
-            <div class="leading-5">
-                <span class="text-sm font-medium">{{parameter.address}}</span>
-            </div>
-          </div>
-
-          <div class="flex items-center ">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-              <path
-                d="M 8.65625 3 C 8.132813 3 7.617188 3.1875 7.1875 3.53125 L 7.125 3.5625 L 7.09375 3.59375 L 3.96875 6.8125 L 4 6.84375 C 3.035156 7.734375 2.738281 9.066406 3.15625 10.21875 C 3.160156 10.226563 3.152344 10.242188 3.15625 10.25 C 4.003906 12.675781 6.171875 17.359375 10.40625 21.59375 C 14.65625 25.84375 19.402344 27.925781 21.75 28.84375 L 21.78125 28.84375 C 22.996094 29.25 24.3125 28.960938 25.25 28.15625 L 28.40625 25 C 29.234375 24.171875 29.234375 22.734375 28.40625 21.90625 L 24.34375 17.84375 L 24.3125 17.78125 C 23.484375 16.953125 22.015625 16.953125 21.1875 17.78125 L 19.1875 19.78125 C 18.464844 19.433594 16.742188 18.542969 15.09375 16.96875 C 13.457031 15.40625 12.621094 13.609375 12.3125 12.90625 L 14.3125 10.90625 C 15.152344 10.066406 15.167969 8.667969 14.28125 7.84375 L 14.3125 7.8125 L 14.21875 7.71875 L 10.21875 3.59375 L 10.1875 3.5625 L 10.125 3.53125 C 9.695313 3.1875 9.179688 3 8.65625 3 Z M 8.65625 5 C 8.730469 5 8.804688 5.035156 8.875 5.09375 L 12.875 9.1875 L 12.96875 9.28125 C 12.960938 9.273438 13.027344 9.378906 12.90625 9.5 L 10.40625 12 L 9.9375 12.4375 L 10.15625 13.0625 C 10.15625 13.0625 11.304688 16.136719 13.71875 18.4375 L 13.9375 18.625 C 16.261719 20.746094 19 21.90625 19 21.90625 L 19.625 22.1875 L 22.59375 19.21875 C 22.765625 19.046875 22.734375 19.046875 22.90625 19.21875 L 27 23.3125 C 27.171875 23.484375 27.171875 23.421875 27 23.59375 L 23.9375 26.65625 C 23.476563 27.050781 22.988281 27.132813 22.40625 26.9375 C 20.140625 26.046875 15.738281 24.113281 11.8125 20.1875 C 7.855469 16.230469 5.789063 11.742188 5.03125 9.5625 C 4.878906 9.15625 4.988281 8.554688 5.34375 8.25 L 5.40625 8.1875 L 8.4375 5.09375 C 8.507813 5.035156 8.582031 5 8.65625 5 Z" />
-            </svg>
-            <div class="leading-5">
-              <a class="text-sm text-white font-medium" href="tel:{{parameter.phone}}">{{parameter.phone}}</a>
-            </div>
-          </div>
-
-          <div class="flex items-center ">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class='w-8 h-8 mr-3 fill-blue-600'>
-              <path
-                d="M 3 8 L 3 26 L 29 26 L 29 8 Z M 7.3125 10 L 24.6875 10 L 16 15.78125 Z M 5 10.875 L 15.4375 17.84375 L 16 18.1875 L 16.5625 17.84375 L 27 10.875 L 27 24 L 5 24 Z" />
-            </svg>
-            <div class="leading-5">
-              <a class="text-sm text-white font-medium" href="mailto:{{parameter.email}}">{{parameter.email}}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div class="py-8 text-center border-t border-sky-800">
-    <div class="max-w-screen-xl px-6 mx-auto py-5">
-      <div class="lg:flex items-center justify-center">
-        <p class="text-white leading-7 m-0">{{ language.layout.footer.Copyright }}</p>
-      </div>
-    </div>
-  </div>
-</footer>
-<script src="js/index.js"></script>
-<script type="application/javascript">
-  window._MESSAGE_ = {
-    required: '{{ language.layout.validation.required }}',
-    email: '{{ language.layout.validation.email }}',
-    mincheck: '{{ language.layout.validation.mincheck }}',
-  };
-</script>
+  <script src="/js/index.js"></script>
 </body>
+
 </html>

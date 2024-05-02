@@ -1,13 +1,5 @@
 import { Room } from '@model';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BuildingType } from './type.enum';
 import { BuildingUtility } from './building-utility.entity';
@@ -61,7 +53,10 @@ export class Building {
   @OneToMany(() => BuildingUtility, (utility) => utility.building)
   utilities: BuildingUtility[];
 
-  @OneToMany(() => Room, (room) => room.building)
+  @OneToMany(() => Room, (room) => room.building, {
+    // Sử dụng bí danh 'room'
+    eager: true, // Nếu cần thiết
+  })
   rooms: Room[];
 
   @OneToOne(() => BuildingAddress)

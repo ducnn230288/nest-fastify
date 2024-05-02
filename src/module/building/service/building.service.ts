@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { Building } from '@model';
-import { BuildingRepository } from '@repository';
+import { Building, Room } from '@model';
+import { BuildingRepository, RoomRepository } from '@repository';
 import { BaseService } from '@shared';
 
 export const P_BUILDING_LISTED = 'd278abcb-1956-4b45-95c1-2ab612110ec6';
@@ -11,11 +11,15 @@ export const P_BUILDING_DELETE = '275ebda7-3e03-4c93-b352-baa7705528aa';
 
 @Injectable()
 export class BuildingService extends BaseService<Building> {
-  constructor(public repo: BuildingRepository) {
+  constructor(
+    public repo: BuildingRepository,
+    private rooms: RoomRepository,
+  ) {
     super(repo);
     this.listQuery = ['name'];
     this.listJoin = ['buildingContent', 'buildingAddress'];
     this.listInnerJoin = [{ key: 'rooms', condition: 'isPublic = TRUE' }];
+    // this.listInnerJoin = [];
   }
 
   /**
@@ -23,7 +27,10 @@ export class BuildingService extends BaseService<Building> {
    * @returns Building
    *
    */
-  async findOne(): Promise<any> {
-    return this.repo.getBuildings();
+  // async findOne(): Promise<any> {
+  //   return this.repo.getBuildings();
+  // }
+  async findByRoomId(id: number): Promise<Room | null> {
+    return this.rooms.findOne({ where: { id } });
   }
 }
