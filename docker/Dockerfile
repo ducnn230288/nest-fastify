@@ -1,10 +1,10 @@
-FROM bitnami/node:18 as build-frontend
+FROM bitnami/node:20 as build-frontend
 WORKDIR /app
 COPY --chown=root:root ../frontend .
 RUN npm install -f && \
 npm run build:prod
 
-FROM bitnami/node:18 as build-backend
+FROM bitnami/node:20 as build-backend
 
 WORKDIR /app
 COPY --chown=root:root ../config ./config

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Checkbox,
   DatePicker as DateAntDesign,
@@ -56,44 +56,14 @@ export const Form = ({
 }: Type) => {
   const { t } = useTranslation();
   const { formatDate } = GlobalFacade();
-  const [_columns, set_columns] = useState<FormModel[]>([]);
   const timeout = useRef<any>();
   const refLoad = useRef(true);
-  const [_render, set_render] = useState(false);
   const [forms] = AntForm.useForm();
   const form = formAnt || forms;
 
   const reRender = () => {
-    set_render(!_render);
     refLoad.current = false;
   };
-
-  const handleFilter = useCallback(() => {
-    columns = columns.filter((item: any) => !!item && !!item.formItem);
-
-    if (
-      JSON.stringify(
-        _columns.map(({ name, formItem }: FormModel) => ({
-          name,
-          formItem: {
-            list: formItem?.list?.map((e) => e.value),
-            disabled: formItem?.disabled ? formItem?.disabled(values, form) : false,
-          },
-        })),
-      ) !==
-      JSON.stringify(
-        columns.map(({ name, formItem }: FormModel) => ({
-          name,
-          formItem: {
-            list: formItem?.list?.map((e) => e.value),
-            disabled: formItem?.disabled ? formItem?.disabled(values, form) : false,
-          },
-        })),
-      )
-    ) {
-      set_columns(columns);
-    }
-  }, [columns, values, _columns]);
 
   useEffect(() => {
     if (form && refLoad.current) {
@@ -102,10 +72,6 @@ export const Form = ({
     }
     refLoad.current = true;
   }, [values]);
-
-  useEffect(() => {
-    handleFilter();
-  }, [handleFilter, values]);
 
   const generateInput = (formItem: FormItem, item: FormModel, values: any, name: string) => {
     switch (formItem.type) {
@@ -342,7 +308,7 @@ export const Form = ({
               t(formItem.placeholder || '') || t('components.form.Choose') + ' ' + t(item.title)!.toLowerCase()
             }
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
-            formItem={formItem}
+            mode={formItem.mode}
             get={formItem.get}
           />
         );
@@ -694,31 +660,31 @@ export const Form = ({
                   columns.filter((_item: any) => _item.name === key);
               }
               refLoad.current = false;
-              set_columns(columns);
-              handleFilter();
             }, 500);
           }
         }}
       >
         <div className={'group-input group-input-profile'}>
           <div className={'grid gap-x-5 grid-cols-12 group-input'}>
-            {_columns.map(
-              (column: any, index: number) =>
-                (!column?.formItem?.condition ||
-                  !!column?.formItem?.condition(values[column.name], form, index, values)) && (
-                  <div
-                    className={classNames(
-                      'col-span-12 ' +
-                        (column?.formItem?.type || EFormType.text) +
-                        (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
-                        (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
-                    )}
-                    key={index}
-                  >
-                    {generateForm(column, index)}
-                  </div>
-                ),
-            )}
+            {columns
+              .filter((item: any) => !!item && !!item.formItem)
+              .map(
+                (column: any, index: number) =>
+                  (!column?.formItem?.condition ||
+                    !!column?.formItem?.condition(values[column.name], form, index, values)) && (
+                    <div
+                      className={classNames(
+                        'col-span-12 ' +
+                          (column?.formItem?.type || EFormType.text) +
+                          (' sm:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)) +
+                          (' lg:col-span-' + (column?.formItem?.col ? column?.formItem?.col : 12)),
+                      )}
+                      key={index}
+                    >
+                      {generateForm(column, index)}
+                    </div>
+                  ),
+              )}
           </div>
 
           {extendForm && extendForm(values)}

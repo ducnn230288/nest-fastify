@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { Form as AntForm, Tabs } from 'antd';
@@ -28,9 +28,9 @@ const Page = () => {
 
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
-  const [activeKey, setActiveKey] = useState<string>(tab || '1');
+  const activeKey = useRef<string>(tab || '1');
   useEffect(() => {
-    if (tab) setActiveKey(tab);
+    if (tab) activeKey.current = tab;
     const navList = document.querySelector<HTMLElement>('.ant-tabs-nav-list')!;
     const mediaQuery = window.matchMedia('(max-width: 375px)');
 
@@ -40,7 +40,7 @@ const Page = () => {
 
   const navigate = useNavigate();
   const onChangeTab = (key: string) => {
-    setActiveKey(key);
+    activeKey.current = key;
     navigate(`/${lang}${routerLinks('MyProfile')}?tab=${key}`);
   };
 
@@ -87,7 +87,7 @@ const Page = () => {
         <div className="flex-1 lg:rounded-xl w-auto">
           <Tabs
             onTabClick={(key: string) => onChangeTab(key)}
-            activeKey={activeKey}
+            activeKey={activeKey.current}
             size="large"
             className="profile"
             items={[
@@ -141,7 +141,7 @@ const Page = () => {
                           name: 'positionCode',
                           formItem: {
                             col: 6,
-                            type: EFormType.select,
+                            type: EFormType.selectTable,
                             rules: [{ type: EFormRuleType.required }],
                             get: {
                               facade: CodeFacade,

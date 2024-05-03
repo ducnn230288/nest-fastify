@@ -2,7 +2,7 @@ import React, { Ref, forwardRef, useEffect, useImperativeHandle, useRef, useStat
 import { Checkbox, CheckboxOptionType, DatePicker, Radio, Spin, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import classNames from 'classnames';
 import { DndContext, useDraggable } from '@dnd-kit/core';
@@ -82,7 +82,7 @@ export const DataTable = forwardRef(
     const refPageSizeOptions = useRef<number[]>();
     const { result, isLoading, queryParams, time } = facade;
     // eslint-disable-next-line prefer-const
-    let [params, setParams] = useState(
+    let params = useRef(
       save && location.search && location.search.indexOf('=') > -1
         ? { ...defaultRequest, ...getQueryStringParams(location.search) }
         : defaultRequest,
@@ -92,27 +92,25 @@ export const DataTable = forwardRef(
     const scroll = useRef<{ x?: number; y?: number }>({ x: xScroll, y: yScroll });
     useEffect(() => {
       if (pageSizeOptions?.length === 0) {
-        if (params?.perPage === 1) params.perPage = getSizePageByHeight();
-        if (params.perPage! < 5) params.perPage = 5;
+        if (params.current?.perPage === 1) params.current.perPage = getSizePageByHeight();
+        if (params.current.perPage! < 5) params.current.perPage = 5;
         refPageSizeOptions.current = [
-          params.perPage || 10,
-          (params.perPage || 10) * 2,
-          (params.perPage || 10) * 3,
-          (params.perPage || 10) * 4,
-          (params.perPage || 10) * 5,
+          params.current.perPage || 10,
+          (params.current.perPage || 10) * 2,
+          (params.current.perPage || 10) * 3,
+          (params.current.perPage || 10) * 4,
+          (params.current.perPage || 10) * 5,
         ];
       } else refPageSizeOptions.current = pageSizeOptions;
-      setParams(
-        cleanObjectKeyNull({
-          ...params,
-          sorts: JSON.stringify(params.sorts),
-          filter: JSON.stringify(params.filter),
-        }),
-      );
+      params.current = cleanObjectKeyNull({
+        ...params.current,
+        sorts: JSON.stringify(params.current.sorts),
+        filter: JSON.stringify(params.current.filter),
+      });
       if (facade) {
-        localStorage.setItem(idTable.current, JSON.stringify(cleanObjectKeyNull(params)));
-        if (!result?.data || new Date().getTime() > time || JSON.stringify(params) != queryParams)
-          onChange(params, false);
+        localStorage.setItem(idTable.current, JSON.stringify(cleanObjectKeyNull(params.current)));
+        if (!result?.data || new Date().getTime() > time || JSON.stringify(params.current) != queryParams)
+          onChange(params.current, false);
       }
       if (!scroll.current.x) {
         scroll.current.x = 0;
@@ -147,7 +145,7 @@ export const DataTable = forwardRef(
     const onChange = (request?: PaginationQuery, changeNavigate = true) => {
       if (request) {
         localStorage.setItem(idTable.current, JSON.stringify(request));
-        params = { ...request };
+        params.current = { ...request };
         if (save) {
           if (request.sorts && typeof request.sorts === 'object') request.sorts = JSON.stringify(request.sorts);
           if (request.filter && typeof request.filter === 'object') request.filter = JSON.stringify(request.filter);
@@ -157,14 +155,15 @@ export const DataTable = forwardRef(
             );
         }
       } else if (localStorage.getItem(idTable.current))
-        params = JSON.parse(localStorage.getItem(idTable.current) || '{}');
+        params.current = JSON.parse(localStorage.getItem(idTable.current) || '{}');
 
-      setParams(params);
       if (showList && facade?.get) facade?.get(cleanObjectKeyNull({ ...request }));
     };
 
-    if (params.filter && typeof params.filter === 'string') params.filter = JSON.parse(params.filter);
-    if (params.sorts && typeof params.sorts === 'string') params.sorts = JSON.parse(params.sorts);
+    if (params.current.filter && typeof params.current.filter === 'string')
+      params.current.filter = JSON.parse(params.current.filter);
+    if (params.current.sorts && typeof params.current.sorts === 'string')
+      params.current.sorts = JSON.parse(params.current.sorts);
 
     const groupButton = (confirm: any, clearFilters: any, key: any, value: any) => (
       <div className="grid grid-cols-2 gap-2 sm:mt-1 mt-2">
@@ -319,11 +318,13 @@ export const DataTable = forwardRef(
             )}
             format={['DD-MM-YYYY', 'DD-MM-YY']}
             value={!!selectedKeys && selectedKeys.length && [dayjs(selectedKeys[0]), dayjs(selectedKeys[1])]}
-            onChange={(e: any[]) => {
-              setSelectedKeys([
-                e[0].startOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-                e[1].endOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-              ]);
+            onChange={(e: null | (Dayjs | null)[]) => {
+              if (e?.length && e[0] && e[1]) {
+                setSelectedKeys([
+                  e[0].startOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+                  e[1].endOf('day').utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+                ]);
+              }
             }}
           />
           {groupButton(confirm, clearFilters, key, selectedKeys)}
@@ -339,8 +340,8 @@ export const DataTable = forwardRef(
         let item = col.tableItem;
 
         if (item?.filter) {
-          const filter = params?.filter as any;
-          if (params.filter && filter[col!.name!]) item = { ...item, defaultFilteredValue: filter[col!.name!] };
+          const filter = params.current?.filter as any;
+          if (params.current.filter && filter[col!.name!]) item = { ...item, defaultFilteredValue: filter[col!.name!] };
 
           switch (item?.filter?.type) {
             case 'radio':
@@ -367,7 +368,7 @@ export const DataTable = forwardRef(
           }
           delete item.filter;
         }
-        const sorts = params?.sorts as any;
+        const sorts = params.current?.sorts as any;
         if (item?.sorter && sorts && sorts[col!.name!])
           item.defaultSortOrder =
             sorts[col!.name!] === 'ASC' ? 'ascend' : sorts[col!.name!] === 'DESC' ? 'descend' : '';
@@ -390,8 +391,8 @@ export const DataTable = forwardRef(
       sorts?: SorterResult<any>,
       tempFullTextSearch?: string,
     ) => {
-      let tempPageIndex = pagination?.page || params.page;
-      const tempPageSize = pagination?.perPage || params.perPage;
+      let tempPageIndex = pagination?.page || params.current.page;
+      const tempPageSize = pagination?.perPage || params.current.perPage;
 
       const tempSort =
         sorts && sorts?.field && sorts?.order
@@ -402,9 +403,9 @@ export const DataTable = forwardRef(
             ? null
             : sorts;
 
-      if (tempFullTextSearch !== params.fullTextSearch) tempPageIndex = 1;
+      if (tempFullTextSearch !== params.current.fullTextSearch) tempPageIndex = 1;
       const tempParams = cleanObjectKeyNull({
-        ...params,
+        ...params.current,
         page: tempPageIndex,
         perPage: tempPageSize,
         sorts: JSON.stringify(tempSort),
@@ -436,7 +437,7 @@ export const DataTable = forwardRef(
                 <Mask
                   className={'h-10 pl-8'}
                   id={idTable.current + '_input_search'}
-                  value={params.fullTextSearch}
+                  value={params.current.fullTextSearch}
                   placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
                   onChange={() => {
                     clearTimeout(timeoutSearch.current);
@@ -444,8 +445,8 @@ export const DataTable = forwardRef(
                       () =>
                         handleTableChange(
                           undefined,
-                          params.filter,
-                          params.sorts as SorterResult<any>,
+                          params.current.filter,
+                          params.current.sorts as SorterResult<any>,
                           (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
                         ),
                       500,
@@ -454,30 +455,40 @@ export const DataTable = forwardRef(
                   onPressEnter={() =>
                     handleTableChange(
                       undefined,
-                      params.filter,
-                      params.sorts as SorterResult<any>,
+                      params.current.filter,
+                      params.current.sorts as SorterResult<any>,
                       (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value.trim(),
                     )
                   }
                 />
-                {!params.fullTextSearch ? (
+                {!params.current.fullTextSearch ? (
                   <Search
                     className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
                     onClick={() => {
-                      if (params.fullTextSearch) {
+                      if (params.current.fullTextSearch) {
                         (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
-                        handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
+                        handleTableChange(
+                          undefined,
+                          params.current.filter,
+                          params.current.sorts as SorterResult<any>,
+                          '',
+                        );
                       }
                     }}
                   />
                 ) : (
-                  !!params.fullTextSearch && (
+                  !!params.current.fullTextSearch && (
                     <Times
                       className="w-3.5 h-3.5 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
                       onClick={() => {
-                        if (params.fullTextSearch) {
+                        if (params.current.fullTextSearch) {
                           (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
-                          handleTableChange(undefined, params.filter, params.sorts as SorterResult<any>, '');
+                          handleTableChange(
+                            undefined,
+                            params.current.filter,
+                            params.current.sorts as SorterResult<any>,
+                            '',
+                          );
                         }
                       }}
                     />
@@ -536,7 +547,7 @@ export const DataTable = forwardRef(
               pagination={false}
               dataSource={loopData(data)}
               onChange={(pagination, filters, sorts) =>
-                handleTableChange(undefined, filters, sorts as SorterResult<any>, params.fullTextSearch)
+                handleTableChange(undefined, filters, sorts as SorterResult<any>, params.current.fullTextSearch)
               }
               scroll={scroll.current}
               size="small"
@@ -545,13 +556,18 @@ export const DataTable = forwardRef(
             {refPageSizeOptions.current && showPagination && (
               <Pagination
                 total={result?.count}
-                page={+params!.page!}
-                perPage={+params!.perPage!}
+                page={params.current!.page!}
+                perPage={params.current!.perPage!}
                 pageSizeOptions={refPageSizeOptions.current}
                 pageSizeRender={pageSizeRender}
                 pageSizeWidth={pageSizeWidth}
                 queryParams={(pagination: { page?: number; perPage?: number }) =>
-                  handleTableChange(pagination, params.filter, params.sorts as SorterResult<any>, params.fullTextSearch)
+                  handleTableChange(
+                    pagination,
+                    params.current.filter,
+                    params.current.sorts as SorterResult<any>,
+                    params.current.fullTextSearch,
+                  )
                 }
                 paginationDescription={paginationDescription}
                 idElement={idTable.current}
