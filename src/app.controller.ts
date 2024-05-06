@@ -100,18 +100,20 @@ export class AppController {
     }
     const { province, type, year, acreage, bedroomTotal, price } = filterObject;
 
+    const [bui] = await this.buildingService.findAll({});
+
     const [bu] = await this.buildingService.findAll({
       ...paginableParams,
       filter: `{"buildingAddress.province":"${province ? province : ''}",
     "type":"${type ? type : ''}",
-    "updated_at":"${year ? year : ''}",
     "rooms.acreage":"${acreage ? acreage : ''}",
+    "updated_at":"${year ? year : ''}",
     "rooms.bedroomTotal":"${bedroomTotal ? bedroomTotal : ''}",
     "rooms.price":"${price !== '/' && price ? price : ''}"}
     `,
     });
 
-    const uniqueProvinces = [...new Set(bu.map((building) => building.buildingAddress.province))];
+    const uniqueProvinces = [...new Set(bui.map((building) => building.buildingAddress.province))];
 
     const data = {
       hirePrice: [

@@ -527,8 +527,10 @@ const filter = () => {
             if (filterObject.acreage) {
                 setValueIfExists(selectAcreage, `option[value="${filterObject.acreage}"]`, filterObject.acreage);
             }
-            if (filterObject.roomNumber) {
-                setValueIfExists(selectRoomNumber, `option[value="${filterObject.roomNumber}"]`, filterObject.roomNumber);
+            console.log(filterObject.bedroomTotal);
+
+            if (filterObject.bedroomTotal) {
+                setValueIfExists(selectRoomNumber, `option[value="${filterObject.bedroomTotal}"]`, filterObject.bedroomTotal);
             }
         }
     }
