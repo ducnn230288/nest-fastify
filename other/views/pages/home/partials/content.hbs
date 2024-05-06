@@ -78,8 +78,7 @@
         {{#each bu}}
         <div class="group overflow-hidden rounded-xl border hover:shadow-lg duration-300 shadow-md mb-4">
           <div class="flex flex-col sm:flex-row group-hover:shadow-xl sm:h-full w-full max-h-56">
-            <img data-src={{media}} alt=""
-              onerror="this.setAttribute('data-src', '/images/home/image_not_available.png')"
+            <img src="/api/auth/download?key={{media}}" alt=""
               class="lazy w-full h-full sm:max-w-52 md:max-w-72 z-10 border-none sm:rounded-l-xl gap-4 group-hover:scale-105 duration-500" />
             <div
               class="sm:rounded-r-xl rounded-b-xl sm:rounded-bl-none border-x-2 sm:border-x-0 border-b-2 sm:border-y-2 sm:border-r-2 border-orange-400 overflow-hidden py-6 gap-1 w-full max-h-full pl-4  ">

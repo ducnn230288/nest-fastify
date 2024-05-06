@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Get, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Get, Post, Put, Query, Res } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 import {
@@ -193,5 +193,15 @@ export class AuthController {
     return {
       message: i18n.t('common.Success'),
     };
+  }
+
+  @Public({
+    summary: 'Download',
+  })
+  @Get('download')
+  async download(
+    @Query('key') name: string, @Res() res
+  ): Promise<void> {
+    return await this.authService.download(name, res);
   }
 }

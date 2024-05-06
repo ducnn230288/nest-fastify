@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-// import { S3 } from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import { I18nContext } from 'nestjs-i18n';
+import mime from 'mime-types';
 
 import { customAlphabet } from 'nanoid/non-secure';
 
@@ -21,6 +22,7 @@ import { UserRepository } from '@repository';
 import { appConfig } from '@config';
 import { CronJob } from 'cron';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import c from 'config';
 
 export const P_AUTH_DELETE_IMAGE_TEMP = '11cc566b-b109-49f8-983f-84ff08f9849e';
 
@@ -197,6 +199,32 @@ export class AuthService extends BaseService<User> {
     return data;
   }
 
+  async download(name, res) {
+    try {
+      new S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        region: 'ap-southeast-1',
+      }).getObject(
+        {
+          Bucket: process.env.AWS_ACCESS_BUCKET_NAME || '',
+          Key: name,
+        },
+        (err, data) => {
+          if (err) console.log(err.message);
+          if (data)  {
+            const buffer = Buffer.from(data.Body as any);
+            res.headers({ 'Content-Type': mime.lookup(name) });
+            res.send(buffer);
+          }
+        },
+        // ).createReadStream().pipe(res);
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   // async getListS3() {
   //   return new Promise((resolve, reject) => {
   //     new S3({
@@ -204,9 +232,7 @@ export class AuthService extends BaseService<User> {
   //       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   //     }).listObjectsV2(
   //       {
-  //         Bucket: process.env.AWS_ACCESS_BUCKET_NAME,
-  //         Delimiter: '/',
-  //         Prefix: 'avata-dev/',
+  //         Bucket: process.env.AWS_ACCESS_BUCKET_NAME || '',
   //       },
   //       (err, data) => {
   //         if (err) {
