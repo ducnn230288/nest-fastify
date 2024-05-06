@@ -271,7 +271,7 @@ function A() {
         const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) * 11 / 12;
 
         if (scrollY > 123) {
-            navMenu?.classList.add('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white');
+            navMenu?.classList.add('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white', 'border-b-2');
             if (isDesktop) {
                 registration?.classList.add('fixed', 'top-32');
             }
@@ -283,7 +283,7 @@ function A() {
             }
         }
         else {
-            navMenu?.classList.remove('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white');
+            navMenu?.classList.remove('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white', 'border-b-2');
             registration?.classList.remove('fixed', 'top-32');
         }
     }
@@ -415,11 +415,11 @@ window._MESSAGE_ = {
     compare: "Xin vui lòng nhập không quá "
 };
 function changeAddressSelect() {
-    const provinceSelect = document.getElementById('selectAddress');
+    const provinceSelect = document.getElementById('selectAddressMain');
     if (provinceSelect) {
         provinceSelect.addEventListener('change', function () {
             const selectedProvince = provinceSelect.value;
-            window.location.href = `http://localhost:3000/?address=${selectedProvince}`;
+            window.location.href = `/?address=${selectedProvince}`;
         });
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -443,7 +443,7 @@ const filter = () => {
     const selectYear = document.getElementById('selectYear');
     const btnFilter = document.getElementById('buttonFilter')
 
-    if (search || selectAddress || selectType || selectAcreage || selectRoomNumber) {
+    if (search || selectAddress || selectType || selectAcreage || selectRoomNumber || btnFilter) {
         btnFilter.addEventListener('click', () => {
             const selectPriceMin = document.querySelector('input[name="lowPrice"]:checked').value;
             const selectPriceMax = document.querySelector('input[name="highPrice"]:checked').value;
@@ -470,7 +470,7 @@ const filter = () => {
                 sort: ""
             });
             window.location.href = `
-                http://localhost:3000/detail1?${paginableParams.toString()}
+                /buildingList?${paginableParams.toString()}
             `;
         })
 

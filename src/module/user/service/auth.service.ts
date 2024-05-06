@@ -68,9 +68,9 @@ export class AuthService extends BaseService<User> {
       ),
       returnRefresh
         ? this.jwtService.signAsync(
-          { userId: user.id, email: user.email },
-          { secret: appConfig.REFRESH_SECRET, expiresIn: '1d' },
-        )
+            { userId: user.id, email: user.email },
+            { secret: appConfig.REFRESH_SECRET, expiresIn: '1d' },
+          )
         : '',
     ]);
 
@@ -109,7 +109,7 @@ export class AuthService extends BaseService<User> {
       this.update(user.id!, { otp: null });
       this.schedulerRegistry.deleteCronJob(name);
     });
-    this.schedulerRegistry.addCronJob(name, job);
+    this.schedulerRegistry.addCronJob(name, job as any);
     job.start();
 
     return user.otp;

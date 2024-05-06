@@ -79,8 +79,8 @@ export class AppController {
     };
   }
 
-  @Get('/detail/:id')
-  @Render('pages/detail/index')
+  @Get('/roomList/:id')
+  @Render('pages/roomList/index')
   async detail(@Param('id') id: string): Promise<{ bui: Building | null }> {
     const bui = await this.buildingService.findOne(id, []);
     return {
@@ -88,8 +88,8 @@ export class AppController {
     };
   }
 
-  @Get('/detail1')
-  @Render('pages/detail1/index')
+  @Get('/buildingList')
+  @Render('pages/buildingList/index')
   async detail1(
     @Query() paginableParams: PaginationQueryDto,
   ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any> }> {
@@ -267,14 +267,15 @@ export class AppController {
     };
   }
 
-  @Get('/detail2/:id')
-  @Render('pages/detail2/index')
+  @Get('/roomDetail/:id')
+  @Render('pages/roomDetail/index')
   async detail2(@Param('id', ParseIntPipe) id: number): Promise<{ room: Room | null; bu: Building | null }> {
     const room = await this.buildingService.findByRoomId(id);
     let bu: any;
     if (room) {
       bu = await this.buildingService.findOne(room.buildingId.toString(), []);
     }
+
     return {
       room,
       bu,

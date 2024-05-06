@@ -63,7 +63,7 @@
       </div>
       <div
         class="flex justify-end pt-2 pr-3 font-normal text-base leading-normal text-gray-600 after:content-['\2335'] relative after:absolute after:top-5 after:right-7 items-end after:pointer-events-none">
-        <select name="" id="selectAddress" onclick="changeAddressSelect(this.value)"
+        <select name="" id="selectAddressMain" onclick="changeAddressSelect(this.value)"
           class="border-2 p-3 border-gray-300 rounded-md w-full max-w-72 appearance-none">
           <option value="" class="">Toàn quốc</a>
           </option>
@@ -101,7 +101,7 @@
                   </svg>
                 </div>
                 <div class="flex justify-center items-center pl-2">
-                  <a href="http://localhost:3000/detail/{{id}}">
+                  <a href="/roomList/{{id}}">
                     <h3 class="text-base font-bold leading-5 text-red-600">{{name}}</h3>
                   </a>
                 </div>
