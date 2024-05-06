@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.2 (Debian 16.2-1.pgdg120+2)
--- Dumped by pg_dump version 16.1
+-- Dumped from database version 13.1 (Debian 13.1-1.pgdg100+1)
+-- Dumped by pg_dump version 13.1 (Debian 13.1-1.pgdg100+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,38 +15,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: core; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA core;
-
-
-ALTER SCHEMA core OWNER TO postgres;
-
---
--- Name: user; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA "user";
-
-
-ALTER SCHEMA "user" OWNER TO postgres;
-
---
--- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
-
-
---
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
-
 
 --
 -- Name: building_type; Type: TYPE; Schema: public; Owner: postgres
@@ -70,7 +38,7 @@ CREATE FUNCTION public.trigger_set_current_timestamp() RETURNS trigger
     AS $$
 BEGIN
   NEW.updated_at = NOW();
-RETURN NEW;
+  RETURN NEW;
 END;
 $$;
 
@@ -80,198 +48,6 @@ ALTER FUNCTION public.trigger_set_current_timestamp() OWNER TO postgres;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: code; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.code (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    code character varying NOT NULL,
-    type character varying NOT NULL,
-    name character varying NOT NULL,
-    description character varying
-);
-
-
-ALTER TABLE core.code OWNER TO postgres;
-
---
--- Name: code_type; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.code_type (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL,
-    "isPrimary" boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE core.code_type OWNER TO postgres;
-
---
--- Name: data; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.data (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    type character varying NOT NULL,
-    name character varying,
-    image character varying,
-    "order" integer
-);
-
-
-ALTER TABLE core.data OWNER TO postgres;
-
---
--- Name: data_translation; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.data_translation (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    language character varying NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    "position" character varying,
-    content character varying,
-    "dataId" uuid NOT NULL
-);
-
-
-ALTER TABLE core.data_translation OWNER TO postgres;
-
---
--- Name: data_type; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.data_type (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL,
-    "isPrimary" boolean DEFAULT false NOT NULL
-);
-
-
-ALTER TABLE core.data_type OWNER TO postgres;
-
---
--- Name: file; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.file (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    type integer NOT NULL,
-    url character varying NOT NULL,
-    description character varying,
-    data character varying,
-    status integer DEFAULT 0 NOT NULL,
-    "userId" character varying NOT NULL
-);
-
-
-ALTER TABLE core.file OWNER TO postgres;
-
---
--- Name: parameter; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.parameter (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    code character varying NOT NULL,
-    vn character varying,
-    en character varying
-);
-
-
-ALTER TABLE core.parameter OWNER TO postgres;
-
---
--- Name: post; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.post (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    type character varying NOT NULL,
-    "thumbnailUrl" character varying
-);
-
-
-ALTER TABLE core.post OWNER TO postgres;
-
---
--- Name: post_translation; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.post_translation (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    language character varying NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    slug character varying,
-    content character varying,
-    "postId" uuid NOT NULL
-);
-
-
-ALTER TABLE core.post_translation OWNER TO postgres;
-
---
--- Name: post_type; Type: TABLE; Schema: core; Owner: postgres
---
-
-CREATE TABLE core.post_type (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL,
-    "isPrimary" boolean DEFAULT false NOT NULL,
-    mpath character varying DEFAULT ''::character varying,
-    parent_id uuid
-);
-
-
-ALTER TABLE core.post_type OWNER TO postgres;
 
 --
 -- Name: app_user; Type: TABLE; Schema: public; Owner: postgres
@@ -349,7 +125,7 @@ CREATE SEQUENCE public.building_address_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_address_id_seq OWNER TO postgres;
+ALTER TABLE public.building_address_id_seq OWNER TO postgres;
 
 --
 -- Name: building_address_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -389,7 +165,7 @@ CREATE SEQUENCE public.building_content_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_content_id_seq OWNER TO postgres;
+ALTER TABLE public.building_content_id_seq OWNER TO postgres;
 
 --
 -- Name: building_content_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -431,7 +207,7 @@ CREATE SEQUENCE public.building_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_id_seq OWNER TO postgres;
+ALTER TABLE public.building_id_seq OWNER TO postgres;
 
 --
 -- Name: building_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -467,7 +243,7 @@ CREATE SEQUENCE public.building_manager_building_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_manager_building_id_seq OWNER TO postgres;
+ALTER TABLE public.building_manager_building_id_seq OWNER TO postgres;
 
 --
 -- Name: building_manager_building_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -488,7 +264,7 @@ CREATE SEQUENCE public.building_manager_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_manager_id_seq OWNER TO postgres;
+ALTER TABLE public.building_manager_id_seq OWNER TO postgres;
 
 --
 -- Name: building_manager_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -509,7 +285,7 @@ CREATE SEQUENCE public.building_manager_manager_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_manager_manager_id_seq OWNER TO postgres;
+ALTER TABLE public.building_manager_manager_id_seq OWNER TO postgres;
 
 --
 -- Name: building_manager_manager_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -549,7 +325,7 @@ CREATE SEQUENCE public.building_media_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_media_id_seq OWNER TO postgres;
+ALTER TABLE public.building_media_id_seq OWNER TO postgres;
 
 --
 -- Name: building_media_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -584,7 +360,7 @@ CREATE SEQUENCE public.building_rule_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_rule_id_seq OWNER TO postgres;
+ALTER TABLE public.building_rule_id_seq OWNER TO postgres;
 
 --
 -- Name: building_rule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -621,7 +397,7 @@ CREATE SEQUENCE public.building_utility_building_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_utility_building_id_seq OWNER TO postgres;
+ALTER TABLE public.building_utility_building_id_seq OWNER TO postgres;
 
 --
 -- Name: building_utility_building_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -642,7 +418,7 @@ CREATE SEQUENCE public.building_utility_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.building_utility_id_seq OWNER TO postgres;
+ALTER TABLE public.building_utility_id_seq OWNER TO postgres;
 
 --
 -- Name: building_utility_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -686,7 +462,7 @@ CREATE SEQUENCE public.contract_addendum_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.contract_addendum_id_seq OWNER TO postgres;
+ALTER TABLE public.contract_addendum_id_seq OWNER TO postgres;
 
 --
 -- Name: contract_addendum_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -707,7 +483,7 @@ CREATE SEQUENCE public.cost_building_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.cost_building_id_seq OWNER TO postgres;
+ALTER TABLE public.cost_building_id_seq OWNER TO postgres;
 
 --
 -- Name: cost_building_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -728,7 +504,7 @@ CREATE SEQUENCE public.cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.cost_id_seq OWNER TO postgres;
+ALTER TABLE public.cost_id_seq OWNER TO postgres;
 
 --
 -- Name: cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -814,7 +590,7 @@ CREATE SEQUENCE public.deposit_contract_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.deposit_contract_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.deposit_contract_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: deposit_contract_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -835,7 +611,7 @@ CREATE SEQUENCE public.deposit_contract_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.deposit_contract_id_seq OWNER TO postgres;
+ALTER TABLE public.deposit_contract_id_seq OWNER TO postgres;
 
 --
 -- Name: deposit_contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -884,7 +660,7 @@ CREATE SEQUENCE public.deposit_contract_people_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.deposit_contract_people_id_seq OWNER TO postgres;
+ALTER TABLE public.deposit_contract_people_id_seq OWNER TO postgres;
 
 --
 -- Name: deposit_contract_people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -919,7 +695,7 @@ CREATE SEQUENCE public.district_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.district_id_seq OWNER TO postgres;
+ALTER TABLE public.district_id_seq OWNER TO postgres;
 
 --
 -- Name: district_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -977,7 +753,7 @@ CREATE SEQUENCE public.electricity_water_detail_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.electricity_water_detail_id_seq OWNER TO postgres;
+ALTER TABLE public.electricity_water_detail_id_seq OWNER TO postgres;
 
 --
 -- Name: electricity_water_detail_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1015,7 +791,7 @@ CREATE SEQUENCE public.electricity_water_information_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.electricity_water_information_id_seq OWNER TO postgres;
+ALTER TABLE public.electricity_water_information_id_seq OWNER TO postgres;
 
 --
 -- Name: electricity_water_information_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1063,7 +839,7 @@ CREATE SEQUENCE public.extention_contract_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.extention_contract_id_seq OWNER TO postgres;
+ALTER TABLE public.extention_contract_id_seq OWNER TO postgres;
 
 --
 -- Name: extention_contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1104,7 +880,7 @@ CREATE SEQUENCE public.extention_contract_people_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.extention_contract_people_id_seq OWNER TO postgres;
+ALTER TABLE public.extention_contract_people_id_seq OWNER TO postgres;
 
 --
 -- Name: extention_contract_people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1199,7 +975,7 @@ CREATE SEQUENCE public.housing_expense_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1244,7 +1020,7 @@ CREATE SEQUENCE public.housing_expense_cost_v2_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_cost_v2_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_cost_v2_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_cost_v2_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1283,7 +1059,7 @@ CREATE SEQUENCE public.housing_expense_forfeit_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_forfeit_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_forfeit_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_forfeit_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1304,7 +1080,7 @@ CREATE SEQUENCE public.housing_expense_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1339,7 +1115,7 @@ CREATE SEQUENCE public.housing_expense_other_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_other_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_other_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_other_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1407,7 +1183,7 @@ CREATE SEQUENCE public.housing_expense_v2_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.housing_expense_v2_id_seq OWNER TO postgres;
+ALTER TABLE public.housing_expense_v2_id_seq OWNER TO postgres;
 
 --
 -- Name: housing_expense_v2_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1483,7 +1259,7 @@ CREATE SEQUENCE public.liquidated_contract_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidated_contract_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.liquidated_contract_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidated_contract_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1504,7 +1280,7 @@ CREATE SEQUENCE public.liquidated_contract_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidated_contract_id_seq OWNER TO postgres;
+ALTER TABLE public.liquidated_contract_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidated_contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1549,7 +1325,7 @@ CREATE SEQUENCE public.liquidated_contract_people_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidated_contract_people_id_seq OWNER TO postgres;
+ALTER TABLE public.liquidated_contract_people_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidated_contract_people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1584,7 +1360,7 @@ CREATE SEQUENCE public.liquidated_deduction_item_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.liquidated_deduction_item_id_seq OWNER TO postgres;
+ALTER TABLE public.liquidated_deduction_item_id_seq OWNER TO postgres;
 
 --
 -- Name: liquidated_deduction_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1624,7 +1400,7 @@ CREATE SEQUENCE public.mt_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.mt_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.mt_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: mt_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1661,7 +1437,7 @@ CREATE SEQUENCE public.mt_sub_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.mt_sub_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.mt_sub_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: mt_sub_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1682,7 +1458,7 @@ CREATE SEQUENCE public.mt_sub_supplies_mt_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.mt_sub_supplies_mt_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.mt_sub_supplies_mt_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: mt_sub_supplies_mt_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1720,7 +1496,7 @@ CREATE SEQUENCE public.mt_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.mt_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.mt_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: mt_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1761,7 +1537,7 @@ CREATE SEQUENCE public.notification_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.notification_id_seq OWNER TO postgres;
+ALTER TABLE public.notification_id_seq OWNER TO postgres;
 
 --
 -- Name: notification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1831,7 +1607,7 @@ CREATE SEQUENCE public.province_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.province_id_seq OWNER TO postgres;
+ALTER TABLE public.province_id_seq OWNER TO postgres;
 
 --
 -- Name: province_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1852,7 +1628,7 @@ CREATE SEQUENCE public.public_organization_user_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.public_organization_user_id_seq OWNER TO postgres;
+ALTER TABLE public.public_organization_user_id_seq OWNER TO postgres;
 
 --
 -- Name: public_organization_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1892,7 +1668,7 @@ CREATE SEQUENCE public.receipt_debt_detail_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.receipt_debt_detail_id_seq OWNER TO postgres;
+ALTER TABLE public.receipt_debt_detail_id_seq OWNER TO postgres;
 
 --
 -- Name: receipt_debt_detail_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1950,7 +1726,7 @@ CREATE SEQUENCE public.receipt_information_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.receipt_information_id_seq OWNER TO postgres;
+ALTER TABLE public.receipt_information_id_seq OWNER TO postgres;
 
 --
 -- Name: receipt_information_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -1988,7 +1764,7 @@ CREATE SEQUENCE public.receipt_information_service_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.receipt_information_service_id_seq OWNER TO postgres;
+ALTER TABLE public.receipt_information_service_id_seq OWNER TO postgres;
 
 --
 -- Name: receipt_information_service_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2077,7 +1853,7 @@ CREATE SEQUENCE public.rental_contract_appendix_sequence_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.rental_contract_appendix_sequence_id_seq OWNER TO postgres;
+ALTER TABLE public.rental_contract_appendix_sequence_id_seq OWNER TO postgres;
 
 --
 -- Name: rental_contract_appendix_sequence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2121,7 +1897,7 @@ CREATE SEQUENCE public.rental_contract_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.rental_contract_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.rental_contract_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: rental_contract_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2142,7 +1918,7 @@ CREATE SEQUENCE public.rental_contract_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.rental_contract_id_seq OWNER TO postgres;
+ALTER TABLE public.rental_contract_id_seq OWNER TO postgres;
 
 --
 -- Name: rental_contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2186,7 +1962,7 @@ CREATE SEQUENCE public.rental_contract_people_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.rental_contract_people_id_seq OWNER TO postgres;
+ALTER TABLE public.rental_contract_people_id_seq OWNER TO postgres;
 
 --
 -- Name: rental_contract_people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2221,7 +1997,7 @@ CREATE SEQUENCE public.rental_contract_vehicle_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.rental_contract_vehicle_id_seq OWNER TO postgres;
+ALTER TABLE public.rental_contract_vehicle_id_seq OWNER TO postgres;
 
 --
 -- Name: rental_contract_vehicle_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2312,7 +2088,7 @@ CREATE SEQUENCE public.room_content_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_content_id_seq OWNER TO postgres;
+ALTER TABLE public.room_content_id_seq OWNER TO postgres;
 
 --
 -- Name: room_content_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2351,7 +2127,7 @@ CREATE SEQUENCE public.room_contract_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_contract_id_seq OWNER TO postgres;
+ALTER TABLE public.room_contract_id_seq OWNER TO postgres;
 
 --
 -- Name: room_contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2394,7 +2170,7 @@ CREATE SEQUENCE public.room_cost_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_cost_id_seq OWNER TO postgres;
+ALTER TABLE public.room_cost_id_seq OWNER TO postgres;
 
 --
 -- Name: room_cost_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2438,7 +2214,7 @@ CREATE SEQUENCE public.room_deposited_customer_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_deposited_customer_id_seq OWNER TO postgres;
+ALTER TABLE public.room_deposited_customer_id_seq OWNER TO postgres;
 
 --
 -- Name: room_deposited_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2518,7 +2294,7 @@ CREATE SEQUENCE public.room_history_payment_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_history_payment_id_seq OWNER TO postgres;
+ALTER TABLE public.room_history_payment_id_seq OWNER TO postgres;
 
 --
 -- Name: room_history_payment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2539,7 +2315,7 @@ CREATE SEQUENCE public.room_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_id_seq OWNER TO postgres;
+ALTER TABLE public.room_id_seq OWNER TO postgres;
 
 --
 -- Name: room_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2579,7 +2355,7 @@ CREATE SEQUENCE public.room_media_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_media_id_seq OWNER TO postgres;
+ALTER TABLE public.room_media_id_seq OWNER TO postgres;
 
 --
 -- Name: room_media_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2617,7 +2393,7 @@ CREATE SEQUENCE public.room_rate_customer_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_rate_customer_id_seq OWNER TO postgres;
+ALTER TABLE public.room_rate_customer_id_seq OWNER TO postgres;
 
 --
 -- Name: room_rate_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2652,7 +2428,7 @@ CREATE SEQUENCE public.room_rule_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_rule_id_seq OWNER TO postgres;
+ALTER TABLE public.room_rule_id_seq OWNER TO postgres;
 
 --
 -- Name: room_rule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2699,7 +2475,7 @@ CREATE SEQUENCE public.room_schedule_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_schedule_id_seq OWNER TO postgres;
+ALTER TABLE public.room_schedule_id_seq OWNER TO postgres;
 
 --
 -- Name: room_schedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2735,7 +2511,7 @@ CREATE SEQUENCE public.room_sub_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_sub_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.room_sub_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: room_sub_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2756,7 +2532,7 @@ CREATE SEQUENCE public.room_sub_supplies_sub_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_sub_supplies_sub_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.room_sub_supplies_sub_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: room_sub_supplies_sub_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2796,7 +2572,7 @@ CREATE SEQUENCE public.room_supplies_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_supplies_id_seq OWNER TO postgres;
+ALTER TABLE public.room_supplies_id_seq OWNER TO postgres;
 
 --
 -- Name: room_supplies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2834,7 +2610,7 @@ CREATE SEQUENCE public.room_utility_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.room_utility_id_seq OWNER TO postgres;
+ALTER TABLE public.room_utility_id_seq OWNER TO postgres;
 
 --
 -- Name: room_utility_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2868,7 +2644,7 @@ CREATE SEQUENCE public.sequence_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.sequence_id_seq OWNER TO postgres;
+ALTER TABLE public.sequence_id_seq OWNER TO postgres;
 
 --
 -- Name: sequence_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2903,7 +2679,7 @@ CREATE SEQUENCE public.user_notification_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.user_notification_id_seq OWNER TO postgres;
+ALTER TABLE public.user_notification_id_seq OWNER TO postgres;
 
 --
 -- Name: user_notification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2944,7 +2720,7 @@ CREATE SEQUENCE public.user_permission_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.user_permission_id_seq OWNER TO postgres;
+ALTER TABLE public.user_permission_id_seq OWNER TO postgres;
 
 --
 -- Name: user_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -2980,7 +2756,7 @@ CREATE SEQUENCE public.utility_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.utility_id_seq OWNER TO postgres;
+ALTER TABLE public.utility_id_seq OWNER TO postgres;
 
 --
 -- Name: utility_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -3020,7 +2796,7 @@ CREATE SEQUENCE public.vehicles_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.vehicles_id_seq OWNER TO postgres;
+ALTER TABLE public.vehicles_id_seq OWNER TO postgres;
 
 --
 -- Name: vehicles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -3055,7 +2831,7 @@ CREATE SEQUENCE public.ward_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.ward_id_seq OWNER TO postgres;
+ALTER TABLE public.ward_id_seq OWNER TO postgres;
 
 --
 -- Name: ward_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -3063,127 +2839,6 @@ ALTER SEQUENCE public.ward_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.ward_id_seq OWNED BY public.ward.id;
 
-
---
--- Name: address; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user".address (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "codeProvince" character varying NOT NULL,
-    "codeDistrict" character varying NOT NULL,
-    "codeWard" character varying NOT NULL,
-    "specificAddress" character varying NOT NULL,
-    "userId" uuid NOT NULL
-);
-
-
-ALTER TABLE "user".address OWNER TO postgres;
-
---
--- Name: address_district; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user".address_district (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL,
-    "codeProvince" character varying NOT NULL
-);
-
-
-ALTER TABLE "user".address_district OWNER TO postgres;
-
---
--- Name: address_province; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user".address_province (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL
-);
-
-
-ALTER TABLE "user".address_province OWNER TO postgres;
-
---
--- Name: address_ward; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user".address_ward (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    code character varying NOT NULL,
-    "codeDistrict" character varying NOT NULL
-);
-
-
-ALTER TABLE "user".address_ward OWNER TO postgres;
-
---
--- Name: user; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user"."user" (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    avatar character varying,
-    password character varying NOT NULL,
-    "refreshToken" character varying,
-    otp character varying,
-    email character varying NOT NULL,
-    "phoneNumber" character varying NOT NULL,
-    dob timestamp without time zone NOT NULL,
-    description character varying,
-    "roleCode" character varying,
-    "positionCode" character varying,
-    "startDate" timestamp without time zone NOT NULL,
-    "dateLeave" real,
-    "dateOff" real DEFAULT '0'::real
-);
-
-
-ALTER TABLE "user"."user" OWNER TO postgres;
-
---
--- Name: user_role; Type: TABLE; Schema: user; Owner: postgres
---
-
-CREATE TABLE "user".user_role (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    "isDeleted" timestamp without time zone,
-    "isDisabled" timestamp without time zone,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp without time zone DEFAULT now() NOT NULL,
-    code character varying NOT NULL,
-    name character varying NOT NULL,
-    "isSystemAdmin" boolean DEFAULT false NOT NULL,
-    permissions jsonb DEFAULT '[]'::jsonb NOT NULL
-);
-
-
-ALTER TABLE "user".user_role OWNER TO postgres;
 
 --
 -- Name: building id; Type: DEFAULT; Schema: public; Owner: postgres
@@ -3648,86 +3303,6 @@ ALTER TABLE ONLY public.ward ALTER COLUMN id SET DEFAULT nextval('public.ward_id
 
 
 --
--- Data for Name: code; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.code (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, type, name, description) FROM stdin;
-\.
-
-
---
--- Data for Name: code_type; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.code_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary") FROM stdin;
-\.
-
-
---
--- Data for Name: data; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.data (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, name, image, "order") FROM stdin;
-\.
-
-
---
--- Data for Name: data_translation; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.data_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, "position", content, "dataId") FROM stdin;
-\.
-
-
---
--- Data for Name: data_type; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.data_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary") FROM stdin;
-\.
-
-
---
--- Data for Name: file; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.file (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, url, description, data, status, "userId") FROM stdin;
-\.
-
-
---
--- Data for Name: parameter; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.parameter (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, vn, en) FROM stdin;
-\.
-
-
---
--- Data for Name: post; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.post (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", type, "thumbnailUrl") FROM stdin;
-\.
-
-
---
--- Data for Name: post_translation; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.post_translation (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", language, name, description, slug, content, "postId") FROM stdin;
-\.
-
-
---
--- Data for Name: post_type; Type: TABLE DATA; Schema: core; Owner: postgres
---
-
-COPY core.post_type (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "isPrimary", mpath, parent_id) FROM stdin;
-\.
-
-
---
 -- Data for Name: app_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3762,7 +3337,6 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 39	nguyenthian@getnada.com	Nguyễn Thị An	nguyenthian@getnada.com	1472583690	default address	0983645369	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2000-08-10 00:00:00	\N	\N
 40	namtran@getnada.com	Trần Văn Nam	namtran@getnada.com	0963852741	7 Cộng Hòa, phường 4, Tân Bình, tp.HCM	0987647781	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	1998-10-01 00:00:00	2019-08-15	thành phố Hồ Chí Minh
 1	1222asss@getnada.com	alo	1222asss@getnada.com	123455555555	21 Fan Yoong Road	3924832748	user-auth/abstract-user-flat-1.png	t	f	t	\N	MALE	2022-05-05 16:29:05	\N	\N
-15	uh_supermanager@getnada.com	UHouse Admin	uh_supermanager@getnada.com	334073408	7 Cộng Hòa, Phường 4, Tân Bình, thành phố Hồ Chí Minh	0865504141	user-auth/user/15/vicedirector.png	t	f	f	\N	FEMALE	2022-03-08 07:34:15	1993-02-02	Bà rịa vũng tàu
 16	prod_landlord1@getnada.com	Trần Thị Quỳnh Như	prod_landlord1@getnada.com	1461960438	7 Cộng Hòa, Phường 4, Tân Bình	9088259728	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2000-02-10 00:00:00	2022-08-01	Bạc Liêu
 82	prod_landlord1109@getnada.com	Ngọc Trinh	prod_landlord1109@getnada.com	4349764724	Bạc Liêu	6575859338	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2000-09-11 00:00:00	2022-10-01	Bạc Liêu
 23	prod_congkiet@getnada.com	Công Kiệt	prod_congkiet@getnada.com	197324423	7 Cộng Hòa, Tân Bình	0869667246	user-auth/user/23/1632396285.809645_o_IMG_1629.JPG	t	f	f	\N	MALE	2011-08-04 00:00:00	\N	\N
@@ -3848,12 +3422,12 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 131	5555555555	phúc		\N	Ninh Thuận	5555555555	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
 132	testmobileprod@gmail.com	Test Mobile Prod	testmobileprod@gmail.com	102004208181	Thừa Thiên Huế	0374208181	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2000-01-01 00:00:00	2022-11-30	Thừa Thiên Huế
 133	prodmobile@gmail.com	Prod Mobile	prodmobile@gmail.com	102005058181	Thừa Thiên Huế	0345058181	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2000-01-01 00:00:00	2022-11-30	Thừa Thiên Huế
-153	0342756203	Nguyễn Duy Thắng 		197454001	Gio Việt Gio Linh Quảng Trị 	0342756203	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-01-12 00:00:00	2017-06-15	Tỉnh Quảng Trị 
-134	tranminhkhuong123z@gmail.com	Trần Minh Khương	tranminhkhuong123z@gmail.com	080204013420	phòng số9, 246 Thạch Lam, Phú Thạnh, Tân Phú	0937659013	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2004-10-07 00:00:00	2021-11-22	Cục Cảnh Sát 
-135	duonghoang2001py@gmail.com	Dương Minh Hoàng	duonghoang2001py@gmail.com	054201008518	293 Nguyễn Tất Thành, phường 9 , thành phố Tuy Hoà	0901958310	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-11-12 00:00:00	2021-11-18	công an thành phố Tuy Hòa 
+153	0342756203	Nguyễn Duy Thắng 		197454001	Gio Việt Gio Linh Quảng Trị 	0342756203	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-01-12 00:00:00	2017-06-15	Tỉnh Quảng Trị
+134	tranminhkhuong123z@gmail.com	Trần Minh Khương	tranminhkhuong123z@gmail.com	080204013420	phòng số9, 246 Thạch Lam, Phú Thạnh, Tân Phú	0937659013	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2004-10-07 00:00:00	2021-11-22	Cục Cảnh Sát
+135	duonghoang2001py@gmail.com	Dương Minh Hoàng	duonghoang2001py@gmail.com	054201008518	293 Nguyễn Tất Thành, phường 9 , thành phố Tuy Hoà	0901958310	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-11-12 00:00:00	2021-11-18	công an thành phố Tuy Hòa
 136	0412536981	phúc		\N	NT	0412536981	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
 137	oanhntk0441@gmail.com	KIM OANH	oanhntk0441@gmail.com	052199011517	Cát Minh, Phù Cát, Bình Định 	0345312946	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	1998-08-20 00:00:00	2021-06-28	Bình định
-138	khennguyen20001@gmail.com	Nguyễn Văn Khen	khennguyen20001@gmail.com	054201007824	22/1 Nguyễn Hữu Tiến 	0334920983	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-03-25 00:00:00	2021-12-05	Phú Yên 
+138	khennguyen20001@gmail.com	Nguyễn Văn Khen	khennguyen20001@gmail.com	054201007824	22/1 Nguyễn Hữu Tiến 	0334920983	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-03-25 00:00:00	2021-12-05	Phú Yên
 139	nguyenthotanan2003@gmail.com	Nguyễn Thị Hoàng Thơ	nguyenthotanan2003@gmail.com	080303012810	76/13 châu văn bảy, phường 7, thành phố Tân An , tỉnh Long An	0866513361	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-06-21 00:00:00	2020-11-22	cục cảnh sát
 140	phuongdung031001@gmail.com	Trần Phương Dung	phuongdung031001@gmail.com	\N	22/1 Nguyễn Hữu Tiến, phường Tây Thạnh, quận Tân Phú	0859941083	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-10-03 00:00:00	\N	\N
 141	tp7045@gmail.com	Phạm Nguyễn Ngọc Trân	tp7045@gmail.com	312528394	138 Nguyễn Văn Côn,kp1,phường 3,Thị Xã Gò Công	0939075502	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-07-23 00:00:00	2017-09-14	Tỉnh Tiền Giang
@@ -3870,7 +3444,7 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 151	hangpham.06112003.@gmail.com	Phan Thị Thúy Hằng	hangpham.06112003.@gmail.com	052303003098	22/1 Nguyễn Hữu Tiến,Tây Thạnh, Tân Phú,Hồ Chí Minh	0374350061	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-11-06 00:00:00	2021-05-01	Bình Định
 152	0974101235	Trần Trung Nghĩa		241598564	22/1 nguyễn hữu tiến 	0974101235	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	1996-10-23 00:00:00	\N	\N
 155	lehuynh2703@gmail.com	LÊ THỊ THÚY HUỲNH	lehuynh2703@gmail.com	321810624	22/1 nguyễn hữu tiến tây thạnh tân phú	0387235751	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-11-14 00:00:00	2018-03-08	tỉnh Bến Tre
-156	maithaomai450@gmail.com	Nguyễn Thị Mai Thảo 	maithaomai450@gmail.com	087301009668	22/1 Nguyễn Hữu Tiến, Tây Thạnh, Tân Phú, TPHCM	0764513329	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-05-04 00:00:00	2021-12-18	Đồng Tháp 
+156	maithaomai450@gmail.com	Nguyễn Thị Mai Thảo 	maithaomai450@gmail.com	087301009668	22/1 Nguyễn Hữu Tiến, Tây Thạnh, Tân Phú, TPHCM	0764513329	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2001-05-04 00:00:00	2021-12-18	Đồng Tháp
 157	hongvy08082020@gmail.com	Lê Nguyễn Hồng Vy	hongvy08082020@gmail.com	087302008855	K.An Lợi, P.An Lộc, TP. Hồng Ngự, Đồng Tháp	0707650829	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-12-19 00:00:00	2022-01-03	Đồng Tháp
 158	nhutle25032001@gmail.com	Lê Hoàng Nhựt 	nhutle25032001@gmail.com	\N	22/1 Nguyễn Hữu Tiến Phuong Tây Thạnh Quân Tân Phú 	0338599876	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2001-08-14 00:00:00	\N	\N
 159	Xumhopnnhh@gmail.com	Lê Thị Xum Họp	Xumhopnnhh@gmail.com	064302007727	Phú Yên - Hra - Mang Yang - Gia Lai	0333666330	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2002-09-24 00:00:00	2021-05-31	công an huyện Mang Yang
@@ -3894,16 +3468,21 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 178	0907206986	Nguyễn Thị Thanh Tâm		083303007702	22/1 Nguyễn Hữu Tiến	0907206986	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-12-11 00:00:00	2022-09-16	Cục quản lý hành chính về trật tự xã hội
 179	linhtri3939@gmail.com	Linh La	linhtri3939@gmail.com	089184011573	611 nguyễn trãi phường 11 quận 5	0933339333	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	1984-01-02 00:00:00	2021-05-10	tp hcm
 164	quanltuan@gmail.com	Quan Lan	quanltuan@gmail.com	079085016777	78 Tôn Thất Thuyết P.16 Q.4	0909552404	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	1981-06-11 00:00:00	2020-05-22	CTCCSVQLHCTTXH
-180	trungba@getnada.com	Nguyễn Báo Trung	trungba@getnada.com	\N	\N	0348174251	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
-175	trung.nb@ari.com.vn	Nguyễn Bá Trung	trung.nb@ari.com.vn	273543661	102 Phan Văn Hớn, Tân Thới Nhất, Q12, TPHCM	0977405200	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	1993-02-02 00:00:00	2010-10-20	BRVT
-181	uhouse.tech@getnada.com	Nguyễn Bá Trung	uhouse.tech@getnada.com	273555678	Chung cư topaz home, phan văn hớn, quận 12, tp hcm.	0977777999	user-auth/user/181/vicedirector.png	t	f	f	\N	MALE	1993-02-02 00:00:00	2010-11-20	BRVT
 183	Mnb123@gmail.con	Ngọc	Mnb123@gmail.con	\N	05 Lê Thánh Tôn, Huế	0913675431	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	2003-08-11 00:00:00	\N	\N
 184	Mnb123@gmail.com	Ngọc Trương	Mnb123@gmail.com	\N	05 Lê Thánh Tôn	0946317628	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	2003-08-19 00:00:00	\N	\N
 17	prod_landlord2@getnada.com	Nguyễn Thị Ngọc	prod_landlord2@getnada.com	2296105690	7 Cộng Hòa, Phường 4, Tân Bình	5004779020	user-auth/user/17/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg	t	f	f	\N	FEMALE	2022-06-02 00:00:00	2022-09-30	Thua Thien Hue
 185	truongngoc052003@gmail.com	trương ngọc	truongngoc052003@gmail.com	\N	05 Lê Thánh Tôn	0814979719	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
 186	21t1020569@husc.edu.vn	Trương Nguyễn Tâm Như	21t1020569@husc.edu.vn	733737378	170 Bùi Thị Xuân, Phường 3, Tân Bình	0778678345	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2003-11-25 17:46:58	2022-03-29	Huế
 187	Vunhungoc169@gmail.com	Vũ Như Ngọc 	Vunhungoc169@gmail.com	019305001036	Hà Nội	0977677242	user-auth/abstract-user-flat-1.png	t	f	f	\N	FEMALE	2005-09-16 00:00:00	2021-04-16	cục qly hành chình về trật tự xã hội
-188	aribalance2959@gmail.com	Trần hữu phúc	aribalance2959@gmail.com	19039023	100 Picity High Park	1900156000	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	2024-02-02 11:31:19	2024-02-02	BRVT
+181	uhouse.tech@getnada.com	Nguyễn Bá Trung	uhouse.tech@getnada.com	273555678	Chung cư topaz home, phan văn hớn, quận 12, tp hcm.	0977777999	user-auth/user/181/balance logo.jpg	t	f	f	\N	MALE	1993-02-02 00:00:00	2010-11-20	BRVT
+189	0915864039	Trần Tiến Sỹ	\N	\N	\N	0915864039	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
+180	trungba@getnada.com	Nguyễn Báo Trung	trungba@getnada.com	\N	\N	0348174251	user-auth/abstract-user-flat-1.png	t	f	t	\N	\N	\N	\N	\N
+175	trung.nb@ari.com.vn	Nguyễn Bá Trung	trung.nb@ari.com.vn	273543661	102 Phan Văn Hớn, Tân Thới Nhất, Q12, TPHCM	0977405200	user-auth/abstract-user-flat-1.png	t	f	t	\N	MALE	1993-02-02 00:00:00	2010-10-20	BRVT
+188	aribalance2959@gmail.com	Trần hữu phúc	aribalance2959@gmail.com	19039023	100 Picity High Park	1900156000	user-auth/user/188/nha-cap-4.jpg	t	f	f	\N	MALE	2024-02-02 11:31:19	2024-02-02	BRVT
+15	uh_supermanager@getnada.com	UHouse Admin	uh_supermanager@getnada.com	334073408	7 Cộng Hòa, Phường 4, Tân Bình, thành phố Hồ Chí Minh	0865504141	user-auth/user/15/13920795_1032343573551361_2240448603143080786_n.jpeg	t	f	f	\N	FEMALE	2022-03-08 07:34:15	1993-02-02	Bà rịa vũng tàu
+190	tuong.pham94.uhouse@gmail.com	Phạm Nguyễn Duy Tường	tuong.pham94.uhouse@gmail.com	\N	\N	0888104961	user-auth/abstract-user-flat-1.png	t	f	f	\N	\N	\N	\N	\N
+191	0901894442	uhouse sale		027090009916		0901894442	user-auth/abstract-user-flat-1.png	t	f	f	\N	MALE	1990-03-20 00:00:00	2021-07-10	cục qltt xh
+192	huy.1508996@gmail.com	Huỳnh Thanh Huy	huy.1508996@gmail.com	079096029244	44 Hai Bà Trưng, P. Bến Nghé, Q.1	0392985406	user-auth/user/192/1674505168.117138_o_IMG_4999.JPG	t	f	f	\N	MALE	1996-08-15 00:00:00	2022-07-18	TPHCM
 \.
 
 
@@ -3912,87 +3491,90 @@ COPY public.app_user (id, username, name, email, identity_card, address, phone_n
 --
 
 COPY public.building (id, name, type, address, description, media, is_deleted, created_by, created_at, updated_at, updated_by, org_id, building_address_id) FROM stdin;
-5	Internet miễn phí phòng aaaaaaa	CHDV	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-10 05:23:25.186369	3	2	\N
-1	Hạnh Phúc Chi Nhánh 1	HOTEL	\N	\N	entity-service/building/1/1920px-Image_created_with_a_mobile_phone.png	t	3	\N	2022-05-06 10:54:40.268477	3	2	\N
-6	Hạnh Phúc Chi Nhánh 1	HOTEL	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-10 10:00:04.359127	3	2	\N
-2	test_ahaha	CHDV	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	1	\N	2022-05-06 11:03:18.119055	1	1	\N
-3	Hạnh Phúc Chi Nhánh 2	HOTEL	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-10 04:50:09.634816	3	2	\N
-9	KINA Building	CHDV	\N	\N	entity-service/building/9/Zoom_BG4_Bright-Office-jpg.jpeg	t	11	\N	2022-06-25 17:21:13.145598	11	7	\N
-7	Liberty	CHDV	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-11 02:52:14.335253	3	2	\N
-4	Hạnh Phúc Chi Nhánh 3	MOTEL	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-10 05:13:40.437381	3	2	\N
-10	Nguyễn Võ Thái Sơn	MOTEL	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	10	\N	2022-06-26 02:30:19.790616	10	6	\N
-11	Nguyen Ba Trung	CHDV	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	12	\N	2022-06-26 02:39:05.436308	12	9	\N
-8	Hạnh Phúc Chi Nhánh 4	CHDV	\N	\N	entity-service/building/default/landmark81-2.jpeg	t	3	\N	2022-05-13 07:26:57.058496	3	2	\N
-12	Etown	CHDV	100, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	12	\N	2022-06-27 15:13:37.175686	12	9	1
-13	Etown	CHDV	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	12	\N	2022-06-27 15:34:58.380104	12	9	2
-15	nhutran_test	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	16	\N	2022-06-28 02:50:29.64983	16	17	4
-16	HERA PALACE	CHDV	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/16/Zoom_BG4_Bright-Office-jpg.jpeg	f	11	\N	2022-06-28 02:56:17.104936	11	7	5
-17	Kim Ngân	CHDV	285 Cách Mạng Tháng Tám, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	11	\N	2022-06-29 07:14:15.34074	11	7	6
-18	Minh Tâm Hotel	HOTEL	7 Le Quang Dinh, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai	\N	entity-service/building/default/landmark81-2.jpeg	f	23	\N	2022-08-01 04:25:45.117795	23	19	7
-19	Tòa nhà My1	CHDV	123 Vo Van Ngan, Thành phố Thủ Đức, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	24	\N	2022-08-01 07:16:03.633113	24	20	8
-20	JADOO	CHDV	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	27	\N	2022-08-01 07:29:18.620885	27	22	9
-21	Như Town	HOTEL	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	32	\N	2022-08-02 03:41:04.978285	32	23	10
-22	Hạnh Phúc Chi Nhánh 1	MOTEL	Quận 7, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	17	\N	2022-08-02 14:19:33.159621	17	18	11
-23	P001	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	25	\N	2022-08-03 03:26:44.319408	25	21	12
-24	Adora	CHDV	100 Nguyễn Kiệm, Phú Nhuận, TPHCM, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	10	\N	2022-08-04 07:37:06.868044	10	6	13
-27	484/15B Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	36	\N	2022-08-09 05:41:20.011294	36	24	16
-26	484/15A Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	36	\N	2022-08-09 05:40:35.118531	36	24	15
-25	484/15 Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	36	\N	2022-08-09 05:39:49.713588	36	24	14
-28	120/30 Lê Văn Qưới	MOTEL	120/30 Lê Văn Qưới, P. BHHA, Q. Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	36	\N	2022-08-09 05:42:45.252009	36	24	17
-29	KIM NGÂN	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/29/MSG_FRONT.jpg	f	41	\N	2022-08-10 07:26:36.855772	41	25	18
-32	Ruby Town	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	45	\N	2022-08-10 10:30:35.289672	45	28	21
-31	KIM NGÂN	MOTEL	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/31/MSG_FRONT.jpg	f	44	\N	2022-08-10 09:23:38.157919	44	27	20
-33	Điêu Thuyền	HOTEL	777 Lê Duẩn, Phường 15, Quận Gò Vấp, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	23	\N	2022-08-10 13:37:23.948598	23	19	22
-34	KIM NGÂN BUILDING	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/34/ban-toa-nha-can-ho-dich-vu-quan-phu-nhuan-lien-ke-quan-3.jpg	f	51	\N	2022-08-12 08:42:30.239099	51	29	23
-35	Sunny Group	HOTEL	7 Lê Quang Định, Phường 04, Quận Phú Nhuận, Thành phố Hồ Chí Minh	\N	entity-service/building/35/toa_nha.jpg	f	55	\N	2022-09-05 10:30:53.83649	55	30	24
-36	Holiday Town	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	32	\N	2022-09-05 14:46:53.856213	32	23	25
-14	nhanvu_test	CHDV	74 Nguyễn Huệ, Phường Thống Nhất, Thành phố Buôn Ma Thuột, Tỉnh Đắk Lắk	\N	entity-service/building/default/landmark81-2.jpeg	t	16	\N	2022-06-27 15:39:46.237843	16	17	3
-37	HAVANA TOWN	HOTEL	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/37/city_street_building_sky_cars_trees_58871_2560x1600.jpg	f	62	\N	2022-09-06 08:06:23.981902	62	31	26
-30	KIM NGÂN	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/30/ban-toa-nha-can-ho-dich-vu-quan-phu-nhuan-lien-ke-quan-3.jpg	f	43	\N	2022-08-10 09:09:26.594487	43	26	19
-40	RUBY TOWN	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/40/859111.png	f	62	\N	2022-09-08 03:00:39.034278	62	31	29
-38	120/30 Le van quoi	MOTEL	120/30 le van quoi, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	59	\N	2022-09-08 03:00:31.343799	59	33	27
-41	120/30 le van quoi	MOTEL	129/30 le van quoi, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	59	\N	2022-09-08 03:40:57.354793	59	33	30
-58	MỸ LỆ	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	82	\N	2022-10-10 10:07:31.779313	82	35	47
-42	25/5 bông sao	MOTEL	25/5 bông sao, Phường 05, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/42/82A8676F-FA3F-4525-BC73-DBE661FE4EF2.jpeg	t	54	\N	2022-09-08 03:57:25.794124	54	32	31
-39	22/1 Nguyễn Hữu Tiến	MOTEL	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2022-09-08 03:00:34.323804	54	32	28
-44	Ruby 120/30 Lê văn quới	MOTEL	120/30 Lê văn quới, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	59	\N	2022-09-12 02:49:48.202371	59	33	33
-45	NHUTOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-19 03:02:16.783126	62	31	34
-46	HUYENTOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-19 08:20:39.517042	62	31	35
-47	RUBY	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	78	\N	2022-09-22 08:53:09.581634	78	34	36
-59	HOANG TOWN	CHDV	123 Lê Trọng Tấn, Phường Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-10-12 03:41:44.501009	62	31	48
-49	ARI TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-27 04:06:17.792266	62	31	38
-50	MẦM TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-27 06:48:23.131817	62	31	39
-48	LÊ VĂN QUỚI	MOTEL	120/30 Lê Văn Quới, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/48/Hình_2.jpg	f	78	\N	2022-09-23 07:07:58.803846	78	34	37
-51	CỎ TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-27 10:00:45.817516	62	31	40
-52	HOA TOWN	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	62	\N	2022-09-27 10:51:28.592132	62	31	41
-55	484/15A TÂN KỲ TÂN QUÝ	MOTEL	484/15A Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	78	\N	2022-10-03 09:41:34.079106	78	34	44
-56	NGÂN HÀ	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/56/tải_xuống.jfif	f	82	\N	2022-10-05 07:09:55.234199	82	35	45
-54	MƯA TOWN	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/54/tải_xuống.jfif	f	82	\N	2022-10-03 06:14:50.829706	82	35	43
-53	RAINTOWN	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/53/tải_xuống.jfif	f	82	\N	2022-10-03 04:19:36.257757	82	35	42
-61	SUNSHINE TOWN	HOTEL	22 Nguyễn Văn Săng, Phường Tân Sơn Nhì, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/61/Hình_1.jpg	f	62	\N	2022-11-03 02:34:10.049396	62	31	50
-43	19/5	MOTEL	Bùi Minh Trực, Phường 05, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2022-09-09 02:22:50.329802	54	32	32
-62	Motel	CHDV	25/5 bông sao phường 5 quận 8 HCM, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2022-11-26 06:35:39.579274	54	32	51
-65	TOÀ NHÀ PROD	HOTEL	155 Tôn Đức Thắng, Quận Hoàn Kiếm, Thành phố Hà Nội	\N	entity-service/building/default/landmark81-2.jpeg	t	123	\N	2022-12-02 09:11:33.259907	123	36	54
-60	Toà Nhà Quoc Verify Bug IOS	CHDV	123 Hà Nội, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	123	\N	2022-10-31 05:41:18.98406	123	36	49
-66	Tòa nhà 22/1 Nguyễn Hữu Tiến Tân Phú	MOTEL	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	54	\N	2022-12-13 07:42:49.879941	54	32	55
-63	Nhà trọ	MOTEL	25/5 bông sao phường 5q8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2022-11-26 06:48:57.214604	54	32	52
-64	E-Thao	CHDV	25/5 bông sao, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2022-12-02 02:23:56.177737	54	32	53
-67	Bùi Thị Xuân	MOTEL	162/2A Bùi Thị Xuân phường Bến Thành Q1, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-02-08 10:16:57.64678	54	32	56
-57	246 THẠCH LAM	MOTEL	246 Thạch Lam, Phường Phú Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/57/dadwbf-tin-jpg-202305161425426s7u2dK3wF.jpeg	f	78	\N	2022-10-10 08:20:08.538686	78	34	46
-69	Bùi Minh Trực	MOTEL	162 A Bùi Minh Trực f5q8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-03-08 04:49:09.30764	54	32	58
-68	162/2A Bùi Thị Xuân	MOTEL	162/2A Bùi Thị Xuân ,Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-02-08 10:23:09.615762	54	32	57
-70	25/5 bông sao	MOTEL	25/5 bông sao phường 5 quận 8, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-03-09 01:37:46.587431	54	32	59
-71	238/20 Liên tỉnh 5 p6 q8 TPHCM	CHDV	238/20 Liên tỉnh 5 phường 6 , quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	165	\N	2023-03-09 03:36:45.318603	165	38	60
-74	Mekong Q4	CHDV	273bis Tôn Thất Thuyết Phường 03 Quận 04, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	164	\N	2023-03-09 04:57:17.845065	164	39	63
-72	25/5. Bông sao	MOTEL	25/5 bông sao phường 5 quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-03-09 03:45:18.079095	54	32	61
-73	238/20 1 Liên Tỉnh 5 p6 q8 TPHCM	CHDV	238/20 1 Liên Tỉnh 5 p6 q8 TPHCM, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	165	\N	2023-03-09 03:46:28.373951	165	38	62
-76	98 đường 28 phường bình trị đông B quận bình Tân	CHDV	98 đường 28 bình trị đông B quận Bình Tân, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-04-10 08:28:31.377397	54	32	65
-75	Chung cư Bùi Minh Trực	MOTEL	162 A Bùi Minh Trực quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	t	54	\N	2023-03-30 01:13:01.082127	54	32	64
-77	Tòa nhà Vinpearl	HOTEL	Quận 1, Thành phố Hà Nội	\N	entity-service/building/default/landmark81-2.jpeg	t	17	\N	2023-05-16 04:02:58.324979	17	18	66
-78	Topaz Home	CHDV	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	181	\N	2023-05-30 01:48:34.767415	181	42	67
-79	Topaz Home	CHDV	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	entity-service/building/79/31492749716_topaz-home-phoi-canh.jpeg	f	175	\N	2023-08-01 05:09:17.280241	175	41	68
-80	Xuân Phú	CHDV	777 Lê Duẩn, Tỉnh Thừa Thiên Huế	\N	entity-service/building/default/landmark81-2.jpeg	f	10	\N	2023-11-23 10:56:10.131117	10	6	69
-81	463B/36 Cách Mạng Tháng 8	CHDV	463B/36B, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/default/landmark81-2.jpeg	f	54	\N	2024-01-02 03:39:39.717411	54	32	70
+36	Holiday Town	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	32	\N	2022-09-05 14:46:53.856213	32	23	25
+35	Sunny Group	HOTEL	7 Lê Quang Định, Phường 04, Quận Phú Nhuận, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	55	\N	2022-09-05 10:30:53.83649	55	30	24
+34	KIM NGÂN BUILDING	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	51	\N	2022-08-12 08:42:30.239099	51	29	23
+33	Điêu Thuyền	HOTEL	777 Lê Duẩn, Phường 15, Quận Gò Vấp, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	23	\N	2022-08-10 13:37:23.948598	23	19	22
+32	Ruby Town	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	45	\N	2022-08-10 10:30:35.289672	45	28	21
+31	KIM NGÂN	MOTEL	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	44	\N	2022-08-10 09:23:38.157919	44	27	20
+30	KIM NGÂN	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	43	\N	2022-08-10 09:09:26.594487	43	26	19
+29	KIM NGÂN	CHDV	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	41	\N	2022-08-10 07:26:36.855772	41	25	18
+28	120/30 Lê Văn Qưới	MOTEL	120/30 Lê Văn Qưới, P. BHHA, Q. Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	36	\N	2022-08-09 05:42:45.252009	36	24	17
+27	484/15B Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	36	\N	2022-08-09 05:41:20.011294	36	24	16
+26	484/15A Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	36	\N	2022-08-09 05:40:35.118531	36	24	15
+25	484/15 Tân Kỳ Tân Quý	MOTEL	484/15B Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	36	\N	2022-08-09 05:39:49.713588	36	24	14
+24	Adora	CHDV	100 Nguyễn Kiệm, Phú Nhuận, TPHCM, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	10	\N	2022-08-04 07:37:06.868044	10	6	13
+23	P001	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	25	\N	2022-08-03 03:26:44.319408	25	21	12
+22	Hạnh Phúc Chi Nhánh 1	MOTEL	Quận 7, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	17	\N	2022-08-02 14:19:33.159621	17	18	11
+21	Như Town	HOTEL	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	32	\N	2022-08-02 03:41:04.978285	32	23	10
+20	JADOO	CHDV	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	27	\N	2022-08-01 07:29:18.620885	27	22	9
+19	Tòa nhà My1	CHDV	123 Vo Van Ngan, Thành phố Thủ Đức, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	24	\N	2022-08-01 07:16:03.633113	24	20	8
+18	Minh Tâm Hotel	HOTEL	7 Le Quang Dinh, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai	\N	entity-service/building/78/nha-cap-4.jpg	f	23	\N	2022-08-01 04:25:45.117795	23	19	7
+17	Kim Ngân	CHDV	285 Cách Mạng Tháng Tám, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	11	\N	2022-06-29 07:14:15.34074	11	7	6
+16	HERA PALACE	CHDV	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	11	\N	2022-06-28 02:56:17.104936	11	7	5
+15	nhutran_test	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	16	\N	2022-06-28 02:50:29.64983	16	17	4
+14	nhanvu_test	CHDV	74 Nguyễn Huệ, Phường Thống Nhất, Thành phố Buôn Ma Thuột, Tỉnh Đắk Lắk	\N	entity-service/building/78/nha-cap-4.jpg	t	16	\N	2022-06-27 15:39:46.237843	16	17	3
+13	Etown	CHDV	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	12	\N	2022-06-27 15:34:58.380104	12	9	2
+12	Etown	CHDV	100, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	12	\N	2022-06-27 15:13:37.175686	12	9	1
+11	Nguyen Ba Trung	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	12	\N	2022-06-26 02:39:05.436308	12	9	\N
+10	Nguyễn Võ Thái Sơn	MOTEL	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	10	\N	2022-06-26 02:30:19.790616	10	6	\N
+9	KINA Building	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	11	\N	2022-06-25 17:21:13.145598	11	7	\N
+8	Hạnh Phúc Chi Nhánh 4	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-13 07:26:57.058496	3	2	\N
+7	Liberty	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-11 02:52:14.335253	3	2	\N
+6	Hạnh Phúc Chi Nhánh 1	HOTEL	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-10 10:00:04.359127	3	2	\N
+5	Internet miễn phí phòng aaaaaaa	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-10 05:23:25.186369	3	2	\N
+4	Hạnh Phúc Chi Nhánh 3	MOTEL	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-10 05:13:40.437381	3	2	\N
+3	Hạnh Phúc Chi Nhánh 2	HOTEL	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-10 04:50:09.634816	3	2	\N
+2	test_ahaha	CHDV	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	1	\N	2022-05-06 11:03:18.119055	1	1	\N
+1	Hạnh Phúc Chi Nhánh 1	HOTEL	\N	\N	entity-service/building/78/nha-cap-4.jpg	t	3	\N	2022-05-06 10:54:40.268477	3	2	\N
+70	25/5 bông sao	MOTEL	25/5 bông sao phường 5 quận 8, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-03-09 01:37:46.587431	54	32	59
+69	Bùi Minh Trực	MOTEL	162 A Bùi Minh Trực f5q8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-03-08 04:49:09.30764	54	32	58
+68	162/2A Bùi Thị Xuân	MOTEL	162/2A Bùi Thị Xuân ,Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-02-08 10:23:09.615762	54	32	57
+67	Bùi Thị Xuân	MOTEL	162/2A Bùi Thị Xuân phường Bến Thành Q1, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-02-08 10:16:57.64678	54	32	56
+66	Tòa nhà 22/1 Nguyễn Hữu Tiến Tân Phú	MOTEL	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	54	\N	2022-12-13 07:42:49.879941	54	32	55
+65	TOÀ NHÀ PROD	HOTEL	155 Tôn Đức Thắng, Quận Hoàn Kiếm, Thành phố Hà Nội	\N	entity-service/building/78/nha-cap-4.jpg	t	123	\N	2022-12-02 09:11:33.259907	123	36	54
+64	E-Thao	CHDV	25/5 bông sao, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-12-02 02:23:56.177737	54	32	53
+63	Nhà trọ	MOTEL	25/5 bông sao phường 5q8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-11-26 06:48:57.214604	54	32	52
+62	Motel	CHDV	25/5 bông sao phường 5 quận 8 HCM, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-11-26 06:35:39.579274	54	32	51
+61	SUNSHINE TOWN	HOTEL	22 Nguyễn Văn Săng, Phường Tân Sơn Nhì, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-11-03 02:34:10.049396	62	31	50
+60	Toà Nhà Quoc Verify Bug IOS	CHDV	123 Hà Nội, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	123	\N	2022-10-31 05:41:18.98406	123	36	49
+59	HOANG TOWN	CHDV	123 Lê Trọng Tấn, Phường Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-10-12 03:41:44.501009	62	31	48
+58	MỸ LỆ	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	82	\N	2022-10-10 10:07:31.779313	82	35	47
+57	246 THẠCH LAM	MOTEL	246 Thạch Lam, Phường Phú Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	78	\N	2022-10-10 08:20:08.538686	78	34	46
+56	NGÂN HÀ	HOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	82	\N	2022-10-05 07:09:55.234199	82	35	45
+55	484/15A TÂN KỲ TÂN QUÝ	MOTEL	484/15A Tân Kỳ Tân Quý, Phường Sơn Kỳ, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	78	\N	2022-10-03 09:41:34.079106	78	34	44
+54	MƯA TOWN	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	82	\N	2022-10-03 06:14:50.829706	82	35	43
+53	RAINTOWN	CHDV	7 Cộng Hòa, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	82	\N	2022-10-03 04:19:36.257757	82	35	42
+52	HOA TOWN	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-27 10:51:28.592132	62	31	41
+51	CỎ TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-27 10:00:45.817516	62	31	40
+50	MẦM TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-27 06:48:23.131817	62	31	39
+49	ARI TOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-27 04:06:17.792266	62	31	38
+48	LÊ VĂN QUỚI	MOTEL	120/30 Lê Văn Quới, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	78	\N	2022-09-23 07:07:58.803846	78	34	37
+47	RUBY	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	78	\N	2022-09-22 08:53:09.581634	78	34	36
+46	HUYENTOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-19 08:20:39.517042	62	31	35
+45	NHUTOWN	CHDV	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-19 03:02:16.783126	62	31	34
+44	Ruby 120/30 Lê văn quới	MOTEL	120/30 Lê văn quới, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	59	\N	2022-09-12 02:49:48.202371	59	33	33
+43	19/5	MOTEL	Bùi Minh Trực, Phường 05, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-09-09 02:22:50.329802	54	32	32
+42	25/5 bông sao	MOTEL	25/5 bông sao, Phường 05, Quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-09-08 03:57:25.794124	54	32	31
+41	120/30 le van quoi	MOTEL	129/30 le van quoi, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	59	\N	2022-09-08 03:40:57.354793	59	33	30
+40	RUBY TOWN	MOTEL	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-08 03:00:39.034278	62	31	29
+39	22/1 Nguyễn Hữu Tiến	MOTEL	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2022-09-08 03:00:34.323804	54	32	28
+38	120/30 Le van quoi	MOTEL	120/30 le van quoi, Phường Bình Hưng Hoà A, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	59	\N	2022-09-08 03:00:31.343799	59	33	27
+78	Topaz Home	CHDV	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	181	\N	2023-05-30 01:48:34.767415	181	42	67
+83	Uhouse Trần Quang Khải	CHDV	208 Trần Quang Khải, Phường Tân Định, Quận 1, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	189	\N	2024-03-23 16:18:59.343471	189	43	72
+82	Số 33 đường Thái Ly	CHDV	Số 33 đường Thái Ly , phường Thảo Điền , Quận 2 , Thành phố Thủ Đức, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	190	\N	2024-03-22 03:54:16.980945	190	44	71
+81	463B/36 Cách Mạng Tháng 8	CHDV	463B/36B, Quận 10, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	54	\N	2024-01-02 03:39:39.717411	54	32	70
+80	Xuân Phú	CHDV	777 Lê Duẩn, Tỉnh Thừa Thiên Huế	\N	entity-service/building/78/nha-cap-4.jpg	f	10	\N	2023-11-23 10:56:10.131117	10	6	69
+79	Topaz Home	CHDV	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	175	\N	2023-08-01 05:09:17.280241	175	41	68
+77	Tòa nhà Vinpearl	HOTEL	Quận 1, Thành phố Hà Nội	\N	entity-service/building/78/nha-cap-4.jpg	t	17	\N	2023-05-16 04:02:58.324979	17	18	66
+76	98 đường 28 phường bình trị đông B quận bình Tân	CHDV	98 đường 28 bình trị đông B quận Bình Tân, Quận Bình Tân, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-04-10 08:28:31.377397	54	32	65
+75	Chung cư Bùi Minh Trực	MOTEL	162 A Bùi Minh Trực quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-03-30 01:13:01.082127	54	32	64
+74	Mekong Q4	CHDV	273bis Tôn Thất Thuyết Phường 03 Quận 04, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	164	\N	2023-03-09 04:57:17.845065	164	39	63
+73	238/20 1 Liên Tỉnh 5 p6 q8 TPHCM	CHDV	238/20 1 Liên Tỉnh 5 p6 q8 TPHCM, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	165	\N	2023-03-09 03:46:28.373951	165	38	62
+72	25/5. Bông sao	MOTEL	25/5 bông sao phường 5 quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	t	54	\N	2023-03-09 03:45:18.079095	54	32	61
+71	238/20 Liên tỉnh 5 p6 q8 TPHCM	CHDV	238/20 Liên tỉnh 5 phường 6 , quận 8, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	165	\N	2023-03-09 03:36:45.318603	165	38	60
+37	HAVANA TOWN	HOTEL	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	entity-service/building/78/nha-cap-4.jpg	f	62	\N	2022-09-06 08:06:23.981902	62	31	26
+84	Picity	CHDV	100, Thành phố Hồ Chí Minh	\N	entity-service/building/84/nha-cap-4.jpg	f	188	\N	2024-05-06 07:03:10.542809	188	46	73
 \.
 
 
@@ -4071,6 +3653,9 @@ COPY public.building_address (id, detail, province, district, ward) FROM stdin;
 68	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12	Thành phố Hồ Chí Minh	\N	\N
 69	777 Lê Duẩn	Tỉnh Thừa Thiên Huế	\N	\N
 70	463B/36B	Thành phố Hồ Chí Minh	Quận 10	\N
+71	Số 33 đường Thái Ly , phường Thảo Điền , Quận 2 , Thành phố Thủ Đức	Thành phố Hồ Chí Minh	\N	\N
+72	208 Trần Quang Khải, Phường Tân Định	Thành phố Hồ Chí Minh	Quận 1	\N
+73	100	Thành phố Hồ Chí Minh	\N	\N
 \.
 
 
@@ -4092,6 +3677,7 @@ COPY public.building_content (id, building_id, content, slug, created_at, update
 14	48	<p>Hẻm Lê Văn Quới có chiều rộng khoảng 4m, gần ngã tư Bốn Xã, cách trung tâm Quận 1 chỉ tầm 20p đi xe máy:</p><ul style="list-style-type: square;"><li>Gần các quán cà phê, quán ăn không lo buồn, đói</li><li>Gần cây xăng, cây ATM không lo hết tiền, không lo phương tiện đi lại</li></ul>	le_van_quoi_48	2022-10-12 04:18:14.738002	2022-10-12 04:24:22.078851	78	78	f
 15	48	<p>Hẻm Lê Văn Quới có chiều rộng khoảng 4m, gần ngã tư Bốn Xã, cách trung tâm Quận 1 chỉ tầm 20p đi xe máy:</p><ul style="list-style-type: square;"><li>Gần các quán cà phê, quán ăn không lo buồn, đói</li><li>Gần cây xăng, cây ATM không lo hết tiền, không lo phương tiện đi lại</li></ul>	le_van_quoi_48	2022-10-12 04:20:21.613838	2022-10-12 04:24:22.078851	78	78	f
 11	47	<p>Tòa nhà RUBY tọa lạc trên đường Cộng Hòa trung tâm quận Tân Bình, con đường sầm uất đầy ắp tiện nghi:</p><ul style="list-style-type: square;"><li>Nằm gần Vincom cách bởi đường Nguyễn Thái Bình.</li><li>Gần các quán cà phê nổi tiếng như Phúc Long, Katinat, Higlands, Hồng Trà Ngô Gia,...</li><li>Gần chợ Phạm Văn 2 ngập tràn những quán ăn chuẩn tiêu chí ngon, bổ, rẻ.</li><li>Gần cây xăng, tiệm bán đồ gia dụng, Thế giới di động, cây ATM,...</li><li>Gần sân bay quốc tế Tân Sơn Nhất.</li></ul>	ruby_47	2022-10-11 07:38:13.631164	2022-10-11 08:08:45.487471	78	78	f
+25	68	<p>Nhà nguyên căn (4x12): Không gian yên tĩnh giữa trung tâm sầm uất</p><ul><li> 1 trệt, 1 lầu, 3 phòng ngủ, 2 WC</li><li>Gần trung tâm thương mại, chợ, trường học, bệnh viện và nhiều tiện ích xã hội khác.</li><li>Không gian bếp nấu rộng rãi, có sẵn bếp điện</li><li>Máy lạnh đã được lắp đặt sẵn cho cho từng phòng</li></ul><p><br></p>	162/2a_bui_thi_xuan_68	2023-02-08 10:25:06.434154	2023-02-11 03:08:50.036969	54	54	f
 12	47	<p>Tòa nhà RUBY tọa lạc trên đường Cộng Hòa trung tâm quận Tân Bình, con đường sầm uất đầy ắp tiện nghi:</p><ul style="list-style-type: square;"><li>Nằm gần Vincom cách bởi đường Nguyễn Thái Bình.</li><li>Gần các quán cà phê nổi tiếng như Phúc Long, Katinat, Higlands, Hồng Trà Ngô Gia,...</li><li>Gần chợ Phạm Văn 2 ngập tràn những quán ăn chuẩn tiêu chí ngon, bổ, rẻ.</li><li>Gần cây xăng, tiệm bán đồ gia dụng, Thế giới di động, cây ATM,...</li><li>Gần sân bay quốc tế Tân Sơn Nhất.</li></ul>	ruby_47	2022-10-11 07:41:28.369393	2022-10-11 08:08:45.487471	78	78	f
 13	47	<p>Tòa nhà RUBY tọa lạc trên đường Cộng Hòa trung tâm quận Tân Bình, con đường sầm uất đầy ắp tiện nghi:</p><ul style="list-style-type: square;"><li>Nằm gần Vincom cách bởi đường Nguyễn Thái Bình.</li><li>Gần các quán cà phê nổi tiếng như Phúc Long, Katinat, Higlands, Hồng Trà Ngô Gia,...</li><li>Gần chợ Phạm Văn 2 ngập tràn những quán ăn chuẩn tiêu chí ngon, bổ, rẻ.</li><li>Gần cây xăng, tiệm bán đồ gia dụng, Thế giới di động, cây ATM,...</li><li>Gần sân bay quốc tế Tân Sơn Nhất.</li></ul>	ruby_47	2022-10-11 07:42:17.34866	2022-10-11 08:08:45.487471	78	78	f
 19	57	<p>Tòa nhà 246 THẠCH LAM tọa lạc trên cung đường nhiều quán xá, cửa hàng và khu giả trí rèn luyện sức khỏe:</p><ul style="list-style-type: square;"><li>Gần các quán cà phê nổi tiếng như Phúc Long, Higlands,....</li><li>Gần sân bóng đá, sân cầu lông thỏa sức vui chơi giải trí và giao lưu sau giờ làm việc, giờ học</li><li>Gần cây xăng, tiệm bán đồ gia dụng, Thế giới di động, cây ATM,...</li><li>Gần siêu thị lớn GO!, gần bệnh viện, nhiều quán ăn với ẩm thực đa dạng,...</li></ul>	246_thach_lam_57	2022-10-13 03:41:36.20055	2022-10-13 03:41:36.20055	78	78	f
@@ -4107,7 +3693,6 @@ COPY public.building_content (id, building_id, content, slug, created_at, update
 36	81	<p>Tòa nhà mới xây căn hộ dịch vụ đầy đủ tiện nghi , xách Vali vô là ở .Tòa nhà ngay vị trí trung tâm q10 , dI chuyển thuận lợi , gần khu vực chợ , trường học&nbsp;</p><p>Di chuyển qua các quận trung tâm chỉ 5 phút như q1,q3</p>	463b/36_cach_mang_thang_8_81	2024-01-02 03:47:57.153678	2024-01-22 06:52:53.247708	54	54	f
 37	81	<p>Tòa nhà mới xây căn hộ dịch vụ đầy đủ tiện nghi , xách Vali vô là ở .Tòa nhà ngay vị trí trung tâm q10 , dI chuyển thuận lợi , gần khu vực chợ , trường học&nbsp;</p><p>Di chuyển qua các quận trung tâm chỉ 5 phút như q1,q3</p>	463b/36_cach_mang_thang_8_81	2024-01-02 03:47:57.465954	2024-01-22 06:52:53.247708	54	54	f
 38	78	<p>Khu căn hộ Topaz Home&nbsp;là sự tiếp nối và kế thừa những thành công từ chuỗi dự án mang thương hiệu Topaz như Topaz Garden, Topaz City, Topaz Center với các sản phẩm đáp ứng, chiều lòng và nhận được nhiều sự lựa chọn, tin tưởng nhiều nhất từ khách hàng. Ngay sau khi ra mắt, căn hộ Topaz Home dường như cháy hàng, một sản phẩm vừa túi tiền phù hợp với nhiều bạn trẻ, nhân viên văn phòng có mức thu nhập trung bình vẫn có thể sở hữu riêng cho mình một căn hộ mang phong cách Singapore hiện đại, gần gũi với thiên nhiên. Bên cạnh sự thuận lợi từ giao thông qua các tuyến đường huyết mạch Topaz Home còn nâng cao giá trị cuộc sống với những tiện ích xung quanh như vườn treo, hồ bơi, trung tâm thương mại, siêu thị, cafe, nhà hàng, v.v hệ thống an ninh 24/24. Vị trí Chung cư Topaz Home&nbsp;nằm tại số 102 đường Phan Văn Hớn, phường Tân Thới Nhất,&nbsp;Quận 12, TP.HCM. Đây là một trong các tuyến đường quan trọng nhất của quận 12, nơi đây tập trung nhiều dịch vụ, tiện ích, sầm uất bậc nhất đem đến lợi nhuận tối đa cho cư dân. Khoảng cách từ Topaz Home đến:&nbsp; Sân bay Tân Sơn Nhất 4,7kmBến Thành 10,8kmTrường THCS Nguyễn Vĩnh Nghiệp 800mTrường Thcs - Thpt Chất lượng cao Khai Minh 1,6kmTrường Tiểu học Tân Trụ 1,6kmTrường Tiểu học Lý Tự Trọng 900mTiện ích Tiện ích nội khu Căn hộ Topaz Home&nbsp;được thiết kế theo phong cách kiến trúc Singapore tinh tế, hiện đại, gần gũi với thiên nhiên, đặc biệt tốt cho sức khỏe, những mảng xanh được bố trí hài hòa với những block bên trong dự án. Để đáp ứng như cầu sinh hoạt hàng ngày, căn hộ Topaz Home cung cấp rất nhiều những dịch vụ tiện ích như trung tâm mua sắm, hồ bơi, khu vui chơi giải trí cho trẻ em, gym, spa, cafe... Tiện ích ngoại khu Chung cư Topaz Home quận 12 tọa lạc trong khuôn viên dân cư thương mại dịch vụ đông đúc, diện tích 38 ha với hạ tầng đồng bộ để phát triển khu đô thị mới. Dự án mang đến cho bạn cuộc sống đẳng cấp với các tiện nghi trong vòng bán kính 2km, gồm: - Trung tâm thương mại - Trung tâm tài chính - Nhà hàng - Bệnh viện - Hệ thống trường học khép kín từ mẫu giáo tới đại học - Nhà hát lớn - Khách sạn 3-5 sao - Khu văn hóa, vui chơi, giải trí Bên cạnh đó, dự án còn nằm&nbsp;ngay cạnh các tuyến đường lớn có ảnh hưởng đến sự phát triển thành phố như gần tuyến tàu điện ngầm Metro - Bến Thành, gần nút giao thông trọng điểm kết nối miền Tây - miền Đông, gần sân bay Quốc Tế Tân Sơn Nhất… Mặt bằng - Thiết kế&nbsp; - Căn hộ Topaz Home quận &nbsp;12 được thiết kế theo phong cách Singapore gồm có 8 Block( A1, A2, A3, A4, B1, B2, C1, C2). - Diện tích 43,39m2 đến 60,09m2: Thiết kế 2 phòng ngủ - Diện tích 69,11m2: Thiết kế 3 phòng ngủ- Với mặt bằng tầng chỉ có 9 căn trên 1 tầng, 3 thang máy phục vụ tốt nhất việc di chuyển của bạn. - Là căn hộ tối ưu nhất căn hộ quận 12 Dự án&nbsp;Topaz Home quận 12&nbsp;được xây dựng với mật độ thấp, chỉ chiếm 55% tổng diện tích. Mảng xanh và tiện ích được chú trọng nhiêu hơn như thiết kế công viên cây xanh, lối đi bộ, hồ bơi, trung tâm thương mại, phòng gym,...</p>	topaz_home_78	2024-02-02 03:15:14.77053	2024-02-02 03:15:14.77053	181	181	f
-25	68	<p>Nhà nguyên căn (4x12): Không gian yên tĩnh giữa trung tâm sầm uất</p><ul><li> 1 trệt, 1 lầu, 3 phòng ngủ, 2 WC</li><li>Gần trung tâm thương mại, chợ, trường học, bệnh viện và nhiều tiện ích xã hội khác.</li><li>Không gian bếp nấu rộng rãi, có sẵn bếp điện</li><li>Máy lạnh đã được lắp đặt sẵn cho cho từng phòng</li></ul><p><br></p>	162/2a_bui_thi_xuan_68	2023-02-08 10:25:06.434154	2023-02-11 03:08:50.036969	54	54	f
 26	69	<p>nhà nguyên căn .1 trệt 1 lầu .</p><p>Nhà rộng rãi .tiện cho kinh doanh buôn bán&nbsp;</p><p><br></p>	bui_minh_truc_69	2023-03-08 04:52:27.314258	2023-03-08 04:52:27.314258	54	54	f
 27	70	<p>nhà rộng đẹp ! Sạch sẽ ! Thoáng ! Tiện nghi đầy đủ&nbsp;</p>	25/5_bong_sao_70	2023-03-09 01:39:08.268386	2023-03-09 01:39:08.268386	54	54	f
 28	72	<p>nhà trọ ! Nhiều tiện ít &nbsp;không gian riêng tư thoải mái&nbsp;</p><p><br></p>	25/5._bong_sao_72	2023-03-09 03:53:30.749712	2023-03-09 03:53:30.749712	54	54	f
@@ -4117,6 +3702,7 @@ COPY public.building_content (id, building_id, content, slug, created_at, update
 32	75	<p>chung cư mới đẹp , gần công viên , gần chợ , trường học ...</p>	chung_cu_bui_minh_truc_75	2023-03-30 01:14:25.271418	2023-03-30 01:14:25.271418	54	54	f
 33	76	<p>nhà nguyên căn 1 trệt 2 lầu + Sân thượng&nbsp;</p><p>khu đường trung tâm ,mặt tiền đường&nbsp;</p><p>thuận tiện việc kinh doanh&nbsp;</p>	98_duong_28_phuong_binh_tri_dong_b_quan_binh_tan_76	2023-04-10 08:31:39.443474	2023-04-10 08:31:39.443474	54	54	f
 34	66	<p>Toà nhà 463B/36 Cách Mạng Tháng 8</p>	toa_nha_22/1_nguyen_huu_tien_tan_phu_66	2024-01-02 03:35:11.954513	2024-01-02 03:35:11.954513	54	54	f
+39	83	<p>Toà nhà 208 Trần Quang Khải, Phường Tân Định, Quận 1</p>	uhouse_tran_quang_khai_83	2024-03-23 16:21:40.407601	2024-03-23 16:21:40.407601	189	189	f
 \.
 
 
@@ -4408,6 +3994,16 @@ COPY public.building_media (id, name, created_at, updated_at, updated_by, buildi
 90	entity-service/building/79/31492749716_topaz-home-phoi-canh.jpeg	2023-08-01 05:16:49.042	2023-08-01 05:16:49.275	175	79	t	510726	IMAGE
 91	entity-service/building/81/IMG_4835.jpeg	2024-01-22 07:01:43.901	2024-01-22 07:01:44.16	54	81	f	334487	IMAGE
 92	entity-service/building/81/IMG_4836.jpeg	2024-01-22 07:01:44.849	2024-01-22 07:01:44.991	54	81	f	216879	IMAGE
+104	entity-service/building/82/z5273291428879_5321646f06d7a4a8e3d7c2ce39233602.jpg	2024-03-22 04:12:50.002	2024-03-22 04:12:50.02	190	82	f	170686	IMAGE
+105	entity-service/building/82/z5273291440877_664c3c293ebcfbdf5d3dadeeaf701223.jpg	2024-03-22 04:12:50.471	2024-03-22 04:12:50.483	190	82	f	146716	IMAGE
+106	entity-service/building/82/z5273291446993_94a542f8493cdc119e9ca9f939f124ae.jpg	2024-03-22 04:12:51.941	2024-03-22 04:12:51.954	190	82	f	183196	IMAGE
+107	entity-service/building/82/z5273291448528_001e42ce739cf13f0888bd075fd92bc1.jpg	2024-03-22 04:12:52.428	2024-03-22 04:12:52.442	190	82	f	161978	IMAGE
+108	entity-service/building/82/z5273291452222_158460ed2737115abdc101d38e9f0ce5.jpg	2024-03-22 04:12:52.908	2024-03-22 04:12:52.92	190	82	f	174445	IMAGE
+109	entity-service/building/82/z5273291463974_0b4cc0f9b0d1ede00ef9565b59ee4c14.jpg	2024-03-22 04:12:53.41	2024-03-22 04:12:53.439	190	82	f	132720	IMAGE
+110	entity-service/building/82/z5273291473225_8e1582f0b55aff4ff6278a5e414b6bfc.jpg	2024-03-22 04:12:53.85	2024-03-22 04:12:53.863	190	82	f	157422	IMAGE
+111	entity-service/building/82/z5273291478779_9c1d418a4a466a54c7f0111427dbc21a.jpg	2024-03-22 04:12:54.371	2024-03-22 04:12:54.384	190	82	f	219726	IMAGE
+112	entity-service/building/78/nha-cap-4.jpg	2024-05-04 03:24:42.79	2024-05-04 03:24:42.815	181	78	t	198963	IMAGE
+113	entity-service/building/84/nha-cap-4.jpg	2024-05-06 07:03:25.598	2024-05-06 07:03:25.614	188	84	t	198963	IMAGE
 \.
 
 
@@ -4452,6 +4048,7 @@ COPY public.building_rule (id, regulation, content, building_id) FROM stdin;
 35	NỘI QUY KHU CĂN HỘ	1.\tThực hiện nghiêm túc quy định đăng ký tạm trú tại địa phương & các quy định pháp luật khác có liên quan(Sống-Làm việc theo hiến pháp và pháp luật Việt Nam).\n2.\tKHÔNG tổ chức các hoạt động tệ nạn xã hội, mua bán các sản phẩm (chất) cấm, truyền bá văn hoá đồi truỵ, lưu trữ, phát tán các tài liệu mang tính chống phá Nhà nước Việt Nam.\n3.\tTuân thủ nghiêm ngặt các quy định về an toàn PHÒNG CHỐNG CHÁY NỔ, vệ sinh môi trường (QUAN TRỌNG):\n3.1.\tKHÔNG mua bán, tàn trữ các chất dễ gây cháy nổ, hoá chất độc hại làm ảnh hưởng đến tính mạng, tài sản & gây ô nghiễm môi trường sống trong khu dân cư.\n3.2.\tKHÔNG đốt lửa, hút thuốc, vứt tàn thuốc ở hành lang, thang máy, nhà xe, khu nhà MEKONG…\n3.3.\tTẮT các thiết bị điện khi sử dụng xong, xem lại trước & sau khi rời khỏi phòng, KHÔNG để phát sinh lửa mất kiểm soát khi thắp nhang thờ cúng…\n3.4.\tBỏ rác đúng nơi quy định, KHÔNG vứt rác bừa bãi ra hành lang, KHÔNG sử dụng hành lang để vật dụng cá nhân riêng.\n4.\tKiểm tra tình trạng an toàn của xe khi đưa v	74
 36	Không sử dụng chất kích thích	Nghiêm cấm sử dụng tàn trữ các loại kích thích trong tòa nhà	81
 37	Không được nuôi thú cưng	Không được nuôi thú cưng \nKhông sử dụng , tàng trữ chất cấm \nKhông gây ồn ào mất trật tự sau giờ cao điểm	81
+38	Không gây ồn ào mất trật tự	Không gây ồn ào , mất trật tự ảnh hưởng bên trong cũng như bên ngoài tòa nhà .	82
 \.
 
 
@@ -4558,6 +4155,20 @@ COPY public.building_utility (building_id, utility_id, name, description, image,
 81	\N	Soffa thời trang , đẹp	Soffa thời trang đẹp	string	101
 81	\N	Máy giặt riêng	Được trang bị máy giặt riêng cho từng phòng	string	102
 81	\N	Bếp điện	Bếp điện từ !! Giúp bạn dễ dàng nấu các món ngon	string	103
+82	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	104
+82	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	105
+82	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	106
+82	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	107
+82	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	109
+82	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	110
+82	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	111
+82	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	112
+83	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	113
+83	\N	Thang máy	Tòa nhà được trang bị thang máy	string	114
+83	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	115
+83	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	116
+83	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	117
+83	\N	Thú cưng	Được phép nuôi thú cưng nhỏ, sạch sẽ, không làm ồn trong phòng	string	118
 \.
 
 
@@ -4581,6 +4192,7 @@ COPY public.contract_addendum (id, code, type, rental_contract_id, room_id, tena
 13	HĐT_23_03_A001_114_PLGH_1	EXTENTION	131	172	Nguyễn Văn B	3762450846	2024-08-01 00:00:00	CREATE_NEW	\N	2023-03-13 03:12:58.03	2023-03-13 03:13:21.281588	\N
 14	HĐT_22_10_001_59_PLGH_1	EXTENTION	76	46	Nguyễn Sơn	0393442205	2024-03-31 00:00:00	CREATE_NEW	\N	2023-05-09 02:14:35.957	2023-05-09 02:15:12.10498	entity-service/extention-contract/HĐT_22_10_001_59_PLGH_1/28f86694-a81e-42c4-b0c4-70c110b603c4.pdf
 15	HĐT_23_05_003_146_PLGH_1	EXTENTION	163	331	Hoàng Thiên	0000000007	2024-03-01 00:00:00	SIGNED_BY_GUESS	2023-05-16 02:08:55.615	2023-05-16 02:07:52.153	2023-05-16 02:08:22.945043	\N
+16	HĐT_24_03_101_180_PLGH_1	EXTENTION	197	349	2	07940654545	2026-09-01 00:00:00	SIGNED_BY_GUESS	2024-03-22 04:56:07.836	2024-03-22 04:54:53.959	2024-03-22 04:56:02.925395	\N
 \.
 
 
@@ -4591,81 +4203,82 @@ COPY public.contract_addendum (id, code, type, rental_contract_id, room_id, tena
 COPY public.deposit_contract (id, deposit_contract_code, status, address, deposit_number, pdf_template, note, rental_term, from_date, end_date, name_pdf, file_path, status_payment, date_payment, price, acreage, tenant, room_id, rental_contract_id, is_deleted, updated_at, created_at, created_by_id, updated_by_id, deposit_number_string, sign_by_lessor_date, sign_by_tenant_date, effective_date, deposit_day, is_liquidated, deposit_reservation, is_rented) FROM stdin;
 96	HĐC_22_10_CHDV-01_66	SIGNED_BY_GUESS	123 Lê Trọng Tấn, Phường Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh	700000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	36	2022-11-01 11:28:27	2025-11-01 11:28:27	\N	\N	PAYMENT	\N	5000000.00	50.00	3	230	\N	f	2022-10-12 04:30:11.525519	2022-10-12 04:30:11.525519	62	62	Bảy trăm nghìn đồng	2022-10-12	2022-10-13	\N	\N	f	5	f
 105	HĐC_24_01_C14/01_75	SIGNED_BY_GUESS	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	3000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2024-01-01 10:10:58	2025-01-01 10:10:58	\N	\N	PAYMENT	\N	6000000.00	52.00	4	346	\N	f	2024-01-22 03:15:21.165	2024-01-22 03:11:11.764395	181	181	Ba triệu đồng	2024-01-22	2024-01-22	\N	\N	f	7	t
-70	HĐC_22_09_N001_41	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 10:13:14	2022-11-19 10:13:14	\N	\N	PAYMENT	\N	5000000.00	25.00	2	81	\N	f	2022-09-19 03:13:30.498114	2022-09-19 03:13:30.498114	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
-5	HĐC_N001_6-2022_5	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-06-30 15:20:30	2023-06-30 00:00:00	\N	\N	NO_PAYMENT	\N	9000000.00	50.00	3	5	\N	f	2022-06-26 08:20:54.86361	2022-06-26 15:20:54	11	11	mười tám triệu đồng	\N	\N	\N	7	f	0	f
-44	HĐC_001_6-2022_15	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 09:53:04	2022-06-30 09:53:04	\N	\N	PAYMENT	\N	3000000.00	30.00	2	17	\N	f	2022-06-28 02:53:26.532503	2022-06-28 02:53:26.532503	16	16	Hai triệu	\N	\N	\N	2	f	0	f
-63	HĐC_22_08_Normal 1_34	CANCEL_DEPOSIT	777 Lê Duẩn, Phường 15, Quận Gò Vấp, Thành phố Hồ Chí Minh	500000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 21:56:20	2023-08-10 21:56:20	\N	\N	PAYMENT	\N	3500000.00	50.00	3	43	\N	f	2022-08-10 14:56:40.208742	2022-08-10 14:56:40.208742	23	\N	Năm trăm nghìn đồng	\N	\N	\N	\N	f	3	f
 107	HĐC_24_01_C14/02_76	SIGNED_BY_GUESS	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	3000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2024-01-01 10:33:02	2025-01-01 10:33:02	\N	\N	PAYMENT	\N	6000000.00	52.00	4	347	\N	f	2024-01-22 03:34:10.378	2024-01-22 03:34:02.022513	181	181	Ba triệu đồng	2024-01-22	2024-01-22	\N	\N	f	7	t
-77	HĐC_22_09_A001_48	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 11:09:37	2023-03-27 11:09:37	\N	\N	PAYMENT	\N	5000000.00	25.00	2	172	\N	f	2022-09-27 04:09:54.565532	2022-09-27 04:09:54.565532	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-1	HĐC_N001_6-2022_1	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-06-30 07:00:00	2023-06-30 07:00:00	\N	\N	PAYMENT	\N	9000000.00	50.00	3	5	\N	f	2022-06-25 17:43:43.250135	2022-06-26 07:43:43	11	11	mười tám triệu đồng 	\N	\N	\N	7	f	0	f
-87	HĐC_22_09_H001_57	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:53:19	2023-03-27 17:53:19	\N	\N	PAYMENT	\N	5000000.00	25.00	2	179	\N	f	2022-09-27 10:56:01.998293	2022-09-27 10:56:01.998293	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-100	HĐC_22_12_H005_70	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-12-01 11:22:08	2023-12-01 11:22:08	\N	\N	PAYMENT	\N	8000000.00	50.00	2	61	\N	f	2022-12-26 04:22:22.926792	2022-12-26 04:22:22.926792	62	\N	Một triệu đồng	\N	\N	\N	\N	f	3	f
-79	HĐC_22_09_M001_50	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 14:56:51	2023-03-27 14:56:51	\N	\N	PAYMENT	\N	5000000.00	25.00	2	174	\N	f	2022-09-27 07:57:12.755384	2022-09-27 07:57:12.755384	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-94	HĐC_22_10_NH003_64	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-07 17:36:23	2023-04-07 17:36:23	\N	\N	PAYMENT	\N	5000000.00	25.00	2	211	\N	f	2022-10-07 10:40:57.596	2022-10-07 10:40:44.588429	82	82	Một triệu đồng	2022-10-07	2022-10-07	\N	\N	f	3	f
+52	HĐC_N004_6-2022_23	SIGNED_BY_OWNER	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	7000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	\N	\N	\N	\N	PAYMENT	\N	10000000.00	40.00	3	22	\N	f	2022-06-29 07:31:57.912459	2022-06-29 07:31:57.912459	11	11	bảy triệu	\N	\N	\N	7	f	0	f
+85	HĐC_22_09_C001_55	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:25:52	2023-03-27 17:25:52	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:26:28.86449	2022-09-27 10:26:28.86449	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
+47	HĐC_N001_6-2022_18	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	8000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-30 18:01:27	2022-07-20 18:01:27	\N	\N	PAYMENT	\N	10000000.00	40.00	1	18	\N	f	2022-06-28 11:01:52.824201	2022-06-28 11:01:52.824201	11	\N	kjhkhjkhj	\N	\N	\N	1	f	0	f
+68	HĐC_22_09_H002_39	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-06 15:41:04	2022-11-06 15:41:04	\N	\N	PAYMENT	\N	5000000.00	50.00	2	58	\N	f	2022-09-06 08:41:18.200868	2022-09-06 08:41:18.200868	62	62	Một triệu đồng	2022-09-06	2022-09-06	\N	\N	f	3	t
 55	HĐC_006_6-2022_26	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	6000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-07-31 15:44:08	2023-07-31 15:44:08	\N	\N	PAYMENT	\N	6500000.00	60.00	2	25	\N	f	2022-06-30 08:44:23.767828	2022-06-30 08:44:23.767828	16	16	Sáu triệu	\N	\N	\N	1	f	0	f
+20	HĐC_N002_6-2022_9	CANCEL_DEPOSIT	Đường Bình Tây	10000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	3	2022-06-29 15:17:40	2022-07-29 15:17:40	\N	\N	PAYMENT	\N	20000000.00	70.00	3	8	\N	f	2022-06-27 08:17:55.780457	2022-06-27 08:17:55.780457	11	11	mười ngàn	\N	\N	\N	1	f	0	f
+94	HĐC_22_10_NH003_64	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-07 17:36:23	2023-04-07 17:36:23	\N	\N	PAYMENT	\N	5000000.00	25.00	2	211	\N	f	2022-10-07 10:40:57.596	2022-10-07 10:40:44.588429	82	82	Một triệu đồng	2022-10-07	2022-10-07	\N	\N	f	3	f
+13	HĐC_C1409_6-2022_7	CANCEL_DEPOSIT	102 Phan Van Hon	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 23:59:38	2022-07-31 23:59:38	\N	\N	PAYMENT	\N	10000000.00	10.00	5	10	\N	f	2022-06-27 06:00:02.277015	2022-06-28 17:00:02	12	12	năm triệu đồng	\N	\N	\N	8	f	0	f
+108	HĐC_24_03_101_77	SIGNED_BY_GUESS	Số 33 đường Thái Ly , phường Thảo Điền , Quận 2 , Thành phố Thủ Đức, Thành phố Hồ Chí Minh	4000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2024-03-30 00:00:00	2025-03-30 00:00:00	\N	\N	PAYMENT	\N	11000000.00	45.00	5	349	\N	f	2024-03-22 04:51:32.87	2024-03-22 04:45:34.25763	190	190	Bốn triệu đồng	2024-03-22	2024-03-22	\N	\N	f	7	t
+92	HĐC_22_10_NH001_62	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-05 14:13:31	2023-04-05 14:13:31	\N	\N	PAYMENT	\N	5000000.00	25.00	2	209	\N	f	2022-10-05 07:14:24.208	2022-10-05 07:14:20.717474	82	82	Một triệu đồng	2022-10-05	2022-10-05	\N	\N	f	3	f
+97	HĐC_22_10_CHDV-01_67	SIGNED_BY_GUESS	123 Lê Trọng Tấn, Phường Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	36	2022-10-25 14:20:58	2025-10-25 14:20:58	\N	\N	NO_PAYMENT	\N	5000000.00	50.00	3	230	\N	f	2022-10-25 07:22:11.210339	2022-10-25 07:22:11.210339	62	62	Một triệu đồng	2022-10-25	2022-10-25	\N	\N	f	5	f
+102	HĐC_23_04_001_72	CANCEL_DEPOSIT	Hương Phong, Thành Phố Huế	100000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2023-04-21 09:38:07	2023-09-21 09:38:07	\N	\N	PAYMENT	\N	10000000.00	10.00	1	46	\N	f	2023-05-15 08:36:16.366	2023-04-21 02:38:11.529965	17	17	Một trăm nghìn đồng	\N	\N	\N	\N	f	1	f
+54	HĐC_005_6-2022_25	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-07-31 15:43:13	2023-07-31 15:43:13	\N	\N	PAYMENT	\N	5500000.00	50.00	2	24	\N	f	2022-06-30 08:43:35.112591	2022-06-30 08:43:35.112591	16	16	Năm triệu	\N	\N	\N	3	f	0	f
+104	HĐC_23_05_004_74	SIGNED_BY_GUESS	Quận 7, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2023-05-16 09:01:30	2024-05-16 09:01:30	\N	\N	PAYMENT	\N	5000000.00	10.00	1	332	\N	f	2023-05-16 02:01:59.493	2023-05-16 02:01:52.697304	17	17	Một triệu đồng	2023-05-16	2023-05-16	\N	\N	f	5	t
+103	HĐC_23_05_003_73	CANCEL_DEPOSIT	Quận 7, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2023-02-01 08:41:28	2024-02-01 08:41:28	\N	\N	PAYMENT	\N	5000000.00	10.00	1	331	\N	f	2023-05-16 01:42:06.656	2023-05-16 01:41:51.866464	17	17	Một triệu đồng	2023-05-16	2023-05-16	\N	\N	f	10	t
 42	HĐC_A102_6-2022_13	CANCEL_DEPOSIT	21 Fan Yoong Road	500000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-06-01 22:50:33	2023-06-01 22:50:33	\N	\N	NO_PAYMENT	\N	4000000.00	50.00	3	15	\N	f	2022-06-27 15:52:09.673001	2022-06-27 15:52:09.673001	16	16	năm trăm	\N	\N	\N	7	f	0	f
 62	HĐC_22_08_Normal 1_33	CANCEL_DEPOSIT	777 Lê Duẩn, Phường 15, Quận Gò Vấp, Thành phố Hồ Chí Minh	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 21:00:25	2023-08-10 21:00:25	\N	\N	NO_PAYMENT	\N	3500000.00	50.00	3	43	\N	f	2022-08-10 14:05:42.743009	2022-08-10 14:05:42	23	23	Một triệu đồng	2022-08-10	2022-08-10	\N	\N	f	3	f
-52	HĐC_N004_6-2022_23	SIGNED_BY_OWNER	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	7000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	\N	\N	\N	\N	PAYMENT	\N	10000000.00	40.00	3	22	\N	f	2022-06-29 07:31:57.912459	2022-06-29 07:31:57.912459	11	11	bảy triệu	\N	\N	\N	7	f	0	f
-46	HĐC_002_6-2022_17	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 17:50:56	2022-06-30 17:50:56	\N	\N	PAYMENT	\N	3000000.00	30.00	2	19	\N	f	2022-06-28 10:51:15.862102	2022-06-28 10:51:15.862102	16	16	Hai triệu	\N	\N	\N	3	f	0	f
-101	HĐC_23_03_101_71	CANCEL_DEPOSIT	238/20 Liên Tỉnh 5 p6 q8 TPHCM, Thành phố Hồ Chí Minh	3000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-02-28 00:00:00	2022-02-28 00:00:00	\N	\N	PAYMENT	\N	3000000.00	19.00	4	282	\N	f	2023-03-10 03:22:36.218053	2023-03-10 03:22:36.218053	165	\N	Ba triệu đồng	2023-03-10	\N	\N	\N	f	12	f
-86	HĐC_22_09_C002_56	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:28:03	2023-03-27 17:28:03	\N	\N	PAYMENT	\N	5000000.00	25.00	3	178	\N	f	2022-09-27 10:28:22.16907	2022-09-27 10:28:22.16907	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-82	HĐC_22_09_M002_53	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:49:27	2022-11-27 16:49:27	\N	\N	PAYMENT	\N	5000000.00	25.00	2	175	\N	f	2022-09-27 09:49:41.20913	2022-09-27 09:49:41.20913	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-64	HĐC_22_08_KN001_35	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-12 16:07:48	2023-08-12 16:07:48	\N	\N	NO_PAYMENT	\N	5500000.00	30.00	3	47	\N	f	2022-08-12 09:09:42.330112	2022-08-12 09:09:42	51	51	Ba triệu đồng	2022-08-12	2022-08-12	\N	\N	f	10	t
-72	HĐC_22_09_N001_43	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 14:53:39	2022-11-19 14:53:39	\N	\N	NO_PAYMENT	\N	5000000.00	25.00	2	81	\N	f	2022-09-19 07:53:52.863862	2022-09-19 07:53:52	62	62	Một triệu đồng	\N	\N	\N	\N	f	3	f
-48	HĐC_1_6-2022_19	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	1000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-09 18:04:53	2022-07-06 18:04:53	\N	\N	PAYMENT	\N	1020.00	20.00	\N	20	\N	f	2022-06-28 11:05:11.565888	2022-06-28 11:05:11.565888	11	\N	kjhkhjkhj	\N	\N	\N	1	f	0	f
-47	HĐC_N001_6-2022_18	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	8000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-30 18:01:27	2022-07-20 18:01:27	\N	\N	PAYMENT	\N	10000000.00	40.00	1	18	\N	f	2022-06-28 11:01:52.824201	2022-06-28 11:01:52.824201	11	\N	kjhkhjkhj	\N	\N	\N	1	f	0	f
-73	HĐC_22_09_H001_44	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 15:21:57	2022-11-19 15:21:57	\N	\N	PAYMENT	\N	5000000.00	25.00	2	83	\N	f	2022-09-19 08:22:10.181276	2022-09-19 08:22:10.181276	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
-58	HĐC_22_08_KN001_29	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 14:54:42	2023-08-10 14:54:42	\N	\N	NO_PAYMENT	\N	5000000.00	40.00	3	37	\N	f	2022-08-10 07:55:40.353369	2022-08-10 07:55:40	41	41	Ba triệu đồng	2022-08-10	2022-08-10	\N	\N	f	15	t
+79	HĐC_22_09_M001_50	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 14:56:51	2023-03-27 14:56:51	\N	\N	PAYMENT	\N	5000000.00	25.00	2	174	\N	f	2022-09-27 07:57:12.755384	2022-09-27 07:57:12.755384	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
 60	HĐC_22_08_KN001_31	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 16:42:50	2023-08-10 16:42:50	\N	\N	PAYMENT	\N	5000000.00	40.00	3	39	\N	f	2022-08-10 09:43:04.279367	2022-08-10 09:43:04.279367	44	44	Ba triệu đồng	2022-08-10	2022-08-10	\N	\N	f	10	t
+88	HĐC_22_10_R001_58	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 11:27:14	2023-04-03 11:27:14	\N	\N	PAYMENT	\N	5000000.00	25.00	2	180	\N	f	2022-10-03 04:28:08.387118	2022-10-03 04:28:08.387118	82	\N	Một triệu đồng	2022-10-03	2022-10-03	\N	\N	f	3	f
+78	HĐC_22_09_A002_49	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 13:48:55	2023-03-27 13:48:55	\N	\N	PAYMENT	\N	5000000.00	25.00	5	173	\N	f	2022-09-27 06:49:10.179385	2022-09-27 06:49:10.179385	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
+89	HĐC_22_10_R001_59	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 11:39:13	2023-04-03 11:39:13	\N	\N	PAYMENT	\N	5000000.00	25.00	2	180	\N	f	2022-10-03 04:40:09.575678	2022-10-03 04:40:09.575678	82	\N	Một triệu đồng	2022-10-03	\N	\N	\N	f	3	f
+90	HĐC_22_10_M001_60	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 13:28:53	2023-04-03 13:28:53	\N	\N	PAYMENT	\N	5000000.00	25.00	2	181	\N	f	2022-10-03 06:30:18.761	2022-10-03 06:29:41.742116	82	82	Một triệu đồng	2022-10-03	2022-10-03	\N	\N	f	3	f
+48	HĐC_1_6-2022_19	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	1000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-09 18:04:53	2022-07-06 18:04:53	\N	\N	PAYMENT	\N	1020.00	20.00	\N	20	\N	f	2022-06-28 11:05:11.565888	2022-06-28 11:05:11.565888	11	\N	kjhkhjkhj	\N	\N	\N	1	f	0	f
+59	HĐC_22_08_KN001_30	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 16:36:58	2023-08-10 16:36:58	\N	\N	NO_PAYMENT	\N	5000000.00	40.00	3	39	\N	f	2022-08-10 09:37:41.635546	2022-08-10 09:37:41	44	44	Ba triệu đồng	2022-08-10	2022-08-10	\N	\N	f	15	f
+49	HĐC_003_6-2022_20	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-07-01 14:09:29	2022-07-01 14:09:29	\N	\N	PAYMENT	\N	3000000.00	30.00	2	21	\N	f	2022-06-29 03:09:51.787292	2022-06-30 07:09:51	16	16	Hai triệu	\N	\N	\N	1	f	0	f
+58	HĐC_22_08_KN001_29	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 14:54:42	2023-08-10 14:54:42	\N	\N	NO_PAYMENT	\N	5000000.00	40.00	3	37	\N	f	2022-08-10 07:55:40.353369	2022-08-10 07:55:40	41	41	Ba triệu đồng	2022-08-10	2022-08-10	\N	\N	f	15	t
+43	HĐC_A002_6-2022_14	CANCEL_DEPOSIT	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 06:32:33	2022-07-31 06:32:33	\N	\N	PAYMENT	\N	20000000.00	200.00	5	16	\N	f	2022-06-27 16:34:06.109625	2022-06-27 23:34:06	12	12	năm triệu đồng	\N	\N	\N	3	f	0	f
+81	HĐC_22_09_M002_52	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:49:27	2022-11-27 16:49:27	\N	\N	PAYMENT	\N	5000000.00	25.00	2	175	\N	f	2022-09-27 09:49:41.015609	2022-09-27 09:49:41.015609	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
+5	HĐC_N001_6-2022_5	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-06-30 15:20:30	2023-06-30 00:00:00	\N	\N	NO_PAYMENT	\N	9000000.00	50.00	3	5	\N	f	2022-06-26 08:20:54.86361	2022-06-26 15:20:54	11	11	mười tám triệu đồng	\N	\N	\N	7	f	0	f
+57	HĐC_22_08_001_28	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-08-02 10:52:50	2022-10-02 10:52:50	\N	\N	PAYMENT	\N	5000000.00	50.00	4	33	\N	f	2022-08-02 03:53:48.513444	2022-08-02 03:53:48.513444	32	32	Một triệu đồng	2022-08-02	2022-08-02	\N	\N	f	3	t
+64	HĐC_22_08_KN001_35	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-12 16:07:48	2023-08-12 16:07:48	\N	\N	NO_PAYMENT	\N	5500000.00	30.00	3	47	\N	f	2022-08-12 09:09:42.330112	2022-08-12 09:09:42	51	51	Ba triệu đồng	2022-08-12	2022-08-12	\N	\N	f	10	t
+76	HĐC_22_09_002_47	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 09:46:38	2022-11-27 09:46:38	\N	\N	PAYMENT	\N	5000000.00	25.00	2	171	\N	f	2022-09-27 02:46:50.945973	2022-09-27 02:46:50.945973	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
 74	HĐC_22_09_H002_45	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 15:34:52	2022-11-19 15:34:52	\N	\N	PAYMENT	\N	5000000.00	25.00	2	84	\N	f	2022-09-19 08:35:05.862886	2022-09-19 08:35:05.862886	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
-51	HĐC_001_6-2022_22	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 17:59:24	2022-06-30 17:59:24	\N	\N	PAYMENT	\N	3000000.00	30.00	2	17	\N	f	2022-06-29 03:59:34.383912	2022-06-29 10:59:34	16	16	Hai triệu	\N	\N	\N	1	f	0	f
+41	HĐC_A001_6-2022_12	CANCEL_DEPOSIT	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 19:36:47	2022-07-31 19:36:47	\N	\N	PAYMENT	\N	10000000.00	100.00	5	14	\N	f	2022-06-27 15:37:18.713247	2022-06-28 12:37:18	12	12	năm triệu đồng	\N	\N	\N	5	f	0	f
+83	HĐC_22_09_C001_54	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 17:13:26	2022-11-27 17:13:26	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:13:46.800836	2022-09-27 10:13:46.800836	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
+71	HĐC_22_09_N002_42	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 11:59:20	2022-11-19 11:59:20	\N	\N	PAYMENT	\N	5000000.00	25.00	2	82	\N	f	2022-09-19 04:59:33.830973	2022-09-19 04:59:33.830973	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
+50	HĐC_003_6-2022_21	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 10:58:05	2022-06-30 10:58:05	\N	\N	PAYMENT	\N	3000000.00	30.00	2	21	\N	f	2022-06-29 03:58:26.293456	2022-06-29 03:58:26.293456	16	16	Hai triệu	\N	\N	\N	1	f	0	f
+80	HĐC_22_09_M001_51	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:48:45	2022-11-27 16:48:45	\N	\N	PAYMENT	\N	5000000.00	25.00	2	174	\N	f	2022-09-27 09:48:56.711145	2022-09-27 09:48:56.711145	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
+93	HĐC_22_10_NH002_63	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-05 14:41:49	2023-04-05 14:41:49	\N	\N	PAYMENT	\N	5000000.00	25.00	2	210	\N	f	2022-10-05 07:42:04.599	2022-10-05 07:42:00.878041	82	82	Một triệu đồng	2022-10-05	2022-10-05	\N	\N	f	3	f
+100	HĐC_22_12_H005_70	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-12-01 11:22:08	2023-12-01 11:22:08	\N	\N	PAYMENT	\N	8000000.00	50.00	2	61	\N	f	2022-12-26 04:22:22.926792	2022-12-26 04:22:22.926792	62	\N	Một triệu đồng	\N	\N	\N	\N	f	3	f
+53	HĐC_004_6-2022_24	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1500000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-07-31 21:55:23	2022-07-31 21:55:23	\N	\N	PAYMENT	\N	3000000.00	30.00	2	23	\N	f	2022-06-30 07:55:59.317865	2022-06-30 14:55:59	16	16	Một triệu rưỡi	\N	\N	\N	3	f	0	f
+40	HĐC_A001_6-2022_11	CANCEL_DEPOSIT	100, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 22:25:04	2022-07-30 22:25:04	\N	\N	PAYMENT	\N	10000000.00	100.00	5	13	\N	f	2022-06-27 15:25:19.178908	2022-06-27 15:25:19.178908	12	12	năm triệu đồng	\N	\N	\N	5	f	0	f
 61	HĐC_22_08_001_32	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	3	2022-08-10 18:09:09	2022-11-10 18:09:09	\N	\N	PAYMENT	\N	5000000.00	50.00	2	41	\N	f	2022-08-10 11:09:36.359737	2022-08-10 11:09:36.359737	45	45	Một triệu đồng	2022-08-10	2022-08-15	\N	\N	f	3	f
-84	HĐC_22_09_C001_54	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 17:13:26	2022-11-27 17:13:26	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:13:46.998243	2022-09-27 10:13:46.998243	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
+45	HĐC_N001_6-2022_16	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	8000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-04 16:12:03	2022-06-27 16:12:03	\N	\N	PAYMENT	\N	10000000.00	40.00	3	18	\N	f	2022-06-28 03:12:22.518084	2022-07-03 09:12:22	11	11	tám triệu đồng	\N	\N	\N	7	f	0	f
+82	HĐC_22_09_M002_53	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:49:27	2022-11-27 16:49:27	\N	\N	PAYMENT	\N	5000000.00	25.00	2	175	\N	f	2022-09-27 09:49:41.20913	2022-09-27 09:49:41.20913	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
 67	HĐC_22_09_H001_38	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-06 15:27:50	2022-11-06 15:27:50	\N	\N	PAYMENT	\N	5000000.00	50.00	2	57	\N	f	2022-09-06 08:40:36.252308	2022-09-06 08:40:36	62	62	Một triệu đồng	2022-09-06	2022-09-06	\N	\N	f	3	t
+77	HĐC_22_09_A001_48	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 11:09:37	2023-03-27 11:09:37	\N	\N	PAYMENT	\N	5000000.00	25.00	2	172	\N	f	2022-09-27 04:09:54.565532	2022-09-27 04:09:54.565532	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
+56	HĐC_22_08_PS1 Normal_27	CANCEL_DEPOSIT	7 Le Quang Dinh, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai	0.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-08-01 20:15:11	2022-10-01 20:15:11	\N	\N	NO_PAYMENT	\N	3000000.00	50.00	2	29	\N	f	2022-08-01 13:15:22.643867	2022-08-01 13:15:22	23	23	\N	2022-08-01	2022-08-01	\N	\N	f	2	t
+70	HĐC_22_09_N001_41	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 10:13:14	2022-11-19 10:13:14	\N	\N	PAYMENT	\N	5000000.00	25.00	2	81	\N	f	2022-09-19 03:13:30.498114	2022-09-19 03:13:30.498114	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
+3	HĐC_C1407_6-2022_3	CANCEL_DEPOSIT	102 Phan Van Hon	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 02:44:14	2022-07-30 02:44:14	\N	\N	PAYMENT	\N	5000000.00	52.00	5	7	\N	f	2022-06-26 02:44:53.266379	2022-06-26 02:44:53.266379	12	12	một triệu đồng	\N	\N	\N	5	f	0	f
+63	HĐC_22_08_Normal 1_34	CANCEL_DEPOSIT	777 Lê Duẩn, Phường 15, Quận Gò Vấp, Thành phố Hồ Chí Minh	500000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 21:56:20	2023-08-10 21:56:20	\N	\N	PAYMENT	\N	3500000.00	50.00	3	43	\N	f	2022-08-10 14:56:40.208742	2022-08-10 14:56:40.208742	23	\N	Năm trăm nghìn đồng	\N	\N	\N	\N	f	3	f
+46	HĐC_002_6-2022_17	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 17:50:56	2022-06-30 17:50:56	\N	\N	PAYMENT	\N	3000000.00	30.00	2	19	\N	f	2022-06-28 10:51:15.862102	2022-06-28 10:51:15.862102	16	16	Hai triệu	\N	\N	\N	3	f	0	f
+44	HĐC_001_6-2022_15	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 09:53:04	2022-06-30 09:53:04	\N	\N	PAYMENT	\N	3000000.00	30.00	2	17	\N	f	2022-06-28 02:53:26.532503	2022-06-28 02:53:26.532503	16	16	Hai triệu	\N	\N	\N	2	f	0	f
+19	HĐC_N001_6-2022_8	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-01 22:07:20	2022-06-10 22:07:20	\N	\N	PAYMENT	\N	9000000.00	50.00	\N	5	\N	f	2022-06-27 08:07:39.533047	2022-06-27 15:07:39	11	11	fdsfdsfdsf	\N	\N	\N	1	f	0	f
+86	HĐC_22_09_C002_56	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:28:03	2023-03-27 17:28:03	\N	\N	PAYMENT	\N	5000000.00	25.00	3	178	\N	f	2022-09-27 10:28:22.16907	2022-09-27 10:28:22.16907	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
+51	HĐC_001_6-2022_22	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 17:59:24	2022-06-30 17:59:24	\N	\N	PAYMENT	\N	3000000.00	30.00	2	17	\N	f	2022-06-29 03:59:34.383912	2022-06-29 10:59:34	16	16	Hai triệu	\N	\N	\N	1	f	0	f
 11	HĐC_C1408_6-2022_6	CANCEL_DEPOSIT	102 Phan Van Hon	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 12:33:01	2022-07-30 12:33:01	\N	\N	PAYMENT	\N	10000000.00	10.00	5	9	\N	f	2022-06-27 05:36:25.422405	2022-06-27 05:36:25.422405	12	12	năm triệu đồng	\N	\N	\N	5	f	0	f
 69	HĐC_22_09_H003_40	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-07 14:17:19	2022-11-07 14:17:19	\N	\N	PAYMENT	\N	5000000.00	50.00	2	59	\N	f	2022-09-07 07:17:32.56256	2022-09-07 07:17:32.56256	62	62	Một triệu đồng	2022-09-07	2022-09-07	\N	\N	f	3	t
 65	HĐC_22_09_H001_36	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-05 21:53:06	2022-11-05 21:53:06	\N	\N	PAYMENT	\N	5000000.00	50.00	2	51	\N	f	2022-09-05 14:53:21.166474	2022-09-05 14:53:21.166474	32	32	Một triệu đồng	2022-09-05	2022-09-05	\N	\N	f	3	t
-76	HĐC_22_09_002_47	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 09:46:38	2022-11-27 09:46:38	\N	\N	PAYMENT	\N	5000000.00	25.00	2	171	\N	f	2022-09-27 02:46:50.945973	2022-09-27 02:46:50.945973	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-99	HĐC_22_12_H004_69	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-12-01 10:48:56	2023-12-01 10:48:56	\N	\N	PAYMENT	\N	7000000.00	50.00	3	60	\N	f	2022-12-26 03:49:25.045883	2022-12-26 03:49:25.045883	62	\N	Một triệu đồng	2022-12-26	\N	\N	\N	f	3	f
-30	HĐC_N003_6-2022_10	CANCEL_DEPOSIT	Đường Bình Tây	7000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-09 17:48:54	2022-07-07 17:48:54	\N	\N	PAYMENT	\N	10000000.00	40.00	\N	11	\N	f	2022-06-27 10:49:03.354703	2022-06-27 10:49:03.354703	11	\N	uhytjytjhyt	\N	\N	\N	1	f	0	f
-89	HĐC_22_10_R001_59	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 11:39:13	2023-04-03 11:39:13	\N	\N	PAYMENT	\N	5000000.00	25.00	2	180	\N	f	2022-10-03 04:40:09.575678	2022-10-03 04:40:09.575678	82	\N	Một triệu đồng	2022-10-03	\N	\N	\N	f	3	f
+73	HĐC_22_09_H001_44	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 15:21:57	2022-11-19 15:21:57	\N	\N	PAYMENT	\N	5000000.00	25.00	2	83	\N	f	2022-09-19 08:22:10.181276	2022-09-19 08:22:10.181276	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
+1	HĐC_N001_6-2022_1	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-06-30 07:00:00	2023-06-30 07:00:00	\N	\N	PAYMENT	\N	9000000.00	50.00	3	5	\N	f	2022-06-25 17:43:43.250135	2022-06-26 07:43:43	11	11	mười tám triệu đồng 	\N	\N	\N	7	f	0	f
+87	HĐC_22_09_H001_57	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:53:19	2023-03-27 17:53:19	\N	\N	PAYMENT	\N	5000000.00	25.00	2	179	\N	f	2022-09-27 10:56:01.998293	2022-09-27 10:56:01.998293	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
 66	HĐC_22_09_Normal 001_37	CANCEL_DEPOSIT	7 Lê Quang Định, Phường 04, Quận Phú Nhuận, Thành phố Hồ Chí Minh	500000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	3	2022-09-06 09:17:13	2022-12-06 09:17:13	\N	\N	PAYMENT	\N	3000000.00	50.00	2	50	\N	f	2022-10-03 04:48:25.625	2022-09-06 02:18:05.311717	55	55	Năm trăm nghìn đồng	\N	\N	\N	\N	f	3	t
-43	HĐC_A002_6-2022_14	CANCEL_DEPOSIT	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 06:32:33	2022-07-31 06:32:33	\N	\N	PAYMENT	\N	20000000.00	200.00	5	16	\N	f	2022-06-27 16:34:06.109625	2022-06-27 23:34:06	12	12	năm triệu đồng	\N	\N	\N	3	f	0	f
-83	HĐC_22_09_C001_54	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 17:13:26	2022-11-27 17:13:26	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:13:46.800836	2022-09-27 10:13:46.800836	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
-50	HĐC_003_6-2022_21	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-06-30 10:58:05	2022-06-30 10:58:05	\N	\N	PAYMENT	\N	3000000.00	30.00	2	21	\N	f	2022-06-29 03:58:26.293456	2022-06-29 03:58:26.293456	16	16	Hai triệu	\N	\N	\N	1	f	0	f
-45	HĐC_N001_6-2022_16	CANCEL_DEPOSIT	285 Cách Mạng Tháng Tám, Phường 12, Quận 10, Thành phố Hồ Chí Minh	8000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-04 16:12:03	2022-06-27 16:12:03	\N	\N	PAYMENT	\N	10000000.00	40.00	3	18	\N	f	2022-06-28 03:12:22.518084	2022-07-03 09:12:22	11	11	tám triệu đồng	\N	\N	\N	7	f	0	f
-68	HĐC_22_09_H002_39	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-06 15:41:04	2022-11-06 15:41:04	\N	\N	PAYMENT	\N	5000000.00	50.00	2	58	\N	f	2022-09-06 08:41:18.200868	2022-09-06 08:41:18.200868	62	62	Một triệu đồng	2022-09-06	2022-09-06	\N	\N	f	3	t
-97	HĐC_22_10_CHDV-01_67	SIGNED_BY_GUESS	123 Lê Trọng Tấn, Phường Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	36	2022-10-25 14:20:58	2025-10-25 14:20:58	\N	\N	NO_PAYMENT	\N	5000000.00	50.00	3	230	\N	f	2022-10-25 07:22:11.210339	2022-10-25 07:22:11.210339	62	62	Một triệu đồng	2022-10-25	2022-10-25	\N	\N	f	5	f
-95	HĐC_22_10_001_65	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-10 17:12:36	2023-04-10 17:12:36	\N	\N	PAYMENT	\N	5000000.00	25.00	2	229	\N	f	2022-10-10 10:12:52.118	2022-10-10 10:12:48.367273	82	82	Một triệu đồng	2022-10-10	2022-10-10	\N	\N	f	3	f
-103	HĐC_23_05_003_73	CANCEL_DEPOSIT	Quận 7, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2023-02-01 08:41:28	2024-02-01 08:41:28	\N	\N	PAYMENT	\N	5000000.00	10.00	1	331	\N	f	2023-05-16 01:42:06.656	2023-05-16 01:41:51.866464	17	17	Một triệu đồng	2023-05-16	2023-05-16	\N	\N	f	10	t
-85	HĐC_22_09_C001_55	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 17:25:52	2023-03-27 17:25:52	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:26:28.86449	2022-09-27 10:26:28.86449	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-71	HĐC_22_09_N002_42	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 11:59:20	2022-11-19 11:59:20	\N	\N	PAYMENT	\N	5000000.00	25.00	2	82	\N	f	2022-09-19 04:59:33.830973	2022-09-19 04:59:33.830973	62	62	Một triệu đồng	2022-09-19	2022-09-19	\N	\N	f	3	t
-104	HĐC_23_05_004_74	SIGNED_BY_GUESS	Quận 7, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2023-05-16 09:01:30	2024-05-16 09:01:30	\N	\N	PAYMENT	\N	5000000.00	10.00	1	332	\N	f	2023-05-16 02:01:59.493	2023-05-16 02:01:52.697304	17	17	Một triệu đồng	2023-05-16	2023-05-16	\N	\N	f	5	t
-91	HĐC_22_10_M002_61	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-04 11:21:44	2023-04-04 11:21:44	\N	\N	PAYMENT	\N	5000000.00	25.00	2	208	\N	f	2022-10-04 04:22:02.109	2022-10-04 04:21:57.19084	82	82	Một triệu đồng	2022-10-04	2022-10-04	\N	\N	f	3	f
-54	HĐC_005_6-2022_25	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-07-31 15:43:13	2023-07-31 15:43:13	\N	\N	PAYMENT	\N	5500000.00	50.00	2	24	\N	f	2022-06-30 08:43:35.112591	2022-06-30 08:43:35.112591	16	16	Năm triệu	\N	\N	\N	3	f	0	f
-92	HĐC_22_10_NH001_62	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-05 14:13:31	2023-04-05 14:13:31	\N	\N	PAYMENT	\N	5000000.00	25.00	2	209	\N	f	2022-10-05 07:14:24.208	2022-10-05 07:14:20.717474	82	82	Một triệu đồng	2022-10-05	2022-10-05	\N	\N	f	3	f
-20	HĐC_N002_6-2022_9	CANCEL_DEPOSIT	Đường Bình Tây	10000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	3	2022-06-29 15:17:40	2022-07-29 15:17:40	\N	\N	PAYMENT	\N	20000000.00	70.00	3	8	\N	f	2022-06-27 08:17:55.780457	2022-06-27 08:17:55.780457	11	11	mười ngàn	\N	\N	\N	1	f	0	f
-49	HĐC_003_6-2022_20	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	2000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-07-01 14:09:29	2022-07-01 14:09:29	\N	\N	PAYMENT	\N	3000000.00	30.00	2	21	\N	f	2022-06-29 03:09:51.787292	2022-06-30 07:09:51	16	16	Hai triệu	\N	\N	\N	1	f	0	f
-57	HĐC_22_08_001_28	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-08-02 10:52:50	2022-10-02 10:52:50	\N	\N	PAYMENT	\N	5000000.00	50.00	4	33	\N	f	2022-08-02 03:53:48.513444	2022-08-02 03:53:48.513444	32	32	Một triệu đồng	2022-08-02	2022-08-02	\N	\N	f	3	t
-93	HĐC_22_10_NH002_63	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-05 14:41:49	2023-04-05 14:41:49	\N	\N	PAYMENT	\N	5000000.00	25.00	2	210	\N	f	2022-10-05 07:42:04.599	2022-10-05 07:42:00.878041	82	82	Một triệu đồng	2022-10-05	2022-10-05	\N	\N	f	3	f
-53	HĐC_004_6-2022_24	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1500000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-07-31 21:55:23	2022-07-31 21:55:23	\N	\N	PAYMENT	\N	3000000.00	30.00	2	23	\N	f	2022-06-30 07:55:59.317865	2022-06-30 14:55:59	16	16	Một triệu rưỡi	\N	\N	\N	3	f	0	f
-56	HĐC_22_08_PS1 Normal_27	CANCEL_DEPOSIT	7 Le Quang Dinh, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai	0.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-08-01 20:15:11	2022-10-01 20:15:11	\N	\N	NO_PAYMENT	\N	3000000.00	50.00	2	29	\N	f	2022-08-01 13:15:22.643867	2022-08-01 13:15:22	23	23	\N	2022-08-01	2022-08-01	\N	\N	f	2	t
-40	HĐC_A001_6-2022_11	CANCEL_DEPOSIT	100, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 22:25:04	2022-07-30 22:25:04	\N	\N	PAYMENT	\N	10000000.00	100.00	5	13	\N	f	2022-06-27 15:25:19.178908	2022-06-27 15:25:19.178908	12	12	năm triệu đồng	\N	\N	\N	5	f	0	f
-90	HĐC_22_10_M001_60	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 13:28:53	2023-04-03 13:28:53	\N	\N	PAYMENT	\N	5000000.00	25.00	2	181	\N	f	2022-10-03 06:30:18.761	2022-10-03 06:29:41.742116	82	82	Một triệu đồng	2022-10-03	2022-10-03	\N	\N	f	3	f
-59	HĐC_22_08_KN001_30	CANCEL_DEPOSIT	285 Cách Mạng Tháng 8, Phường 12, Quận 10, Thành phố Hồ Chí Minh	3000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-08-10 16:36:58	2023-08-10 16:36:58	\N	\N	NO_PAYMENT	\N	5000000.00	40.00	3	39	\N	f	2022-08-10 09:37:41.635546	2022-08-10 09:37:41	44	44	Ba triệu đồng	2022-08-10	2022-08-10	\N	\N	f	15	f
-88	HĐC_22_10_R001_58	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-03 11:27:14	2023-04-03 11:27:14	\N	\N	PAYMENT	\N	5000000.00	25.00	2	180	\N	f	2022-10-03 04:28:08.387118	2022-10-03 04:28:08.387118	82	\N	Một triệu đồng	2022-10-03	2022-10-03	\N	\N	f	3	f
-81	HĐC_22_09_M002_52	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:49:27	2022-11-27 16:49:27	\N	\N	PAYMENT	\N	5000000.00	25.00	2	175	\N	f	2022-09-27 09:49:41.015609	2022-09-27 09:49:41.015609	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
-13	HĐC_C1409_6-2022_7	CANCEL_DEPOSIT	102 Phan Van Hon	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 23:59:38	2022-07-31 23:59:38	\N	\N	PAYMENT	\N	10000000.00	10.00	5	10	\N	f	2022-06-27 06:00:02.277015	2022-06-28 17:00:02	12	12	năm triệu đồng	\N	\N	\N	8	f	0	f
-102	HĐC_23_04_001_72	CANCEL_DEPOSIT	Hương Phong, Thành Phố Huế	100000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2023-04-21 09:38:07	2023-09-21 09:38:07	\N	\N	PAYMENT	\N	10000000.00	10.00	1	46	\N	f	2023-05-15 08:36:16.366	2023-04-21 02:38:11.529965	17	17	Một trăm nghìn đồng	\N	\N	\N	\N	f	1	f
-41	HĐC_A001_6-2022_12	CANCEL_DEPOSIT	123 cộng hoà, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	5000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-07-01 19:36:47	2022-07-31 19:36:47	\N	\N	PAYMENT	\N	10000000.00	100.00	5	14	\N	f	2022-06-27 15:37:18.713247	2022-06-28 12:37:18	12	12	năm triệu đồng	\N	\N	\N	5	f	0	f
-78	HĐC_22_09_A002_49	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-09-27 13:48:55	2023-03-27 13:48:55	\N	\N	PAYMENT	\N	5000000.00	25.00	5	173	\N	f	2022-09-27 06:49:10.179385	2022-09-27 06:49:10.179385	62	62	Một triệu đồng	2022-09-27	2022-09-27	\N	\N	f	3	t
-3	HĐC_C1407_6-2022_3	CANCEL_DEPOSIT	102 Phan Van Hon	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 02:44:14	2022-07-30 02:44:14	\N	\N	PAYMENT	\N	5000000.00	52.00	5	7	\N	f	2022-06-26 02:44:53.266379	2022-06-26 02:44:53.266379	12	12	một triệu đồng	\N	\N	\N	5	f	0	f
-19	HĐC_N001_6-2022_8	CANCEL_DEPOSIT	Đường Bình Tây	18000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-01 22:07:20	2022-06-10 22:07:20	\N	\N	PAYMENT	\N	9000000.00	50.00	\N	5	\N	f	2022-06-27 08:07:39.533047	2022-06-27 15:07:39	11	11	fdsfdsfdsf	\N	\N	\N	1	f	0	f
-2	HĐC_001_6-2022_2	CANCEL_DEPOSIT	23	50.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-26 02:37:32	2022-07-31 02:37:32	\N	\N	PAYMENT	\N	5000000.00	50.00	5	6	\N	f	2022-06-26 02:37:47.923525	2022-06-26 02:37:47	10	10	Một triệu đồng	\N	\N	\N	5	f	0	f
-98	HĐC_22_10_IOS 001_68	CANCEL_DEPOSIT	123 Hà Nội, Thành phố Hồ Chí Minh	5500000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	10	2022-10-31 12:45:15	2023-08-31 12:45:15	\N	\N	PAYMENT	\N	9500000.00	45.00	3	231	\N	f	2022-12-02 09:11:02.175	2022-10-31 05:45:53.415945	123	123	Năm triệu năm trăm nghìn đồng	2022-12-02	2022-12-02	\N	\N	f	10	f
+101	HĐC_23_03_101_71	CANCEL_DEPOSIT	238/20 Liên Tỉnh 5 p6 q8 TPHCM, Thành phố Hồ Chí Minh	3000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2021-02-28 00:00:00	2022-02-28 00:00:00	\N	\N	PAYMENT	\N	3000000.00	19.00	4	282	\N	f	2023-03-10 03:22:36.218053	2023-03-10 03:22:36.218053	165	\N	Ba triệu đồng	2023-03-10	\N	\N	\N	f	12	f
+84	HĐC_22_09_C001_54	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 17:13:26	2022-11-27 17:13:26	\N	\N	PAYMENT	\N	5000000.00	25.00	3	177	\N	f	2022-09-27 10:13:46.998243	2022-09-27 10:13:46.998243	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
 4	HĐC_C1407_6-2022_4	CANCEL_DEPOSIT	102 Phan Van Hon	1000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-30 05:41:19	2022-07-30 05:41:19	\N	\N	PAYMENT	\N	5000000.00	52.00	5	7	\N	f	2022-06-26 05:42:12.457802	2022-06-26 05:42:12.457802	12	12	một triệu đồng	\N	\N	\N	5	f	0	f
 75	HĐC_22_09_H001_46	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 16:07:39	2022-11-19 16:07:39	\N	\N	NO_PAYMENT	\N	5000000.00	25.00	2	83	\N	f	2022-09-19 09:16:40.508521	2022-09-19 09:16:40	62	62	Một triệu đồng	2022-09-21	2022-09-21	\N	\N	f	3	f
-80	HĐC_22_09_M001_51	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-27 16:48:45	2022-11-27 16:48:45	\N	\N	PAYMENT	\N	5000000.00	25.00	2	174	\N	f	2022-09-27 09:48:56.711145	2022-09-27 09:48:56.711145	62	62	Một triệu đồng	2022-09-27	\N	\N	\N	f	3	f
+98	HĐC_22_10_IOS 001_68	CANCEL_DEPOSIT	123 Hà Nội, Thành phố Hồ Chí Minh	5500000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	10	2022-10-31 12:45:15	2023-08-31 12:45:15	\N	\N	PAYMENT	\N	9500000.00	45.00	3	231	\N	f	2022-12-02 09:11:02.175	2022-10-31 05:45:53.415945	123	123	Năm triệu năm trăm nghìn đồng	2022-12-02	2022-12-02	\N	\N	f	10	f
+99	HĐC_22_12_H004_69	CANCEL_DEPOSIT	3 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho bên A, bên B đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu. Mọi thay đổi, hư hỏng, mất mát, vệ sinh bên B phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để bên A kiểm tra đồng ý xác nhận thì bên B mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	12	2022-12-01 10:48:56	2023-12-01 10:48:56	\N	\N	PAYMENT	\N	7000000.00	50.00	3	60	\N	f	2022-12-26 03:49:25.045883	2022-12-26 03:49:25.045883	62	\N	Một triệu đồng	2022-12-26	\N	\N	\N	f	3	f
+30	HĐC_N003_6-2022_10	CANCEL_DEPOSIT	Đường Bình Tây	7000000.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	1	2022-06-09 17:48:54	2022-07-07 17:48:54	\N	\N	PAYMENT	\N	10000000.00	40.00	\N	11	\N	f	2022-06-27 10:49:03.354703	2022-06-27 10:49:03.354703	11	\N	uhytjytjhyt	\N	\N	\N	1	f	0	f
+2	HĐC_001_6-2022_2	CANCEL_DEPOSIT	23	50.00	0	 Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	5	2022-06-26 02:37:32	2022-07-31 02:37:32	\N	\N	PAYMENT	\N	5000000.00	50.00	5	6	\N	f	2022-06-26 02:37:47.923525	2022-06-26 02:37:47	10	10	Một triệu đồng	\N	\N	\N	5	f	0	f
+95	HĐC_22_10_001_65	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-10 17:12:36	2023-04-10 17:12:36	\N	\N	PAYMENT	\N	5000000.00	25.00	2	229	\N	f	2022-10-10 10:12:52.118	2022-10-10 10:12:48.367273	82	82	Một triệu đồng	2022-10-10	2022-10-10	\N	\N	f	3	f
+91	HĐC_22_10_M002_61	CANCEL_DEPOSIT	7 Cộng Hòa, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	6	2022-10-04 11:21:44	2023-04-04 11:21:44	\N	\N	PAYMENT	\N	5000000.00	25.00	2	208	\N	f	2022-10-04 04:22:02.109	2022-10-04 04:21:57.19084	82	82	Một triệu đồng	2022-10-04	2022-10-04	\N	\N	f	3	f
+72	HĐC_22_09_N001_43	CANCEL_DEPOSIT	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1000000.00	0	Khi trao trả lại phòng thuê cho Bên A, khách hàng đồng thời phải bàn giao lại các thiết bị đang hoạt động tốt và hiện trạng phòng thuê được vệ sinh như lúc được nhận không gian thuê ban đầu.\n Mọi thay đổi, hư hỏng, mất mát, vệ sinh khách hàng phải chịu trách nhiệm sửa chữa, khắc phục như hiện trạng để Bên A kiểm tra đồng ý xác nhận thì khách hàng mới hoàn tất được việc giao trả không gian thuê và được nhận lại số tiền đã đặt cọc.	2	2022-09-19 14:53:39	2022-11-19 14:53:39	\N	\N	NO_PAYMENT	\N	5000000.00	25.00	2	81	\N	f	2022-09-19 07:53:52.863862	2022-09-19 07:53:52	62	62	Một triệu đồng	\N	\N	\N	\N	f	3	f
 \.
 
 
@@ -4927,6 +4540,9 @@ COPY public.deposit_contract_cost (id, name, description, unit_price, deposit_co
 428	Điện	\N	500000.00	107	\N	2024-01-22 03:34:02.022513	2024-01-22 03:34:02.022513	kWh	ELECTRICITY	TOTAL	PAY_LATER	t
 429	Nước	\N	100000.00	107	\N	2024-01-22 03:34:02.022513	2024-01-22 03:34:02.022513	m³	WATER	PER_CAPITA	PAY_LATER	t
 430	Dịch vụ cơ bản	\N	300000.00	107	\N	2024-01-22 03:34:02.022513	2024-01-22 03:34:02.022513	Tháng	BASIC_SERVICE	TOTAL	PREPAY	t
+431	Nước	\N	100000.00	108	\N	2024-03-22 04:45:34.25763	2024-03-22 04:45:34.25763	Người	WATER	PER_CAPITA	PREPAY	t
+432	Điện	\N	4000.00	108	\N	2024-03-22 04:45:34.25763	2024-03-22 04:45:34.25763	kWh	ELECTRICITY	TOTAL	PAY_LATER	t
+433	Dịch vụ cơ bản	\N	200000.00	108	\N	2024-03-22 04:45:34.25763	2024-03-22 04:45:34.25763	Tháng	BASIC_SERVICE	TOTAL	PREPAY	t
 \.
 
 
@@ -5106,6 +4722,8 @@ COPY public.deposit_contract_people (id, name, date_of_birthday, passport, ident
 248	Lê Trần Lâm Trúc	1993-05-04 00:00:00	value	39020230320	BRVT	2024-01-10 10:10:05	0393599456	value?	value?	DEPOSITOR	\N	18	105	2024-01-22 03:11:11.764395	2024-01-22 03:11:11.764395	latranlamtruc@gmail.com	value
 249	Nguyễn Bá Trung	1993-02-02 00:00:00	\N	273555678	BRVT	2010-11-20 00:00:00	0977405203	\N	\N	OWNER	\N	181	107	2024-01-22 03:34:02.022513	2024-01-22 03:34:02.022513	uhouse.tech@getnada.com	value
 250	Lê Trần Lâm Sơn	2024-01-10 10:32:28	value	82232302302	BRVT	2024-01-10 10:32:43	09774029302	value?	value?	DEPOSITOR	\N	\N	107	2024-01-22 03:34:02.022513	2024-01-22 03:34:02.022513	letranlamson@gmail.com	value
+251	Phạm Nguyễn Duy Tường	1994-12-11 00:00:00	\N	079094006776	Cục cảnh sát	2022-06-12 00:00:00	0888104961	TECHCOMBANK	998688889999	OWNER	\N	190	108	2024-03-22 04:45:34.25763	2024-03-22 04:45:34.25763	tuong.pham94.uhouse@gmail.com	value
+252	2	2000-01-01 00:00:00	value	07940654545	cục cảnh sát	2021-05-16 00:00:00	0912345678	value?	value?	DEPOSITOR	\N	\N	108	2024-03-22 04:45:34.25763	2024-03-22 04:45:34.25763	dtuong1112@gmail.com	value
 \.
 
 
@@ -5911,6 +5529,7 @@ COPY public.extention_contract (id, contract_addendum_id, created_at, address, a
 13	13	2023-03-13 03:13:21.281588	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	1	3	2024-05-01	2024-08-01	\N	2	1	\N	\N	5500000	5000000	2023-03-13 00:00:00	f
 14	14	2023-05-09 02:15:12.10498	Quận 7, Thành phố Hồ Chí Minh	1	8	2023-10-31	2024-07-01	\N	2	1	\N	\N	3000000	5	2023-05-09 00:00:00	t
 15	15	2023-05-16 02:08:22.945043	Quận 7, Thành phố Hồ Chí Minh	1	1	2024-02-01	2024-03-01	\N	2	1	2023-05-16 02:08:31.255	2023-05-16 02:08:55.615	5000000	5000000	2023-05-16 00:00:00	f
+16	16	2024-03-22 04:56:02.925395	Số 33 đường Thái Ly , phường Thảo Điền , Quận 2 , Thành phố Thủ Đức, Thành phố Hồ Chí Minh	1	6	2026-03-01	2026-09-01	\N	2	1	2024-03-22 04:56:02.951	2024-03-22 04:56:07.836	15000000	15000000	2024-03-22 00:00:00	t
 \.
 
 
@@ -5949,6 +5568,8 @@ COPY public.extention_contract_people (id, name, phone_number, identity_card, ic
 32	Nguyễn Sơn	1111111119	0393442205	dsaf	2022-09-30	TENANT	14	\N	hoanghai@gmail.com
 33	Nguyễn Thị Ngọc	0967624353	2296105690	Thua Thien Hue	2022-09-30	LESSOR	15	\N	tranle15788@gmail.com
 34	Hoàng Thiên	1234567891	0000000007	Thua Thien Hue	2023-05-02	TENANT	15	\N	hoangthien@gmail.com
+35	Phạm Nguyễn Duy Tường	0888104961	079094006776	Cục cảnh sát	2022-06-12	LESSOR	16	\N	tuong.pham94.uhouse@gmail.com
+36	2	0912345678	07940654545	cục cảnh sát	2021-05-16	TENANT	16	\N	dtuong1112@gmail.com
 \.
 
 
@@ -15083,6 +14704,7 @@ COPY public.liquidated_contract (id, code, status, liquidate_from_date, pdf_temp
 20	TLHĐ_204_11-2023_20	SIGNED_BY_GUESS	2023-11-06 00:00:00	0	\N	entity-service/liquidated-contract/20/TLHĐ_204_11-2023_20.pdf	182	\N	\N	-438000	2023-11-06 09:05:10.035	2023-11-06 09:04:59.144842	54	54	2023-11-06 09:05:10.035	2023-11-06 09:05:10.035	f	\N	\N	t	0	438000	t	0	-438000	0	2023-11-01	2023-11-06
 19	TLHĐ_209_11-2023_19	SIGNED_BY_GUESS	2023-11-06 00:00:00	0	\N	entity-service/liquidated-contract/19/TLHĐ_209_11-2023_19.pdf	95	\N	\N	1111000	2023-11-06 09:16:18.884	2023-11-06 08:46:51.348029	54	54	2023-11-06 08:46:51.594	2023-11-06 09:16:18.884	f	\N	2023-11-06 00:00:00	t	1700000	589000	t	0	1111000	0	2023-11-01	2023-11-06
 22	TLHĐ_203_1-2024_22	SIGNED_BY_GUESS	2024-01-02 00:00:00	0	\N	entity-service/liquidated-contract/22/TLHĐ_203_1-2024_22.pdf	159	\N	\N	12818000	2024-01-02 05:11:28.561213	2024-01-02 05:11:28.561213	54	54	2024-01-02 05:11:28.866	\N	f	\N	2024-01-02 00:00:00	t	0	-12818000	t	0	12818000	0	2023-01-01	2024-01-02
+23	TLHĐ_101_3-2024_23	SIGNED_BY_GUESS	2024-03-22 00:00:00	0	\N	entity-service/liquidated-contract/23/TLHĐ_101_3-2024_23.pdf	197	\N	\N	4000000	2024-03-22 05:01:14.097	2024-03-22 05:01:09.457948	190	190	2024-03-22 05:01:09.479	2024-03-22 05:01:14.097	f	\N	2024-03-22 00:00:00	f	4000000	0	t	0	4000000	0	2024-03-30	2024-03-22
 \.
 
 
@@ -15144,6 +14766,8 @@ COPY public.liquidated_contract_people (id, name, identity_card, ic_place, ic_da
 48	Võ Văn Huy	066202009612	Hồ Chí Minh	2022-12-01 00:00:00	0344055702	TENANT	\N	21	2023-11-06 09:16:06.941582	2023-11-06 09:16:06.941582	benb@getnada.com		2002-07-20
 49	Trần Thị Kim Định	080190000696	Công an thành phố	2019-11-14 00:00:00	0906850289	LESSOR	54	22	2024-01-02 05:11:28.561213	2024-01-02 05:11:28.561213	trankimdinh1990@gmail.com		1990-05-05
 50	Ngô Thị Hồng Nhung 	082300004537	C.A Tp	2023-03-17 00:00:00	0982582431	TENANT	\N	22	2024-01-02 05:11:28.561213	2024-01-02 05:11:28.561213	khachvanglai@gmail.com	166/5 Tết Mậu Thân ,Mỹ Tho ,Tiền Giang 	2000-08-22
+51	Phạm Nguyễn Duy Tường	079094006776	Cục cảnh sát	2022-06-12 00:00:00	0888104961	LESSOR	190	23	2024-03-22 05:01:09.457948	2024-03-22 05:01:09.457948	tuong.pham94.uhouse@gmail.com		1994-12-11
+52	2	07940654545	cục cảnh sát	2021-05-16 00:00:00	0912345678	TENANT	\N	23	2024-03-22 05:01:09.457948	2024-03-22 05:01:09.457948	dtuong1112@gmail.com		2000-01-01
 \.
 
 
@@ -15340,6 +14964,8 @@ COPY public.notification (id, title, body, user_id, reference_id, type, url, cre
 126	Hợp đồng cho thuê sắp hết hạn	Hợp đồng cho thuê phòng 303 của bạn sẽ hết hạn trong 30 ngày tới. Hãy thông báo đến chủ tòa nhà nếu bạn muốn tiếp tục thực hiện gia hạn thuê phòng	162	128	RENTAL_CONTRACT	\N	2024-01-03 17:00:03.614	f	HĐT_23_02_303_111
 127	Hợp đồng đặt cọc	Bạn có một Hợp đồng đặt cọc phòng C14/01 cần ký tên được gửi từ Topaz Home	18	105	DEPOSIT_CONTRACT	\N	2024-01-22 03:11:12.948	f	\N
 128	Hợp đồng cho thuê phòng	Bạn có một Hợp đồng cho thuê phòng C14/03 cần ký tên được gửi từ Topaz Home	175	195	RENTAL_CONTRACT	\N	2024-02-02 04:01:27.668	f	\N
+129	Hợp đồng cho thuê sắp hết hạn	Hợp đồng cho thuê phòng 10 của bạn sẽ hết hạn trong 30 ngày tới. Hãy thông báo đến chủ tòa nhà nếu bạn muốn tiếp tục thực hiện gia hạn thuê phòng	46	160	RENTAL_CONTRACT	\N	2024-03-22 17:00:00.788	f	HĐT_23_04_10_143
+130	Hợp đồng cho thuê sắp hết hạn	Hợp đồng cho thuê phòng 004 của bạn sẽ hết hạn trong 30 ngày tới. Hãy thông báo đến chủ tòa nhà nếu bạn muốn tiếp tục thực hiện gia hạn thuê phòng	81	164	RENTAL_CONTRACT	\N	2024-04-16 17:00:00.772	f	HĐT_23_05_004_147
 \.
 
 
@@ -15383,6 +15009,9 @@ COPY public.organization (id, name, description, address, email, phone_number, a
 40	\N	\N	\N	\N	\N	179	2023-04-06 09:41:34.647	2023-04-06 09:41:34.647	15	f	\N
 41	\N	\N	\N	\N	\N	175	2023-05-30 01:30:25.272	2023-05-30 01:30:25.272	15	f	\N
 42	\N	\N	\N	\N	\N	181	2023-05-30 01:45:53.846	2023-05-30 01:45:53.846	15	f	\N
+43	\N	\N	\N	\N	\N	189	2024-03-08 03:01:33.256	2024-03-08 03:01:33.256	15	f	\N
+44	\N	\N	\N	\N	\N	190	2024-03-21 09:12:43.262	2024-03-21 09:12:43.262	15	f	\N
+46	\N	\N	\N	\N	\N	188	2024-05-06 07:02:02.38	2024-05-06 07:02:02.38	15	f	\N
 \.
 
 
@@ -15416,6 +15045,9 @@ COPY public.organization_user (id, user_id, organization_id, created_at) FROM st
 23	179	40	2023-04-06 09:41:34.751809
 24	175	41	2023-05-30 01:30:25.3821
 25	181	42	2023-05-30 01:45:53.909402
+26	189	43	2024-03-08 03:01:33.312111
+27	190	44	2024-03-21 09:12:43.305665
+28	188	46	2024-05-06 07:02:02.419621
 \.
 
 
@@ -18200,6 +17832,7 @@ COPY public.rental_contract (id, code, status, address, effective_date, room_id,
 194	HĐT_24_01_C14/02_177	SIGNED_BY_GUESS	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	347	52.00	6000000.00	12	2024-01-01	2025-01-01	1	\N	0.00	3000000.00	107	\N	entity-service/rental-contract/194/HĐT_24_01_C14/02_177.pdf	f	2024-01-22	2024-01-22 03:34:53.064333	2024-01-22 03:45:48.564003	181	181	2024-01-22	2024-01-22	3000000.00	22	25	26	100000	05	26	f	0	0	2025-01-01 10:33:02	\N	\N	0	0.00	0.00	0	0	6000000
 195	HĐT_24_02_C14/03_178	SIGNED_BY_OWNER	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	348	100.00	10000000.00	12	2024-02-02	2025-02-02	1	\N	0.00	3000000.00	\N	\N	entity-service/rental-contract/195/HĐT_24_02_C14/03_178.pdf	f	2024-02-02	2024-02-02 04:01:26.266748	2024-02-02 04:01:26.266748	181	181	2024-02-02	\N	0.00	02	05	06	100000	05	06	f	0	0	2025-02-02 10:59:39	\N	\N	0	2000000.00	1000000.00	0	0	0
 196	HĐT_24_02_C14/03_179	SIGNED_BY_GUESS	102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Thành phố Hồ Chí Minh	\N	348	100.00	10000000.00	12	2024-02-02	2025-02-02	1	\N	0.00	3000000.00	\N	\N	entity-service/rental-contract/196/HĐT_24_02_C14/03_179.pdf	f	2024-02-02	2024-02-02 04:37:06.926597	2024-02-02 04:54:44.664882	181	181	2024-02-02	2024-02-02	0.00	02	05	06	100000	05	06	f	0	0	2025-02-02 11:36:05	\N	\N	0	0.00	3000000.00	0	0	0
+197	HĐT_24_03_101_180	SIGNED_BY_GUESS	Số 33 đường Thái Ly , phường Thảo Điền , Quận 2 , Thành phố Thủ Đức, Thành phố Hồ Chí Minh	\N	349	45.00	11000000.00	12	2024-03-30	2026-09-01	4	\N	0.00	11000000.00	108	\N	entity-service/rental-contract/197/HĐT_24_03_101_180.pdf	f	2024-03-22	2024-03-22 04:53:52.534601	2024-03-22 05:01:14.093416	190	190	2024-03-22	2024-03-22	4000000.00	1	5	6	100000	05	6	t	0	0	2025-03-30 00:00:00	\N	\N	3	0.00	7000000.00	0	0	0
 \.
 
 
@@ -18223,6 +17856,7 @@ COPY public.rental_contract_appendix_sequence (id, rental_contract_id, sequence)
 13	158	0
 14	76	1
 15	163	1
+16	197	1
 \.
 
 
@@ -18753,6 +18387,10 @@ COPY public.rental_contract_cost (id, name, description, unit_price, unit, renta
 1011	Điện	\N	3500.00	kWh	99	\N	2024-01-02 13:57:34.704282	2024-01-02 13:57:34.704282	ELECTRICITY	TOTAL	PAY_LATER	t
 1012	Nước	\N	50000.00	nguoi	99	\N	2024-01-02 13:57:34.704282	2024-01-02 13:57:34.704282	WATER	PER_CAPITA	PREPAY	t
 1013	Phí phụ thu	\N	90000.00	phong	99	\N	2024-01-02 13:57:34.704282	2024-01-02 13:57:34.704282	OTHER	TOTAL	PREPAY	f
+1063	Nước	\N	100000.00	nguoi	197	\N	2024-03-22 04:53:52.534601	2024-03-22 04:53:52.534601	WATER	PER_CAPITA	PREPAY	t
+1064	Điện	\N	4000.00	kWh	197	\N	2024-03-22 04:53:52.534601	2024-03-22 04:53:52.534601	ELECTRICITY	TOTAL	PAY_LATER	t
+1065	Dịch vụ cơ bản	\N	200000.00	Tháng	197	\N	2024-03-22 04:53:52.534601	2024-03-22 04:53:52.534601	BASIC_SERVICE	TOTAL	PREPAY	t
+1066	xe	\N	150000.00	nguoi	197	\N	2024-03-22 04:53:52.534601	2024-03-22 04:53:52.534601	OTHER	PER_CAPITA	PREPAY	f
 \.
 
 
@@ -18859,6 +18497,7 @@ COPY public.rental_contract_people (id, name, phone_number, indentity_card, ic_p
 159	Nguyễn Thị Kim Ngân	0965440101	086311110263	thành phố Hồ Chí Minh	2020-08-05	LESSOR	46	kimngan.chunha@getnada.com	\N	\N	\N	\N
 161	Nguyễn Hồng Ngọc	09297282	567890	\N	\N	ROOMMATE	46	\N	\N	Tra Vinh	Sinh Vien	1999-01-20
 160	Nguyễn Thị An	0946340767	09600032516	tpHCM	2021-08-06	TENANT	46	nguoithue@getnada.com	49	\N	\N	\N
+815	La Vũ Huyền Trân 	0784367724	080304013059	Long An	2022-08-02	TENANT	128	huyentran7724@gmail.com	162	\N	\N	2004-10-19
 162	Nguyễn Thị Kim Ngân	0965440101	086311110263	thành phố Hồ Chí Minh	2020-08-05	LESSOR	47	kimngan.chunha@getnada.com	\N	\N	\N	\N
 164	Nguyễn Hồng Ngọc	09297282	567890	\N	\N	ROOMMATE	47	\N	\N	Tra Vinh	Sinh Vien	2000-08-24
 163	Nguyễn Thị An	0946340767	09600032516	tpHCM	2021-08-06	TENANT	47	nguoithue@getnada.com	49	\N	\N	\N
@@ -18946,7 +18585,6 @@ COPY public.rental_contract_people (id, name, phone_number, indentity_card, ic_p
 234	Trần Thị Quỳnh Như	1231231230	0123123123	\N	\N	ROOMMATE	66	\N	\N	7 Cộng Hòa, Phường 4, Tân Bình	Kỹ sư công nghệ	2022-09-01
 235	Trần Giao Xuân Kỷ	1231231231	1123123123	\N	\N	ROOMMATE	66	\N	\N	7 Cộng Hòa, Phường 4, Tân Bình	Kỹ sư 	2022-09-02
 233	Cao Thị Thanh Huyền	8906009195	5793781133	Bạc Liêu	2022-09-02	TENANT	66	prod_customer0609@getnada.com	63	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	\N
-815	La Vũ Huyền Trân 	0784367724	080304013059	Long An	2022-08-02	TENANT	128	huyentran7724@gmail.com	162	\N	\N	2004-10-19
 701	Nguyễn Thị Ngọc	0967624353	2296105690	Thua Thien Hue	2022-09-30	LESSOR	161	tranle15788@gmail.com	\N	\N	\N	2022-06-02
 257	Cao Thị Thanh Huyền	8906009195	5793781133	Bạc Liêu	2022-09-02	TENANT	71	prod_customer0609@getnada.com	63	7 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	\N
 240	Nguyễn Thị Thu Trang	5793781133	4290170793	Đắk Lắk	2022-09-01	LESSOR	67	prod_landlord0609@getnada.com	62	20 Cộng Hòa, Phường 04, Quận Tân Bình, Thành phố Hồ Chí Minh	\N	\N
@@ -19032,6 +18670,7 @@ COPY public.rental_contract_people (id, name, phone_number, indentity_card, ic_p
 928	Trần Bảo Hằng	0963717257	052304014219	Cục quản lý HCTTXH	2023-06-13	TENANT	187	Khachvanglai@gmail.com	\N	Phước Quang Tuy Phước Bình Định	\N	2004-03-04
 929	Phan Duy Đức	\N	042097009453	\N	\N	ROOMMATE	187	\N	\N	Phù Lưu Lộc Hà Hà Tĩnh	Đi lam	1997-10-15
 935	Thuy	0908116993	092184004910	Công an thành phố 	2019-01-14	LESSOR	143	nguyenthuy321984@gmail.com	\N	1242 Võ Văn Kiệt phường 10 Quận 5	\N	1984-02-03
+712	Nguyễn Sơn	0000000000000	00000000000000	Hồ Chí Minh	2023-05-03	TENANT	166	ngu@getnada.com	\N	\N	\N	2023-05-01
 936	Ngô Thị Vân Anh	0899489080	080197012940	Cục Trưởng cục cảnh sát quản lý hành chính về trật tự xã hội 	2021-12-16	TENANT	143	Khachvanglai@gmail.com	\N	Cần Đước Lòng An	\N	1997-04-24
 856	Trần Thị Kim Định	0906850289	080190000696	Công an thành phố	2019-11-14	LESSOR	179	trankimdinh1990@gmail.com	\N	\N	\N	1990-05-05
 857	Lê Thị Kim Duyên 	0799366239	051304002827	Cục quản lý hành chính TTXH	2022-09-29	TENANT	179	khachvanglai@gmail.com	\N	Thôn An Hoà Bắc ,Nghĩa Thắng ,Tư Nghĩa ,Quảng Ngãi	\N	2004-04-07
@@ -19122,7 +18761,6 @@ COPY public.rental_contract_people (id, name, phone_number, indentity_card, ic_p
 703	Nguyễn Thị Ngọc	0967624353	2296105690	Thua Thien Hue	2022-09-30	LESSOR	162	tranle15788@gmail.com	\N	\N	\N	2022-06-02
 704	Nguyễn Võ Thái Sơn	0967624353	0393442205	Hồ Chí Minh	2023-05-03	TENANT	162	tranle15733388@gmail.com	\N	\N	\N	2023-05-01
 711	Nguyễn Thị Ngọc	5004779020	2296105690	Thua Thien Hue	2022-09-30	LESSOR	166	prod_landlord2@getnada.com	\N	\N	\N	2022-06-02
-712	Nguyễn Sơn	0000000000000	00000000000000	Hồ Chí Minh	2023-05-03	TENANT	166	ngu@getnada.com	\N	\N	\N	2023-05-01
 719	Nguyễn Thị Ngọc	5004779020	2296105690	Thua Thien Hue	2022-09-30	LESSOR	170	prod_landlord2@getnada.com	\N	\N	\N	2022-06-02
 720	Nguyễn Sơn	11111111111111	0000000007	Hồ Chí Minh	2023-05-01	TENANT	170	hao@getnada.com	\N	\N	\N	2023-05-01
 727	Nguyễn Thị Ngọc	5004779020	2296105690	Thua Thien Hue	2022-09-30	LESSOR	174	prod_landlord2@getnada.com	\N	\N	\N	2022-06-02
@@ -19264,6 +18902,11 @@ COPY public.rental_contract_people (id, name, phone_number, indentity_card, ic_p
 1029	Nguyễn Ngọc Tường Vi	0937794003	080302006940	\N	\N	ROOMMATE	111	\N	\N	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	Sinh Viên	2002-05-06
 1030	Lê Ngọc Anh	\N	080302010628	\N	\N	ROOMMATE	111	\N	\N	22/1 Nguyễn Hữu Tiến, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh	Sinh Viên	2002-02-12
 1028	NGUYỄN THỊ THUÝ HẰNG	0934806094	080302010935	Long An	2021-12-12	TENANT	111	thuy29574@gmail.com	145	\N	\N	2002-09-27
+1061	Phạm Nguyễn Duy Tường	0888104961	079094006776	Cục cảnh sát	2022-06-12	LESSOR	197	tuong.pham94.uhouse@gmail.com	190	\N	\N	1994-12-11
+1062	2	0912345678	07940654545	cục cảnh sát	2021-05-16	TENANT	197	dtuong1112@gmail.com	\N	\N	\N	2000-01-01
+1063	333333	0333333333	09733333333	\N	\N	ROOMMATE	197	\N	\N	bắc hải	biết chi 	2024-03-04
+1064	4444444	0044444444	06555555512	\N	\N	ROOMMATE	197	\N	\N	hỏi chi	ko biết	2024-03-21
+1065	5555555	00555555555	0404040404040	\N	\N	ROOMMATE	197	\N	\N	hỏi chi	biết chi	2024-03-20
 \.
 
 
@@ -19396,6 +19039,9 @@ COPY public.rental_contract_vehicle (id, name, license_plate, rental_contract_id
 194	BXE	76U1-02657	118
 195	BXE	72F1-83132	120
 196	BXE	78E1-47359	120
+197	yamaha nouvo x	59-g1  705.32	197
+198	air blade đỏ	59T1 - 55555	197
+199	cùi bắp	65T2-66666	197
 \.
 
 
@@ -19542,6 +19188,7 @@ COPY public.room (id, room_number, type, num_tenants, acreage, price, bonus, dep
 106	P305.1	ONE_BEDROOM	10	45.00	4800000.00	1000000.00	5000000.00	\N	f	f	f	47	2022-09-26 09:46:16.122	2022-09-23 03:54:20.471503	78	EMPTY	entity-service/room/106/Hình_2.jpg	f	\N	t	0
 110	P305.2	STUDIO_ROOM	10	60.00	6000000.00	1000000.00	6000000.00	\N	f	f	f	47	2022-09-26 09:46:05.31	2022-09-23 04:01:45.313108	78	EMPTY	entity-service/room/110/Hình_2.jpg	f	\N	t	0
 117	P506	STUDIO_ROOM	5	30.00	3200000.00	1000000.00	3200000.00	\N	f	f	f	47	2022-09-26 09:57:12.238	2022-09-23 04:10:25.750463	78	EMPTY	entity-service/room/117/Hình_3.jpg	f	\N	t	0
+145	201	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 10:02:30.384	2022-09-23 08:44:00.284683	78	EMPTY	entity-service/room/145/Hình_1.jpg	f	\N	t	0
 119	P207	STUDIO_ROOM	5	25.00	2800000.00	1000000.00	2800000.00	\N	f	f	f	47	2022-09-26 09:41:53.92	2022-09-23 04:20:35.140653	78	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	0
 103	P504	ONE_BEDROOM	10	40.00	4500000.00	1000000.00	4500000.00	\N	f	f	f	47	2022-09-26 09:56:43.459	2022-09-23 03:42:26.542941	78	EMPTY	entity-service/room/103/Hình_3.jpg	f	\N	t	0
 112	P505.2	STUDIO_ROOM	10	60.00	5700000.00	1000000.00	5700000.00	\N	f	f	f	47	2022-09-26 09:57:04.47	2022-09-23 04:04:08.017447	78	EMPTY	entity-service/room/112/Hình_3.jpg	f	\N	t	0
@@ -19582,7 +19229,6 @@ COPY public.room (id, room_number, type, num_tenants, acreage, price, bonus, dep
 134	M07	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 10:01:34.476	2022-09-23 07:41:06.644278	78	EMPTY	entity-service/room/134/Hình_3.jpg	f	\N	t	0
 138	104	STUDIO_ROOM	10	25.00	2400000.00	1000000.00	2400000.00	\N	f	f	f	48	2022-09-26 10:00:03.379	2022-09-23 08:29:09.241449	78	EMPTY	entity-service/room/138/Hình_6.jpg	f	\N	t	0
 144	110	MEZZANINE_ROOM	10	25.00	2800000.00	1000000.00	2800000.00	\N	f	f	f	48	2022-09-26 10:02:26.362	2022-09-23 08:38:28.096089	78	EMPTY	entity-service/room/144/Hình_4.jpg	f	\N	t	0
-145	201	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 10:02:30.384	2022-09-23 08:44:00.284683	78	EMPTY	entity-service/room/145/Hình_1.jpg	f	\N	t	0
 149	205	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 10:02:50.205	2022-09-23 08:51:31.5029	78	EMPTY	entity-service/room/149/Hình_6.jpg	f	\N	t	0
 128	M01	STUDIO_ROOM	10	25.00	2400000.00	1000000.00	2400000.00	\N	f	f	f	48	2022-09-26 10:00:22.66	2022-09-23 07:35:54.396749	78	EMPTY	entity-service/room/128/Hình_2.jpg	f	\N	t	0
 158	304	STUDIO_ROOM	10	25.00	2400000.00	1000000.00	2400000.00	\N	f	f	f	48	2022-09-26 10:03:31.986	2022-09-23 09:04:13.584954	78	EMPTY	entity-service/room/158/Hình_2.jpg	f	\N	t	0
@@ -19639,7 +19285,6 @@ COPY public.room (id, room_number, type, num_tenants, acreage, price, bonus, dep
 160	305	MEZZANINE_ROOM	10	25.00	2900000.00	1000000.00	2900000.00	\N	f	f	f	48	2022-09-26 10:04:24.213	2022-09-23 09:05:38.593319	78	EMPTY	entity-service/room/160/Hình_3.jpg	f	\N	t	0
 166	401	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 10:05:01.096	2022-09-23 09:08:24.210576	78	EMPTY	entity-service/room/166/Hình_6.jpg	f	\N	t	0
 169	404	STUDIO_ROOM	10	25.00	2500000.00	1000000.00	2500000.00	\N	f	f	f	48	2022-09-26 09:59:30.408	2022-09-23 09:09:58.627706	78	EMPTY	entity-service/room/169/Hình_2.jpg	f	\N	t	0
-172	A001	ONE_BEDROOM	10	25.00	5000000.00	500000.00	5500000.00	\N	f	f	f	49	2023-02-25 17:00:00.13	2022-09-27 04:06:36.376896	62	ALMOST_EXPIRED	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	63	f	0
 287	203	ONE_BEDROOM	2	14.00	2400000.00	0.00	2400000.00	\N	f	f	f	73	2023-03-09 17:00:00.084	2023-03-09 05:23:07.294497	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
 194	A-12	MEZZANINE_ROOM	3	25.00	2300000.00	1000000.00	2300000.00	\N	f	f	f	55	2022-11-24 06:41:37.671	2022-10-03 10:47:23.826755	78	EMPTY	entity-service/room/194/z3756274197306_5048e7fc8bc8234edd487ea53dda0f1c.jpg	f	\N	f	0
 211	NH003	TWO_BEDROOMS	3	25.00	5000000.00	500000.00	5500000.00	\N	f	f	f	56	2023-04-08 17:00:00.077	2022-10-07 10:19:07.572524	82	EMPTY	entity-service/room/211/thiet-ke-nha-tro-dep-2020-bandon-0.jpg	f	\N	f	0
@@ -19745,7 +19390,6 @@ COPY public.room (id, room_number, type, num_tenants, acreage, price, bonus, dep
 331	003	CHDV 1 phòng ngủ	2	10.00	5000000.00	500000.00	5000000.00	\N	f	f	f	22	2024-02-02 17:00:00.048	2023-05-16 01:37:25.743178	17	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	2
 282	101	ONE_BEDROOM	4	19.00	3000000.00	0.00	3000000.00	\N	f	f	f	73	2023-03-09 17:00:00.084	2023-03-09 05:14:34.431823	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
 347	C14/02	TWO_BEDROOMS	4	52.00	6000000.00	1000000.00	3000000.00	\N	f	f	f	78	2024-01-22 03:29:39.788655	2024-01-22 03:29:39.788655	181	RENT	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	2
-332	004	ONE_BEDROOM	2	10.00	5000000.00	100000.00	1000000.00	\N	f	f	f	22	2024-02-02 17:00:00.048	2023-05-16 01:59:06.920193	17	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	t	\N	f	2
 284	103	ONE_BEDROOM	2	14.00	2400000.00	0.00	2400000.00	\N	f	f	f	73	2023-03-09 17:00:00.084	2023-03-09 05:19:22.879987	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
 333	VIP001	CHDV 1 phòng ngủ	2	10.00	10000000.00	500000.00	1000000.00	\N	f	f	f	77	2023-05-16 04:04:30.173895	2023-05-16 04:04:30.173895	17	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
 305	101	ONE_BEDROOM	4	19.00	3000000.00	0.00	3000000.00	\N	f	f	f	71	2023-03-11 17:00:00.097	2023-03-10 03:54:50.656072	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
@@ -19780,6 +19424,16 @@ COPY public.room (id, room_number, type, num_tenants, acreage, price, bonus, dep
 326	502	ONE_BEDROOM	2	12.00	2000000.00	0.00	2000000.00	\N	f	f	f	71	2023-03-11 17:00:00.097	2023-03-10 11:19:41.266824	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
 327	503	ONE_BEDROOM	2	12.00	2000000.00	0.00	2000000.00	\N	f	f	f	71	2023-03-11 17:00:00.097	2023-03-10 11:20:16.869679	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
 304	503	ONE_BEDROOM	2	12.00	2000000.00	0.00	2000000.00	\N	f	f	f	73	2023-03-09 17:00:00.084	2023-03-09 05:53:24.794386	165	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	f	1
+172	A001	ONE_BEDROOM	10	25.00	5000000.00	500000.00	5500000.00	\N	f	f	f	49	2024-03-13 17:00:00.05	2022-09-27 04:06:36.376896	62	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	63	f	0
+350	102	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:20:46.834	2024-03-22 04:15:03.017725	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+351	103	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:20:53.197	2024-03-22 04:15:17.267365	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+352	104	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:20:56.159	2024-03-22 04:15:32.642222	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+332	004	ONE_BEDROOM	2	10.00	5000000.00	100000.00	1000000.00	\N	f	f	f	22	2024-04-16 17:00:00.051	2023-05-16 01:59:06.920193	17	DEPOSIT	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	t	\N	f	2
+353	201	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:20:59.56	2024-03-22 04:15:45.386705	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+354	202	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:21:02.192	2024-03-22 04:15:58.034873	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+355	203	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:21:05.639	2024-03-22 04:16:56.9172	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+356	204	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-03-22 04:21:08.823	2024-03-22 04:17:08.140745	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
+349	101	ONE_BEDROOM	3	45.00	11000000.00	11000000.00	11000000.00	\N	f	f	f	82	2024-05-05 17:00:00.023	2024-03-22 04:14:42.985711	190	EMPTY	entity-service/room/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg	f	\N	t	1
 \.
 
 
@@ -19815,6 +19469,7 @@ COPY public.room_content (id, room_id, content, slug, created_at, updated_at, cr
 17	96	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát</li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 2.800.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền rác: 30.000/Phòng</li><li>Tiền xe: 150.000/Xe</li></ul>	p203_96	2022-10-11 08:59:53.785572	2022-11-20 20:11:47.042883	78	78	t
 7	87	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát</li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.500.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li></ul>	p301_87	2022-10-11 08:48:40.71982	2022-11-20 20:12:04.778628	78	78	t
 29	105	<ul style="list-style-type: square;"><li>Căn hộ dịch vụ 1 phòng ngủ&nbsp;rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 4.500.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p205.1_105	2022-10-11 09:54:01.408019	2022-10-11 09:54:01.408019	78	78	f
+53	124	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền rác: 30.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p208_124	2022-10-11 10:53:43.824274	2022-10-11 10:53:43.824274	78	78	f
 30	106	<ul style="list-style-type: square;"><li>Căn hộ dịch vụ 1 phòng ngủ&nbsp;rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 4.800.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền rác: 30.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p305.1_106	2022-10-11 09:55:00.35764	2022-10-11 09:55:00.35764	78	78	f
 32	107	<ul style="list-style-type: square;"><li>Căn hộ dịch vụ 1 phòng ngủ&nbsp;rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 6.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p405.1_107	2022-10-11 09:55:52.600703	2022-10-11 09:55:52.600703	78	78	f
 33	108	<ul style="list-style-type: square;"><li>Căn hộ dịch vụ 1 phòng ngủ&nbsp;rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 5.100.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p505.1_108	2022-10-11 09:56:32.697241	2022-10-11 09:56:32.697241	78	78	f
@@ -19841,7 +19496,6 @@ COPY public.room_content (id, room_id, content, slug, created_at, updated_at, cr
 48	121	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 2.500.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p407_121	2022-10-11 10:17:34.047917	2022-10-11 10:18:10.30895	78	78	f
 50	122	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 2.800.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền rác: 30.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p507_122	2022-10-11 10:20:36.878938	2022-10-11 10:20:36.878938	78	78	f
 52	123	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p108_123	2022-10-11 10:25:48.689017	2022-10-11 10:25:48.689017	78	78	f
-53	124	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền rác: 30.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p208_124	2022-10-11 10:53:43.824274	2022-10-11 10:53:43.824274	78	78	f
 54	125	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.500.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p308_125	2022-10-11 10:56:20.447269	2022-10-11 10:56:31.849678	78	78	f
 56	126	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p408_126	2022-10-11 10:57:19.217244	2022-10-11 10:57:19.217244	78	78	f
 57	127	<ul style="list-style-type: square;"><li>Phòng rộng rãi, thoáng mát<br></li><li>Gần nhiều nơi tiện ích như: Chợ Phạm Văn Hai, ATM, cây xăng, Vincom, Katinat, Phúc Long, Ministop,....</li><li>Có bảo vệ 24/24</li><li>Giờ giấc tự do</li><li>Giá thuê: 3.000.000/Tháng (Chưa bao gồm các chi phí khác)</li><li>Nước: 100.000/Người</li><li>Điện 3.500/kWh</li><li>Tiền dịch vụ: 100.000/Phòng</li><li>Tiền xe: 150.000/Xe</li><br></ul>	p508_127	2022-10-11 10:58:08.768168	2022-10-11 10:58:25.807777	78	78	f
@@ -20037,7 +19691,7 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 77	Điện	Chi phí điện	4000.00	kWh	15	2022-08-02 02:42:35.889225	2022-08-02 02:42:35.889225	16	ELECTRICITY	TOTAL	PAY_LATER
 78	Nước	Chi phí nước	4000.00	m³	33	2022-08-02 03:50:28.318793	2022-08-02 03:50:28.318793	32	WATER	PER_CAPITA	PAY_LATER
 79	Điện	Chi phí điện	3000.00	kWh	33	2022-08-02 03:50:28.318793	2022-08-02 03:50:28.318793	32	ELECTRICITY	TOTAL	PAY_LATER
-575	Xe	Chi phí xe	100000.00	Xe/Tháng	155	2022-09-23 09:02:42.947199	2022-09-23 09:02:42.947199	78	VEHICLE	PER_CAPITA	PREPAY
+144	Nước	Chi phí nước	20000.00	m³	54	2022-09-06 07:29:19.366102	2022-09-06 07:29:19.366102	43	WATER	PER_CAPITA	PAY_LATER
 80	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản	120000.00	Tháng	33	2022-08-02 03:50:28.318793	2022-08-02 03:50:28.318793	32	BASIC_SERVICE	TOTAL	PREPAY
 81	Xe	Chi phí xe	100000.00	Xe/Tháng	33	2022-08-02 03:50:28.318793	2022-08-02 03:50:28.318793	32	VEHICLE	PER_CAPITA	PREPAY
 82	Điện	Chi phí điện	3000.00	kWh	36	2022-08-06 02:06:38.072545	2022-08-06 02:06:38.072545	23	ELECTRICITY	TOTAL	PAY_LATER
@@ -20094,7 +19748,6 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 141	Điện	Chi phí điện	5000.00	kWh	53	2022-09-06 07:28:10.822968	2022-09-06 07:28:10.822968	43	ELECTRICITY	TOTAL	PAY_LATER
 142	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản	200000.00	Tháng	53	2022-09-06 07:28:10.822968	2022-09-06 07:28:10.822968	43	BASIC_SERVICE	TOTAL	PREPAY
 143	Xe	Chi phí xe	100000.00	Xe/Tháng	53	2022-09-06 07:28:10.822968	2022-09-06 07:28:10.822968	43	VEHICLE	PER_CAPITA	PREPAY
-144	Nước	Chi phí nước	20000.00	m³	54	2022-09-06 07:29:19.366102	2022-09-06 07:29:19.366102	43	WATER	PER_CAPITA	PAY_LATER
 145	Điện	Chi phí điện	5000.00	kWh	54	2022-09-06 07:29:19.366102	2022-09-06 07:29:19.366102	43	ELECTRICITY	TOTAL	PAY_LATER
 146	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản	200000.00	Tháng	54	2022-09-06 07:29:19.366102	2022-09-06 07:29:19.366102	43	BASIC_SERVICE	TOTAL	PREPAY
 147	Xe	Chi phí xe	100000.00	Xe/Tháng	54	2022-09-06 07:29:19.366102	2022-09-06 07:29:19.366102	43	VEHICLE	PER_CAPITA	PREPAY
@@ -20343,6 +19996,7 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 459	Xe	Chi phí xe	150000.00	Xe/Tháng	126	2022-09-23 04:29:29.476131	2022-09-23 04:29:29.476131	78	VEHICLE	PER_CAPITA	PREPAY
 460	Nước	Chi phí nước	100000.00	nguoi	127	2022-09-23 04:30:38.629942	2022-09-23 04:30:38.629942	78	WATER	PER_CAPITA	PREPAY
 461	Điện	Chi phí điện	3500.00	kWh	127	2022-09-23 04:30:38.629942	2022-09-23 04:30:38.629942	78	ELECTRICITY	TOTAL	PAY_LATER
+519	Xe	Chi phí xe	100000.00	Xe/Tháng	141	2022-09-23 08:33:59.54967	2022-09-23 08:33:59.54967	78	VEHICLE	PER_CAPITA	PREPAY
 463	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản: \n- Từ 2 người trở lên là 100.000.\n- Phòng 1 người là 50.000 (chỉnh lại giá dịch vụ ở hợp đồng thuê khi phòng chỉ có 1 người)	100000.00	Tháng	127	2022-09-23 04:30:38.629942	2022-09-23 04:30:38.629942	78	BASIC_SERVICE	TOTAL	PREPAY
 464	Xe	Chi phí xe	150000.00	Xe/Tháng	127	2022-09-23 04:30:38.629942	2022-09-23 04:30:38.629942	78	VEHICLE	PER_CAPITA	PREPAY
 465	Nước	Chi phí nước	80000.00	nguoi	128	2022-09-23 07:35:54.396749	2022-09-23 07:35:54.396749	78	WATER	PER_CAPITA	PREPAY
@@ -20399,7 +20053,6 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 516	Phí rác sinh hoạt, wifi	Phí rác sinh hoạt, wifi	50000.00	phong	140	2022-09-23 08:33:28.028819	2022-09-23 08:33:28.028819	78	\N	TOTAL	PREPAY
 517	Nước	Chi phí nước	80000.00	nguoi	141	2022-09-23 08:33:59.54967	2022-09-23 08:33:59.54967	78	WATER	PER_CAPITA	PREPAY
 518	Điện	Chi phí điện	3500.00	kWh	141	2022-09-23 08:33:59.54967	2022-09-23 08:33:59.54967	78	ELECTRICITY	TOTAL	PAY_LATER
-519	Xe	Chi phí xe	100000.00	Xe/Tháng	141	2022-09-23 08:33:59.54967	2022-09-23 08:33:59.54967	78	VEHICLE	PER_CAPITA	PREPAY
 520	Phí rác sinh hoạt, wifi	Phí rác sinh hoạt, wifi	50000.00	phong	141	2022-09-23 08:33:59.54967	2022-09-23 08:33:59.54967	78	\N	TOTAL	PREPAY
 521	Nước	Chi phí nước	80000.00	nguoi	142	2022-09-23 08:34:31.058286	2022-09-23 08:34:31.058286	78	WATER	PER_CAPITA	PREPAY
 522	Điện	Chi phí điện	3500.00	kWh	142	2022-09-23 08:34:31.058286	2022-09-23 08:34:31.058286	78	ELECTRICITY	TOTAL	PAY_LATER
@@ -20455,6 +20108,7 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 572	Phí rác sinh hoạt, wifi	Phí rác sinh hoạt, wifi	50000.00	phong	154	2022-09-23 09:01:40.859316	2022-09-23 09:01:40.859316	78	\N	TOTAL	PREPAY
 573	Nước	Chi phí nước	80000.00	nguoi	155	2022-09-23 09:02:42.947199	2022-09-23 09:02:42.947199	78	WATER	PER_CAPITA	PREPAY
 574	Điện	Chi phí điện	3500.00	kWh	155	2022-09-23 09:02:42.947199	2022-09-23 09:02:42.947199	78	ELECTRICITY	TOTAL	PAY_LATER
+575	Xe	Chi phí xe	100000.00	Xe/Tháng	155	2022-09-23 09:02:42.947199	2022-09-23 09:02:42.947199	78	VEHICLE	PER_CAPITA	PREPAY
 576	Phí rác sinh hoạt, wifi	Phí rác sinh hoạt, wifi	50000.00	phong	155	2022-09-23 09:02:42.947199	2022-09-23 09:02:42.947199	78	\N	TOTAL	PREPAY
 577	Nước	Chi phí nước	80000.00	nguoi	156	2022-09-23 09:03:12.76731	2022-09-23 09:03:12.76731	78	WATER	PER_CAPITA	PREPAY
 578	Điện	Chi phí điện	3500.00	kWh	156	2022-09-23 09:03:12.76731	2022-09-23 09:03:12.76731	78	ELECTRICITY	TOTAL	PAY_LATER
@@ -21004,6 +20658,9 @@ COPY public.room_cost (id, name, description, unit_price, unit, room_id, updated
 1130	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản	300000.00	Tháng	347	2024-01-22 03:31:48.107513	2024-01-22 03:31:48.107513	181	BASIC_SERVICE	TOTAL	PREPAY
 1131	Điện	Chi phí điện	500000.00	kWh	348	2024-02-02 03:57:44.945835	2024-02-02 03:57:44.945835	181	ELECTRICITY	TOTAL	PAY_LATER
 1132	Nước	Chi phí nước	100000.00	m³	348	2024-02-02 03:58:00.735624	2024-02-02 03:58:00.735624	181	WATER	PER_CAPITA	PAY_LATER
+1133	Nước	Chi phí nước	100000.00	Người	349	2024-03-22 04:31:17.939039	2024-03-22 04:31:17.939039	190	WATER	PER_CAPITA	PREPAY
+1134	Điện	Chi phí điện	4000.00	kWh	349	2024-03-22 04:31:29.356925	2024-03-22 04:31:29.356925	190	ELECTRICITY	TOTAL	PAY_LATER
+1135	Dịch vụ cơ bản	Chi phí dịch vụ cơ bản	200000.00	Tháng	349	2024-03-22 04:31:42.528227	2024-03-22 04:31:42.528227	190	BASIC_SERVICE	TOTAL	PREPAY
 \.
 
 
@@ -21070,6 +20727,7 @@ COPY public.room_customer (id, identity_number, name, birth_day, address, docume
 56	102003568989	Phạm Lan Nhi	2010-02-03 09:00:54	value	{document}	job	working address	1234567890	2023-05-16 02:01:52.719	2023-05-16 02:02:36.065	17	332	t	t	MAIN_RENTER	STAYING	\N	\N	f	Thua Thien Hue	\N	2020-05-04 09:01:09	{}	\N
 57	39020230320	Lê Trần Lâm Trúc	1993-05-04 00:00:00	value	{document}	job	working address	0393599456	2024-01-22 03:11:11.981	2024-01-22 03:16:51.873	181	346	t	t	MAIN_RENTER	STAYING	\N	\N	f	BRVT	\N	2024-01-10 10:10:05	{}	\N
 59	82232302302	Lê Trần Lâm Sơn	2024-01-10 10:32:28	value	{document}	job	working address	09774029302	2024-01-22 03:34:02.193	2024-01-22 03:34:53.219	181	347	t	t	MAIN_RENTER	STAYING	\N	\N	f	BRVT	\N	2024-01-10 10:32:43	{}	\N
+60	07940654545	2	2000-01-01 00:00:00	value	{document}	job	working address	0912345678	2024-03-22 04:45:34.276	2024-03-22 04:53:52.548	190	349	t	t	MAIN_RENTER	STAYING	\N	\N	f	cục cảnh sát	\N	2021-05-16 00:00:00	{}	\N
 \.
 
 
@@ -21728,6 +21386,14 @@ COPY public.room_media (id, name, created_at, updated_at, updated_by, room_id, i
 639	entity-service/room/279/F108F6DB-B38A-4D38-AF39-92940921AFF3.jpeg	2023-03-09 04:43:41.433	2023-03-09 04:43:41.456	54	279	f	4351463	IMAGE
 640	entity-service/room/327/E6AD6B23-72B2-4B60-BD9A-FCF3F9444023.jpeg	2023-03-10 13:04:19.231	2023-03-10 13:04:19.284	165	327	f	3474344	IMAGE
 641	entity-service/room/348/Thiet-ke-nha-dep-quang-ngai-4.jpeg	2024-02-02 03:48:41.751	2024-02-02 03:48:42.136	181	348	t	198963	IMAGE
+642	entity-service/room/349/z5273291428879_5321646f06d7a4a8e3d7c2ce39233602.jpg	2024-03-22 04:17:33.422	2024-03-22 04:17:33.439	190	349	f	170686	IMAGE
+643	entity-service/room/349/z5273291440877_664c3c293ebcfbdf5d3dadeeaf701223.jpg	2024-03-22 04:17:34.271	2024-03-22 04:17:34.284	190	349	f	146716	IMAGE
+644	entity-service/room/349/z5273291446993_94a542f8493cdc119e9ca9f939f124ae.jpg	2024-03-22 04:17:34.665	2024-03-22 04:17:34.68	190	349	f	183196	IMAGE
+645	entity-service/room/349/z5273291448528_001e42ce739cf13f0888bd075fd92bc1.jpg	2024-03-22 04:17:35.176	2024-03-22 04:17:35.191	190	349	f	161978	IMAGE
+646	entity-service/room/349/z5273291452222_158460ed2737115abdc101d38e9f0ce5.jpg	2024-03-22 04:17:35.601	2024-03-22 04:17:35.615	190	349	f	174445	IMAGE
+647	entity-service/room/349/z5273291463974_0b4cc0f9b0d1ede00ef9565b59ee4c14.jpg	2024-03-22 04:17:36.095	2024-03-22 04:17:36.109	190	349	f	132720	IMAGE
+648	entity-service/room/349/z5273291473225_8e1582f0b55aff4ff6278a5e414b6bfc.jpg	2024-03-22 04:17:36.551	2024-03-22 04:17:36.564	190	349	f	157422	IMAGE
+649	entity-service/room/349/z5273291478779_9c1d418a4a466a54c7f0111427dbc21a.jpg	2024-03-22 04:17:36.983	2024-03-22 04:17:36.996	190	349	f	219726	IMAGE
 \.
 
 
@@ -21840,6 +21506,9 @@ COPY public.room_schedule (id, customer_name, customer_phone_number, customer_za
 29	Nguyễn Xem Phòng	0386076555	\N	2022-12-02 12:30:00	\N	\N	\N	\N	\N	\N	\N	\N	185	2022-12-02 04:03:35.464	\N
 30	Nguyễn Nhật	0985246654	\N	2023-03-23 19:30:00	\N	\N	\N	\N	\N	\N	\N	\N	152	2023-03-23 14:32:28.255	\N
 31	Nguyễn Bá Trung	097740203	\N	2024-02-02 10:58:55	\N	\N	\N	\N	\N	\N	\N	\N	348	2024-02-02 03:58:59.375	181
+32	987	088899966	\N	2024-03-30 12:15:02	\N	\N	\N	\N	\N	\N	\N	\N	349	2024-03-22 05:09:12.777	190
+33	123	0888888888	\N	2024-03-22 15:12:42	\N	\N	\N	\N	\N	\N	\N	\N	349	2024-03-22 05:09:49.161	190
+34	456	0777777777	\N	2024-03-22 12:15:40	\N	\N	\N	\N	\N	\N	\N	\N	349	2024-03-22 05:12:49.861	190
 \.
 
 
@@ -21937,6 +21606,18 @@ COPY public.room_supplies (id, service, description, quantity, room_id, updated_
 82	Tủ quần áo	Trang bị cho mỗi phòng	1	330	2023-04-10 08:43:57.883	2023-04-10 08:43:57.839127	54	\N
 83	Tivi thiết bị điện tử	Có lắp đặt đặt sẵn	1	330	2023-04-10 08:44:22.759	2023-04-10 08:44:22.730977	54	\N
 84	Máy lạnh		1	348	2024-02-02 03:58:16.858	2024-02-02 03:58:16.364709	181	\N
+85	Máy lạnh		1	349	2024-03-22 04:24:21.394	2024-03-22 04:24:21.351958	190	\N
+86	Máy giặt	Máy sấy	1	349	2024-03-22 04:24:27.554	2024-03-22 04:24:27.522337	190	\N
+87	Tủ lạnh		1	349	2024-03-22 04:24:31.843	2024-03-22 04:24:31.811489	190	\N
+88	Tủ bếp	Bếp, chén dĩa, bộ dụng cụ làm bếp, kệ trạn bếp, lò vi sóng, bình đun nước, nồi cơm	1	349	2024-03-22 04:24:35.502	2024-03-22 04:24:35.467323	190	\N
+89	Giường	Nệm, gối, drap, chăn	1	349	2024-03-22 04:24:39.346	2024-03-22 04:24:39.31268	190	\N
+90	Quạt điện		1	349	2024-03-22 04:24:46.467	2024-03-22 04:24:46.433404	190	\N
+91	Tủ quần áo		1	349	2024-03-22 04:24:51.097	2024-03-22 04:24:51.065143	190	\N
+92	Tivi thiết bị điện tử		1	349	2024-03-22 04:24:55.227	2024-03-22 04:24:55.195266	190	\N
+93	Nhà tắm vs các thiết bị	Máy nước nóng, sấy	1	349	2024-03-22 04:25:01.928	2024-03-22 04:25:01.895584	190	\N
+94	Sofa	Sofa êm ái rộng rãi thoải mái	1	349	2024-03-22 04:32:35.132	2024-03-22 04:32:35.090913	190	\N
+95	Bộ bàn ghế ăn uống	Bộ bàn ăn và 4 ghế ngồi	1	349	2024-03-22 04:33:27.351	2024-03-22 04:33:27.309385	190	\N
+96	Bộ bàn ghế làm việc	\N	1	349	2024-03-22 04:33:53.949	2024-03-22 04:33:53.906124	190	\N
 \.
 
 
@@ -22194,6 +21875,70 @@ COPY public.room_utility (id, room_id, utility_id, name, description, image, is_
 303	330	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời ! Thoáng mát dễ chịu	string	\N
 304	330	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái ! Tự làm chủ căn hộ	string	\N
 305	348	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+306	349	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+307	349	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+308	349	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+309	349	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+310	349	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+311	349	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+312	349	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+313	349	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+314	350	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+315	350	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+316	350	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+317	350	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+318	350	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+319	350	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+320	350	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+321	350	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+322	351	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+323	351	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+324	351	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+325	351	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+326	351	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+327	351	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+328	351	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+329	351	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+330	352	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+331	352	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+332	352	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+333	352	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+334	352	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+335	352	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+336	352	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+337	352	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+338	353	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+339	353	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+340	353	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+341	353	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+342	353	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+343	353	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+344	353	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+345	353	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+346	354	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+347	354	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+348	354	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+349	354	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+350	354	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+351	354	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+352	354	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+353	354	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+354	355	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+355	355	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+356	355	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+357	355	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+358	355	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+359	355	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+360	355	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+361	355	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
+362	356	\N	Wifi	Hệ thống wifi được trang bị ở mọi nơi trong tòa nhà	string	\N
+363	356	\N	Tự do giờ giấc	Giờ giấc tự do thoải mái – Không chung chủ	string	\N
+364	356	\N	Hệ thống camera	Camera được lắp đặt ở nhiều nơi trong tòa nhà như hành lang, cầu thang bộ, sảnh tòa nhà,...và hoạt động 24/24	string	\N
+365	356	\N	Thú cưng	Được phép nuôi thú cưng trong phòng	string	\N
+366	356	\N	Bảo vệ	Bảo vệ làm việc 24/24	string	\N
+367	356	\N	Dọn vệ sinh	Dọn vệ sinh 1 lần/tuần (thay drap giường, chăn, bao gối … )	string	\N
+368	356	\N	Không gian	Với thiết kế hiện đại mang lại nhiều ánh sáng và khí trời	string	\N
+369	356	\N	Khóa vân tay và thẻ từ	Khóa vân tay và thẻ từ đảm bảo an ninh cao	string	\N
 \.
 
 
@@ -22202,12 +21947,12 @@ COPY public.room_utility (id, room_id, utility_id, name, description, image, is_
 --
 
 COPY public.sequence (id, type, sequence) FROM stdin;
-1	DEPOSIT_CONTRACT	76
 5	RECEIPT_INFORMATION	800
 6	DEPOSIT_RECEIPT_INFORMATION	6
-2	RENTAL_CONTRACT	179
-3	LIQUIDATED_CONTRACT	22
 4	HOUSING_EXPENSE	1078
+1	DEPOSIT_CONTRACT	77
+2	RENTAL_CONTRACT	180
+3	LIQUIDATED_CONTRACT	23
 \.
 
 
@@ -22434,6 +22179,9 @@ COPY public.user_notification (id, user_id, fcm_key, is_active) FROM stdin;
 201906	187	dLHistGI80RxoCN_qOOReF:APA91bE5Mb17mWVPsBpCOl-R5dPKUuDX8BHoA1SituHKX2J1XWvON8F0CQ-58abqVUoJXW1vynddyLMyJCU9-X9gNsV3GSWAfKC7z5NhRm1TVcOqTGQBpZMvicrdpG8Y1kA9IwJI-4Uf	t
 201907	181	djt3FQZSakc8oCyoKxj-Bi:APA91bE8kcldDOwsfnd_FRegD13tBXSGzV5ApHgDf55nmArw9MsIzgrb7apWXhsYr0wWyJ1EtcEBR5O9WPyvBO4fQV2AwCBBwetXffZLIeqXKKNkxOZu4QDlxNykTpz5k_cwVPVBK5qK	t
 201908	188	djt3FQZSakc8oCyoKxj-Bi:APA91bE8kcldDOwsfnd_FRegD13tBXSGzV5ApHgDf55nmArw9MsIzgrb7apWXhsYr0wWyJ1EtcEBR5O9WPyvBO4fQV2AwCBBwetXffZLIeqXKKNkxOZu4QDlxNykTpz5k_cwVPVBK5qK	t
+201909	190	eefbWstRC0LBjTI33MyCWp:APA91bGAKxV8Thm2jY9CdSwgsTpuPo8GKlZW5kg0rYIZVCCJ7FDpnW2aWKj8GagLD7hfQ400W4W0ctV9kc6V223NMOTI1z89ATvsziR-hjIqAmPGTbNS_bFxeHzVLMIiaHSOHdqJfBcM	t
+201910	191	eHutOwuBOEyWgJIqtcPPd2:APA91bEEIEhH5q4G3f2_8KHFUlctqy9F0uNy9lBGG79kyne2GfJv1gZ3UGfBTuAJD3hTif1jiIdKeJI852IyGI5MeL_teNH0xhf8FbTXmCCq3Nmzqbg2UXKjfhyHrKJ3EtBjMfy9RjVN	t
+201911	192	c-yfc3W_aUrOvk7saRmrf4:APA91bGioOS9YFCuzMUGgR95tKz5kZoI0F2wPvygH7k32PI-bFKk9ovKJCbp18Ok-tGlSa6tqT4Bv9se2wUfThiWiDcfKfUu92vtOQk0D-DNiMlPzQKtb2n9tJRXyA8pKOjaTVMEI7zl	t
 \.
 
 
@@ -22567,6 +22315,9 @@ COPY public.user_permission (id, role_id, user_id, building_id, permission, stat
 130	55	179	\N	\N	APPROVED	40	Chủ Nhà	f	2023-04-06 09:41:34.751809
 131	55	175	\N	\N	APPROVED	41	Chủ Nhà	f	2023-05-30 01:30:25.3821
 132	55	181	\N	\N	APPROVED	42	Chủ Nhà	f	2023-05-30 01:45:53.909402
+133	55	189	\N	\N	APPROVED	43	Chủ Nhà	f	2024-03-08 03:01:33.312111
+134	55	190	\N	\N	APPROVED	44	Chủ Nhà	f	2024-03-21 09:12:43.305665
+135	55	188	\N	\N	APPROVED	46	Chủ Nhà	f	2024-05-06 07:02:02.419621
 \.
 
 
@@ -33209,72 +32960,24 @@ COPY public.ward (id, code, name, district_code) FROM stdin;
 
 
 --
--- Data for Name: address; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user".address (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", "codeProvince", "codeDistrict", "codeWard", "specificAddress", "userId") FROM stdin;
-\.
-
-
---
--- Data for Name: address_district; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user".address_district (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "codeProvince") FROM stdin;
-\.
-
-
---
--- Data for Name: address_province; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user".address_province (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code) FROM stdin;
-\.
-
-
---
--- Data for Name: address_ward; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user".address_ward (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, code, "codeDistrict") FROM stdin;
-\.
-
-
---
--- Data for Name: user; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user"."user" (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", name, avatar, password, "refreshToken", otp, email, "phoneNumber", dob, description, "roleCode", "positionCode", "startDate", "dateLeave", "dateOff") FROM stdin;
-\.
-
-
---
--- Data for Name: user_role; Type: TABLE DATA; Schema: user; Owner: postgres
---
-
-COPY "user".user_role (id, "isDeleted", "isDisabled", "createdAt", "updatedAt", code, name, "isSystemAdmin", permissions) FROM stdin;
-\.
-
-
---
 -- Name: building_address_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_address_id_seq', 70, true);
+SELECT pg_catalog.setval('public.building_address_id_seq', 73, true);
 
 
 --
 -- Name: building_content_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_content_id_seq', 38, true);
+SELECT pg_catalog.setval('public.building_content_id_seq', 39, true);
 
 
 --
 -- Name: building_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_id_seq', 81, true);
+SELECT pg_catalog.setval('public.building_id_seq', 84, true);
 
 
 --
@@ -33302,14 +33005,14 @@ SELECT pg_catalog.setval('public.building_manager_manager_id_seq', 1, false);
 -- Name: building_media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_media_id_seq', 95, true);
+SELECT pg_catalog.setval('public.building_media_id_seq', 113, true);
 
 
 --
 -- Name: building_rule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_rule_id_seq', 37, true);
+SELECT pg_catalog.setval('public.building_rule_id_seq', 38, true);
 
 
 --
@@ -33323,14 +33026,14 @@ SELECT pg_catalog.setval('public.building_utility_building_id_seq', 1, false);
 -- Name: building_utility_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.building_utility_id_seq', 103, true);
+SELECT pg_catalog.setval('public.building_utility_id_seq', 118, true);
 
 
 --
 -- Name: contract_addendum_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.contract_addendum_id_seq', 15, true);
+SELECT pg_catalog.setval('public.contract_addendum_id_seq', 16, true);
 
 
 --
@@ -33351,21 +33054,21 @@ SELECT pg_catalog.setval('public.cost_id_seq', 191, true);
 -- Name: deposit_contract_cost_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.deposit_contract_cost_id_seq', 430, true);
+SELECT pg_catalog.setval('public.deposit_contract_cost_id_seq', 433, true);
 
 
 --
 -- Name: deposit_contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.deposit_contract_id_seq', 107, true);
+SELECT pg_catalog.setval('public.deposit_contract_id_seq', 108, true);
 
 
 --
 -- Name: deposit_contract_people_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.deposit_contract_people_id_seq', 250, true);
+SELECT pg_catalog.setval('public.deposit_contract_people_id_seq', 252, true);
 
 
 --
@@ -33393,14 +33096,14 @@ SELECT pg_catalog.setval('public.electricity_water_information_id_seq', 15, true
 -- Name: extention_contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.extention_contract_id_seq', 15, true);
+SELECT pg_catalog.setval('public.extention_contract_id_seq', 16, true);
 
 
 --
 -- Name: extention_contract_people_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.extention_contract_people_id_seq', 34, true);
+SELECT pg_catalog.setval('public.extention_contract_people_id_seq', 36, true);
 
 
 --
@@ -33456,14 +33159,14 @@ SELECT pg_catalog.setval('public.liquidated_contract_cost_id_seq', 1, true);
 -- Name: liquidated_contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.liquidated_contract_id_seq', 22, true);
+SELECT pg_catalog.setval('public.liquidated_contract_id_seq', 23, true);
 
 
 --
 -- Name: liquidated_contract_people_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.liquidated_contract_people_id_seq', 50, true);
+SELECT pg_catalog.setval('public.liquidated_contract_people_id_seq', 52, true);
 
 
 --
@@ -33505,7 +33208,7 @@ SELECT pg_catalog.setval('public.mt_supplies_id_seq', 1, false);
 -- Name: notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.notification_id_seq', 128, true);
+SELECT pg_catalog.setval('public.notification_id_seq', 130, true);
 
 
 --
@@ -33519,7 +33222,7 @@ SELECT pg_catalog.setval('public.province_id_seq', 1, false);
 -- Name: public_organization_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.public_organization_user_id_seq', 25, true);
+SELECT pg_catalog.setval('public.public_organization_user_id_seq', 28, true);
 
 
 --
@@ -33547,35 +33250,35 @@ SELECT pg_catalog.setval('public.receipt_information_service_id_seq', 4, true);
 -- Name: rental_contract_appendix_sequence_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.rental_contract_appendix_sequence_id_seq', 15, true);
+SELECT pg_catalog.setval('public.rental_contract_appendix_sequence_id_seq', 16, true);
 
 
 --
 -- Name: rental_contract_cost_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.rental_contract_cost_id_seq', 1062, true);
+SELECT pg_catalog.setval('public.rental_contract_cost_id_seq', 1066, true);
 
 
 --
 -- Name: rental_contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.rental_contract_id_seq', 196, true);
+SELECT pg_catalog.setval('public.rental_contract_id_seq', 197, true);
 
 
 --
 -- Name: rental_contract_people_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.rental_contract_people_id_seq', 1060, true);
+SELECT pg_catalog.setval('public.rental_contract_people_id_seq', 1065, true);
 
 
 --
 -- Name: rental_contract_vehicle_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.rental_contract_vehicle_id_seq', 196, true);
+SELECT pg_catalog.setval('public.rental_contract_vehicle_id_seq', 199, true);
 
 
 --
@@ -33596,14 +33299,14 @@ SELECT pg_catalog.setval('public.room_contract_id_seq', 1, false);
 -- Name: room_cost_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_cost_id_seq', 1132, true);
+SELECT pg_catalog.setval('public.room_cost_id_seq', 1135, true);
 
 
 --
 -- Name: room_deposited_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_deposited_customer_id_seq', 59, true);
+SELECT pg_catalog.setval('public.room_deposited_customer_id_seq', 60, true);
 
 
 --
@@ -33617,14 +33320,14 @@ SELECT pg_catalog.setval('public.room_history_payment_id_seq', 1, true);
 -- Name: room_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_id_seq', 348, true);
+SELECT pg_catalog.setval('public.room_id_seq', 356, true);
 
 
 --
 -- Name: room_media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_media_id_seq', 641, true);
+SELECT pg_catalog.setval('public.room_media_id_seq', 649, true);
 
 
 --
@@ -33645,7 +33348,7 @@ SELECT pg_catalog.setval('public.room_rule_id_seq', 69, true);
 -- Name: room_schedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_schedule_id_seq', 31, true);
+SELECT pg_catalog.setval('public.room_schedule_id_seq', 34, true);
 
 
 --
@@ -33666,14 +33369,14 @@ SELECT pg_catalog.setval('public.room_sub_supplies_sub_supplies_id_seq', 1, fals
 -- Name: room_supplies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_supplies_id_seq', 84, true);
+SELECT pg_catalog.setval('public.room_supplies_id_seq', 96, true);
 
 
 --
 -- Name: room_utility_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.room_utility_id_seq', 305, true);
+SELECT pg_catalog.setval('public.room_utility_id_seq', 369, true);
 
 
 --
@@ -33687,14 +33390,14 @@ SELECT pg_catalog.setval('public.sequence_id_seq', 6, true);
 -- Name: user_notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_notification_id_seq', 201908, true);
+SELECT pg_catalog.setval('public.user_notification_id_seq', 201911, true);
 
 
 --
 -- Name: user_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.user_permission_id_seq', 132, true);
+SELECT pg_catalog.setval('public.user_permission_id_seq', 135, true);
 
 
 --
@@ -33716,126 +33419,6 @@ SELECT pg_catalog.setval('public.vehicles_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.ward_id_seq', 1, false);
-
-
---
--- Name: post_translation PK_0410fbb063b8214218be7639ea9; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post_translation
-    ADD CONSTRAINT "PK_0410fbb063b8214218be7639ea9" PRIMARY KEY (id);
-
-
---
--- Name: data PK_2533602bd9247937e3a4861e173; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data
-    ADD CONSTRAINT "PK_2533602bd9247937e3a4861e173" PRIMARY KEY (id);
-
-
---
--- Name: code PK_367e70f79a9106b8e802e1a9825; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.code
-    ADD CONSTRAINT "PK_367e70f79a9106b8e802e1a9825" PRIMARY KEY (id);
-
-
---
--- Name: file PK_36b46d232307066b3a2c9ea3a1d; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.file
-    ADD CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY (id);
-
-
---
--- Name: code_type PK_aee67663d3bf78ece882e953afd; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.code_type
-    ADD CONSTRAINT "PK_aee67663d3bf78ece882e953afd" PRIMARY KEY (id);
-
-
---
--- Name: post PK_be5fda3aac270b134ff9c21cdee; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post
-    ADD CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY (id);
-
-
---
--- Name: parameter PK_cc5c047040f9c69f0e0d6a844a0; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.parameter
-    ADD CONSTRAINT "PK_cc5c047040f9c69f0e0d6a844a0" PRIMARY KEY (id);
-
-
---
--- Name: data_type PK_d7dc4348c702c83c5ff959dfaac; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data_type
-    ADD CONSTRAINT "PK_d7dc4348c702c83c5ff959dfaac" PRIMARY KEY (id);
-
-
---
--- Name: data_translation PK_e48e7820fb4c959630441506fc3; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data_translation
-    ADD CONSTRAINT "PK_e48e7820fb4c959630441506fc3" PRIMARY KEY (id);
-
-
---
--- Name: post_type PK_fbd367b0f90f065f0e54f858a6a; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post_type
-    ADD CONSTRAINT "PK_fbd367b0f90f065f0e54f858a6a" PRIMARY KEY (id);
-
-
---
--- Name: post_type UQ_1564a516eb281b60ae54e01a36c; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post_type
-    ADD CONSTRAINT "UQ_1564a516eb281b60ae54e01a36c" UNIQUE (code);
-
-
---
--- Name: code_type UQ_26e48b5ff442e5a476363c7c289; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.code_type
-    ADD CONSTRAINT "UQ_26e48b5ff442e5a476363c7c289" UNIQUE (code);
-
-
---
--- Name: code UQ_3aab60cbcf5684b4a89fb46147e; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.code
-    ADD CONSTRAINT "UQ_3aab60cbcf5684b4a89fb46147e" UNIQUE (code);
-
-
---
--- Name: data_type UQ_e407b5b8f08191a39e15c0559eb; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data_type
-    ADD CONSTRAINT "UQ_e407b5b8f08191a39e15c0559eb" UNIQUE (code);
-
-
---
--- Name: file UQ_ff5d246bb5831ad7351f87e67cb; Type: CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.file
-    ADD CONSTRAINT "UQ_ff5d246bb5831ad7351f87e67cb" UNIQUE (url);
 
 
 --
@@ -34375,86 +33958,6 @@ ALTER TABLE ONLY public.ward
 
 
 --
--- Name: address_province PK_4f4f5db6965d8b7efcea357f330; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_province
-    ADD CONSTRAINT "PK_4f4f5db6965d8b7efcea357f330" PRIMARY KEY (id);
-
-
---
--- Name: address_district PK_64989ed42a39bc4b40d51d13e0e; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_district
-    ADD CONSTRAINT "PK_64989ed42a39bc4b40d51d13e0e" PRIMARY KEY (id);
-
-
---
--- Name: user PK_cace4a159ff9f2512dd42373760; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user"."user"
-    ADD CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id);
-
-
---
--- Name: address PK_d92de1f82754668b5f5f5dd4fd5; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address
-    ADD CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY (id);
-
-
---
--- Name: address_ward PK_e5ad8623648a0deb50ddf4e9550; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_ward
-    ADD CONSTRAINT "PK_e5ad8623648a0deb50ddf4e9550" PRIMARY KEY (id);
-
-
---
--- Name: user_role PK_fb2e442d14add3cefbdf33c4561; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".user_role
-    ADD CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id);
-
-
---
--- Name: user_role UQ_00c232124015d4998bdc6036310; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".user_role
-    ADD CONSTRAINT "UQ_00c232124015d4998bdc6036310" UNIQUE (code);
-
-
---
--- Name: address_ward UQ_3b11e3dd0964b66967ce5acdfd8; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_ward
-    ADD CONSTRAINT "UQ_3b11e3dd0964b66967ce5acdfd8" UNIQUE (code);
-
-
---
--- Name: address_district UQ_7444cd6ee100f493b1463722b98; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_district
-    ADD CONSTRAINT "UQ_7444cd6ee100f493b1463722b98" UNIQUE (code);
-
-
---
--- Name: address_province UQ_858a97d2423118631af080793f1; Type: CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_province
-    ADD CONSTRAINT "UQ_858a97d2423118631af080793f1" UNIQUE (code);
-
-
---
 -- Name: building_manager_id_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -34592,54 +34095,6 @@ CREATE TRIGGER set_current_timestamp BEFORE UPDATE ON public.room_content FOR EA
 --
 
 CREATE TRIGGER set_current_timestamp BEFORE UPDATE ON public.user_permission FOR EACH ROW EXECUTE FUNCTION public.trigger_set_current_timestamp();
-
-
---
--- Name: post_type FK_0e271348dc86606bcb78bb5baf0; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post_type
-    ADD CONSTRAINT "FK_0e271348dc86606bcb78bb5baf0" FOREIGN KEY (parent_id) REFERENCES core.post_type(id);
-
-
---
--- Name: data FK_5411ba018172ec73e64e74bf5b0; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data
-    ADD CONSTRAINT "FK_5411ba018172ec73e64e74bf5b0" FOREIGN KEY (type) REFERENCES core.data_type(code);
-
-
---
--- Name: code FK_927209d9e3f6f87ace1a933c978; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.code
-    ADD CONSTRAINT "FK_927209d9e3f6f87ace1a933c978" FOREIGN KEY (type) REFERENCES core.code_type(code);
-
-
---
--- Name: post FK_b499447822de3f24ad355e19b8c; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post
-    ADD CONSTRAINT "FK_b499447822de3f24ad355e19b8c" FOREIGN KEY (type) REFERENCES core.post_type(code);
-
-
---
--- Name: post_translation FK_c3b205aea6eff06096f6f439240; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.post_translation
-    ADD CONSTRAINT "FK_c3b205aea6eff06096f6f439240" FOREIGN KEY ("postId") REFERENCES core.post(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: data_translation FK_eae311ec0c99d120558506acd05; Type: FK CONSTRAINT; Schema: core; Owner: postgres
---
-
-ALTER TABLE ONLY core.data_translation
-    ADD CONSTRAINT "FK_eae311ec0c99d120558506acd05" FOREIGN KEY ("dataId") REFERENCES core.data(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -35435,67 +34890,10 @@ ALTER TABLE ONLY public.user_permission
 
 
 --
--- Name: user FK_22188999bf0339b3fb2ff462aeb; Type: FK CONSTRAINT; Schema: user; Owner: postgres
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
 
-ALTER TABLE ONLY "user"."user"
-    ADD CONSTRAINT "FK_22188999bf0339b3fb2ff462aeb" FOREIGN KEY ("positionCode") REFERENCES core.code(code);
-
-
---
--- Name: address FK_33470d4bca4693d5f3facd88ee0; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address
-    ADD CONSTRAINT "FK_33470d4bca4693d5f3facd88ee0" FOREIGN KEY ("codeWard") REFERENCES "user".address_ward(code);
-
-
---
--- Name: address_ward FK_87744dd279eab2b47939da6e8c3; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_ward
-    ADD CONSTRAINT "FK_87744dd279eab2b47939da6e8c3" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
-
-
---
--- Name: user FK_b823b9f2266b6a54de4e5b88294; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user"."user"
-    ADD CONSTRAINT "FK_b823b9f2266b6a54de4e5b88294" FOREIGN KEY ("roleCode") REFERENCES "user".user_role(code);
-
-
---
--- Name: address FK_cef5f32fbbfbe7d8d1fb6bbd7e0; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address
-    ADD CONSTRAINT "FK_cef5f32fbbfbe7d8d1fb6bbd7e0" FOREIGN KEY ("codeDistrict") REFERENCES "user".address_district(code);
-
-
---
--- Name: address FK_d25f1ea79e282cc8a42bd616aa3; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address
-    ADD CONSTRAINT "FK_d25f1ea79e282cc8a42bd616aa3" FOREIGN KEY ("userId") REFERENCES "user"."user"(id);
-
-
---
--- Name: address_district FK_d28b9ad190bbcb4728a225baebe; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address_district
-    ADD CONSTRAINT "FK_d28b9ad190bbcb4728a225baebe" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
-
-
---
--- Name: address FK_de67160900785eb9f9123b16e84; Type: FK CONSTRAINT; Schema: user; Owner: postgres
---
-
-ALTER TABLE ONLY "user".address
-    ADD CONSTRAINT "FK_de67160900785eb9f9123b16e84" FOREIGN KEY ("codeProvince") REFERENCES "user".address_province(code);
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
