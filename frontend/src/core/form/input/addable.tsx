@@ -18,32 +18,32 @@ const Component = ({
   showRemove = () => true,
   idCheck,
 }: Type) => {
-  const [indeterminate, setIndeterminate] = useState(false);
-  const [checkAll, setCheckAll] = useState(false);
-  const [checkedList, setCheckedList] = useState([]);
+  const [_temp, set_temp] = useState({ indeterminate: false, checkAll: false, checkedList: [] });
   const onCheckAllChange = (e: any) => {
-    setIndeterminate(false);
-    setCheckAll(e.target.checked);
     const array = form.getFieldValue(name).map((item: any) => {
       item[idCheck + 'Checked'] = e.target.checked;
       return item;
     });
-    setCheckedList(e.target.checked ? array.map((item: any) => item[idCheck]) : []);
+    set_temp({
+      indeterminate: false,
+      checkAll: e.target.checked,
+      checkedList: e.target.checked ? array.map((item: any) => item[idCheck]) : [],
+    });
+
     form.setFieldValue(name, array);
   };
   const onCheckChange = (e: any, array: [], index: number) => {
     if (e.target.checked) {
-      checkedList.push(array[index][idCheck]);
-      setIndeterminate(array.length !== checkedList.length);
-      if (array.length === checkedList.length) {
-        setCheckAll(true);
-      }
+      _temp.checkedList.push(array[index][idCheck]);
+      set_temp({
+        indeterminate: array.length !== _temp.checkedList.length,
+        checkAll: array.length === _temp.checkedList.length,
+        checkedList: _temp.checkedList,
+      });
     } else {
-      checkedList.splice(checkedList.indexOf(array[index][idCheck]), 1);
-      setCheckAll(false);
-      setIndeterminate(checkedList.length !== 0);
+      _temp.checkedList.splice(_temp.checkedList.indexOf(array[index][idCheck]), 1);
+      set_temp({ indeterminate: _temp.checkedList.length !== 0, checkAll: false, checkedList: _temp.checkedList });
     }
-    setCheckedList(checkedList);
     array[index][idCheck + 'Checked'] = e.target.checked;
     if (form.setFieldValue) {
       form.setFieldValue(name, array);
@@ -58,7 +58,11 @@ const Component = ({
               <div className="table-row">
                 {!!idCheck && (
                   <div className={'table-cell font-bold p-1 text-center w-10'}>
-                    <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll} />
+                    <Checkbox
+                      indeterminate={_temp.indeterminate}
+                      onChange={onCheckAllChange}
+                      checked={_temp.checkAll}
+                    />
                   </div>
                 )}
                 <div className={'table-cell border bg-gray-300 font-bold p-1 text-center w-10'}>STT</div>
@@ -85,7 +89,7 @@ const Component = ({
                     <div className={'table-cell text-center'}>
                       <Checkbox
                         onChange={(e) => onCheckChange(e, form.getFieldValue(name), n)}
-                        checked={checkedList.indexOf(form.getFieldValue(name)[n][idCheck]) > -1}
+                        checked={_temp.checkedList.indexOf(form.getFieldValue(name)[n][idCheck]) > -1}
                       />
                     </div>
                   )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Dropdown } from 'antd';
 
@@ -7,7 +7,7 @@ import { DataTable } from '@core/data-table';
 import { arrayUnique } from '@utils';
 import Mask from '@core/form/input/mask';
 
-const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => {
+const Component = ({ mode, onChange, placeholder, disabled, get, value }: Type) => {
   const refSelect = useRef<HTMLDivElement>(null);
 
   const onBlur = () => {
@@ -17,7 +17,7 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
     arrowDown?.classList.toggle('opacity-0');
     search?.classList.toggle('opacity-100');
     search?.classList.toggle('opacity-0');
-    setTimeout(() => setOpen(false), 200);
+    setTimeout(() => set_temp((previousState) => ({ ...previousState, open: false })), 200);
   };
   const onFocus = () => {
     const arrowDown = refSelect.current?.querySelector('.arrow-down');
@@ -26,41 +26,33 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
     arrowDown?.classList.toggle('opacity-0');
     search?.classList.toggle('opacity-100');
     search?.classList.toggle('opacity-0');
-    setOpen(true);
+    set_temp((previousState) => ({ ...previousState, open: true }));
   };
   const facade = get?.facade() || {};
 
   const table = useRef<TableRefObject>(null);
   const input = useRef<{ input: HTMLInputElement }>(null);
+  let _data: any[] = [];
+  if (get?.data) {
+    _data = mode === 'multiple' ? get.data() : [get.data()];
+  }
 
-  const [_temp, set_temp] = useState([]);
-  useEffect(() => {
-    if (get?.data) {
-      const _data = get.data();
-      if (get?.format && _data) {
-        const data = formItem.mode === 'multiple' ? _data.map(get.format) : [get.format(_data)];
-        if (JSON.stringify(_data) !== JSON.stringify(_temp)) {
-          set_temp(_data.length ? _data : [_data]);
-          setTimeout(() => {
-            input.current!.input.value = data[0].label;
-          });
-        }
-      }
-    }
-  }, [get?.data]);
+  const [_temp, set_temp] = useState({ data: _data, open: false });
+  const _list = [..._temp.data, ...(facade?.result.data || [])]
+    .map(get!.format!)
+    .filter((item: any) => !value || item.value === value);
 
-  const [open, setOpen] = useState(false);
   return (
     <div ref={refSelect} className={classNames('relative', { 'bg-gray-100': disabled })}>
       <Dropdown
         overlayStyle={{ width: '70vw' }}
         trigger={['click']}
-        open={open}
+        open={_temp.open}
         placement="bottom"
         dropdownRender={() => (
           <div className={'bg-white drop-shadow-lg rounded-xl overflow-hidden'}>
             <DataTable
-              formatData={(data) => arrayUnique([..._temp, ...data], 'id')}
+              formatData={(data) => arrayUnique([..._temp.data, ...data], 'id')}
               ref={table}
               facade={facade}
               showPagination={false}
@@ -73,7 +65,6 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
                     const { label, value } = get!.format(e);
                     onChange(value);
                     input.current!.input.value = label!.toString();
-                    setOpen(false);
                   }
                 },
               })}
@@ -83,12 +74,14 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
         )}
       >
         <Mask
+          value={_list.length > 0 ? _list[0].label?.toString() : undefined}
           ref={input}
           disabled={disabled}
           placeholder={placeholder}
           onBlur={onBlur}
           onFocus={onFocus}
           onChange={(e) => table.current?.onChange({ fullTextSearch: e.target.value, page: 1, perPage: 10 })}
+          className={'h-10'}
         />
       </Dropdown>
       <span className="arrow-down absolute top-3 right-2.5 text-gray-400 opacity-100 duration-150 ease-in-out transition-all">
@@ -121,8 +114,9 @@ const Component = ({ formItem, onChange, placeholder, disabled, get }: Type) => 
   );
 };
 type Type = {
-  formItem: any;
+  mode?: 'multiple' | 'tags';
   onChange: (e: any) => any;
+  value?: any;
   placeholder: string;
   disabled: boolean;
   get?: TableGet;

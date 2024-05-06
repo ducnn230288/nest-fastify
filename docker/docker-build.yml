@@ -6,7 +6,7 @@ services:
       - ../.env.prod
     build:
       context: ..
-      dockerfile: docker/Dockerfile-init
+      dockerfile: docker/Dockerfile-database
     volumes:
       - database:/database
     ports:

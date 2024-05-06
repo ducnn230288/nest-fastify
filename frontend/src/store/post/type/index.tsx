@@ -1,40 +1,34 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { useAppDispatch, useTypedSelector, Action, Slice, State } from '@store';
 
-import { CommonEntity, EStatusState, PaginationQuery, Responses } from '@models';
+import { CommonEntity, EStatusState, PaginationQuery } from '@models';
 import { API, mapTreeObject, routerLinks } from '@utils';
 import { Post } from '../';
 
 const name = 'PostType';
 const action = {
   ...new Action<PostType, EStatusPostType>(name),
-  getTree: createAsyncThunk(name + '/getTree', async () => await API.get<PostType>(`${routerLinks(name, 'api')}/tree`)),
+  getTree: createAsyncThunk(
+    name + '/getTree',
+    async () => await API.get<PostType[]>(`${routerLinks(name, 'api')}/tree`),
+  ),
 };
 export const postTypeSlice = createSlice(
   new Slice<PostType, EStatusPostType>(action, { keepUnusedDataFor: 9999 }, (builder) => {
     builder
-      .addCase(
-        action.getTree.pending,
-        (
-          state: StatePostType<PostType>,
-          action: PayloadAction<undefined, string, { arg: PostType; requestId: string; requestStatus: 'pending' }>,
-        ) => {
-          state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
-          state.queryParams = JSON.stringify(action.meta.arg);
-          state.isLoading = true;
-          state.status = EStatusPostType.getTreePending;
-        },
-      )
-      .addCase(
-        action.getTree.fulfilled,
-        (state: StatePostType<PostType>, action: PayloadAction<Responses<PostType[]>>) => {
-          if (action.payload.data) {
-            state.tree = action.payload.data.map((i) => mapTreeObject(i));
-            state.status = EStatusPostType.getTreeFulfilled;
-          } else state.status = EStatusState.idle;
-          state.isLoading = false;
-        },
-      )
+      .addCase(action.getTree.pending, (state, action) => {
+        state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
+        state.queryParams = JSON.stringify(action.meta.arg);
+        state.isLoading = true;
+        state.status = EStatusPostType.getTreePending;
+      })
+      .addCase(action.getTree.fulfilled, (state, action) => {
+        if (action.payload.data) {
+          state.tree = action.payload.data.map((i) => mapTreeObject(i));
+          state.status = EStatusPostType.getTreeFulfilled;
+        } else state.status = EStatusState.idle;
+        state.isLoading = false;
+      })
       .addCase(action.getTree.rejected, (state: StatePostType<PostType>) => {
         state.status = EStatusPostType.getTreeRejected;
         state.isLoading = false;
