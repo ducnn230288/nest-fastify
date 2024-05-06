@@ -1,6 +1,6 @@
 <div class="md:flex md:gap-10 lg:gap-6 mx-6 md:mx-6 lg:mx-6 xl:mx-0 mt-10">
-  <div class="md:basis-1/2 md:h-96 flex flex-col w-full h-80">
-    <img class="lazy w-full h-full rounded-2xl" data-src={{bui.media}} />
+  <div class="md:basis-1/2 md:h-96 flex flex-col w-full h-80 border rounded-2xl">
+    <img class="lazy w-full h-full " data-src="/api/auth/download?key={{bui.media}}" />
   </div>
   <div class="lg:basis-1/2 sm:mt-0 mt-8">
     <div class="flex items-center text-red-600 font-bold text-xl gap-2">
@@ -114,7 +114,7 @@
     <a href="/roomDetail/{{id}}">
       <div class="border border-spacing-0.5 border-red-100 rounded-2xl shadow shadow-gray-300">
         <div class="w-full h-48">
-          <img class="lazy w-full h-full rounded-t-2xl" data-src={{media}} />
+          <img class="lazy w-full h-full rounded-t-2xl" data-src="/api/auth/download?key={{media}}" />
         </div>
         <div class="flex flex-col gap-2.5 my-4 mx-2">
           <div class="flex gap-1.5">

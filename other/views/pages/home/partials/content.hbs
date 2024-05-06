@@ -36,7 +36,7 @@
     <div class="swiper-wrapper">
       {{#each data.items}}
       <div class="swiper-slide group z-1 relative">
-        <img data-src="{{imageSrc}}" alt="" class="lazy z-1 rounded-xl relative"
+        <img data-src={{imageSrc}} alt="" class="lazy z-1 rounded-xl relative"
           onerror="this.src='/images/home/image_not_available.png'" />
         <div class="absolute top-2/3 bg-white opacity-80 max-w-full h-24">
           <p class="font-sans font-bold text-red-700 mx-8 my-5 text-left xl:text-xl text-xs">
