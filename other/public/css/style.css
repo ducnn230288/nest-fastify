@@ -1686,6 +1686,10 @@ video {
   .lg\:left-48 {
     left: 12rem;
   }
+    .lg\:fixed {
+      position: fixed;
+    }
+  
   .lg\:top-1\/2 {
     top: 50%;
   }

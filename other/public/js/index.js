@@ -273,18 +273,18 @@ function A() {
         if (scrollY > 123) {
             navMenu?.classList.add('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white', 'border-b-2');
             if (isDesktop) {
-                registration?.classList.add('fixed', 'top-32');
+                registration?.classList.add('lg:fixed', 'top-32');
             }
             else {
-                registration?.classList.remove('fixed', 'top-32');
+                registration?.classList.remove('lg:fixed', 'top-32');
             }
             if (scrollY > maxScroll) {
-                registration?.classList.remove('fixed', 'top-32');
+                registration?.classList.remove('lg:fixed', 'top-32');
             }
         }
         else {
             navMenu?.classList.remove('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white', 'border-b-2');
-            registration?.classList.remove('fixed', 'top-32');
+            // registration?.classList.remove('lg:fixed', 'top-32');
         }
     }
     handleScroll();

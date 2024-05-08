@@ -113,7 +113,7 @@
 <section class="md:mt-8 flex flex-col mt-4 md:mx-auto">
     <div class="md:justify-between grid md:grid-cols-2 xl:grid-cols-4 gap-4">
         {{#each bui.rooms}}
-        <a href="/chi-tiet-phong/{{id}}">
+        <a href="/chi-tiet-phong/{{...convert}}_{{id}}">
             <div class="border border-spacing-0.5 border-red-100 rounded-2xl shadow shadow-gray-300">
                 <div class="w-full h-48">
                     <img class="lazy w-full h-full rounded-t-2xl" data-src="/api/auth/download?key={{media}}" />

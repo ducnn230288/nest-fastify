@@ -27,7 +27,7 @@ export class AppController {
   @Render('pages/home/index')
   async root(
     @Query('address') address: string,
-  ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any> }> {
+  ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any>; slug: string[] }> {
     const [bu] = await this.buildingService.findAll({
       page: 1,
       perPage: 10,
@@ -72,29 +72,44 @@ export class AppController {
         },
       ],
     };
+    let slug: string[] = [];
+
+    if (bu) {
+      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    }
     return {
       bu,
       data,
       uniqueProvinces,
+      slug
     };
   }
 
   @Get('/danh-sach-phong/:slug')
   @Render('pages/roomList/index')
-  async detail(
+  async roomList(
     @Param('slug') slug: string)
-    : Promise<{ bui: Building | null }> {
+    : Promise<{ bui: Building | null; convert: string | null }> {
     const param = slug.split('_');
     const id = param[1];
     const bui = await this.buildingService.findOne(id, []);
+    let convert: string = "";
+
+    if (bui) {
+      convert = bui.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    console.log(convert);
+
     return {
-      bui
+      bui,
+      convert
     };
   }
 
   @Get('/danh-sach-toa-nha')
   @Render('pages/buildingList/index')
-  async detail1(
+  async buildingList(
     @Query() paginableParams: PaginationQueryDto,
   ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any>; slug: string[] }> {
     let filterObject: any = {};
@@ -122,7 +137,7 @@ export class AppController {
     let slug: string[] = [];
 
     if (bui) {
-      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-'));
+      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
     }
     const data = {
       hirePrice: [
@@ -279,12 +294,14 @@ export class AppController {
     };
   }
 
-  @Get('/chi-tiet-phong/:id')
+  @Get('/chi-tiet-phong/:slug')
   @Render('pages/roomDetail/index')
-  async detail2(
-    @Param('id') id: number):
-    Promise<{ room: Room | null; bu: Building | null }> {
-    const room = await this.buildingService.findByRoomId(id);
+  async roomDetail(
+    @Param('slug') slug: string):
+    Promise<{ room: Room | null; bu: Building | null; }> {
+    const param = slug.split('_');
+    const id = param[1];
+    const room = await this.buildingService.findByRoomId(Number(id));
     let bu: any;
     if (room) {
       bu = await this.buildingService.findOne(room.buildingId.toString(), []);
