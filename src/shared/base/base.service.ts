@@ -110,10 +110,8 @@ export abstract class BaseService<T extends ObjectLiteral> {
               const columnName = checkFilter.length > 1 ? key : `base.${key}`;
               const condition = listKey.length > 1 ? `BETWEEN :${key}start AND :${key}end` : `= :${key}`;
 
-              // Tạo một object để chứa các paramater
               const params = {};
 
-              // Thêm paramater vào object params
               if (listKey.length > 1) {
                 params[`${key}start`] = listKey[0];
                 params[`${key}end`] = listKey[1];
@@ -121,7 +119,6 @@ export abstract class BaseService<T extends ObjectLiteral> {
                 params[key] = filter[key];
               }
 
-              // Xử lý các trường hợp đặc biệt khi giá trị là chuỗi rỗng
               if (filter[key] === '') {
                 qb = qb.andWhere(`${columnName} IS NOT NULL`);
               } else if (filter[key] !== '') {

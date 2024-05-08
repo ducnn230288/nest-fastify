@@ -4,7 +4,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detail - Page</title>
+  <meta name="abstract" content="Thông tin nhà cho thuê Việt Nam" />
+  <meta name="classification" content="Nhà cho thuê Việt Nam" />
+  <meta name="area" content="Nhà đất và bất động sản" />
+  <meta name="placename" content="Việt Nam" />
+  <meta name="author" content="uhouse.vn" />
+  <meta name="copyright" content="©2022 uhouse.vn" />
+  <meta name="owner" content="uhouse.vn" />
+  <meta name="generator" content="Công ty Cổ phần CrossTech Việt Nam" />
+
+
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="" />
+
+  <link rel="alternate" media="only screen and (max-width: 640px)" href="" />
+
+  {{!--
+  <meta name="custom-apple-itunes-app" content="app-id=100066412273414" /> --}}
+  <meta name='keywords' content='Danh sách phòng cho thuê giá rẻ toàn quốc.' />
+  <meta name='description'
+    content='Thông tin phòng cho thuê, giá rẻ toàn quốc, cập nhật thông tin thị trường phòng cho thuê nhanh nhất, chính xác nhất mỗi ngày.' />
+
+  <title>Danh sách phòng cho thuê tại {{bui.name}} | Cho thuê căn hộ chung cư tại Việt Nam</title>
+
+  <meta property="fb:app_id" content="100066412273414">
+  <meta property="og:title" content="Phòng Cho Thuê Toàn Quốc Giá Rẻ | Thông Tin chính xác">
+  <meta property="og:description"
+    content="Thông tin phòng cho thuê giá rẻ toàn quốc, cập nhật thông tin thị trường nhanh nhất, chính xác nhất mỗi ngày.">
+  <meta property="og:image"
+    content="https://scontent.fdad3-1.fna.fbcdn.net/v/t39.30808-6/435319169_756748759882193_3437859165460282115_n.jpg?stp=cp6_dst-jpg&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=O_sox-CcGUoQ7kNvgHNOcWN&_nc_ht=scontent.fdad3-1.fna&oh=00_AfCFEwcrVdJ-l2NQMkAvpswkH67mdzCwUcYQEgrz7lX1Pg&oe=663F8146">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="315">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://uhouse.vn">
+
 
   <!--  vanilla-lazyload 17 -->
   <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17/dist/lazyload.min.js"></script>
@@ -45,7 +78,15 @@
   <!-- End Icons -->
 
   <script src="/js/index.js"></script>
-
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var canonicalLink = document.querySelector('link[rel="canonical"]');
+      var alternateLink = document.querySelector('link[rel="alternate"]');
+      var actualUrl = window.location.href;
+      canonicalLink.href = actualUrl;
+      alternateLink.href = actualUrl;
+    });
+  </script>
 </body>
 
 </html>

@@ -79,20 +79,24 @@ export class AppController {
     };
   }
 
-  @Get('/roomList/:id')
+  @Get('/danh-sach-phong/:slug')
   @Render('pages/roomList/index')
-  async detail(@Param('id') id: string): Promise<{ bui: Building | null }> {
+  async detail(
+    @Param('slug') slug: string)
+    : Promise<{ bui: Building | null }> {
+    const param = slug.split('_');
+    const id = param[1];
     const bui = await this.buildingService.findOne(id, []);
     return {
-      bui,
+      bui
     };
   }
 
-  @Get('/buildingList')
+  @Get('/danh-sach-toa-nha')
   @Render('pages/buildingList/index')
   async detail1(
     @Query() paginableParams: PaginationQueryDto,
-  ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any> }> {
+  ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any>; slug: string[] }> {
     let filterObject: any = {};
     const filterParam = paginableParams.filter;
     if (filterParam) {
@@ -115,6 +119,11 @@ export class AppController {
 
     const uniqueProvinces = [...new Set(bui.map((building) => building.buildingAddress.province))];
 
+    let slug: string[] = [];
+
+    if (bui) {
+      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-'));
+    }
     const data = {
       hirePrice: [
         {
@@ -266,12 +275,15 @@ export class AppController {
       bu,
       data,
       uniqueProvinces,
+      slug
     };
   }
 
-  @Get('/roomDetail/:id')
+  @Get('/chi-tiet-phong/:id')
   @Render('pages/roomDetail/index')
-  async detail2(@Param('id', ParseIntPipe) id: number): Promise<{ room: Room | null; bu: Building | null }> {
+  async detail2(
+    @Param('id') id: number):
+    Promise<{ room: Room | null; bu: Building | null }> {
     const room = await this.buildingService.findByRoomId(id);
     let bu: any;
     if (room) {
@@ -411,7 +423,7 @@ export class AppController {
   //   @Param('slug') slug: string,
   //   @Res({ passthrough: true }) res: FastifyReply,
   // ): Promise<IPost | void> {
-  //   return await this.newsDetail(slug, res, 'vn', 'projects', '/du-an/', '/en/projects/');
+  // return await this.newsDetail(slug, res, 'vn', 'projects', '/du-an/', '/en/projects/');
   // }
   // @Get('/en/projects/:slug')
   // @Render('post/detail')

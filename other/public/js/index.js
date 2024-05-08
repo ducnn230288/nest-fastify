@@ -477,61 +477,64 @@ const filter = () => {
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
             const filter = urlParams.get('filter');
-            const filterObject = JSON.parse(filter);
-            const search = urlParams.get('fullTextSearch');
-            const priceChecked = filterObject.price.split('/')
-            const radioButtonsMin = document.querySelectorAll('input[name="lowPrice"]');
-            const radioButtonsMax = document.querySelectorAll('input[name="highPrice"]');
-            function checked(arr, newValue) {
-                arr.forEach(function (radioButton) {
-                    if (radioButton.value === newValue) {
-                        radioButton.checked = true;
-                    } else {
-                        radioButton.checked = false;
+            if (filter) {
+                const filterObject = JSON.parse(filter);
+                const search = urlParams.get('fullTextSearch');
+                const priceChecked = filterObject.price.split('/')
+                const radioButtonsMin = document.querySelectorAll('input[name="lowPrice"]');
+                const radioButtonsMax = document.querySelectorAll('input[name="highPrice"]');
+                function checked(arr, newValue) {
+                    arr.forEach(function (radioButton) {
+                        if (radioButton.value === newValue) {
+                            radioButton.checked = true;
+                        } else {
+                            radioButton.checked = false;
+                        }
+                    });
+                }
+                function setValueIfExists(ele, selector, value) {
+                    const option = document.querySelector(selector);
+                    if (option) {
+                        ele.value = value;
                     }
-                });
-            }
-            function setValueIfExists(ele, selector, value) {
-                const option = document.querySelector(selector);
-                if (option) {
-                    ele.value = value;
                 }
-            }
-            function setValueIDIfExists(ele, selector, value) {
-                const option = document.getElementById(selector);
-                if (option) {
-                    ele.value = value;
+                function setValueIDIfExists(ele, selector, value) {
+                    const option = document.getElementById(selector);
+                    if (option) {
+                        ele.value = value;
+                    }
                 }
-            }
-            if (priceChecked) {
-                if (priceChecked[0]) {
-                    checked(radioButtonsMin, priceChecked[0]);
+                if (priceChecked) {
+                    if (priceChecked[0]) {
+                        checked(radioButtonsMin, priceChecked[0]);
+                    }
+                    if (priceChecked[1]) {
+                        checked(radioButtonsMax, priceChecked[1]);
+                    }
                 }
-                if (priceChecked[1]) {
-                    checked(radioButtonsMax, priceChecked[1]);
+
+                if (filterObject.province) {
+                    setValueIfExists(selectAddress, `option[value="${filterObject.province}"]`, filterObject.province);
+                }
+                if (search) {
+                    setValueIDIfExists(search, `search`, search);
+                }
+                if (filterObject.type) {
+                    setValueIfExists(selectType, `option[value="${filterObject.type}"]`, filterObject.type);
+                }
+                if (filterObject.year) {
+                    setValueIfExists(selectYear, `option[value="${filterObject.year}"]`, filterObject.year);
+                }
+                if (filterObject.acreage) {
+                    setValueIfExists(selectAcreage, `option[value="${filterObject.acreage}"]`, filterObject.acreage);
+                }
+                console.log(filterObject.bedroomTotal);
+
+                if (filterObject.bedroomTotal) {
+                    setValueIfExists(selectRoomNumber, `option[value="${filterObject.bedroomTotal}"]`, filterObject.bedroomTotal);
                 }
             }
 
-            if (filterObject.province) {
-                setValueIfExists(selectAddress, `option[value="${filterObject.province}"]`, filterObject.province);
-            }
-            if (search) {
-                setValueIDIfExists(search, `search`, search);
-            }
-            if (filterObject.type) {
-                setValueIfExists(selectType, `option[value="${filterObject.type}"]`, filterObject.type);
-            }
-            if (filterObject.year) {
-                setValueIfExists(selectYear, `option[value="${filterObject.year}"]`, filterObject.year);
-            }
-            if (filterObject.acreage) {
-                setValueIfExists(selectAcreage, `option[value="${filterObject.acreage}"]`, filterObject.acreage);
-            }
-            console.log(filterObject.bedroomTotal);
-
-            if (filterObject.bedroomTotal) {
-                setValueIfExists(selectRoomNumber, `option[value="${filterObject.bedroomTotal}"]`, filterObject.bedroomTotal);
-            }
         }
     }
 }
@@ -554,8 +557,42 @@ function togglePriceRadio() {
 
 }
 
+
+const convertToSlug = (text) => {
+    return text.toLowerCase().replace(/\W+/g, '-');
+}
+
+const cutUrl = (url) => {
+    const firstSlashIndex = url.lastIndexOf("/");
+    const newUrl = url.substring(0, firstSlashIndex);
+    return newUrl;
+}
+
+const changeURLWithSlug = () => {
+    const url = window.location.href;
+    const builList = 'danh sach toa nha';
+    const roomList = 'danh sach phong';
+    const roomDetail = 'chi tiet phong';
+
+    console.log(cutUrl)
+
+    // if (url.includes('roomList') && !url.includes(convertToSlug(roomList))) {
+    //     history.pushState(null, '', cutUrl("/roomList/", url, convertToSlug(roomList)));
+    // }
+    // else if (url.includes('buildingList') && !url.includes(convertToSlug(builList))) {
+    //     history.pushState(null, '', convertToSlug(builList));
+    // }
+    // else if (url.includes('roomDetail') && !url.includes(convertToSlug(roomDetail))) {
+    //     history.pushState(null, '', cutUrl("/roomDetail/", url, convertToSlug(roomDetail)));
+    // }
+    // localStorage.setItem('currentUrl', url);
+    // localStorage.setItem('isInitialLoad', false);
+
+}
+
 A();
 changeAddressSelect();
 filter();
 togglePriceRadio();
 C();
+changeURLWithSlug();
