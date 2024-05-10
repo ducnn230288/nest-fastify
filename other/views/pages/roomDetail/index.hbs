@@ -1,36 +1,36 @@
-{{#> roomDetail}}
+{{#> main}}
 {{#*inline "body"}}
 <section class="pb-10">
     <div class="w-full h-auto py-2 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-10  relative">
+        <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-10 relative">
             <div class="col-span-1 lg:col-span-2 pb-3">
                 <div class="swiper swiperContent2 relative overflow-none">
                     <div class="absolute cursor-pointer right-0 top-5 z-10 text-black btn-show-image">
                         <ion-icon name="resize-outline" class="  text-2xl e shadow shadow-gray-500"></ion-icon>
                     </div>
-                    <div class="mySwiper-class swiper-wrapper h-96 pt-5 ">
+                    <div class="mySwiper-class swiper-wrapper w-full h-96 pt-2 ">
                         <div class="swiper-slide ">
                             <a href="/images/home/uhouse1.jpg" class="glightbox w-full h-96 overflow-hidden block">
                                 <span
                                     class="absolute top-0 left-0 bg-black z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30"></span>
-                                <img class="lazy w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
-                                    data-src="/images/home/uhouse1.jpg" alt="image" />
+                                <img class=" w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
+                                    src="/images/home/uhouse1.jpg" alt="image" />
                             </a>
                         </div>
                         <div class="swiper-slide">
                             <a href="/images/home/uhouse2.jpg" class="glightbox w-full h-96 overflow-hidden block">
                                 <span
                                     class="absolute top-0 left-0 bg-black z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30"></span>
-                                <img class="lazy w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
-                                    data-src="/images/home/uhouse2.jpg" alt="image" />
+                                <img class=" w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
+                                    src="/images/home/uhouse2.jpg" alt="image" />
                             </a>
                         </div>
                         <div class="swiper-slide">
                             <a href="/images/home/uhouse3.jpg" class="glightbox w-full h-96 overflow-hidden block">
                                 <span
                                     class="absolute top-0 left-0 bg-black z-10 opacity-0 duration-500 transition-all ease-in-out group-hover:opacity-30"></span>
-                                <img class="lazy w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
-                                    data-src="/images/home/uhouse3.jpg" alt="image" />
+                                <img class="w-[calc(100%+40px)] max-w-[calc(100%+40px)] duration-500 transition-all ease-in-out translate-x-[-40px] group-hover:translate-x-0"
+                                    src="/images/home/uhouse3.jpg" alt="image" />
                             </a>
                         </div>
                     </div>
@@ -46,13 +46,13 @@
                     <div class="swiper swiperContent my-1">
                         <div class="swiper-wrapper *:max-w-20 *:h-20 justify-center">
                             <div class="swiper-slide">
-                                <img data-src="/images/home/uhouse1.jpg" class="w-full h-full lazy" />
+                                <img src="/images/home/uhouse1.jpg" class="w-full h-full lazy" />
                             </div>
                             <div class="swiper-slide">
-                                <img data-src="/images/home/uhouse2.jpg" class="w-full h-full lazy" />
+                                <img src="/images/home/uhouse2.jpg" class="w-full h-full lazy" />
                             </div>
                             <div class="swiper-slide">
-                                <img data-src="/images/home/uhouse3.jpg" class="w-full h-full lazy" />
+                                <img src="/images/home/uhouse3.jpg" class="w-full h-full lazy" />
                             </div>
                         </div>
                     </div>
@@ -64,8 +64,7 @@
                 <div class="registration top-32 lg:max-w-xs xl:max-w-sm block lg:fixed">
                     <div class="grid grid-cols-3 gap-2">
                         <div class="col-span-2 flex gap-2 h-full">
-                            <img data-src="/images/home/logo-avatar.png" alt=""
-                                class="lazy max-w-14 max-h-14 rounded-full">
+                            <img src="/images/home/logo-avatar.png" alt="" class="lazy max-w-14 max-h-14 rounded-full">
                             <div>
                                 <h4 class="font-bold text-gray-500  text-sm uppercase">ruby</h4>
                                 <span class="text-xs max-w-52 w-full italic">
@@ -107,7 +106,8 @@
 <section class="grid grid-cols-1 lg:grid-cols-3 w-full h-auto mx-auto">
     <div class="col-span-2 flex-col flex justify-start lg:items-start mb-4">
         <div class="pb-4">
-            <h2 class="text-neutral-700 md:text-4xl text-lg font-bold ">{{bu.name}} ({{room.roomNumber}})</h2>
+            <h2 class="text-neutral-700 md:text-4xl text-lg font-bold ">{{room.building.name}} ({{room.roomNumber}})
+            </h2>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-row md:justify-between gap-2 pb-3 w-full">
             <div
@@ -145,70 +145,60 @@
             </div>
             <div class="justify-start items-center gap-4 inline-flex ">
                 <label class="text-neutral-700 sm:text-lg text-sm font-bold  leading-5">Địa chỉ:</label>
-                <span class=" text-neutral-700 sm:text-lg text-sm font-medium  ">{{bu.address}}</span>
+                <span class=" text-neutral-700 sm:text-lg text-sm font-medium  ">{{room.building.address}}</span>
             </div>
         </div>
-        <div class="text-neutral-700 text-lg font-bold mt-8">Thiết bị:</div>
+        <div class="text-neutral-700 text-lg font-bold mt-2">Thiết bị:</div>
         <div class="max-w-screen-xl w-full relative pb-3">
             <div class="px-4 pt-6 pb-6  rounded-xl border border-neutral-200 justify-center items-center ">
                 <div class="self-stretch flex-col justify-start items-start flex ">
                     <div class=" h-6 w-full  grid grid-cols-3 gap-5 items-center">
                         <h3 class=" text-neutral-800 sm:text-base text-xs font-medium ">Nội thất</h3>
                         <h3 class=" top-0  text-neutral-800 sm:text-base text-xs font-medium ">Mô tả</h3>
-                        <h3 class="   text-neutral-800 sm:text-base text-xs font-medium ">Số lượng</h3>
+                        <h3 class=" text-neutral-800 sm:text-base text-xs font-medium ">Số lượng</h3>
                     </div>
+                    {{#each room.roomSupplies}}
                     <div class=" w-full  border border-blue-300"></div>
                     <div class="bg-white  h-14 w-full  grid grid-cols-3 gap-5 items-center">
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Máy lạnh</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium  ">Máy lạnh được bảo trì
-                            định
-                            kỳ</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">1 </span>
+                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">{{service}}</span>
+                        <span class="text-neutral-800 sm:text-base text-xs font-medium  ">{{description}}</span>
+                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">{{quantity}} </span>
                     </div>
                     <div class=" w-full "></div>
-                    <div class=" w-full  border border-blue-300"></div>
-                    <div class="  w-full h-14  bg-neutral-50 grid grid-cols-3 gap-5 items-center">
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Giường</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Giường đơn rộng rãi</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">1 </span>
-                    </div>
-                    <div class=" w-full "></div>
-                    <div class=" w-full  border border-blue-300"></div>
-                    <div class="  w-full h-14  bg-white grid grid-cols-3 gap-5 items-center">
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Tủ Lạnh</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Tủ Lạnh 140 lít</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">1 </span>
-                    </div>
-                    <div class=" w-full "></div>
-                    <div class=" w-full  border border-blue-300"></div>
-                    <div class="  w-full h-14  bg-neutral-50 grid grid-cols-3 gap-5 items-center">
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">Bàn làm việc</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">bàn 45x80</span>
-                        <span class="text-neutral-800 sm:text-base text-xs font-medium ">1 </span>
-                    </div>
-                    <div class=" w-full  border border-blue-300"></div>
+                    {{/each }}
 
                 </div>
             </div>
 
-            <div class=" flex-col  items-start gap-2 flex pt-5">
+            <div class=" flex-col items-start gap-2 flex pt-5">
                 <label class="text-neutral-700 text-lg font-bold ">Tiện ích</label>
-                <input class=" w-full h-24 relative rounded-xl border border-neutral-200" type="textarea "
-                    row="5"></input>
+                <div class=" w-full h-full relative rounded-xl border border-neutral-200 min-h-14">
+                    <ul class="p-3">
+                        {{#each room.utilities}}
+                        <li>{{name}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
-            <div class="h-[126px] flex-col justify-center items-start gap-2 flex">
+            <div class=" flex-col justify-center items-start gap-2 flex  ">
                 <label class="text-neutral-700 text-lg font-bold ">Mô tả</label>
-                <input class=" w-full h-24 relative rounded-xl border border-neutral-200"></input>
+                <div class=" w-full h-full relative rounded-xl border border-neutral-200 min-h-14 ">
+                    <ul class="p-3">
+                        {{#each room.utilities}}
+                        <li>{{description}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
             <div class=" w-full h-80 ">
                 <label class=" text-neutral-700 text-lg font-bold ">Vị trí</label>
                 <div class=" w-full h-full relative ">
-                    <img data-src="/images/home/location.svg" alt="" class="lazy absolute right-1/2 top-2">
-                    <img class="lazy w-full h-full" data-src="/images/home/map.png" />
+                    <img src="/images/home/location.svg" alt="" class="lazy absolute right-1/2 top-2">
+                    <img class="lazy w-full h-full" src="/images/home/map.png" />
                 </div>
             </div>
         </div>
     </div>
 </section>
 {{/inline}}
-{{/roomDetail}}
+{{/main}}

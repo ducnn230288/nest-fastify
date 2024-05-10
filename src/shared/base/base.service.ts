@@ -242,7 +242,6 @@ export abstract class BaseService<T extends ObjectLiteral> {
     const i18n = I18nContext.current()!;
     if (!id) throw new BadRequestException(i18n.t('common.Data id not found', { args: { id } }));
     const request = this.repo.createQueryBuilder('base');
-
     if (this.listJoin.length) {
       this.listJoin.forEach((key) => {
         const checkKey = key.split('.');

@@ -552,6 +552,9 @@ video {
 .h-80 {
   height: 20rem;
 }
+.h-96 {
+  height: 30rem;
+}
 .h-\[0px\] {
   height: 0px;
 }
@@ -573,7 +576,13 @@ video {
 .max-h-14 {
   max-height: 3.5rem;
 }
+.min-h-14 {
+  min-height: 3.5rem;
+}
 .max-h-56 {
+  max-height: 14rem;
+}
+.max-h-96 {
   max-height: 14rem;
 }
 .w-20 {

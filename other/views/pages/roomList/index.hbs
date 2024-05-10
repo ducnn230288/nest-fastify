@@ -1,4 +1,4 @@
-{{#> roomList}}
+{{#> main}}
 {{#*inline "body"}}
 <div class="md:flex md:gap-10 lg:gap-6 mx-6 md:mx-6 lg:mx-6 xl:mx-0 mt-10">
     <div class="md:basis-1/2 md:h-96 flex flex-col w-full h-80 border rounded-2xl">
@@ -116,7 +116,7 @@
         <a href="/chi-tiet-phong/{{...convert}}_{{id}}">
             <div class="border border-spacing-0.5 border-red-100 rounded-2xl shadow shadow-gray-300">
                 <div class="w-full h-48">
-                    <img class="lazy w-full h-full rounded-t-2xl" data-src="/api/auth/download?key={{media}}" />
+                    <img class="lozad w-full h-full rounded-t-2xl" data-src="/api/auth/download?key={{media}}" />
                 </div>
                 <div class="flex flex-col gap-2.5 my-4 mx-2">
                     <div class="flex gap-1.5">
@@ -210,4 +210,4 @@
     </div>
 </section>
 {{/inline}}
-{{/roomList}}
+{{/main}}

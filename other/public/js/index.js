@@ -275,16 +275,13 @@ function A() {
             if (isDesktop) {
                 registration?.classList.add('lg:fixed', 'top-32');
             }
-            else {
-                registration?.classList.remove('lg:fixed', 'top-32');
-            }
             if (scrollY > maxScroll) {
                 registration?.classList.remove('lg:fixed', 'top-32');
             }
         }
         else {
             navMenu?.classList.remove('fixed', 'top-0', 'left-0', 'right-0', 'shadow-lg', 'bg-white', 'border-b-2');
-            // registration?.classList.remove('lg:fixed', 'top-32');
+            registration?.classList.remove('lg:fixed', 'top-32');
         }
     }
     handleScroll();
@@ -414,26 +411,28 @@ window._MESSAGE_ = {
     maxLength: "Xin vui lòng nhập không quá ",
     compare: "Xin vui lòng nhập không quá "
 };
+
 function changeAddressSelect() {
     const provinceSelect = document.getElementById('selectAddressMain');
     if (provinceSelect) {
         provinceSelect.addEventListener('change', function () {
             const selectedProvince = provinceSelect.value;
-            window.location.href = `/?address=${selectedProvince}`;
+            window.location.href = `?address=${selectedProvince}`;
         });
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const address = urlParams.get('address');
-            if (address) {
-                const option = document.querySelector(`option[value="${address}"]`);
-                if (option) {
-                    provinceSelect.value = address;
-                }
-            }
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const address = urlParams.get('address');
+    if (address) {
+        const option = document.querySelector(`option[value="${address}"]`);
+        console.log('option', option);
+        if (option) {
+            provinceSelect.value = address;
         }
     }
-
 }
+
+
+
 const filter = () => {
     const search = document.getElementById('search');
     const selectAddress = document.getElementById('selectAddress');
@@ -444,6 +443,7 @@ const filter = () => {
     const btnFilter = document.getElementById('buttonFilter')
 
     if (search || selectAddress || selectType || selectAcreage || selectRoomNumber || btnFilter) {
+        console.log('filter');
         btnFilter.addEventListener('click', () => {
             const selectPriceMin = document.querySelector('input[name="lowPrice"]:checked').value;
             const selectPriceMax = document.querySelector('input[name="highPrice"]:checked').value;
@@ -470,71 +470,69 @@ const filter = () => {
                 sort: ""
             });
             window.location.href = `
-                /buildingList?${paginableParams.toString()}
+                /danh-sach-toa-nha?${paginableParams.toString()}
             `;
         })
+        const urlParams = new URLSearchParams(window.location.search);
+        const filter = urlParams.get('filter');
+        if (filter) {
+            console.log('filter');
 
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const filter = urlParams.get('filter');
-            if (filter) {
-                const filterObject = JSON.parse(filter);
-                const search = urlParams.get('fullTextSearch');
-                const priceChecked = filterObject.price.split('/')
-                const radioButtonsMin = document.querySelectorAll('input[name="lowPrice"]');
-                const radioButtonsMax = document.querySelectorAll('input[name="highPrice"]');
-                function checked(arr, newValue) {
-                    arr.forEach(function (radioButton) {
-                        if (radioButton.value === newValue) {
-                            radioButton.checked = true;
-                        } else {
-                            radioButton.checked = false;
-                        }
-                    });
-                }
-                function setValueIfExists(ele, selector, value) {
-                    const option = document.querySelector(selector);
-                    if (option) {
-                        ele.value = value;
+            const filterObject = JSON.parse(filter);
+            const search = urlParams.get('fullTextSearch');
+            const priceChecked = filterObject.price.split('/')
+            const radioButtonsMin = document.querySelectorAll('input[name="lowPrice"]');
+            const radioButtonsMax = document.querySelectorAll('input[name="highPrice"]');
+            function checked(arr, newValue) {
+                arr.forEach(function (radioButton) {
+                    if (radioButton.value === newValue) {
+                        radioButton.checked = true;
+                    } else {
+                        radioButton.checked = false;
                     }
+                });
+            }
+            function setValueIfExists(ele, selector, value) {
+                const option = document.querySelector(selector);
+                if (option) {
+                    ele.value = value;
                 }
-                function setValueIDIfExists(ele, selector, value) {
-                    const option = document.getElementById(selector);
-                    if (option) {
-                        ele.value = value;
-                    }
+            }
+            function setValueIDIfExists(ele, selector, value) {
+                const option = document.getElementById(selector);
+                if (option) {
+                    ele.value = value;
                 }
-                if (priceChecked) {
-                    if (priceChecked[0]) {
-                        checked(radioButtonsMin, priceChecked[0]);
-                    }
-                    if (priceChecked[1]) {
-                        checked(radioButtonsMax, priceChecked[1]);
-                    }
+            }
+            if (priceChecked) {
+                if (priceChecked[0]) {
+                    checked(radioButtonsMin, priceChecked[0]);
                 }
-
-                if (filterObject.province) {
-                    setValueIfExists(selectAddress, `option[value="${filterObject.province}"]`, filterObject.province);
-                }
-                if (search) {
-                    setValueIDIfExists(search, `search`, search);
-                }
-                if (filterObject.type) {
-                    setValueIfExists(selectType, `option[value="${filterObject.type}"]`, filterObject.type);
-                }
-                if (filterObject.year) {
-                    setValueIfExists(selectYear, `option[value="${filterObject.year}"]`, filterObject.year);
-                }
-                if (filterObject.acreage) {
-                    setValueIfExists(selectAcreage, `option[value="${filterObject.acreage}"]`, filterObject.acreage);
-                }
-                console.log(filterObject.bedroomTotal);
-
-                if (filterObject.bedroomTotal) {
-                    setValueIfExists(selectRoomNumber, `option[value="${filterObject.bedroomTotal}"]`, filterObject.bedroomTotal);
+                if (priceChecked[1]) {
+                    checked(radioButtonsMax, priceChecked[1]);
                 }
             }
 
+            if (filterObject.province) {
+                setValueIfExists(selectAddress, `option[value="${filterObject.province}"]`, filterObject.province);
+            }
+            if (search) {
+                setValueIDIfExists(search, `search`, search);
+            }
+            if (filterObject.type) {
+                setValueIfExists(selectType, `option[value="${filterObject.type}"]`, filterObject.type);
+            }
+            if (filterObject.year) {
+                setValueIfExists(selectYear, `option[value="${filterObject.year}"]`, filterObject.year);
+            }
+            if (filterObject.acreage) {
+                setValueIfExists(selectAcreage, `option[value="${filterObject.acreage}"]`, filterObject.acreage);
+            }
+            console.log(filterObject.bedroomTotal);
+
+            if (filterObject.bedroomTotal) {
+                setValueIfExists(selectRoomNumber, `option[value="${filterObject.bedroomTotal}"]`, filterObject.bedroomTotal);
+            }
         }
     }
 }
@@ -542,6 +540,8 @@ const filter = () => {
 function togglePriceRadio() {
     const value = document.getElementById("priceRange");
     if (value) {
+        console.log('togglePriceRadio');
+
         value.addEventListener("click", function (event) {
             event.preventDefault();
             var priceRadio = document.getElementById("pricetable");
@@ -554,45 +554,12 @@ function togglePriceRadio() {
             }
         });
     }
-
 }
 
-
-const convertToSlug = (text) => {
-    return text.toLowerCase().replace(/\W+/g, '-');
-}
-
-const cutUrl = (url) => {
-    const firstSlashIndex = url.lastIndexOf("/");
-    const newUrl = url.substring(0, firstSlashIndex);
-    return newUrl;
-}
-
-const changeURLWithSlug = () => {
-    const url = window.location.href;
-    const builList = 'danh sach toa nha';
-    const roomList = 'danh sach phong';
-    const roomDetail = 'chi tiet phong';
-
-    console.log(cutUrl)
-
-    // if (url.includes('roomList') && !url.includes(convertToSlug(roomList))) {
-    //     history.pushState(null, '', cutUrl("/roomList/", url, convertToSlug(roomList)));
-    // }
-    // else if (url.includes('buildingList') && !url.includes(convertToSlug(builList))) {
-    //     history.pushState(null, '', convertToSlug(builList));
-    // }
-    // else if (url.includes('roomDetail') && !url.includes(convertToSlug(roomDetail))) {
-    //     history.pushState(null, '', cutUrl("/roomDetail/", url, convertToSlug(roomDetail)));
-    // }
-    // localStorage.setItem('currentUrl', url);
-    // localStorage.setItem('isInitialLoad', false);
-
-}
 
 A();
 changeAddressSelect();
 filter();
 togglePriceRadio();
 C();
-changeURLWithSlug();
+

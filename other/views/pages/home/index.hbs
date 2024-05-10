@@ -1,10 +1,10 @@
 {{#> client}}
 {{#*inline "body"}}
 <section class="">
-    <img data-src="/images/home/uhouse.png" class="lazy w-full h-full" />
+    <img src="/images/home/uhouse.png" class="lazy w-full h-full" />
 </section>
 <section class="items-center relative xl:h-[600px] lg:h-[500px] h-80 overflow-hidden bg-gray-500 z-10">
-    <img data-src="/images/home/alpha.png"
+    <img src="/images/home/alpha.png"
         class="lazy absolute justify-center -top-52 flex-shrink-0 w-full xl:h-[1027.333px] lg:h-[900px] h-[750px] opacity-90" />
     <div class="container mx-auto xl:mt-28 lg:mt-36 md:mt-14 relative w-auto bg-slate-700">
         <div class="absolute md:top-1/4 top-0 justify-center md:grid md:grid-cols-2 gap-4 mx-auto">
@@ -18,11 +18,12 @@
                 </p>
             </div>
             <div class="flex flex-col justify-center items-center relative md:mt-0 mt-4 rounded-xl overflow-hidden">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/Y6vlYLQa8lo?si=EEqAsFhG3-_TVz6M"
-                    title="YouTube video player" frameborder="0"
+                {{!-- <iframe width="560" height="315"
+                    src="https://www.youtube.com/embed/Y6vlYLQa8lo?si=EEqAsFhG3-_TVz6M" title="YouTube video player"
+                    frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="xl:h-96 w-full md:h-56 h-48"
-                    id="video-iframe"></iframe>
+                    id="video-iframe"></iframe> --}}
             </div>
         </div>
     </div>
@@ -38,7 +39,7 @@
         <div class="swiper-wrapper">
             {{#each data.items}}
             <div class="swiper-slide group z-1 relative">
-                <img data-src={{imageSrc}} alt="" class="lazy z-1 rounded-xl relative"
+                <img src={{imageSrc}} alt="" class="z-1 rounded-xl relative"
                     onerror="this.src='/images/home/image_not_available.png'" />
                 <div class="absolute top-2/3 bg-white opacity-80 max-w-full h-24">
                     <p class="font-sans font-bold text-red-700 mx-8 my-5 text-left xl:text-xl text-xs">
@@ -198,7 +199,7 @@
                     {{Content}}
                 </h6>
                 <div>
-                    <img data-src="{{imageSrc}}" alt="" class="lazy h-80 w-full" />
+                    <img src="{{imageSrc}}" alt="" class="h-80 w-full" />
                 </div>
             </div>
             {{/each}}

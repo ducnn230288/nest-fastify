@@ -98,9 +98,6 @@ export class AppController {
     if (bui) {
       convert = bui.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
-
-    console.log(convert);
-
     return {
       bui,
       convert
@@ -298,18 +295,12 @@ export class AppController {
   @Render('pages/roomDetail/index')
   async roomDetail(
     @Param('slug') slug: string):
-    Promise<{ room: Room | null; bu: Building | null; }> {
+    Promise<{ room: Room | null; }> {
     const param = slug.split('_');
-    const id = param[1];
-    const room = await this.buildingService.findByRoomId(Number(id));
-    let bu: any;
-    if (room) {
-      bu = await this.buildingService.findOne(room.buildingId.toString(), []);
-    }
-
+    const idRoom = param[1];
+    const room = await this.roomService.findOne(idRoom, ['building']);
     return {
       room,
-      bu,
     };
   }
 
