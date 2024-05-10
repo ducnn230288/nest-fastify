@@ -33,10 +33,8 @@ import { NamingStrategy } from '@shared';
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
-        // host: appConfig.DATABASE_HOST,
-        // port: appConfig.DATABASE_PORT,
-        host: "115.79.196.99",
-        port: 5005,
+        host: appConfig.DATABASE_HOST,
+        port: appConfig.DATABASE_PORT,
         username: appConfig.DATABASE_USER,
         password: appConfig.DATABASE_PASSWORD,
         database: appConfig.NODE_ENV !== 'test' ? appConfig.DATABASE_NAME : 'postgres',
