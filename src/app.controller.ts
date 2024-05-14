@@ -23,7 +23,7 @@ export class AppController {
     // private readonly parameterService: ParameterService, // @Inject(CACHE_MANAGER) private managerCache: Cache,
   }
 
-  @Get('')
+  @Get('/trang-chu')
   @Render('pages/home/index')
   async root(
     @Query('address') address: string,
@@ -84,6 +84,31 @@ export class AppController {
       slug
     };
   }
+  @Get('dataBuildings')
+  async getDataBuildingOnHome(
+    @Query() paginableParams: PaginationQueryDto,
+  ): Promise<{ bu: Building[] | null; slug: string[] }> {
+    let filterObject: any = {};
+    const filterParam = paginableParams.filter;
+    if (filterParam) {
+      filterObject = JSON.parse(filterParam);
+    }
+    const { address } = filterObject;
+    const [bu] = await this.buildingService.findAll({
+      page: 1,
+      perPage: 10,
+      filter: `{"buildingAddress.province":"${address ? address : ''}"}`,
+    });
+    let slug: string[] = [];
+    if (bu) {
+      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    }
+    return {
+      bu,
+      slug
+    };
+  }
+
 
   @Get('/danh-sach-phong/:slug')
   @Render('pages/roomList/index')
@@ -104,11 +129,10 @@ export class AppController {
     };
   }
 
-  @Get('/danh-sach-toa-nha')
-  @Render('pages/buildingList/index')
-  async buildingList(
+  @Get('getDataBuildings')
+  async getDataBuildings(
     @Query() paginableParams: PaginationQueryDto,
-  ): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any>; slug: string[] }> {
+  ): Promise<{ bu: Building[] | null; slug: string[] }> {
     let filterObject: any = {};
     const filterParam = paginableParams.filter;
     if (filterParam) {
@@ -129,10 +153,25 @@ export class AppController {
     `,
     });
 
-    const uniqueProvinces = [...new Set(bui.map((building) => building.buildingAddress.province))];
-
     let slug: string[] = [];
 
+    if (bui) {
+      slug = bu.map(building => building.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    }
+
+    return {
+      bu,
+      slug
+    };
+  }
+
+  @Get('/danh-sach-toa-nha')
+  @Render('pages/buildingList/index')
+  async buildingList(): Promise<{ bu: Building[] | null; uniqueProvinces: string[] | null; data: Record<string, any>; slug: string[] }> {
+    const [bui] = await this.buildingService.findAll({});
+    const [bu] = await this.buildingService.findAll({});
+    const uniqueProvinces = [...new Set(bui.map((building) => building.buildingAddress.province))];
+    let slug: string[] = [];
     if (bui) {
       slug = bu.map(building => building.name.replace(/\/|\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
     }
@@ -282,7 +321,6 @@ export class AppController {
         },
       ],
     };
-
     return {
       bu,
       data,

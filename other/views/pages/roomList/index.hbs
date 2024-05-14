@@ -1,8 +1,9 @@
 {{#> main}}
 {{#*inline "body"}}
-<div class="md:flex md:gap-10 lg:gap-6 mx-6 md:mx-6 lg:mx-6 xl:mx-0 mt-10">
+<div class="md:flex md:gap-10 lg:gap-6 mx-auto mt-10">
     <div class="md:basis-1/2 md:h-96 flex flex-col w-full h-80 border rounded-2xl">
-        <img class="lazy w-full h-full " data-src="/api/auth/download?key={{bui.media}}" />
+        <img class="lazy w-full h-full " src="/api/auth/download?key={{bui.media}}"
+            onerror="this.src='/images/home/property-1.png'" />
     </div>
     <div class="lg:basis-1/2 sm:mt-0 mt-8">
         <div class="flex items-center text-red-600 font-bold text-xl gap-2">
@@ -116,7 +117,8 @@
         <a href="/chi-tiet-phong/{{...convert}}_{{id}}">
             <div class="border border-spacing-0.5 border-red-100 rounded-2xl shadow shadow-gray-300">
                 <div class="w-full h-48">
-                    <img class="lozad w-full h-full rounded-t-2xl" data-src="/api/auth/download?key={{media}}" />
+                    <img class="w-full h-full rounded-t-2xl" src="/api/auth/download?key={{media}}"
+                        onerror="this.src='/images/home/property-1.png'" />
                 </div>
                 <div class="flex flex-col gap-2.5 my-4 mx-2">
                     <div class="flex gap-1.5">
@@ -199,7 +201,7 @@
                             </svg>
                         </span>
                         <span class="text-base text-red-600 font-medium">
-                            <span class="">{{price}}</span>
+                            <span class="">{{formatNumber price}}</span>
                             <span class="">tr/tháng</span>
                         </span>
                     </div>

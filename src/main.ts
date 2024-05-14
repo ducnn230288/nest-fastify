@@ -8,6 +8,7 @@ import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 import { join } from 'path';
 import hbs from 'hbs';
 import hbsUtils from 'hbs-utils';
+import axios from 'axios';
 
 import { appConfig, loggerOptions, setupSwagger } from '@config';
 import { HttpExceptionFilter } from '@shared';
@@ -41,6 +42,7 @@ async function bootstrap(): Promise<void> {
   //   optionsSuccessStatus: 204,
   //   credentials: true, // use cookies
   // });
+
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableShutdownHooks();
 
@@ -55,6 +57,9 @@ async function bootstrap(): Promise<void> {
   });
   hbs.registerHelper('raw-helper', function (options) {
     return options.fn();
+  });
+  hbs.registerHelper('formatNumber', (value: number) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   });
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(process.cwd(), './other', '/views/pages'));
@@ -75,5 +80,6 @@ async function bootstrap(): Promise<void> {
 
   await app.listen(port, '0.0.0.0');
   logger.verbose(`Application running on port ${port}, NODE_ENV: ${appConfig.NODE_ENV}`);
+
 }
 bootstrap();
