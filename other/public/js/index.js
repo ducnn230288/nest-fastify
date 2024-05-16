@@ -436,7 +436,6 @@ function changeAddressSelect() {
             divBuilding.innerHTML = '';
             for (let index = 0; index < responses?.data?.bu.length; index++) {
                 reRender += reRenderHome(responses.data.bu[index], responses.data.slug[index]);
-
             }
             divBuilding.innerHTML = reRender;
         });
