@@ -501,7 +501,7 @@ const reRenderHome = (bu, slug) => {
                                     fill="#616161" />
                             </svg>
                         </div>
-                        <h4 class="pl-3">${bu.buildingAddress.province}}</h4>
+                        <h4 class="pl-3">${bu.buildingAddress.province}</h4>
                     </div>
                     <div class="flex flex-wrap">
                         <div class="flex justify-center items-center">
