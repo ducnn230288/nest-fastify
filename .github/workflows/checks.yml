@@ -7,9 +7,6 @@ on:
   pull_request:
     branches:
       - 'master'
-      - 'api-shop'
-      - 'ari'
-
 jobs:
   test-lint:
     name: Test and Lint
