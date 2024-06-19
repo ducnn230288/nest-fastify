@@ -49,6 +49,18 @@ export class UserService extends BaseService<User> {
 
   /**
    *
+   * @param slug
+   * @returns User
+   *
+   */
+  async findSlug(slug: string): Promise<User | null> {
+    const userModel = await this.repo.getDataBySlug(slug);
+    if (userModel?.slug) return this.findOne(userModel.slug, []);
+    return null;
+  }
+
+  /**
+   *
    * @param id
    * @param body
    * @param callBack

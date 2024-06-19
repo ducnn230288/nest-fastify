@@ -91,6 +91,7 @@ export class User extends CommonEntity {
     public role?: UserRole,
     public createdAt?: string,
     public updatedAt?: string,
+    public slug?: string,
   ) {
     super();
   }

@@ -89,12 +89,12 @@ export class User extends Base {
   @IsDateString()
   dob: Date;
 
-  @Column({ type: 'text', array: true, nullable: true })
+  @Column({ type: 'text', nullable: true })
   @Expose()
   @ApiProperty({ example: [faker.lorem.paragraph()], description: '' })
   @IsString({ each: true })
   @IsOptional()
-  description: string[];
+  description: string;
 
   @Column({
     type: 'jsonb',

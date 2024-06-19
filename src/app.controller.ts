@@ -102,7 +102,7 @@ export class AppController {
       sorts: '{"order": "ASC"}',
     });
 
-    req.session.set('user', user);
+    // req.session.set('user', user);
 
     return {
       user: user,

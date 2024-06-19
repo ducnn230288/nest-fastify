@@ -18,7 +18,7 @@ export class DataTypeController {
 
   @Auth({
     summary: 'Get List data',
-    permission: P_DATA_TYPE_LISTED,
+    // permission: P_DATA_TYPE_LISTED,
   })
   @Get('')
   async findAll(

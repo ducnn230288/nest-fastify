@@ -63,7 +63,7 @@ export class UserRepository extends BaseRepository<User> {
    */
   async getDataByEmail(email: string, id?: string): Promise<User | null> {
     const request = this.createQueryBuilder('base').andWhere('base.email=:email', { email });
-    if (id) request.andWhere('base.id!=:id', {id});
+    if (id) request.andWhere('base.id!=:id', { id });
     return await request.getOne();
   }
 
@@ -76,10 +76,9 @@ export class UserRepository extends BaseRepository<User> {
    */
   async getDataByPhoneNumber(phoneNumber: string, id?: string): Promise<User | null> {
     const request = this.createQueryBuilder('base').andWhere('base.phoneNumber=:phoneNumber', { phoneNumber });
-    if (id) request.andWhere('base.id!=:id', {id});
+    if (id) request.andWhere('base.id!=:id', { id });
     return await request.getOne();
   }
-
 
   /**
    *
@@ -93,5 +92,15 @@ export class UserRepository extends BaseRepository<User> {
       .leftJoinAndSelect('base.role', 'role')
       .leftJoinAndSelect('base.position', 'position')
       .getOne();
+  }
+
+  /**
+   *
+   * @param slug
+   * @returns User
+   *
+   */
+  async getDataBySlug(slug: string): Promise<User | null> {
+    return await this.createQueryBuilder('base').where(`base.slug=:slug`, { slug }).withDeleted().getOne();
   }
 }

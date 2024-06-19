@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 import dayjs from 'dayjs';
+import slug from 'slug';
 
 import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
 import { lang, routerLinks } from '@utils';
@@ -20,6 +21,7 @@ const Page = () => {
     else userFacade.set({ data: undefined });
     set({
       breadcrumbs: [
+        { title: 'titles.Setting', link: '' },
         { title: 'titles.User', link: '' },
         { title: id ? 'pages.User/Edit' : 'pages.User/Add', link: '' },
       ],
@@ -44,8 +46,9 @@ const Page = () => {
 
   const handleBack = () => {
     userFacade.set({ status: EStatusState.idle });
-    navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams({...param, filter: JSON.stringify({...JSON.parse(param?.filter || '{}'), roleCode })}).toString()}`);
-
+    navigate(
+      `/${lang}${routerLinks('User')}?${new URLSearchParams({ ...param, filter: JSON.stringify({ ...JSON.parse(param?.filter || '{}'), roleCode }) }).toString()}`,
+    );
   };
   const handleSubmit = (values: User) => {
     if (id) userFacade.put({ ...values, id, roleCode });
@@ -55,6 +58,7 @@ const Page = () => {
   useEffect(() => {
     if (!userRoleFacade.result?.data?.length) userRoleFacade.get({});
   }, []);
+
   useEffect(() => {
     if (userRoleFacade.result?.data?.length) {
       set({
@@ -83,6 +87,19 @@ const Page = () => {
               formItem: {
                 col: 6,
                 rules: [{ type: EFormRuleType.required }],
+                onBlur: (e, form) => {
+                  if (e.target.value && !form.getFieldValue(['slug'])) {
+                    form.setFieldValue(['slug'], slug(e.target.value));
+                  }
+                },
+              },
+            },
+            {
+              title: 'Slug',
+              name: 'slug',
+              formItem: {
+                col: 6,
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
               },
             },
             {
