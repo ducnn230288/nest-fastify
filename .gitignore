@@ -36,6 +36,7 @@ lerna-debug.log*
 
 *.env*
 !.env.template
+!.env.test
 .history
 db-data
 package-lock.json
