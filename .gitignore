@@ -44,6 +44,7 @@ other/public/assets
 other/public/locales
 other/upload
 
+!frontend/.env.prod
 frontend/test/result
 frontend/build
 frontend/node_modules
