@@ -27,6 +27,8 @@ services:
       DATABASE_HOST: 'db'
     ports:
       - '3000:3001'
+    volumes:
+      - ../output:/app/robot/result
     depends_on:
       - db
       - cache
