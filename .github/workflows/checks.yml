@@ -29,5 +29,11 @@ jobs:
         run: docker-compose -f docker/docker-test.yml run --rm server sh -c "npm run migration && npm run seed"
       - name: Run Test Frontend
         run: docker-compose -f docker/docker-test.yml exec -T server robot -d robot/result robot/testcases/Login.robot
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: output
+          path: output/
+          retention-days: 30
 #       docker-compose -f docker/docker-build.yml up -d --build
 #       docker-compose -f docker/docker-build.yml run --rm server sh -c "npm run migration && npm run seed"
