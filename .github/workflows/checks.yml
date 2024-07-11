@@ -24,8 +24,10 @@ jobs:
       - name: Lint
         run: docker-compose -f docker/docker-test.yml run --rm server sh -c "npm run lint"
       - name: Run Test Backend
+        if: ${{ !cancelled() }}
         run: docker-compose -f docker/docker-test.yml run --rm server sh -c "npm run test:e2e"
       - name: Run Migration && Seed Database
+        if: ${{ !cancelled() }}
         run: docker-compose -f docker/docker-test.yml run --rm server sh -c "npm run migration && npm run seed"
       - name: Run Test Frontend
         run: docker-compose -f docker/docker-test.yml exec -T server robot -d robot/result robot/testcases/Login.robot
