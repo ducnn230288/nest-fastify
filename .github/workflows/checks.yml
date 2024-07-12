@@ -30,6 +30,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: docker-compose -f docker/docker-test.yml run --rm server sh -c "npm run migration && npm run seed"
       - name: Run Test Frontend
+        if: ${{ !cancelled() }}
         run: docker-compose -f docker/docker-test.yml exec -T server robot -d robot/result robot/testcases/Login.robot
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
